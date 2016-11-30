@@ -24,3 +24,10 @@ group :production, :staging do
   gem 'pg'
   gem 'rails_12factor'
 end
+
+# CSS
+gem 'bootstrap-sass'
+gem 'honoka-rails'
+gem 'will_paginate'
+gem 'bootstrap-will_paginate'
+gem 'font-awesome-rails'

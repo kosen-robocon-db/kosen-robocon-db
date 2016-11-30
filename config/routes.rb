@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
   get 'static_pages/about'
 
-  resources :campusess, only: [:index, :show]
-  resources :contests,  only: [:index, :show]
+  resources :campuses, only: [:index, :show]
+  resources :contests, only: [:index, :show]
 
 end
