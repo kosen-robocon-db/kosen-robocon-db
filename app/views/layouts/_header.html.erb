@@ -1,0 +1,22 @@
+<header>
+  <div class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <%= link_to root_path, class: "navbar-brand" do %>
+          <%= fa_icon("wrench", text: base_title) %>
+        <% end %>
+        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+      <div class="navbar-collapse collapse" id="navbar-main">
+        <ul class="nav navbar-nav">
+          <li><%= link_to fa_icon("trophy", text:"大会一覧"), contests_path %></li>
+          <li><%= link_to fa_icon("graduation-cap", text:"キャンパス一覧"), campuses_path %></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</header>
