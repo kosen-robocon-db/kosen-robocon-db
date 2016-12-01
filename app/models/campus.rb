@@ -8,4 +8,8 @@ class Campus < ApplicationRecord
   validates :name,         presence: true, length:{ maximum:255 }
   validates :abbreviation, presence: true, length:{ maximum:255 }
 
+  #== scopes
+
+  scope :on_page, -> page { paginate(page: page, per_page: 50) }
+  scope :order_default, -> { order(:id) }
 end

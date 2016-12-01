@@ -1,2 +1,36 @@
-<h1>Campuses#index</h1>
-<p>Find me in app/views/campuses/index.html.erb</p>
+<% provide(:title, "キャンパス一覧") %>
+
+<%= render "shared/title", title: (yield :title) %>
+
+<div class="row">
+  <div class="col-lg-12">
+    <%= will_paginate @campuses, inner_window: 2, outer_window: 0  %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-4 col-md-6 col-sm-8 col-xs-12">
+    <table class="table table-striped table-condensed">
+      <thead>
+        <tr>
+          <th>キャンパス</th>
+          <th>地区</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @campuses.each do |campus| %>
+          <tr>
+            <td><%= link_to campus.name, campus %></td>
+            <td><%= campus.region.name %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <%= will_paginate @campuses, inner_window: 2, outer_window: 0  %>
+  </div>
+</div>
