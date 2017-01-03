@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170103122126) do
+ActiveRecord::Schema.define(version: 20161129153138) do
 
   create_table "campuses", force: :cascade do |t|
     t.integer  "region_id",    null: false
@@ -27,9 +27,6 @@ ActiveRecord::Schema.define(version: 20170103122126) do
     t.integer  "year",       null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer  "school"
-    t.integer  "campus"
-    t.integer  "team"
     t.index ["nth"], name: "index_contests_on_nth", unique: true
     t.index ["year"], name: "index_contests_on_year"
   end
