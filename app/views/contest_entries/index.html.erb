@@ -13,19 +13,19 @@
     <table class="table table-striped table-condensed">
       <thead>
         <tr>
-          <th>回</th>
-          <th>学校</th>
-          <th>キャンパス</th>
-          <th>チーム</th>
+          <th class="text-center">回</th>
+          <th class="text-center">学校数</th>
+          <th class="text-center">キャンパス数</th>
+          <th class="text-center">チーム数</th>
         </tr>
       </thead>
       <tbody>
         <% @contest_entries.each do |entry| %>
           <tr>
-            <td><%= entry.contest_id %></td>
-            <td><%= entry.school %></td>
-            <td><%= entry.campus %></td>
-            <td><%= entry.team %></td>
+            <td class="text-right"><%= entry.contest_id %></td>
+            <td class="text-right"><%= entry.school %></td>
+            <td class="text-right"><%= entry.campus %></td>
+            <td class="text-right"><%= entry.team %></td>
           </tr>
         <% end %>
       </tbody>
