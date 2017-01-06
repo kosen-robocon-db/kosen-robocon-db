@@ -1,6 +1,6 @@
 class ContestEntriesController < ApplicationController
   def index
-    @contest_entries = ContestEntry.order_default.on_page(params[:page])
+    @contest_entries = ContestEntry.joins(:contest).order_default.on_page(params[:page])
   end
 
   def show

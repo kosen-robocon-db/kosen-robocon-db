@@ -9,11 +9,13 @@
 </div>
 
 <div class="row">
-  <div class="col-lg-4 col-md-6 col-sm-8 col-xs-12">
+  <div class="container-fluid">
     <table class="table table-striped table-condensed">
       <thead>
         <tr>
           <th class="text-center">回</th>
+          <th class="text-center">年</th>
+          <th class="text-center">大会名</th>
           <th class="text-center">学校数</th>
           <th class="text-center">キャンパス数</th>
           <th class="text-center">チーム数</th>
@@ -22,7 +24,9 @@
       <tbody>
         <% @contest_entries.each do |entry| %>
           <tr>
-            <td class="text-right"><%= entry.contest_id %></td>
+            <td class="text-right"><%= entry.contest.nth %></td>
+            <td class="text-right"><%= entry.contest.year %></td>
+            <td class="text-left" ><%= entry.contest.name %></td>
             <td class="text-right"><%= entry.school %></td>
             <td class="text-right"><%= entry.campus %></td>
             <td class="text-right"><%= entry.team %></td>
