@@ -1,5 +1,6 @@
 class Contest < ApplicationRecord
   has_many :robots, dependent: :destroy
+  has_one :contest_entry
 
   #==validates
 
