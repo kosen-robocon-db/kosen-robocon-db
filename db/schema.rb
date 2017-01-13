@@ -10,14 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170112140433) do
+ActiveRecord::Schema.define(version: 20170113000740) do
 
   create_table "campuses", force: :cascade do |t|
-    t.integer  "region_id",    null: false
-    t.string   "name",         null: false
-    t.string   "abbreviation", null: false
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.integer  "region_id",                            null: false
+    t.string   "name",                                 null: false
+    t.string   "abbreviation",                         null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.integer  "code"
+    t.decimal  "latitude",     precision: 9, scale: 6
+    t.decimal  "longitude",    precision: 9, scale: 6
     t.index ["region_id"], name: "index_campuses_on_region_id"
   end
 
