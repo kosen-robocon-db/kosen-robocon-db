@@ -24,7 +24,7 @@
       <tbody>
         <% @contest_entries.each do |entry| %>
           <tr>
-            <td class="text-right"><%= entry.contest.nth %></td>
+            <td class="text-right"><%= entry.nth %></td>
             <td class="text-right"><%= entry.contest.year %></td>
             <td class="text-left" ><%= entry.contest.name %></td>
             <td class="text-right"><%= entry.school %></td>

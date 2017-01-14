@@ -10,25 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170104112634) do
+ActiveRecord::Schema.define(version: 20170113000740) do
 
   create_table "campuses", force: :cascade do |t|
-    t.integer  "region_id",    null: false
-    t.string   "name",         null: false
-    t.string   "abbreviation", null: false
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.integer  "region_id",                            null: false
+    t.string   "name",                                 null: false
+    t.string   "abbreviation",                         null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.integer  "code"
+    t.decimal  "latitude",     precision: 9, scale: 6
+    t.decimal  "longitude",    precision: 9, scale: 6
     t.index ["region_id"], name: "index_campuses_on_region_id"
   end
 
   create_table "contest_entries", force: :cascade do |t|
-    t.integer  "contest_id"
     t.integer  "school"
     t.integer  "campus"
     t.integer  "team"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["contest_id"], name: "index_contest_entries_on_contest_id"
+    t.integer  "nth"
+    t.index ["nth"], name: "index_contest_entries_on_nth", unique: true
   end
 
   create_table "contests", force: :cascade do |t|
@@ -37,9 +40,6 @@ ActiveRecord::Schema.define(version: 20170104112634) do
     t.integer  "year",       null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer  "school"
-    t.integer  "campus"
-    t.integer  "team"
     t.index ["nth"], name: "index_contests_on_nth", unique: true
     t.index ["year"], name: "index_contests_on_year"
   end
