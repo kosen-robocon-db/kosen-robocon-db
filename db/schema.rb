@@ -10,15 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161129153138) do
+ActiveRecord::Schema.define(version: 20170131041401) do
 
   create_table "campuses", force: :cascade do |t|
-    t.integer  "region_id",    null: false
-    t.string   "name",         null: false
-    t.string   "abbreviation", null: false
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-    t.index ["region_id"], name: "index_campuses_on_region_id"
+    t.string   "name",                                 null: false
+    t.string   "abbreviation",                         null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.integer  "code"
+    t.decimal  "latitude",     precision: 9, scale: 6
+    t.decimal  "longitude",    precision: 9, scale: 6
+    t.integer  "region_code",                          null: false
+    t.index ["region_code"], name: "index_campuses_on_region_code"
+  end
+
+  create_table "contest_entries", force: :cascade do |t|
+    t.integer  "school"
+    t.integer  "campus"
+    t.integer  "team"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "nth"
+    t.index ["nth"], name: "index_contest_entries_on_nth", unique: true
   end
 
   create_table "contests", force: :cascade do |t|
@@ -35,6 +48,8 @@ ActiveRecord::Schema.define(version: 20161129153138) do
     t.string   "name",       null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "code",       null: false
+    t.index ["code"], name: "index_regions_on_code", unique: true
   end
 
   create_table "robots", force: :cascade do |t|
