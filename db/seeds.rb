@@ -15,7 +15,7 @@ Campus.create(region_code: 1, code: 1040, name: "苫小牧工業高等専門学�
 Campus.create(region_code: 1, code: 1050, name: "函館工業高等専門学校", abbreviation: "函館", latitude: 41.783736, longitude: 140.802575)
 Campus.create(region_code: 2, code: 2060, name: "八戸工業高等専門学校", abbreviation: "八戸", latitude: 40.491151, longitude: 141.448176)
 Campus.create(region_code: 2, code: 2070, name: "秋田工業高等専門学校", abbreviation: "秋田", latitude: 39.772519, longitude: 140.079455)
-Campus.create(region_code: 2, code: 2080, name: "一関高等専門学校", abbreviation: "一関", latitude: 38.92378, longitude: 141.107268)
+Campus.create(region_code: 2, code: 2080, name: "一関工業高等専門学校", abbreviation: "一関", latitude: 38.92378, longitude: 141.107268)
 Campus.create(region_code: 2, code: 2090, name: "鶴岡工業高等専門学校", abbreviation: "鶴岡", latitude: 38.709793, longitude: 139.797455)
 Campus.create(region_code: 2, code: 2100, name: "仙台高等専門学校広瀬キャンパス", abbreviation: "仙台広瀬", latitude: 38.275882, longitude: 140.751881)
 Campus.create(region_code: 2, code: 2110, name: "仙台高等専門学校名取キャンパス", abbreviation: "仙台名取", latitude: 38.167587, longitude: 140.865005)
