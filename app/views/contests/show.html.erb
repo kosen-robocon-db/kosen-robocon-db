@@ -22,7 +22,7 @@
       <tbody>
         <% @robots.each do |robot| %>
           <tr>
-            <td><%= link_to robot.campus.abbreviation, campus_path(robot.campus.code) %></td>
+            <td><%= robot.campus.abbreviation %></td>
             <td><%= robot.name %></td>
             <td><%= robot.kana %></td>
             <td><%= robot.team %></td>
