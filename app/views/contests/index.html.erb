@@ -23,7 +23,7 @@
           <tr>
             <td><%= contest.nth %></td>
             <td><%= contest.year %></td>
-            <td><%= link_to contest.name, contest %></td>
+            <td><%= link_to contest.name, contest_path(contest.nth) %></td>
           </tr>
         <% end %>
       </tbody>
