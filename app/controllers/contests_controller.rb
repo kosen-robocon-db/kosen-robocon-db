@@ -4,7 +4,7 @@ class ContestsController < ApplicationController
   end
 
   def show
-    @contest = Contest.find(params[:id])
+    @contest = Contest.find_by(nth: params[:nth])
     @robots = @contest.robots.includes(:campus).order_default.on_page(params[:page])
   end
 end
