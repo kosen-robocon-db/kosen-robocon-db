@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170131041401) do
+ActiveRecord::Schema.define(version: 20170210031749) do
 
   create_table "campuses", force: :cascade do |t|
     t.string   "name",                                 null: false
@@ -60,6 +60,7 @@ ActiveRecord::Schema.define(version: 20170131041401) do
     t.string   "team"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "code"
     t.index ["campus_id"], name: "index_robots_on_campus_id"
     t.index ["contest_id", "campus_id"], name: "index_robots_on_contest_id_and_campus_id"
     t.index ["contest_id"], name: "index_robots_on_contest_id"

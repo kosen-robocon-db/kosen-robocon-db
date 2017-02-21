@@ -9,6 +9,7 @@ class Robot < ApplicationRecord
   validates :name, allow_blank: true, length:{ maximum:255 }
   validates :kana, allow_blank: true, length:{ maximum:255 }
   validates :team, allow_blank: true, length:{ maximum:255 }, format: { :with => /(A|B)/i }
+  validates :code, presence: true
 
   #== scopes
 
