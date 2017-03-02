@@ -1,6 +1,7 @@
 class Campus < ApplicationRecord
   belongs_to :region, foreign_key: :region_code, primary_key: :code
   has_many :robots, dependent: :destroy
+  #has_many :campus_history
 
   #==validates
 

@@ -136,7 +136,54 @@ ContestEntry.create(nth: 27, school: 57, campus: 62, team: 124)
 ContestEntry.create(nth: 28, school: 57, campus: 62, team: 124)
 ContestEntry.create(nth: 29, school: 57, campus: 62, team: 124)
 
-CSV_FILE_PATH="db/robot_name_entries.csv"
+# it's better to be name CampusNameHistory
+# Campus#codeで検索できるようになるまでCampus#idを利用する
+# CampusHistory.create(campus_code: Campus.find_by(code: 2100), begin: 3, end: 21, name: "仙台電波工業高等専門学校", abbreviation: "仙台電波")
+# CampusHistory.create(campus_code: Campus.find_by(code: 2110), begin: 3, end: 21, name: "宮城工業高等専門学校", abbreviation: "宮城")
+# CampusHistory.create(campus_code: Campus.find_by(code: 3180), begin: 2, end: 18, name: "東京都立航空工業高等専門学校", abbreviation: "航空")
+# CampusHistory.create(campus_code: Campus.find_by(code: 3200), begin: 3, end: 18, name: "東京都立工業高等専門学校", abbreviation: "都立")
+# CampusHistory.create(campus_code: Campus.find_by(code: 3210), begin: 3, end: 17, name: "育英工業高等専門学校", abbreviation: "育英")
+# CampusHistory.create(campus_code: Campus.find_by(code: 4240), begin: 3, end: 21, name: "富山商船高等専門学校", abbreviation: "富山商船")
+# CampusHistory.create(campus_code: Campus.find_by(code: 4260), begin: 1, end: 21, name: "富山工業高等専門学校", abbreviation: "富山")
+# CampusHistory.create(campus_code: Campus.find_by(code: 5350), begin: 3, end: 23, name: "大阪府立工業高等専門学校", abbreviation: "大阪府立")
+# CampusHistory.create(campus_code: Campus.find_by(code: 5390), begin: 3, end:  7, name: "熊野工業高等専門学校", abbreviation: "熊野", region_code: Region.find_by(code: 4))
+# CampusHistory.create(campus_code: Campus.find_by(code: 5390), begin: 8, end: 12, name: "熊野工業高等専門学校", abbreviation: "熊野", region_code: Region.find_by(code: 5))
+# CampusHistory.create(campus_code: Campus.find_by(code: 7490), begin: 3, end: 21, name: "高松工業高等専門学校", abbreviation: "高松")
+# CampusHistory.create(campus_code: Campus.find_by(code: 7510), begin: 2, end: 21, name: "詫間電波工業高等専門学校", abbreviation: "詫間電波")
+# CampusHistory.create(campus_code: Campus.find_by(code: 8600), begin: 3, end: 21, name: "熊本電波工業高等専門学校", abbreviation: "熊本電波")
+# CampusHistory.create(campus_code: Campus.find_by(code: 8610), begin: 3, end: 21, name: "八代工業高等専門学校", abbreviation: "八代")
+
+# CampusHistory.create(campus_code: Campus.find_by(abbreviation: "仙台広瀬"), begin: 3, end: 21, name: "仙台電波工業高等専門学校", abbreviation: "仙台電波")
+# CampusHistory.create(campus_code: Campus.find_by(abbreviation: "仙台名取"), begin: 3, end: 21, name: "宮城工業高等専門学校", abbreviation: "宮城")
+# CampusHistory.create(campus_code: Campus.find_by(abbreviation: "産技荒川"), begin: 2, end: 18, name: "東京都立航空工業高等専門学校", abbreviation: "航空")
+# CampusHistory.create(campus_code: Campus.find_by(abbreviation: "産技品川"), begin: 3, end: 18, name: "東京都立工業高等専門学校", abbreviation: "都立")
+# CampusHistory.create(campus_code: Campus.find_by(abbreviation: "サレジオ"), begin: 3, end: 17, name: "育英工業高等専門学校", abbreviation: "育英")
+# CampusHistory.create(campus_code: Campus.find_by(abbreviation: "富山射水"), begin: 3, end: 21, name: "富山商船高等専門学校", abbreviation: "富山商船")
+# CampusHistory.create(campus_code: Campus.find_by(abbreviation: "富山本郷"), begin: 1, end: 21, name: "富山工業高等専門学校", abbreviation: "富山")
+# CampusHistory.create(campus_code: Campus.find_by(abbreviation: "大阪府大"), begin: 3, end: 23, name: "大阪府立工業高等専門学校", abbreviation: "大阪府立")
+# CampusHistory.create(campus_code: Campus.find_by(abbreviation: "近大"), begin: 3, end:  7, name: "熊野工業高等専門学校", abbreviation: "熊野", region_code: Region.find_by(code: 4))
+# CampusHistory.create(campus_code: Campus.find_by(abbreviation: "近大"), begin: 8, end: 12, name: "熊野工業高等専門学校", abbreviation: "熊野", region_code: Region.find_by(code: 5))
+# CampusHistory.create(campus_code: Campus.find_by(abbreviation: "香川高松"), begin: 3, end: 21, name: "高松工業高等専門学校", abbreviation: "高松")
+# CampusHistory.create(campus_code: Campus.find_by(abbreviation: "香川詫間"), begin: 2, end: 21, name: "詫間電波工業高等専門学校", abbreviation: "詫間電波")
+# CampusHistory.create(campus_code: Campus.find_by(abbreviation: "熊本熊本"), begin: 3, end: 21, name: "熊本電波工業高等専門学校", abbreviation: "熊本電波")
+# CampusHistory.create(campus_code: Campus.find_by(abbreviation: "熊本八代"), begin: 3, end: 21, name: "八代工業高等専門学校", abbreviation: "八代")
+
+CampusHistory.create(campus_code: 2100, begin: 3, end: 21, name: "仙台電波工業高等専門学校", abbreviation: "仙台電波")
+CampusHistory.create(campus_code: 2110, begin: 3, end: 21, name: "宮城工業高等専門学校", abbreviation: "宮城")
+CampusHistory.create(campus_code: 3180, begin: 2, end: 18, name: "東京都立航空工業高等専門学校", abbreviation: "航空")
+CampusHistory.create(campus_code: 3200, begin: 3, end: 18, name: "東京都立工業高等専門学校", abbreviation: "都立")
+CampusHistory.create(campus_code: 3210, begin: 3, end: 17, name: "育英工業高等専門学校", abbreviation: "育英")
+CampusHistory.create(campus_code: 4240, begin: 3, end: 21, name: "富山商船高等専門学校", abbreviation: "富山商船")
+CampusHistory.create(campus_code: 4260, begin: 1, end: 21, name: "富山工業高等専門学校", abbreviation: "富山")
+CampusHistory.create(campus_code: 5350, begin: 3, end: 23, name: "大阪府立工業高等専門学校", abbreviation: "大阪府立")
+CampusHistory.create(campus_code: 5390, begin: 3, end:  7, name: "熊野工業高等専門学校", abbreviation: "熊野", region_code: 4)
+CampusHistory.create(campus_code: 5390, begin: 8, end: 12, name: "熊野工業高等専門学校", abbreviation: "熊野", region_code: 5)
+CampusHistory.create(campus_code: 7490, begin: 3, end: 21, name: "高松工業高等専門学校", abbreviation: "高松")
+CampusHistory.create(campus_code: 7510, begin: 2, end: 21, name: "詫間電波工業高等専門学校", abbreviation: "詫間電波")
+CampusHistory.create(campus_code: 8600, begin: 3, end: 21, name: "熊本電波工業高等専門学校", abbreviation: "熊本電波")
+CampusHistory.create(campus_code: 8610, begin: 3, end: 21, name: "八代工業高等専門学校", abbreviation: "八代")
+
+CSV_FILE_PATH="db/_robot_name_entries.csv"
 if FileTest.exist?(CSV_FILE_PATH) then
   codes = {}
   CSV.foreach(CSV_FILE_PATH) do |row|

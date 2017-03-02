@@ -10,7 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170210031749) do
+ActiveRecord::Schema.define(version: 20170224021923) do
+
+  create_table "campus_histories", force: :cascade do |t|
+    t.integer  "campus_code"
+    t.integer  "begin",        null: false
+    t.integer  "end",          null: false
+    t.string   "name",         null: false
+    t.string   "abbreviation", null: false
+    t.integer  "region_code"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
 
   create_table "campuses", force: :cascade do |t|
     t.string   "name",                                 null: false
@@ -60,8 +71,9 @@ ActiveRecord::Schema.define(version: 20170210031749) do
     t.string   "team"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer  "code"
+    t.integer  "code",       null: false
     t.index ["campus_id"], name: "index_robots_on_campus_id"
+    t.index ["code"], name: "index_robots_on_code", unique: true
     t.index ["contest_id", "campus_id"], name: "index_robots_on_contest_id_and_campus_id"
     t.index ["contest_id"], name: "index_robots_on_contest_id"
   end

@@ -20,6 +20,7 @@ group :development do
   gem 'listen', '~> 3.0.5'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'rails-footnotes'
 end
 
 group :production, :staging do
@@ -33,3 +34,5 @@ gem 'honoka-rails'
 gem 'will_paginate'
 gem 'bootstrap-will_paginate'
 gem 'font-awesome-rails'
+
+gem 'rails-erd', group: [:development, :test]
