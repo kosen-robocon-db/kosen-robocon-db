@@ -22,3 +22,6 @@
 
 # My settings.
 .DS_Store
+
+# Ignore squasher
+squasher
