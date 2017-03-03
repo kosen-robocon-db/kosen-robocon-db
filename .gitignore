@@ -25,3 +25,6 @@
 
 # Ignore squasher
 squasher
+
+# Ignore CSV files for seed
+/db/*.csv
