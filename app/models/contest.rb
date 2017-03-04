@@ -1,5 +1,5 @@
 class Contest < ApplicationRecord
-  has_many :robots, dependent: :destroy
+  has_many :robots, foreign_key: :contest_nth, primary_key: :nth, dependent: :destroy
   has_one :contest_entry, foreign_key: :nth, primary_key: :nth
 
   #==validates

@@ -1,6 +1,6 @@
 class Region < ApplicationRecord
   has_many :campuses, foreign_key: :region_code, primary_key: :code, dependent: :destroy
-  #has_many :campus_histories
+  has_many :campus_histories, foreign_key: :region_code, primary_key: :code, dependent: :destroy
 
   #==validates
 
