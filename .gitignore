@@ -27,7 +27,11 @@
 squasher
 
 # Ignore CSV files for seed
+<<<<<<< HEAD
 /db/*.csv
+=======
+# /db/*.csv
+>>>>>>> refs/remotes/origin/master
 
 # Ignore PDF files
 *.pdf
