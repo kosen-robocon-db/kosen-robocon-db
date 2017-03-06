@@ -6,5 +6,6 @@ class CampusesController < ApplicationController
   def show
     @campus = Campus.find_by(code: params[:code])
     @robots = @campus.robots.includes(:contest).order_default.on_page(params[:page])
+    @campus_histories = CampusHistory.where(campus_code: params[:code])
   end
 end

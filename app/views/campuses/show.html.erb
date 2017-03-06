@@ -4,6 +4,16 @@
 
 <div class="row">
   <div class="col-lg-12">
+    <ul>
+      <% @campus_histories.each do |history| %>
+      <li>第 <%= history.begin %> 回～第 <%= history.end %> 回 <%= history.name %>（<%= history.abbreviation %>）として参加</li>
+      <% end %>
+    </ul>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
     <%= will_paginate @robots, inner_window: 2, outer_window: 0  %>
   </div>
 </div>
