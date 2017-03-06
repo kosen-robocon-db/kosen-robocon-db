@@ -27,7 +27,7 @@
 squasher
 
 # Ignore CSV files for seed
-/db/*.csv
+# /db/*.csv
 
 # Ignore PDF files
 *.pdf
