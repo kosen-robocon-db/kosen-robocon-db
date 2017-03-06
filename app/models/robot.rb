@@ -1,19 +1,19 @@
 class Robot < ApplicationRecord
-  belongs_to :contest
-  belongs_to :campus
+  belongs_to :contest, foreign_key: :contest_nth, primary_key: :nth
+  belongs_to :campus,  foreign_key: :campus_code, primary_key: :code
 
   #==validates
 
-  validates :contest_id, presence: true
-  validates :campus_id,  presence: true
-  validates :name, allow_blank: true, length:{ maximum:255 }
-  validates :kana, allow_blank: true, length:{ maximum:255 }
+  validates :code,        presence: true, uniqueness: true
+  validates :contest_nth, presence: true
+  validates :campus_code, presence: true
   validates :team, allow_blank: true, length:{ maximum:255 }, format: { :with => /(A|B)/i }
-  validates :code, presence: true
+  validates :name,                    length:{ maximum:255 }
+  validates :kana, allow_blank: true, length:{ maximum:255 }
 
   #== scopes
 
   scope :on_page, -> page { paginate(page: page, per_page: 50) }
-  scope :order_default, -> { order("contest_id desc, campus_id asc, team asc") }
+  scope :order_default, -> { order("contest_nth asc, campus_code asc, team asc") }
 
 end

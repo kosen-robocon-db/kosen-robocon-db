@@ -22,3 +22,12 @@
 
 # My settings.
 .DS_Store
+
+# Ignore squasher
+squasher
+
+# Ignore CSV files for seed
+/db/*.csv
+
+# Ignore PDF files
+*.pdf
