@@ -138,77 +138,92 @@ ContestEntry.create(nth: 29, school: 57, campus: 62, team: 124)
 
 CSV_FILE_PATH="db/robot_name_entries.csv"
 if FileTest.exist?(CSV_FILE_PATH) then
+  codes = {}
   CSV.foreach(CSV_FILE_PATH) do |row|
-    if row[5].blank? then
+    # '1'（1桁）＋大会コード （2桁）+ 地区コード（1桁） + キャンパスコード（4桁） + チーム（1桁）
+    campus = Campus.find_by(code: row[2])
+    if campus then # row[0]からrow[4]まで存在するかどうか確認すべきだが省略
+      code = "1" + ("%02d" % row[0]) + campus.region_code.to_s + campus.code.to_s
+      case row[5]
+      when "A" then
+        code += "1"
+        team = "A"
+      when "B" then
+        code += "2"
+        team = "B"
+      else
+        if codes.has_key?((code+"1").to_i) then
+          code += "2"
+        else
+          code += "1"
+          codes[code.to_i] = nil
+        end
+        team = ""
+      end
+      # puts code, Contest.find_by(nth: row[0]), campus, row[3], row[4], team
       Robot.create(
+        code: code.to_i,
         contest: Contest.find_by(nth: row[0]),
-        campus: Campus.find_by(abbreviation: row[1]),
-        name: row[3],
-        kana: row[4]
-      )
-    else
-      Robot.create(
-        contest: Contest.find_by(nth: row[0]),
-        campus: Campus.find_by(abbreviation: row[1]),
+        campus: campus,
         name: row[3],
         kana: row[4],
-        team: row[5]
+        team: team
       )
     end
   end
 else
-  Robot.create(contest: Contest.find_by(nth:  2), campus: Campus.find_by(abbreviation: "旭川"), name: "ビッグシューター", kana: "ビッグシューター")
-  Robot.create(contest: Contest.find_by(nth:  3), campus: Campus.find_by(abbreviation: "旭川"), name: "マジックカーペット", kana: "マジックカーペット")
-  Robot.create(contest: Contest.find_by(nth:  4), campus: Campus.find_by(abbreviation: "旭川"), name: "Fly Swatter", kana: "フライスワッター")
-  Robot.create(contest: Contest.find_by(nth:  4), campus: Campus.find_by(abbreviation: "旭川"), name: "セブンボンバー", kana: "セブンボンバー")
-  Robot.create(contest: Contest.find_by(nth:  5), campus: Campus.find_by(abbreviation: "旭川"), name: "春光台にそそり立つ", kana: "シュンコウダイニソソリタツ")
-  Robot.create(contest: Contest.find_by(nth:  5), campus: Campus.find_by(abbreviation: "旭川"), name: "ANCoT16", kana: "アンコットシックスティーン")
-  Robot.create(contest: Contest.find_by(nth:  6), campus: Campus.find_by(abbreviation: "旭川"), name: "かっとびチュー太", kana: "カットビチュータ")
-  Robot.create(contest: Contest.find_by(nth:  6), campus: Campus.find_by(abbreviation: "旭川"), name: "大雪山ジムカデ号", kana: "タイセツザンジムカデゴウ")
-  Robot.create(contest: Contest.find_by(nth:  7), campus: Campus.find_by(abbreviation: "旭川"), name: "アンモナイト", kana: "アンモナイト")
-  Robot.create(contest: Contest.find_by(nth:  7), campus: Campus.find_by(abbreviation: "旭川"), name: "大雪山ウスバキチョウ", kana: "オオユキヤマウスバキチョウ")
-  Robot.create(contest: Contest.find_by(nth:  8), campus: Campus.find_by(abbreviation: "旭川"), name: "ビューティフルシューター", kana: "ビューティフルシューター")
-  Robot.create(contest: Contest.find_by(nth:  8), campus: Campus.find_by(abbreviation: "旭川"), name: "コマクサ", kana: "コマクサ")
-  Robot.create(contest: Contest.find_by(nth:  9), campus: Campus.find_by(abbreviation: "旭川"), name: "らいとにんぐ", kana: "ライトニング")
-  Robot.create(contest: Contest.find_by(nth:  9), campus: Campus.find_by(abbreviation: "旭川"), name: "北乃麒麟", kana: "キタノキリン")
-  Robot.create(contest: Contest.find_by(nth: 10), campus: Campus.find_by(abbreviation: "旭川"), name: "SPEEDY WONDER", kana: "スピーディーワンダー")
-  Robot.create(contest: Contest.find_by(nth: 10), campus: Campus.find_by(abbreviation: "旭川"), name: "HAPPY1号", kana: "ハッピーイチゴウ")
-  Robot.create(contest: Contest.find_by(nth: 11), campus: Campus.find_by(abbreviation: "旭川"), name: "MACH-CHAN1号", kana: "マッハチャンイチゴウ")
-  Robot.create(contest: Contest.find_by(nth: 11), campus: Campus.find_by(abbreviation: "旭川"), name: "ジムカデJr.号", kana: "ジムカデジュニアゴウ")
-  Robot.create(contest: Contest.find_by(nth: 12), campus: Campus.find_by(abbreviation: "旭川"), name: "Blitz Schnell", kana: "ブリッツシュネル")
-  Robot.create(contest: Contest.find_by(nth: 12), campus: Campus.find_by(abbreviation: "旭川"), name: "Safety Slope", kana: "セイフティースロープ")
-  Robot.create(contest: Contest.find_by(nth: 13), campus: Campus.find_by(abbreviation: "旭川"), name: "大車輪", kana: "ダイシャリン")
-  Robot.create(contest: Contest.find_by(nth: 13), campus: Campus.find_by(abbreviation: "旭川"), name: "Be Shorten", kana: "ビーショーテン")
-  Robot.create(contest: Contest.find_by(nth: 14), campus: Campus.find_by(abbreviation: "旭川"), name: "BELL FLOWER", kana: "ベルフラワー")
-  Robot.create(contest: Contest.find_by(nth: 14), campus: Campus.find_by(abbreviation: "旭川"), name: "grasp", kana: "グラスプ")
-  Robot.create(contest: Contest.find_by(nth: 15), campus: Campus.find_by(abbreviation: "旭川"), name: "Master Plan", kana: "マスタープラン")
-  Robot.create(contest: Contest.find_by(nth: 15), campus: Campus.find_by(abbreviation: "旭川"), name: "the jail", kana: "ザジェイル")
-  Robot.create(contest: Contest.find_by(nth: 16), campus: Campus.find_by(abbreviation: "旭川"), name: "Untyred", kana: "アンタイヤド")
-  Robot.create(contest: Contest.find_by(nth: 16), campus: Campus.find_by(abbreviation: "旭川"), name: "Clock Ruler", kana: "クロックルーラー")
-  Robot.create(contest: Contest.find_by(nth: 17), campus: Campus.find_by(abbreviation: "旭川"), name: "Sleip", kana: "スレイプ")
-  Robot.create(contest: Contest.find_by(nth: 17), campus: Campus.find_by(abbreviation: "旭川"), name: "Cosmos", kana: "コスモス")
-  Robot.create(contest: Contest.find_by(nth: 18), campus: Campus.find_by(abbreviation: "旭川"), name: "パッション!!", kana: "パッション")
-  Robot.create(contest: Contest.find_by(nth: 18), campus: Campus.find_by(abbreviation: "旭川"), name: "concord", kana: "コンコード")
-  Robot.create(contest: Contest.find_by(nth: 19), campus: Campus.find_by(abbreviation: "旭川"), name: "セタ", kana: "セタ")
-  Robot.create(contest: Contest.find_by(nth: 19), campus: Campus.find_by(abbreviation: "旭川"), name: "初雪", kana: "ハツユキ")
-  Robot.create(contest: Contest.find_by(nth: 20), campus: Campus.find_by(abbreviation: "旭川"), name: "NOTEC", kana: "ノテック")
-  Robot.create(contest: Contest.find_by(nth: 20), campus: Campus.find_by(abbreviation: "旭川"), name: "ＧＬＡＤＩＯＬＵＳ", kana: "グラディオラス")
-  Robot.create(contest: Contest.find_by(nth: 21), campus: Campus.find_by(abbreviation: "旭川"), name: "KAMUI", kana: "カムイ")
-  Robot.create(contest: Contest.find_by(nth: 21), campus: Campus.find_by(abbreviation: "旭川"), name: "TRIVIOS", kana: "トリヴィオス")
-  Robot.create(contest: Contest.find_by(nth: 22), campus: Campus.find_by(abbreviation: "旭川"), name: "北の海から", kana: "キタノウミカラ")
-  Robot.create(contest: Contest.find_by(nth: 22), campus: Campus.find_by(abbreviation: "旭川"), name: "ＫＡＧＵＹＡ", kana: "カグヤ")
-  Robot.create(contest: Contest.find_by(nth: 23), campus: Campus.find_by(abbreviation: "旭川"), name: "7Walk", kana: "セブンウォーク")
-  Robot.create(contest: Contest.find_by(nth: 23), campus: Campus.find_by(abbreviation: "旭川"), name: "ｒｅｖｌｉｓ", kana: "レヴリス")
-  Robot.create(contest: Contest.find_by(nth: 24), campus: Campus.find_by(abbreviation: "旭川"), name: "ｓｉｄｅ　ＷＩＮｄｅｒ", kana: "サイドワインダー")
-  Robot.create(contest: Contest.find_by(nth: 24), campus: Campus.find_by(abbreviation: "旭川"), name: "ＸｉｇＸａｇ", kana: "ジグザグ")
-  Robot.create(contest: Contest.find_by(nth: 25), campus: Campus.find_by(abbreviation: "旭川"), name: "ぽちべろす", kana: "ポチベロス")
-  Robot.create(contest: Contest.find_by(nth: 25), campus: Campus.find_by(abbreviation: "旭川"), name: "旭", kana: "キュウビ")
-  Robot.create(contest: Contest.find_by(nth: 26), campus: Campus.find_by(abbreviation: "旭川"), name: "JANPY", kana: "ジャンピー")
-  Robot.create(contest: Contest.find_by(nth: 26), campus: Campus.find_by(abbreviation: "旭川"), name: "カメニカルズ", kana: "カメニカルズ")
-  Robot.create(contest: Contest.find_by(nth: 27), campus: Campus.find_by(abbreviation: "旭川"), name: "ベルーガ", kana: "ベルーガ")
-  Robot.create(contest: Contest.find_by(nth: 27), campus: Campus.find_by(abbreviation: "旭川"), name: "蒸龍", kana: "セイロン")
-  Robot.create(contest: Contest.find_by(nth: 28), campus: Campus.find_by(abbreviation: "旭川"), name: "Orthrows", kana: "オルトロス")
-  Robot.create(contest: Contest.find_by(nth: 28), campus: Campus.find_by(abbreviation: "旭川"), name: "―Umbrella―", kana: "アンブレラ")
-  Robot.create(contest: Contest.find_by(nth: 29), campus: Campus.find_by(abbreviation: "旭川"), name: "HYDRA", kana: "ヒュドラ", team: "A")
-  Robot.create(contest: Contest.find_by(nth: 29), campus: Campus.find_by(abbreviation: "旭川"), name: "sucfaro、sucforte", kana: "サクファロ　サクフォート", team: "B")
+  Robot.create(code: 102110100, contest: Contest.find_by(nth:  2), campus: Campus.find_by(abbreviation: "旭川"), name: "ビッグシューター", kana: "ビッグシューター")
+  Robot.create(code: 103110100, contest: Contest.find_by(nth:  3), campus: Campus.find_by(abbreviation: "旭川"), name: "マジックカーペット", kana: "マジックカーペット")
+  Robot.create(code: 104110101, contest: Contest.find_by(nth:  4), campus: Campus.find_by(abbreviation: "旭川"), name: "Fly Swatter", kana: "フライスワッター")
+  Robot.create(code: 104110102, contest: Contest.find_by(nth:  4), campus: Campus.find_by(abbreviation: "旭川"), name: "セブンボンバー", kana: "セブンボンバー")
+  Robot.create(code: 105110101, contest: Contest.find_by(nth:  5), campus: Campus.find_by(abbreviation: "旭川"), name: "春光台にそそり立つ", kana: "シュンコウダイニソソリタツ")
+  Robot.create(code: 105110102, contest: Contest.find_by(nth:  5), campus: Campus.find_by(abbreviation: "旭川"), name: "ANCoT16", kana: "アンコットシックスティーン")
+  Robot.create(code: 106110101, contest: Contest.find_by(nth:  6), campus: Campus.find_by(abbreviation: "旭川"), name: "かっとびチュー太", kana: "カットビチュータ", team: "B")
+  Robot.create(code: 106110102, contest: Contest.find_by(nth:  6), campus: Campus.find_by(abbreviation: "旭川"), name: "大雪山ジムカデ号", kana: "タイセツザンジムカデゴウ", team: "A")
+  Robot.create(code: 107110101, contest: Contest.find_by(nth:  7), campus: Campus.find_by(abbreviation: "旭川"), name: "アンモナイト", kana: "アンモナイト")
+  Robot.create(code: 107110102, contest: Contest.find_by(nth:  7), campus: Campus.find_by(abbreviation: "旭川"), name: "大雪山ウスバキチョウ", kana: "オオユキヤマウスバキチョウ")
+  Robot.create(code: 108110101, contest: Contest.find_by(nth:  8), campus: Campus.find_by(abbreviation: "旭川"), name: "ビューティフルシューター", kana: "ビューティフルシューター")
+  Robot.create(code: 108110102, contest: Contest.find_by(nth:  8), campus: Campus.find_by(abbreviation: "旭川"), name: "コマクサ", kana: "コマクサ")
+  Robot.create(code: 109110101, contest: Contest.find_by(nth:  9), campus: Campus.find_by(abbreviation: "旭川"), name: "らいとにんぐ", kana: "ライトニング")
+  Robot.create(code: 109110102, contest: Contest.find_by(nth:  9), campus: Campus.find_by(abbreviation: "旭川"), name: "北乃麒麟", kana: "キタノキリン")
+  Robot.create(code: 110110101, contest: Contest.find_by(nth: 10), campus: Campus.find_by(abbreviation: "旭川"), name: "SPEEDY WONDER", kana: "スピーディーワンダー")
+  Robot.create(code: 110110102, contest: Contest.find_by(nth: 10), campus: Campus.find_by(abbreviation: "旭川"), name: "HAPPY1号", kana: "ハッピーイチゴウ")
+  Robot.create(code: 111110101, contest: Contest.find_by(nth: 11), campus: Campus.find_by(abbreviation: "旭川"), name: "MACH-CHAN1号", kana: "マッハチャンイチゴウ")
+  Robot.create(code: 111110102, contest: Contest.find_by(nth: 11), campus: Campus.find_by(abbreviation: "旭川"), name: "ジムカデJr.号", kana: "ジムカデジュニアゴウ")
+  Robot.create(code: 112110101, contest: Contest.find_by(nth: 12), campus: Campus.find_by(abbreviation: "旭川"), name: "Blitz Schnell", kana: "ブリッツシュネル")
+  Robot.create(code: 112110102, contest: Contest.find_by(nth: 12), campus: Campus.find_by(abbreviation: "旭川"), name: "Safety Slope", kana: "セイフティースロープ")
+  Robot.create(code: 113110101, contest: Contest.find_by(nth: 13), campus: Campus.find_by(abbreviation: "旭川"), name: "大車輪", kana: "ダイシャリン")
+  Robot.create(code: 113110102, contest: Contest.find_by(nth: 13), campus: Campus.find_by(abbreviation: "旭川"), name: "Be Shorten", kana: "ビーショーテン")
+  Robot.create(code: 114110101, contest: Contest.find_by(nth: 14), campus: Campus.find_by(abbreviation: "旭川"), name: "BELL FLOWER", kana: "ベルフラワー")
+  Robot.create(code: 114110102, contest: Contest.find_by(nth: 14), campus: Campus.find_by(abbreviation: "旭川"), name: "grasp", kana: "グラスプ")
+  Robot.create(code: 115110101, contest: Contest.find_by(nth: 15), campus: Campus.find_by(abbreviation: "旭川"), name: "Master Plan", kana: "マスタープラン")
+  Robot.create(code: 115110102, contest: Contest.find_by(nth: 15), campus: Campus.find_by(abbreviation: "旭川"), name: "the jail", kana: "ザジェイル")
+  Robot.create(code: 116110101, contest: Contest.find_by(nth: 16), campus: Campus.find_by(abbreviation: "旭川"), name: "Untyred", kana: "アンタイヤド", team: "A")
+  Robot.create(code: 116110102, contest: Contest.find_by(nth: 16), campus: Campus.find_by(abbreviation: "旭川"), name: "Clock Ruler", kana: "クロックルーラー", team: "B")
+  Robot.create(code: 117110101, contest: Contest.find_by(nth: 17), campus: Campus.find_by(abbreviation: "旭川"), name: "Sleip", kana: "スレイプ")
+  Robot.create(code: 117110102, contest: Contest.find_by(nth: 17), campus: Campus.find_by(abbreviation: "旭川"), name: "Cosmos", kana: "コスモス")
+  Robot.create(code: 118110101, contest: Contest.find_by(nth: 18), campus: Campus.find_by(abbreviation: "旭川"), name: "パッション!!", kana: "パッション")
+  Robot.create(code: 118110102, contest: Contest.find_by(nth: 18), campus: Campus.find_by(abbreviation: "旭川"), name: "concord", kana: "コンコード")
+  Robot.create(code: 119110101, contest: Contest.find_by(nth: 19), campus: Campus.find_by(abbreviation: "旭川"), name: "セタ", kana: "セタ")
+  Robot.create(code: 119110102, contest: Contest.find_by(nth: 19), campus: Campus.find_by(abbreviation: "旭川"), name: "初雪", kana: "ハツユキ")
+  Robot.create(code: 120110101, contest: Contest.find_by(nth: 20), campus: Campus.find_by(abbreviation: "旭川"), name: "NOTEC", kana: "ノテック")
+  Robot.create(code: 120110102, contest: Contest.find_by(nth: 20), campus: Campus.find_by(abbreviation: "旭川"), name: "ＧＬＡＤＩＯＬＵＳ", kana: "グラディオラス")
+  Robot.create(code: 121110101, contest: Contest.find_by(nth: 21), campus: Campus.find_by(abbreviation: "旭川"), name: "KAMUI", kana: "カムイ")
+  Robot.create(code: 121110102, contest: Contest.find_by(nth: 21), campus: Campus.find_by(abbreviation: "旭川"), name: "TRIVIOS", kana: "トリヴィオス")
+  Robot.create(code: 122110101, contest: Contest.find_by(nth: 22), campus: Campus.find_by(abbreviation: "旭川"), name: "北の海から", kana: "キタノウミカラ")
+  Robot.create(code: 122110102, contest: Contest.find_by(nth: 22), campus: Campus.find_by(abbreviation: "旭川"), name: "ＫＡＧＵＹＡ", kana: "カグヤ")
+  Robot.create(code: 123110101, contest: Contest.find_by(nth: 23), campus: Campus.find_by(abbreviation: "旭川"), name: "7Walk", kana: "セブンウォーク")
+  Robot.create(code: 123110102, contest: Contest.find_by(nth: 23), campus: Campus.find_by(abbreviation: "旭川"), name: "ｒｅｖｌｉｓ", kana: "レヴリス")
+  Robot.create(code: 124110101, contest: Contest.find_by(nth: 24), campus: Campus.find_by(abbreviation: "旭川"), name: "ｓｉｄｅ　ＷＩＮｄｅｒ", kana: "サイドワインダー")
+  Robot.create(code: 124110102, contest: Contest.find_by(nth: 24), campus: Campus.find_by(abbreviation: "旭川"), name: "ＸｉｇＸａｇ", kana: "ジグザグ")
+  Robot.create(code: 125110101, contest: Contest.find_by(nth: 25), campus: Campus.find_by(abbreviation: "旭川"), name: "ぽちべろす", kana: "ポチベロス")
+  Robot.create(code: 125110102, contest: Contest.find_by(nth: 25), campus: Campus.find_by(abbreviation: "旭川"), name: "旭", kana: "キュウビ")
+  Robot.create(code: 126110101, contest: Contest.find_by(nth: 26), campus: Campus.find_by(abbreviation: "旭川"), name: "JANPY", kana: "ジャンピー")
+  Robot.create(code: 126110102, contest: Contest.find_by(nth: 26), campus: Campus.find_by(abbreviation: "旭川"), name: "カメニカルズ", kana: "カメニカルズ")
+  Robot.create(code: 127110101, contest: Contest.find_by(nth: 27), campus: Campus.find_by(abbreviation: "旭川"), name: "ベルーガ", kana: "ベルーガ")
+  Robot.create(code: 127110102, contest: Contest.find_by(nth: 27), campus: Campus.find_by(abbreviation: "旭川"), name: "蒸龍", kana: "セイロン")
+  Robot.create(code: 128110101, contest: Contest.find_by(nth: 28), campus: Campus.find_by(abbreviation: "旭川"), name: "Orthrows", kana: "オルトロス")
+  Robot.create(code: 128110102, contest: Contest.find_by(nth: 28), campus: Campus.find_by(abbreviation: "旭川"), name: "―Umbrella―", kana: "アンブレラ")
+  Robot.create(code: 129110101, contest: Contest.find_by(nth: 29), campus: Campus.find_by(abbreviation: "旭川"), name: "HYDRA", kana: "ヒュドラ", team: "A")
+  Robot.create(code: 129110102, contest: Contest.find_by(nth: 29), campus: Campus.find_by(abbreviation: "旭川"), name: "sucfaro、sucforte", kana: "サクファロ　サクフォート", team: "B")
 end
