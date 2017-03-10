@@ -1,8 +1,9 @@
 require "csv"
-CSV_FILE_PATH="db/robot_name_entries.csv"
-if FileTest.exist?(CSV_FILE_PATH) then
+ROBOT_CSV_FILE_PATH="db/robot_name_entries.csv"
+if FileTest.exist?(ROBOT_CSV_FILE_PATH) then
   codes = {}
-  CSV.foreach(CSV_FILE_PATH) do |row|
+  csv = CSV.read(ROBOT_CSV_FILE_PATH, headers: false)
+  csv.each do |row|
     # '1'（1桁）＋大会コード （2桁）+ 地区コード（1桁） + キャンパスコード（4桁） + チーム（1桁）
     campus = Campus.find_by(code: row[2])
     if campus then # row[0]からrow[4]まで存在するかどうか確認すべきだが省略
