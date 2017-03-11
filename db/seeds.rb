@@ -1,3 +1,11 @@
+# seedの前にDBの内容を空にする(順不同のはずだが念のためloadの逆順で与える)
+Robot.delete_all
+CampusHistory.delete_all
+ContestEntry.delete_all
+Contest.delete_all
+Campus.delete_all
+Region.delete_all
+
 # ファイル名の先頭で読み込み順を与える場合には
 # db/seedsディレクトリ中のファイルをグロービングさせるコードを利用。
 # ファイル例：01_region.rb, 02_campus.rb, 03_contest.rb, ...
