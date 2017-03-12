@@ -4,11 +4,14 @@
 
 <div class="row">
   <div class="col-lg-12">
-    <ul>
-      <% @campus_histories.each do |history| %>
-      <li>第 <%= history.begin %> 回～第 <%= history.end %> 回 <%= history.name %>（<%= history.abbreviation %>）として参加</li>
-      <% end %>
-    </ul>
+    <% unless @campus_histories.blank? %>
+      <h3>変遷</h3>
+      <ul>
+        <% @campus_histories.each do |history| %>
+        <li>第 <%= history.begin %> 回（<%= Contest.find_by(nth: history.begin).year %>）～第 <%= history.end %> 回（<%= Contest.find_by(nth: history.end).year %>） <%= history.name %>（<%= history.abbreviation %>）として<%= history.region.name %>地区に参加</li>
+        <% end %>
+      </ul>
+    <% end %>
   </div>
 </div>
 
