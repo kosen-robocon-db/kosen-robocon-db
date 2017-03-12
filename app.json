@@ -1,41 +1,13 @@
 {
   "name": "kosen-robocon-db-pr",
   "scripts": {
+    "postdeploy": "rails db:migrate db:seed"
   },
   "env": {
-    "DEPLOY_TASKS": {
-      "required": true
-    },
-    "LANG": {
-      "required": true
-    },
-    "RACK_ENV": {
-      "required": true
-    },
-    "RAILS_ENV": {
-      "required": true
-    },
-    "RAILS_LOG_TO_STDOUT": {
-      "required": true
-    },
-    "RAILS_SERVE_STATIC_FILES": {
-      "required": true
-    },
-    "SECRET_KEY_BASE": {
-      "required": true
-    }
   },
   "formation": {
   },
   "addons": [
     "heroku-postgresql"
-  ],
-  "buildpacks": [
-    {
-      "url": "https://github.com/heroku/heroku-buildpack-ruby"
-    },
-    {
-      "url": "https://github.com/gunpowderlabs/buildpack-ruby-rake-deploy-tasks"
-    }
   ]
 }
