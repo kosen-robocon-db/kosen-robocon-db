@@ -1,4 +1,5 @@
 # seedの前にDBの内容を空にする(順不同のはずだが念のためloadの逆順で与える)
+Game.delete_all
 Robot.delete_all
 CampusHistory.delete_all
 ContestEntry.delete_all
