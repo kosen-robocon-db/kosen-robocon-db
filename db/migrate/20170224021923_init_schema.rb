@@ -3,14 +3,14 @@ class InitSchema < ActiveRecord::Migration
 
     create_table "campus_histories", force: :cascade do |t|
       t.integer  "campus_code",  null: false
-      t.integer  "region_code"
+      t.integer  "region_code",  null: false
       t.integer  "begin",        null: false
       t.integer  "end",          null: false
       t.string   "name",         null: false
       t.string   "abbreviation", null: false
       t.datetime "created_at",   null: false
       t.datetime "updated_at",   null: false
-      t.index ["campus_code"], name: "index_campus_histories_on_campus_code", unique: true
+      t.index ["campus_code"], name: "index_campus_histories_on_campus_code"
     end
 
     create_table "campuses", force: :cascade do |t|
