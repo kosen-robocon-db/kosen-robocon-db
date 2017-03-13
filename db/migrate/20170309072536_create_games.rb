@@ -6,9 +6,9 @@ class CreateGames < ActiveRecord::Migration[5.0]
       t.integer :region_code, null: false
       t.integer :round, null: false
       t.integer :game, null: false
-      t.integer :team_left, null: false
-      t.integer :team_right, null: false
-      t.integer :winner_team, null: false
+      t.integer :left_robot_code, null: false
+      t.integer :right_robot_code, null: false
+      t.integer :winner_robot_code, null: false
       t.timestamps
       t.index ["code"], name: "index_Games_on_code", unique: true
       t.index ["contest_nth"], name: "index_Games_on_contest_nth"
