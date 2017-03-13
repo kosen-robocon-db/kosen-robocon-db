@@ -37,7 +37,6 @@
           <%
             left_robot = Robot.joins(:campus).find_by(code: game.left_robot_code)
             right_robot = Robot.joins(:campus).find_by(code: game.right_robot_code)
-            #winner_robot = Robot.joins(:campus).find_by(code: game.winner_robot)
             opponent = @robot.code != left_robot.code ? left_robot : right_robot
           %>
           <tr>
