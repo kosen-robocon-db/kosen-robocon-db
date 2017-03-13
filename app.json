@@ -1,0 +1,13 @@
+{
+  "name": "kosen-robocon-db-pr",
+  "scripts": {
+    "postdeploy": "rails db:migrate db:seed"
+  },
+  "env": {
+  },
+  "formation": {
+  },
+  "addons": [
+    "heroku-postgresql"
+  ]
+}

@@ -4,7 +4,7 @@ class CampusHistory < ApplicationRecord
 
   #==validates
 
-  validates :campus_code,  presence: true, uniqueness: true
+  validates :campus_code,  presence: true
   validates :begin,        presence: true
   validates :end,          presence: true
   validates :name,         presence: true, length:{ maximum:255 }
