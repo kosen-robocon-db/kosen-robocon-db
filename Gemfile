@@ -35,4 +35,7 @@ gem 'will_paginate'
 gem 'bootstrap-will_paginate'
 gem 'font-awesome-rails'
 
+# Bulk Insert
+gem 'activerecord-import'
+
 gem 'rails-erd', group: [:development, :test]
