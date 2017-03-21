@@ -21,7 +21,7 @@
       <h3>優勝／受賞歴</h3>
       <ul>
         <% @prizes.each do |prize| %>
-        <li>第 <%= prize.nth %> 回 <%= prize.contest.name %> <%= prize.prize_type.name %></li>
+        <li>第 <%= prize.contest.nth %> 回 <%= prize.contest.name %> <%= prize.prize_type.name %></li>
         <% end %>
       </ul>
     <% end %>

@@ -74,12 +74,12 @@ ActiveRecord::Schema.define(version: 20170314020903) do
   end
 
   create_table "prize_types", force: :cascade do |t|
-    t.integer  "type",       null: false
+    t.integer  "kind",       null: false
     t.string   "name",       null: false
     t.string   "memo"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["type"], name: "index_prize_types_on_type", unique: true
+    t.index ["kind"], name: "index_prize_types_on_kind", unique: true
   end
 
   create_table "prizes", force: :cascade do |t|
@@ -87,7 +87,7 @@ ActiveRecord::Schema.define(version: 20170314020903) do
     t.integer  "region_code", null: false
     t.integer  "campus_code", null: false
     t.integer  "robot_code",  null: false
-    t.integer  "prize_type",  null: false
+    t.integer  "prize_kind",  null: false
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end

@@ -7,6 +7,6 @@ class CampusesController < ApplicationController
     @campus = Campus.find_by(code: params[:code])
     @robots = @campus.robots.includes(:contest).order_default.on_page(params[:page])
     @campus_histories = CampusHistory.where(campus_code: params[:code])
-    @prizes = Prize.joins(:prize_type).joins(:contest).where(campus_code: params[:code])
+    @prizes = Prize.includes(:contest).where(campus_code: params[:code]).inclues(:prize_type)
   end
 end
