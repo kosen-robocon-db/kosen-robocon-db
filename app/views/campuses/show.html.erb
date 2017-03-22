@@ -17,11 +17,11 @@
 
 <div class="row">
   <div class="col-lg-12">
-    <% unless @prizes.blank? %>
+    <% unless @prize_histories.blank? %>
       <h3>優勝／受賞歴</h3>
       <ul>
-        <% @prizes.each do |prize| %>
-        <li>第 <%= prize.contest.nth %> 回 <%= prize.contest.name %> <%= prize.prize_type.name %></li>
+        <% @prize_histories.each do |history| %>
+        <li>第 <%= history.contest.nth %> 回 <%= history.contest.name %> <%= history.prize.name %></li>
         <% end %>
       </ul>
     <% end %>
