@@ -30,6 +30,7 @@ Prize.create(kind: 49, name: "出前迅速賞")
 Prize.create(kind: 51, name: "特別賞")
 Prize.create(kind: 52, name: "省エネルギーセンター賞")
 Prize.create(kind: 53, name: "電気事業連合会賞")
+Prize.create(kind: 54, name: "NECグループ賞") # 地区大会
 
 Prize.create(kind: 61, name: "特別賞（本田技研工業株式会社）")
 Prize.create(kind: 62, name: "特別賞（電気事業連合会）")
