@@ -51,3 +51,16 @@
     </table>
   </div>
 </div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <% unless @prize_histories.blank? %>
+      <h4>優勝／受賞歴</h4>
+      <ul>
+        <% @prize_histories.each do |history| %>
+        <li>第 <%= history.contest.nth %> 回 <%= history.contest.name %> <%= history.prize.name %></li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+</div>
