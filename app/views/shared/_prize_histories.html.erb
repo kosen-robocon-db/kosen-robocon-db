@@ -4,8 +4,8 @@
       <h4>優勝／受賞歴</h4>
       <ul>
         <% @prize_histories.each do |history| %>
-        <%    region = history.region.code == 0 ? "全国大会" : "地区大会" %>
-        <li>第 <%= history.contest.nth %> 回 <%= history.contest.name %> <%= region %> <%= history.prize.name %></li>
+        <%    region = history.region.code == 0 ? history.region.name : history.region.name + "地区" %>
+        <li>第 <%= history.contest.nth %> 回 <%= history.contest.name %> <%= region %>大会 <%= history.prize.name %></li>
         <% end %>
       </ul>
     <% end %>
