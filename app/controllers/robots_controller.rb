@@ -5,7 +5,7 @@ class RobotsController < ApplicationController
     @prize_histories = PrizeHistory.includes(:robot).where(robot_code: params[:code]).includes(:prize)
     if !@robot.robot_condition.blank? then
       @condition = @robot.robot_condition.fully_operational ? "動態保存" : "静態保存"
-      @condition += " " + @robot.robot_condition.memo
+      @condition += @robot.robot_condition.memo.blank? ? "" : " " + @robot.robot_condition.memo
     else
       @condition = ""
     end
