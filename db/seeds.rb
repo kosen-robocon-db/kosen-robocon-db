@@ -1,4 +1,5 @@
 # seedの前にDBの内容を空にする(順不同のはずだが念のためloadの逆順で与える)
+RobotCondition.delete_all
 PrizeHistory.delete_all
 Prize.delete_all
 Game.delete_all
@@ -26,3 +27,4 @@ load(File.join(Rails.root, 'db', 'seeds', 'robot.rb'))
 load(File.join(Rails.root, 'db', 'seeds', 'game.rb'))
 load(File.join(Rails.root, 'db', 'seeds', 'prize.rb'))
 load(File.join(Rails.root, 'db', 'seeds', 'prize_history.rb'))
+load(File.join(Rails.root, 'db', 'seeds', 'robot_condition.rb'))

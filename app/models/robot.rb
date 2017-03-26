@@ -1,6 +1,7 @@
 class Robot < ApplicationRecord
-  belongs_to :contest, foreign_key: :contest_nth, primary_key: :nth
-  belongs_to :campus,  foreign_key: :campus_code, primary_key: :code
+  belongs_to :contest,         foreign_key: :contest_nth, primary_key: :nth
+  belongs_to :campus,          foreign_key: :campus_code, primary_key: :code
+  has_one    :robot_condition, foreign_key: :robot_code,  primary_key: :code
 
   #==validates
 

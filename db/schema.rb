@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170314020903) do
+ActiveRecord::Schema.define(version: 20170323080622) do
 
   create_table "campus_histories", force: :cascade do |t|
     t.integer  "campus_code",  null: false
@@ -98,6 +98,16 @@ ActiveRecord::Schema.define(version: 20170314020903) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["code"], name: "index_regions_on_code", unique: true
+  end
+
+  create_table "robot_conditions", force: :cascade do |t|
+    t.integer  "robot_code",                        null: false
+    t.boolean  "fully_operational", default: false, null: false
+    t.boolean  "restoration",       default: false, null: false
+    t.string   "memo"
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.index ["robot_code"], name: "index_robot_conditions_on_robot_code", unique: true
   end
 
   create_table "robots", force: :cascade do |t|

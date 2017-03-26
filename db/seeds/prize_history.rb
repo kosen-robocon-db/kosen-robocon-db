@@ -1,8 +1,14 @@
 # テストデータ（全国大会のみ）
 # ロボットコードに含まれるA/Bチームの情報が書き換えられたらこの情報も書き換える必要がある
+# 将来的に対戦成績が入力されると児童ｔ系に優勝、準優勝、ベスト４が登録されるべきである。
 
 # 旭川
 # Campus.create(region_code: 1, code: 1010, name: "旭川工業高等専門学校", abbreviation: "旭川", latitude: 43.812361, longitude: 142.353665)
+PrizeHistory.create(contest_nth:  4, region_code: 1, campus_code: 1010, robot_code: 104110102, prize_kind:  3) # 北海道地区ベスト4
+PrizeHistory.create(contest_nth:  4, region_code: 1, campus_code: 1010, robot_code: 104110101, prize_kind:  3) # 北海道地区ベスト4
+PrizeHistory.create(contest_nth:  5, region_code: 1, campus_code: 1010, robot_code: 105110102, prize_kind:  3) # 北海道地区ベスト4
+PrizeHistory.create(contest_nth:  6, region_code: 1, campus_code: 1010, robot_code: 106110101, prize_kind:  2) # 北海道地区準優勝
+PrizeHistory.create(contest_nth:  6, region_code: 1, campus_code: 1010, robot_code: 106110102, prize_kind:  1) # 北海道地区優勝
 PrizeHistory.create(contest_nth:  6, region_code: 0, campus_code: 1010, robot_code: 106110102, prize_kind:  1) # 優勝
 PrizeHistory.create(contest_nth: 11, region_code: 0, campus_code: 1010, robot_code: 111110101, prize_kind:  3) # ベスト4
 PrizeHistory.create(contest_nth: 11, region_code: 0, campus_code: 1010, robot_code: 111110101, prize_kind: 14) # 大賞
