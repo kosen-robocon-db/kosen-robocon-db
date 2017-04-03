@@ -38,4 +38,8 @@ gem 'font-awesome-rails'
 # Bulk Insert
 gem 'activerecord-import'
 
+# ユーザ管理
+gem 'devise'
+gem 'omniauth-twitter'
+
 gem 'rails-erd', group: [:development, :test]

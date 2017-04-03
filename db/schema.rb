@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170323080622) do
+ActiveRecord::Schema.define(version: 20170402003007) do
 
   create_table "campus_histories", force: :cascade do |t|
     t.integer  "campus_code",  null: false
@@ -123,6 +123,26 @@ ActiveRecord::Schema.define(version: 20170323080622) do
     t.index ["code"], name: "index_robots_on_code", unique: true
     t.index ["contest_nth", "campus_code"], name: "index_robots_on_contest_nth_and_campus_code"
     t.index ["contest_nth"], name: "index_robots_on_contest_nth"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string   "provider"
+    t.string   "uid"
+    t.string   "nickname",                            null: false
+    t.string   "name",                                null: false
+    t.string   "image"
+    t.string   "description"
+    t.boolean  "approved",            default: false, null: false
+    t.datetime "remember_created_at"
+    t.string   "remember_token"
+    t.integer  "sign_in_count",       default: 0,     null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.index ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true
   end
 
 end
