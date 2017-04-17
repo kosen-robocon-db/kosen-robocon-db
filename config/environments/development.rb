@@ -51,4 +51,9 @@ Rails.application.configure do
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+
+  Devise.setup do |config|
+    config.omniauth :twitter, 'k4FcdCGDOX3feXXm7F7QbESnc', 'TArUyPOanxfprD5tiC0TdZ0y5mQ2HdFrYuSvztyrkT45JMvkzm', :display => 'popup'
+  end
+  
 end
