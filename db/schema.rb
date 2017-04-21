@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170323080622) do
+ActiveRecord::Schema.define(version: 20170328091957) do
 
   create_table "campus_histories", force: :cascade do |t|
     t.integer  "campus_code",  null: false
@@ -55,6 +55,14 @@ ActiveRecord::Schema.define(version: 20170323080622) do
     t.datetime "updated_at", null: false
     t.index ["nth"], name: "index_contests_on_nth", unique: true
     t.index ["year"], name: "index_contests_on_year"
+  end
+
+  create_table "game_details", force: :cascade do |t|
+    t.integer  "game_code",  null: false
+    t.text     "properties"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_code"], name: "index_game_details_on_game_code", unique: true
   end
 
   create_table "games", force: :cascade do |t|
