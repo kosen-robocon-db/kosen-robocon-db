@@ -1,9 +1,10 @@
 class Game < ApplicationRecord
-  belongs_to :contest, foreign_key: :contest_nth,       primary_key: :nth
-  belongs_to :region,  foreign_key: :region_code,       primary_key: :code
-  belongs_to :robot,   foreign_key: :left_robot_code,   primary_key: :code
-  belongs_to :robot,   foreign_key: :right_robot_code,  primary_key: :code
-  belongs_to :robot,   foreign_key: :winner_robot_code, primary_key: :code
+  belongs_to :contest,     foreign_key: :contest_nth,       primary_key: :nth
+  belongs_to :region,      foreign_key: :region_code,       primary_key: :code
+  belongs_to :robot,       foreign_key: :left_robot_code,   primary_key: :code
+  belongs_to :robot,       foreign_key: :right_robot_code,  primary_key: :code
+  belongs_to :robot,       foreign_key: :winner_robot_code, primary_key: :code
+  has_one    :game_detail, foreign_key: :game_code,         primary_key: :code, dependent: :destroy
 
   validates :code,              presence: true, uniqueness: true
   validates :contest_nth,       presence: true

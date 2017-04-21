@@ -8,23 +8,15 @@
 # Game.create(code: 1291301, contest_nth: 29, region_code: 1, round: 3, game: 1, left_robot_code: 129110201, right_robot_code: 129110101, winner_robot_code: 129110101)
 
 GameDetail.create(game_code: 1291101, properties: {
-  "スコア":"0-0",
   "score":"0-0",
-  "審査員判定":"3-0",
   "judges decision":"3-0",
-  "勝者達成課題":"灯台",
   "winner progress":"灯台",
-  "敗者達成課題":"なし",
   "loser progress":"なし"
 })
 GameDetail.create(game_code: 1291102, properties: {
-  "スコア":"0-0",
   "score":"0-0",
-  "審査員判定":"2-1",
   "judges decision":"2-1",
-  "勝者達成課題":"灯台",
   "winner progress":"灯台",
-  "敗者達成課題":"灯台",
   "loser progress":"灯台",
-  "memo":"釧路は灯台完成が早かった。"
+  "memo":"釧路は旭川より灯台完成が早かった。"
 })
