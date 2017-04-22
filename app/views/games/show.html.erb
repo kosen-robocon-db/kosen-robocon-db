@@ -1,15 +1,5 @@
-<% provide(:title, @game.round.to_s+"回戦 第"+@game.game.to_s+"試合") %>
+<% provide(:title, @title_for_tab) %>
 
-<%= render "shared/title", title: (yield :title) %>
+<%= render "shared/title", title: @title %>
 
-<div class="row">
-  <div class="col-lg-12">
-    <%
-      score = @game.game_detail.properties["score"]
-    %>
-    <tr>
-      <td>スコア</td>
-      <td><%= score %></td>
-    </tr>
-  </div>
-</div>
+<%= render "games/details_for_" + @game.contest.nth.ordinalize %>
