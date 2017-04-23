@@ -10,11 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 20170328091957) do
-=======
 ActiveRecord::Schema.define(version: 20170402003007) do
->>>>>>> refs/remotes/origin/master
 
   create_table "campus_histories", force: :cascade do |t|
     t.integer  "campus_code",  null: false
@@ -62,11 +58,12 @@ ActiveRecord::Schema.define(version: 20170402003007) do
   end
 
   create_table "game_details", force: :cascade do |t|
-    t.integer  "game_code",  null: false
+    t.integer  "game_code",              null: false
+    t.integer  "number",     default: 1, null: false
     t.text     "properties"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["game_code"], name: "index_game_details_on_game_code", unique: true
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.index ["game_code", "number"], name: "index_game_details_on_game_code_and_number"
   end
 
   create_table "games", force: :cascade do |t|
