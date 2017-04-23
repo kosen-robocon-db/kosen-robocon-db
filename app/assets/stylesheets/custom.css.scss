@@ -24,6 +24,13 @@ h3 {
   border-bottom: 1px solid $default_line_color;
 }
 
+.big-icon {
+  i {
+    font-size : 1.5em;
+    margin-left:0.5em;
+  }
+}
+
 /* アンカーリンクずれ防止 */
 
 #sort-anchor {

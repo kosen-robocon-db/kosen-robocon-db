@@ -85,8 +85,7 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   Devise.setup do |config|
-    config.omniauth :twitter, 'byyWb71tt3FLrj2uoBStlCoIa', 'aSFumRp8V5JMWl1c1tDyK1T1BYOasME5qN0vKiqoSixDD5sVa7', :display => 'popup'
+    config.omniauth :twitter, 'awoD7k5nmGywyAJjg6Qrrs4Xa', 'psrqbse1xVNeHNIaMJgFU2itaVjnr9AaoKpPRNpTWGYb5YQeLX', :display => 'popup'
   end
-
 
 end
