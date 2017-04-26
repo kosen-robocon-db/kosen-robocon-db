@@ -9,12 +9,26 @@ class Robot < ApplicationRecord
   validates :contest_nth, presence: true
   validates :campus_code, presence: true
   validates :team, allow_blank: true, length:{ maximum:255 }, format: { :with => /(A|B)/i }
-  validates :name,                    length:{ maximum:255 }
+  validates :name,                    length:{ maximum:255 }, presence: true
   validates :kana, allow_blank: true, length:{ maximum:255 }
 
   #== scopes
 
   scope :on_page, -> page { paginate(page: page, per_page: 50) }
   scope :order_default, -> { order("contest_nth asc, campus_code asc, team asc") }
+
+  #== validate
+  validate :name_error
+
+  def name_error
+    if name.blank?
+      errors.add(:name, "ロボット名が空か入力されていません。")
+    end
+  end
+
+
+  def self.team_choices
+    [["分からないまたはAB区別なし",""],["Ａチーム","A"],["Ｂチーム","B"]]
+  end
 
 end
