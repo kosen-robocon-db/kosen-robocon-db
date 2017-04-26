@@ -17,16 +17,6 @@ class Robot < ApplicationRecord
   scope :on_page, -> page { paginate(page: page, per_page: 50) }
   scope :order_default, -> { order("contest_nth asc, campus_code asc, team asc") }
 
-  #== validate
-  validate :name_error
-
-  def name_error
-    if name.blank?
-      errors.add(:name, "ロボット名が空か入力されていません。")
-    end
-  end
-
-
   def self.team_choices
     [["分からないまたはAB区別なし",""],["Ａチーム","A"],["Ｂチーム","B"]]
   end
