@@ -57,6 +57,15 @@ ActiveRecord::Schema.define(version: 20170402003007) do
     t.index ["year"], name: "index_contests_on_year"
   end
 
+  create_table "game_details", force: :cascade do |t|
+    t.integer  "game_code",              null: false
+    t.integer  "number",     default: 1, null: false
+    t.text     "properties"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.index ["game_code", "number"], name: "index_game_details_on_game_code_and_number"
+  end
+
   create_table "games", force: :cascade do |t|
     t.integer  "code",              null: false
     t.integer  "contest_nth",       null: false

@@ -1,0 +1,70 @@
+<div class="row">
+  <div class="col-lg-12">
+    <table>
+      <%
+        left_robot = Robot.joins(:campus).find_by(code: @game.left_robot_code)
+        right_robot = Robot.joins(:campus).find_by(code: @game.right_robot_code)
+        if @game.winner_robot_code != left_robot.code then # 左側を勝者に
+          left_robot, right_robot = right_robot, left_robot
+          winner_robot = left_robot
+        end
+        winner_score, looser_score = @game.game_detail.properties["score"].split("-")
+        if winner_score < looser_score then
+          winner_score, looser_score = looser_score, winner_score
+        end
+      %>
+      <tr>
+        <td align="center"><%= link_to left_robot.campus.abbreviation, campus_path(left_robot.campus.code) %></td>
+        <td></td>
+        <td align="center"><%= link_to right_robot.campus.abbreviation, campus_path(right_robot.campus.code) %></td>
+      </tr>
+      <tr>
+        <td><%= link_to left_robot.name, robot_path(left_robot.code) %></td>
+        <td align="center">&nbsp&nbspVS&nbsp&nbsp</td>
+        <td><%= link_to right_robot.name, robot_path(right_robot.code) %></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td align="center">高さ</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td align="center"><%= winner_score %>cm</td>
+        <td></td>
+        <td align="center"><%= looser_score %>cm</td>
+      </tr>
+      <% if winner_score > looser_score then # draw %>
+      <tr>
+        <td><%= link_to left_robot.campus.abbreviation, campus_path(left_robot.campus.code) %>の勝ち</td>
+        <td></td>
+        <td></td>
+      </tr>
+      <% elsif winner_score == looser_score then # draw
+          winner_judge, looser_judge = @game.game_detail.properties["judges decision"].split("-")
+      %>
+      <tr>
+        <td></td>
+        <td align="center">審査員判定</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td align="center"><%= winner_judge %></td>
+        <td></td>
+        <td align="center"><%= looser_judge %></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td align="center">
+          <%= link_to left_robot.campus.abbreviation, campus_path(left_robot.campus.code) %>の勝ち
+        </td>
+        <td></td>
+      </tr>
+      <% end %>
+    </table>
+    <% if not @game.game_detail.properties["memo"].blank? then %>
+      <h4>試合メモ</h4>
+      <%= @game.game_detail.properties["memo"] %>
+    <% end %>
+  </div>
+</div>
+<hr>

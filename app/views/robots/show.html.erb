@@ -43,7 +43,7 @@
           %>
           <tr>
             <td><%= game.region.name %></td>
-            <td><%= game.round %>回戦　第<%= game.game %>試合</td>
+            <td><%= link_to game.round.to_s+"回戦 第"+game.game.to_s+"試合", game_path(game.code) %></td>
             <td><%= link_to opponent.campus.abbreviation, campus_path(opponent.campus.code) %></td>
             <td><%= link_to opponent.name, robot_path(opponent.code) %></td>
             <td><%= opponent.code != game.winner_robot_code ? "勝ち" : "負け" %></td>
