@@ -21,4 +21,12 @@ class Robot < ApplicationRecord
     [["分からないまたはAB区別なし",""],["Ａチーム","A"],["Ｂチーム","B"]]
   end
 
+  def to_key
+    ["#{code}"]
+  end
+
+  def to_param
+    "#{code}"
+  end
+
 end

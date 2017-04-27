@@ -16,8 +16,7 @@ class RobotsController < ApplicationController
   end
 
   def update
-    #@robot = Robot.find_by(code: params[:code])
-    @robot = Robot.find_by(id: params[:code])
+    @robot = Robot.find_by(code: params[:code])
     if @robot.update_attributes(robot_params) then
       flash[:success] = "ロボット情報の編集成功"
       redirect_to robot_url(code: @robot.code)

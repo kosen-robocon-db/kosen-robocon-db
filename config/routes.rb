@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  get 'games/show'
+  #get 'games/show'
 
   root 'static_pages#home'
 
