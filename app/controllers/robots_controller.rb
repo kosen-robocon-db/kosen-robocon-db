@@ -1,4 +1,6 @@
 class RobotsController < ApplicationController
+  before_action :logged_in_user, only: [:edit, :update]
+
   def show
     @robot = Robot.find_by(code: params[:code])
     @games = Game.where(left_robot_code: params[:code]).or(Game.where(right_robot_code: params[:code]))
