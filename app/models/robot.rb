@@ -28,5 +28,4 @@ class Robot < ApplicationRecord
   def to_param
     "#{code}"
   end
-
 end

@@ -1,7 +1,4 @@
 Rails.application.routes.draw do
-
-  #get 'games/show'
-
   root 'static_pages#home'
 
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
@@ -19,5 +16,5 @@ Rails.application.routes.draw do
   resources :contest_entries, only: [:index]
   resources :robots, only: [:show, :edit, :update], param: :code
   resources :games, only: [:show], param: :code
-
+  resources :robot_conditions, only: [:edit, :update], param: :code
 end
