@@ -14,7 +14,8 @@ Rails.application.routes.draw do
   resources :campuses, only: [:index, :show], param: :code
   resources :contests, only: [:index, :show], param: :nth
   resources :contest_entries, only: [:index]
-  resources :robots, only: [:show, :edit, :update], param: :code
+  resources :robots, only: [:show, :edit, :update], param: :code do
+    resource :robot_conditions, only: [:new, :create, :edit, :update]
+  end
   resources :games, only: [:show], param: :code
-  resources :robot_conditions, only: [:edit, :update], param: :code
 end

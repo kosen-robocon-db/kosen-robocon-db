@@ -23,9 +23,9 @@
 <div class="row">
   <div class="col-lg-12">
     <% if !@robot.robot_condition.blank? then %>
-    <div align="right"><%= link_to fa_icon("pencil-square-o ", text:"編集"), edit_robot_condition_path %></div>
+    <div align="right"><%= link_to fa_icon("pencil-square-o ", text:"編集"), edit_robot_robot_conditions_path(@robot.code) %></div>
     <% else %>
-    ロボット現況情報の作成（開発中）
+    <div align="right"><%= link_to fa_icon("pencil-square-o ", text:"現存に変更"), new_robot_robot_conditions_path(@robot.code) %></div>
     <% end %>
     <table class="table table-striped table-condensed">
       <tbody>
