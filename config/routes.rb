@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   resources :contests, only: [:index, :show], param: :nth
   resources :contest_entries, only: [:index]
   resources :robots, only: [:show, :edit, :update], param: :code do
-    resource :robot_conditions, only: [:new, :create, :edit, :update]
+    resource :robot_conditions, only: [:new, :create, :edit, :update, :destroy]
   end
   resources :games, only: [:show], param: :code
 end

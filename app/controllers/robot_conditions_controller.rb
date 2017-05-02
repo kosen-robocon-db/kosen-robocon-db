@@ -29,6 +29,12 @@ class RobotConditionsController < ApplicationController
     end
   end
 
+  def destroy
+    @robot = Robot.find_by(code: params[:robot_code])
+    @robot.robot_condition.destroy
+    redirect_to robot_path(code: @robot.code)
+  end
+
   private
     def robot_condition_params
       params.require(:robot_condition).permit(:fully_operational, :restoration, :memo)
