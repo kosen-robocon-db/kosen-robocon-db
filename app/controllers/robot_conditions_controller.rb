@@ -1,5 +1,5 @@
 class RobotConditionsController < ApplicationController
-  before_action :logged_in_user, only: [:new, :create, :edit, :update]
+  before_action :logged_in_user, only: [:new, :create, :edit, :update, :destroy]
 
   def new
     @robot = Robot.find_by(code: params[:robot_code])
