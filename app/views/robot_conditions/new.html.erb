@@ -1,7 +1,7 @@
-<% provide(:title, "ロボット情報（現況）の新規作成") %>
+<% provide(:title, "ロボット情報（現況）の現存への変更") %>
 
 <%= render "shared/title", title: (yield :title) %>
 
 <%= @robot.name %><br>
 
-<%= render "form", robot: @robot, action: :create%>
+<%= render "form", robot: @robot, action: :create, button_label: "現存に変更" %>
