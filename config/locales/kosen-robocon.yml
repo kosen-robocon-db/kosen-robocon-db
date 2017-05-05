@@ -1,0 +1,12 @@
+ja:
+  activerecord:
+    models:
+      robot: ロボット
+    attributes:
+      robot:
+        code: ロボットコード
+        contest_nth: 大会回
+        campus_code: キャンパスコード
+        team: チーム
+        name: ロボット名
+        kana: ヨミガナ

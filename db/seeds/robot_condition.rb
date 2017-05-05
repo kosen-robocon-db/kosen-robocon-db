@@ -23,7 +23,8 @@ if FileTest.exist?(ROBOT_CONDITIONS_CSV_FILE_PATH) then
   end
 else
   # 徳山
-  bulk_insert_data << RobotCondition.new(robot_code: 103664601, fully_operational: true,  restoration: false) # ゴロゴロスッテン号
+#  bulk_insert_data << RobotCondition.new(robot_code: 103664601, fully_operational: true,  restoration: false) # ゴロゴロスッテン号 実際のデータはこちら
+  bulk_insert_data << RobotCondition.new(robot_code: 103664601, fully_operational: true,  restoration: true) # ゴロゴロスッテン号 テスト用
   bulk_insert_data << RobotCondition.new(robot_code: 104664601, fully_operational: true,  restoration: false) # 白猫号
   bulk_insert_data << RobotCondition.new(robot_code: 109664601, fully_operational: true,  restoration: false) # 午前10時
   bulk_insert_data << RobotCondition.new(robot_code: 112664601, fully_operational: true,  restoration: false) # Fly Do ポテット S
