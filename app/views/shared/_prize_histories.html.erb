@@ -6,7 +6,7 @@
       <% case path_info[:controller] %>
       <% when "robots" then %>
         <div align="right">
-        <%= link_to fa_icon("", text:"新規登録"),
+        <%= link_to fa_icon("pencil-square-o", text:"新規登録"),
           new_robot_prize_history_path(robot_code: path_info[:code]) %>
         </div>
       <% end %>
@@ -18,11 +18,11 @@
             <%= region %>大会 <%= history.prize.name %>
             <% case path_info[:controller] %>
             <% when "robots" then %>
-                <%= link_to fa_icon("pencil-square-o", text:"編集"),
+                <%= link_to fa_icon("pencil-square", text:"編集"),
                   edit_robot_prize_history_path(robot_code: history.robot.code,
                     id: history.id) %>
                 または
-                <%= link_to fa_icon("eraser", text:"削除"),
+                <%= link_to fa_icon("trash", text:"削除"),
                 robot_prize_history_path(robot_code: history.robot.code,
                   id: history.id), :method => :delete %>
             <% when "campuses" then %>
