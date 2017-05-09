@@ -1,0 +1,7 @@
+<% provide(:title, "優勝／受賞歴の作成") %>
+
+<%= render "shared/title", title: (yield :title) %>
+
+<h4><%= @prize_history.robot.name %><br></h4>
+
+<%= render "form", prize_history: @prize_history, action: :create, button_label: "作成" %>

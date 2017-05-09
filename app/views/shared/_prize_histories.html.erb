@@ -1,11 +1,34 @@
 <div class="row">
   <div class="col-lg-12">
     <h4>優勝／受賞歴</h4>
+    <% path_info = Rails.application.routes.recognize_path(request.path_info) %>
     <% unless prize_histories.blank? %>
+      <% case path_info[:controller] %>
+      <% when "robots" then %>
+        <div align="right">
+        <%= link_to fa_icon("", text:"新規登録"),
+          new_robot_prize_history_path(robot_code: path_info[:code]) %>
+        </div>
+      <% end %>
       <ul>
         <% prize_histories.each do |history| %>
-        <%    region = history.region.code == 0 ? history.region.name : history.region.name + "地区" %>
-        <li>第 <%= history.contest.nth %> 回 <%= history.contest.name %> <%= region %>大会 <%= history.prize.name %></li>
+          <% region = history.region.code == 0 ? history.region.name :
+            history.region.name + "地区" %>
+          <li>第 <%= history.contest.nth %> 回 <%= history.contest.name %>
+            <%= region %>大会 <%= history.prize.name %>
+            <% case path_info[:controller] %>
+            <% when "robots" then %>
+                <%= link_to fa_icon("pencil-square-o", text:"編集"),
+                  edit_robot_prize_history_path(robot_code: history.robot.code,
+                    id: history.id) %>
+                または
+                <%= link_to fa_icon("eraser", text:"削除"),
+                robot_prize_history_path(robot_code: history.robot.code,
+                  id: history.id), :method => :delete %>
+            <% when "campuses" then %>
+              <%= link_to history.robot.name, robot_path(history.robot.code) %>
+            <% end %>
+          </li>
         <% end %>
       </ul>
     <% end %>
