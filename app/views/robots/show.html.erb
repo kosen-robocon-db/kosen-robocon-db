@@ -27,7 +27,8 @@
       <%= link_to fa_icon("pencil-square", text:"編集"), edit_robot_robot_conditions_path(@robot.code) %>
       または
       <%= link_to fa_icon("trash", text:"逸失に変更"),
-      robot_robot_conditions_path(@robot.code), :method => :delete %>
+        robot_robot_conditions_path(@robot.code), :method => :delete,
+        data: {confirm: "逸失に変更しますか？"} %>
     </div>
     <% else %>
     <div align="right"><%= link_to fa_icon("pencil-square-o", text:"現存に変更"), new_robot_robot_conditions_path(@robot.code) %></div>

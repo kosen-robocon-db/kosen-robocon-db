@@ -24,7 +24,8 @@
                 または
                 <%= link_to fa_icon("trash", text:"削除"),
                   robot_prize_history_path(robot_code: history.robot.code,
-                  id: history.id), :method => :delete %>
+                  id: history.id), :method => :delete,
+                  data: {confirm: "削除しますか？"} %>
             <% when "campuses" then %>
               <%= link_to history.robot.name, robot_path(history.robot.code) %>
             <% end %>
