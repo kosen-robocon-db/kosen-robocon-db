@@ -16,7 +16,8 @@
       <%= f.label "チーム" %><br>
       <%= select :robot, :team, Robot.team_choices, class: 'form-control' %><br><br>
 
-      <%= f.submit "更新", class: "btn btn-primary" %><br><br>
+      <%= f.submit "更新", class: "btn btn-primary",
+        data: { disable_with: '処理中・・・' } %><br><br>
     <% end %>
 
   </div>

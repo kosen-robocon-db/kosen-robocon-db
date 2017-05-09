@@ -22,7 +22,8 @@
       <%= f.label "特記事項" %><br>
       <%= f.text_field :memo, class: 'form-control' %><br>
 
-      <%= f.submit button_label, class: "btn btn-primary" %><br><br>
+      <%= f.submit button_label, class: "btn btn-primary",
+        data: { disable_with: '処理中・・・' } %><br><br>
     <% end %>
 
   </div>
