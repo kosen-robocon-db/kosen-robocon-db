@@ -5,8 +5,8 @@
     <% case path_info[:controller] %>
     <% when "robots" then %>
       <div align="right">
-      <%= link_to fa_icon("pencil-square-o", text:"新規登録"),
-        new_robot_prize_history_path(robot_code: path_info[:code]) %>
+        <%= link_to fa_icon("pencil-square-o", text:"新規登録"),
+          new_robot_prize_history_path(robot_code: path_info[:code]) %>
       </div>
     <% end %>
     <table class="table table-striped table-condensed">
@@ -36,7 +36,6 @@
               <%= link_to fa_icon("pencil-square", text:"編集"),
                 edit_robot_prize_history_path(robot_code: history.robot.code,
                   id: history.id) %>
-              または
               <%= link_to fa_icon("trash", text:"削除"),
                 robot_prize_history_path(robot_code: history.robot.code,
                 id: history.id), :method => :delete,
