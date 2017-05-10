@@ -10,4 +10,6 @@ class PrizeHistory < ApplicationRecord
   validates :campus_code, presence: true
   validates :robot_code,  presence: true
   validates :prize_kind,  presence: true
+
+  scope :order_default, -> { order("contest_nth asc") }
 end
