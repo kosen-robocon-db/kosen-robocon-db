@@ -5,7 +5,8 @@
 <div class="row">
   <div class="col-lg-12">
     <%= form_for @robot do |f| %>
-      <%= render 'shared/error_messages' %>
+
+      <%= render 'shared/error_messages', obj: @robot %>
 
       <%= f.label "ロボット名" %>
       <%= f.text_field :name, class: 'form-control' %><br>
