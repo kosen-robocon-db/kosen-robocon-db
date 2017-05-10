@@ -10,9 +10,9 @@ class CreateGames < ActiveRecord::Migration[5.0]
       t.integer :right_robot_code, null: false
       t.integer :winner_robot_code, null: false
       t.timestamps
-      t.index ["code"], name: "index_Games_on_code", unique: true
-      t.index ["contest_nth"], name: "index_Games_on_contest_nth"
-      t.index ["region_code"], name: "index_Games_on_region_code"
+      t.index ["code"], name: "index_games_on_code", unique: true
+      t.index ["contest_nth"], name: "index_games_on_contest_nth"
+      t.index ["region_code"], name: "index_games_on_region_code"
     end
   end
 end
