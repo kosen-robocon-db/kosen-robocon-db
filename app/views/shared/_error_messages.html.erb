@@ -1,10 +1,10 @@
-<% if @robot.errors.any? %>
+<% if obj.errors.any? %>
   <div id="error_explanation">
     <div class="alert alert-danger">
-      入力した情報に誤りが<%= @robot.errors.count %>個あります。
+      入力した情報に誤りが<%= obj.errors.count %>個あります。
     </div>
     <ul>
-    <% @robot.errors.full_messages.each do |msg| %>
+    <% obj.errors.full_messages.each do |msg| %>
       <li><%= msg %></li>
     <% end %>
     </ul>
