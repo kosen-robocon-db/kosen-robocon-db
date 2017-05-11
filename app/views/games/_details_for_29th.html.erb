@@ -64,11 +64,13 @@
       </table>
       <% if not @game.game_detail.properties["memo"].blank? then %>
         <h4>試合メモ</h4>
-        <%= @game.game_detail.properties["memo"] %>
+        <%= @game.game_detail.properties["memo"] %><br />
       <% end %>
     <% else %>
       試合詳細なし（開発中）
     <% end %>
+    <br />
+    <%= link_to fa_icon("arrow-left", text:"戻る"),
+    robot_path(Rails.application.routes.recognize_path(request.path_info)[:robot_code]) %>
   </div>
 </div>
-<hr>
