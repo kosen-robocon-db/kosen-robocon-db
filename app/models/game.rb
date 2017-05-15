@@ -14,4 +14,20 @@ class Game < ApplicationRecord
   validates :left_robot_code,   presence: true
   validates :right_robot_code,  presence: true
   validates :winner_robot_code, presence: true
+
+  def self.make_game_code(nth, region_code, round, game)
+    #"1" + ("%02d" % nth) + region_code.to_s + round.to_s + ("%02d" % game)
+    "1" + nth.rjust(2, "0") + region_code + round + game.rjust(2, "0")
+  end
+end
+
+class GameForm
+  include ActiveModel::Model
+
+  attr_accessor :contest_nth, :region_code, :round, :game,
+    :opponent_robot_code, :victory, :new_record, :persisted
+
+  def persisted?
+    persisted
+  end
 end

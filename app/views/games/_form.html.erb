@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="col-lg-12">
+  <%= form_for game_form, :url=>{:action => action} do |f| %>
+    <%= render 'shared/error_messages', obj: game_form %>
+    <%= f.label :contest_nth, "大会回：第#{game_form.contest_nth}回" %><br />
+    <%= f.hidden_field :contest_nth %>
+
+    <%= f.label :region_code, "地区" %>:
+    <%= f.collection_select :region_code, Region.all, :code, :name %><br />
+
+    <%= f.label :round, "回戦" %>:
+    <% round_array = [["1回戦", 1], ["2回戦", 2], ["3回戦", 3],
+      ["4回戦", 4], ["準決勝", 5], ["決勝", 6]] %>
+    <%= f.select :round, round_array %><br />
+
+    <%= f.label :game, "試合" %>:
+    <% game_array = Array.new(16){ |i| ["第"+(i+1).to_s+"試合", i+1] } %>
+    <%= f.select :game, game_array %><br />
+
+    <%= f.label :opponent_robot_code, "対戦相手" %>:
+    <% robots_array = Robot.where(contest_nth: game_form.contest_nth).
+      includes(:campus).map{ |i| [
+        i.campus.abbreviation.to_s.ljust(5, "　")+i.name, i.code] } %>
+    <%= f.select :opponent_robot_code, robots_array %><br />
+
+    <%= f.label :victory, "勝敗" %>:
+    <label><%= f.radio_button :victory, true, {:checked=>true} %>勝ち</label>
+    &nbsp&nbsp
+    <label><%= f.radio_button :victory, false %>負け</label>
+
+    <br />
+    <%= f.submit button_label, class: "btn btn-primary",
+      data: { disable_with: '処理中・・・' } %><br /><br />
+  <% end %>
+  </div>
+</div>

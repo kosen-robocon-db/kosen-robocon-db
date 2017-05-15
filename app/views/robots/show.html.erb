@@ -91,6 +91,7 @@
           <th>対戦キャンパス</th>
           <th>対戦チーム</th>
           <th>勝敗</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -107,6 +108,13 @@
             <td><%= link_to opponent.campus.abbreviation, campus_path(opponent.campus.code) %></td>
             <td><%= link_to opponent.name, robot_path(opponent.code) %></td>
             <td><%= opponent.code != game.winner_robot_code ? "勝ち" : "負け" %></td>
+            <td align="right">
+              <%= link_to fa_icon("pencil-square", text:"編集"),
+                edit_robot_game_path(robot_code: @robot.code, code: game.code) %>
+              <%= link_to fa_icon("trash", text:"削除"),
+                robot_game_path(robot_code: @robot.code, code: game.code),
+                  :method => :delete, data: {confirm: "削除しますか？"} %>
+            </td>
           </tr>
         <% end %>
       </tbody>

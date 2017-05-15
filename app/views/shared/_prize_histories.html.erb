@@ -25,22 +25,23 @@
       <tbody>
       <% !prize_histories.blank? && prize_histories.each do |history| %>
         <tr>
-          <td><%= history.contest.nth %></td>
+          <td align="right"><%= history.contest.nth %></td>
           <td><%= history.contest.name %></td>
           <td><%= history.region.code == 0 ? history.region.name :
             history.region.name + "地区" %></td>
           <td><%= history.prize.name %></td>
-          <td>
             <% case path_info[:controller] %>
             <% when "robots" then %>
+              <td align="right">
               <%= link_to fa_icon("pencil-square", text:"編集"),
                 edit_robot_prize_history_path(robot_code: history.robot.code,
                   id: history.id) %>
               <%= link_to fa_icon("trash", text:"削除"),
                 robot_prize_history_path(robot_code: history.robot.code,
-                id: history.id), :method => :delete,
-                data: {confirm: "削除しますか？"} %>
+                  id: history.id), :method => :delete,
+                  data: {confirm: "削除しますか？"} %>
             <% when "campuses" then %>
+              <td>
               <%= link_to history.robot.name, robot_path(history.robot.code) %>
             <% end %>
           </td>
