@@ -4,6 +4,8 @@
 
 <h4><%= @robot.name %></h4><br />
 
-<%= render "form", game_form: @game_form, action: :create, button_label: "作成" %>
+<%#= render "form", game_form: @game_form, action: :create, button_label: "作成" %>
+<%= render "form", game: @game, action: :create, button_label: "作成" %>
+<%# action:の指定は要らないんじゃないか？ %>
 
 <%= link_to fa_icon("arrow-left", text:"戻る"), robot_path(@robot.code) %>
