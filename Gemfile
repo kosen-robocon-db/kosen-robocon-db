@@ -42,4 +42,11 @@ gem 'activerecord-import'
 gem 'devise'
 gem 'omniauth-twitter'
 
+# Ajax
+gem 'jquery-turbolinks'
+
+# ネスト構造のフォーム用
+gem 'nested_form_fields'
+
+# ERD出力
 gem 'rails-erd', group: [:development, :test]

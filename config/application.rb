@@ -13,5 +13,7 @@ module RoboconDb
     # -- all .rb files in that directory are automatically loaded.
 
     config.i18n.default_locale = :ja
+
+    config.autoload_paths << Rails.root.join("app/models/game_details")
   end
 end
