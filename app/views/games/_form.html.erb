@@ -30,14 +30,14 @@
     <br />
 
     <div class="field">
-    <%= f.label @gt, "試合詳細" %>
-    <%= f.nested_fields_for @gt, wrapper_tag: :div do |detail| %>
+    <%= f.label @gd_sym, "試合詳細" %>
+    <%= f.nested_fields_for @gd_sym, wrapper_tag: :div do |detail| %>
       <div class="field">
         <%= render "games/game_details/game_detail" +
           @game.contest_nth.ordinalize, f: detail %>
       </div>
     <% end %>
-    <%= f.add_nested_fields_link @gt, '追加', class: 'btn btn-primary',
+    <%= f.add_nested_fields_link @gd_sym, '追加', class: 'btn btn-primary',
       role: 'button' %>
     </div>
     <br /><br />
