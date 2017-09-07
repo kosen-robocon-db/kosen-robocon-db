@@ -15,7 +15,7 @@ class GamesController < ApplicationController
     @robot = Robot.find_by(code: params[:robot_code])
     @gd_sym = game_details_sub_class_sym(contest_nth: @robot.contest_nth)
     Game.confirm_or_associate(game_details_sub_class_sym: @gd_sym)
-    h = adapt(attrs_hash: game_params)
+    h = regularize(attrs_hash: game_params)
     h["robot_code"] = @robot.code.to_s
     h["code"] = Game.get_code(hash: h).to_s
     @game = Game.new(h)
@@ -43,7 +43,7 @@ class GamesController < ApplicationController
     Game.confirm_or_associate(game_details_sub_class_sym: @gd_sym)
     @game = Game.find_by(code: params[:code])
     @game.robot_code = @robot.code
-    if @game.update(adapt(attrs_hash: game_params)) then
+    if @game.update(regularize(attrs_hash: game_params)) then
       flash[:success] = "試合情報の編集成功"
       redirect_to robot_url(code: params[:robot_code])
     else
@@ -67,12 +67,17 @@ class GamesController < ApplicationController
     params.require(:game).permit(a)
   end
 
-  def adapt(attrs_hash:)
+  def regularize(attrs_hash:)
     gdas = "#{@gd_sym.to_s}_attributes".to_sym
     klass = @gd_sym.to_s.singularize.classify.constantize # クラス化
-    attrs_hash[gdas].each { |i| attrs_hash[gdas][i][:properties] =
-      klass.compose_properties(hash: attrs_hash[gdas][i]) }
-      # フォームパラメーターから GameDetail サブクラスへの属性値へ合成
+    j = 1
+    attrs_hash[gdas].each { |i|
+      attrs_hash[gdas][i][:properties] =
+        klass.compose_properties(hash: attrs_hash[gdas][i])
+          # フォームパラメーターから GameDetail サブクラスへの属性値へ合成
+      attrs_hash[gdas][i][:number] = j
+      j += 1
+    }
     attrs_hash[gdas].each { |key, value|
       attrs_hash[gdas][key] = attrs_hash[gdas][key].reject { |k, v|
         klass.additional_attr_symbols.any? { |i| i.to_s == k }

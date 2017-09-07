@@ -59,7 +59,7 @@ ActiveRecord::Schema.define(version: 20170402003007) do
 
   create_table "game_details", force: :cascade do |t|
     t.integer  "game_code",              null: false
-    t.integer  "number",     default: 1, null: false # これは何に使っているのか？
+    t.integer  "number",     default: 1, null: false
     t.text     "properties"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
