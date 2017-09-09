@@ -29,10 +29,10 @@
     <label><%= f.radio_button :victory, false %>負け</label><br />
     <br />
 
-    <div class="field">
+    <div class="enclosure">
     <%= f.label @gd_sym, "試合詳細" %>
     <%= f.nested_fields_for @gd_sym, wrapper_tag: :div do |detail| %>
-      <div class="field">
+      <div class="enclosure">
         <div class="replay"></div>
         <%= render "games/game_details/game_detail" +
           @game.contest_nth.ordinalize, f: detail %>

@@ -29,7 +29,7 @@ $ ->
   $('form').on 'fields_added.nested_form_fields', (event, param) ->
     c = 0
     $('.nested_fields').each ->
-      if $(@).css('display') != "none"
+      if $(@).css('display') != 'none'
         c += 1
         replay_elem = $(@).children('div.field').children('div.replay')
         switch c
@@ -41,7 +41,7 @@ $ ->
   $('form').on 'fields_removed.nested_form_fields', (event, param) ->
     c = 0
     $('.nested_fields').each ->
-      if $(@).css('display') != "none"
+      if $(@).css('display') != 'none'
         c += 1
         replay_elem = $(@).children('div.field').children('div.replay')
         switch c
@@ -49,3 +49,15 @@ $ ->
             replay_elem.text ''
           else
             replay_elem.text '再' + '々'.repeat(c - 2) + '試合'
+
+  # $('form').change '', (event, param) ->
+  #   if event.target.id.match(/game_game_detail29ths_attributes_[0-9]+?_judge/)
+  #     index = event.target.id.match(/_[0-9]+?_/)[0].replace(/_/g, '')
+  #     target = 'div.judge_score_' + index
+  #     # if $(target).prop('checked')
+  #     if $(target).css('display') != 'none'
+  #       $(target).css('display', 'none')
+  #       # s$(target).css('display', '')
+  #     else
+  #       $(target).css('display', '')
+  #       # $(target).css('display', 'none')

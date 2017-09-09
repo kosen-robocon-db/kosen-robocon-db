@@ -77,6 +77,7 @@ class GamesController < ApplicationController
           # フォームパラメーターから GameDetail サブクラスへの属性値へ合成
       attrs_hash[gdas][i][:number] = j
       j += 1
+      logger.debug(">>>> properites : #{attrs_hash[gdas][i][:properties]}")
     }
     attrs_hash[gdas].each { |key, value|
       attrs_hash[gdas][key] = attrs_hash[gdas][key].reject { |k, v|
