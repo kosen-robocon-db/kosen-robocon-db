@@ -1,63 +1,28 @@
-# Place all the behaviors and hooks related to the matching controller here.
-# All this logic will automatically be available in application.js.
-# You can use CoffeeScript in this file: http://coffeescript.org/
-# $(document).on('ready page:load', function () {
-#   alert("テストだよ！")
-# });
-
-# $ ->
-#   $('form').on 'click', '.remove_fields', (event) ->
-#     $(this).prev('input[type=hidden]').val('1')
-#     $(this).closest('fieldset').hide()
-#     event.preventDefault()
-#
-#   $('form').on 'click', '.add_fields', (event) ->
-#     time = new Date().getTime()s
-#     regexp = new RegExp($(this).data('id'), 'g')
-#     $(this).before($(this).data('fields').replace(regexp, time))
-#     event.preventDefault()
 $ ->
+  replay_label = (counter, element) ->
+    switch counter
+      when 1
+        element.text ''
+      else
+        element.text '再' + '々'.repeat(counter - 2) + '試合'
+
+  replay_labels = ->
+    c = 0
+    $('.nested_fields').each ->
+      if $(@).css('display') != 'none'
+        c += 1
+        replay_label c, $(@).children('div.enclosure').children('div.replay')
+
+  # run on load
   c = 0
   $('div.replay').each ->
     c += 1
-    switch c
-      when 1
-        $(@).text ''
-      else
-        $(@).text '再' + '々'.repeat(c - 2) + '試合'
+    replay_label c, $(@)
 
+  # when game_detail added
   $('form').on 'fields_added.nested_form_fields', (event, param) ->
-    c = 0
-    $('.nested_fields').each ->
-      if $(@).css('display') != 'none'
-        c += 1
-        replay_elem = $(@).children('div.field').children('div.replay')
-        switch c
-          when 1
-            replay_elem.text ''
-          else
-            replay_elem.text '再' + '々'.repeat(c - 2) + '試合'
+    replay_labels()
 
+  # when game_detail removed
   $('form').on 'fields_removed.nested_form_fields', (event, param) ->
-    c = 0
-    $('.nested_fields').each ->
-      if $(@).css('display') != 'none'
-        c += 1
-        replay_elem = $(@).children('div.field').children('div.replay')
-        switch c
-          when 1
-            replay_elem.text ''
-          else
-            replay_elem.text '再' + '々'.repeat(c - 2) + '試合'
-
-  # $('form').change '', (event, param) ->
-  #   if event.target.id.match(/game_game_detail29ths_attributes_[0-9]+?_judge/)
-  #     index = event.target.id.match(/_[0-9]+?_/)[0].replace(/_/g, '')
-  #     target = 'div.judge_score_' + index
-  #     # if $(target).prop('checked')
-  #     if $(target).css('display') != 'none'
-  #       $(target).css('display', 'none')
-  #       # s$(target).css('display', '')
-  #     else
-  #       $(target).css('display', '')
-  #       # $(target).css('display', 'none')
+    replay_labels()
