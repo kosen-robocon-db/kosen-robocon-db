@@ -5,7 +5,7 @@
 <%= f.text_field :opponent_height %>cm<br />
 <%= f.label :judge, "審査員判定：" %>
 <%= f.check_box :judge, {:checked => false}, true, false %><br />
-<div class="judge_score___nested_field_for_replace_with_index__">
+<div class="judge_score___nested_field_for_replace_with_index__ hidden">
   <%= f.label :judge_to_me, "#{@robot.name}への票数" %>
   <%= f.text_field :judge_to_me %><br />
   <%= f.label :judge_to_opponent, "対戦相手への票数" %>
