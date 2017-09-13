@@ -5,33 +5,49 @@
     <% case path_info[:controller] %>
     <% when "robots" then %>
       <div align="right">
-      <%= link_to fa_icon("pencil-square-o", text:"新規登録"),
-        new_robot_prize_history_path(robot_code: path_info[:code]) %>
+        <%= link_to fa_icon("pencil-square-o", text:"新規登録"),
+          new_robot_prize_history_path(robot_code: path_info[:code]) %>
       </div>
     <% end %>
-    <% unless prize_histories.blank? %>
-      <ul>
-        <% prize_histories.each do |history| %>
-          <% region = history.region.code == 0 ? history.region.name :
-            history.region.name + "地区" %>
-          <li>第 <%= history.contest.nth %> 回 <%= history.contest.name %>
-            <%= region %>大会 <%= history.prize.name %>
+    <table class="table table-striped table-condensed">
+      <thead>
+        <tr>
+          <th>大会回</th>
+          <th>大会名</th>
+          <th>全国／地区</th>
+          <th>成績／賞</th>
+          <% case path_info[:controller] %>
+          <% when "campuses" then %>
+            <th>ロボット名</th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody>
+      <% !prize_histories.blank? && prize_histories.each do |history| %>
+        <tr>
+          <td align="right"><%= history.contest.nth %></td>
+          <td><%= history.contest.name %></td>
+          <td><%= history.region.code == 0 ? history.region.name :
+            history.region.name + "地区" %></td>
+          <td><%= history.prize.name %></td>
             <% case path_info[:controller] %>
             <% when "robots" then %>
-                <%= link_to fa_icon("pencil-square", text:"編集"),
-                  edit_robot_prize_history_path(robot_code: history.robot.code,
-                    id: history.id) %>
-                または
-                <%= link_to fa_icon("trash", text:"削除"),
-                  robot_prize_history_path(robot_code: history.robot.code,
+              <td align="right">
+              <%= link_to fa_icon("pencil-square", text:"編集"),
+                edit_robot_prize_history_path(robot_code: history.robot.code,
+                  id: history.id) %>
+              <%= link_to fa_icon("trash", text:"削除"),
+                robot_prize_history_path(robot_code: history.robot.code,
                   id: history.id), :method => :delete,
                   data: {confirm: "削除しますか？"} %>
             <% when "campuses" then %>
+              <td>
               <%= link_to history.robot.name, robot_path(history.robot.code) %>
             <% end %>
-          </li>
-        <% end %>
-      </ul>
-    <% end %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
   </div>
 </div>

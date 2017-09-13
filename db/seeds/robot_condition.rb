@@ -37,7 +37,7 @@ else
   bulk_insert_data << RobotCondition.new(robot_code: 121664602, fully_operational: true,  restoration: false) # ツヨシ猿回し
   bulk_insert_data << RobotCondition.new(robot_code: 122664602, fully_operational: false, restoration: false) # はちみつが好き
   bulk_insert_data << RobotCondition.new(robot_code: 125664601, fully_operational: true,  restoration: false) # メカレオン倶楽部
-  bulk_insert_data << RobotCondition.new(robot_code: 126664601, fully_operational: true,  restoration: false, memo: "当時の飴は存在しない") # 色とりドリィ
+  bulk_insert_data << RobotCondition.new(robot_code: 126664601, fully_operational: true,  restoration: false, memo: "当時の飴はメンバーが美味しく頂きました。") # 色とりドリィ
   bulk_insert_data << RobotCondition.new(robot_code: 128664601, fully_operational: true,  restoration: false) # 捲土重来
 end
 RobotCondition.import bulk_insert_data

@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   resources :robots, only: [:show, :edit, :update], param: :code do
     resource  :robot_conditions, only: [:new, :create, :edit, :update, :destroy]
     resources :prize_histories,  only: [:new, :create, :edit, :update, :destroy]
+    resources  :games, only: [:new, :create, :edit, :update, :destroy], param: :code
   end
-  resources :games, only: [:show], param: :code
+
 end
