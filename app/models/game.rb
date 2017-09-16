@@ -6,10 +6,10 @@ class Game < ApplicationRecord
   belongs_to :robot,        foreign_key: :left_robot_code,   primary_key: :code
   belongs_to :robot,        foreign_key: :right_robot_code,  primary_key: :code
   belongs_to :robot,        foreign_key: :winner_robot_code, primary_key: :code
-  has_many   :game_details, foreign_key: :game_code,         primary_key: :code,
-    dependent: :destroy, inverse_of: :game
-  accepts_nested_attributes_for :game_details, allow_destroy: true,
-      reject_if: :all_blank
+  # has_many   :game_details, foreign_key: :game_code,         primary_key: :code,
+  #   dependent: :destroy, inverse_of: :game, index_errors: true
+  # accepts_nested_attributes_for :game_details, allow_destroy: true,
+  #     reject_if: :all_blank
 
   validates :code,              presence: true, uniqueness: true
   validates :contest_nth,       presence: true

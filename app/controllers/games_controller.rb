@@ -8,7 +8,10 @@ class GamesController < ApplicationController
     @gd_sym = game_details_sub_class_sym(contest_nth: @robot.contest_nth)
     Game.confirm_or_associate(game_details_sub_class_sym: @gd_sym)
     @game = Game.new(robot_code: @robot.code, contest_nth: @robot.contest_nth)
-    @game.send(@gd_sym).new # GameDetail サブクラスのインスタンス生成
+    # @game.send(@gd_sym).new
+    @game.send(@gd_sym).new(judge: false)
+      # GameDetail サブクラスのインスタンス生成
+      # 審査員判定チェックボックスを外しておく
   end
 
   def create
@@ -59,7 +62,7 @@ class GamesController < ApplicationController
 
   private
   def game_params
-    h = { @gd_sym.to_s + "_attributes" =>
+    h = { "#{@gd_sym.to_s}_attributes" =>
       @gd_sym.to_s.classify.constantize.attr_syms_for_params }
     a = [
       :contest_nth, :region_code, :round, :game, :opponent_robot_code, :victory
@@ -71,21 +74,15 @@ class GamesController < ApplicationController
     gdas = "#{@gd_sym.to_s}_attributes".to_sym
     klass = @gd_sym.to_s.singularize.classify.constantize # クラス化
     j = 1
-    attrs_hash[gdas].each { |i|
-      attrs_hash[gdas][i][:properties] =
-        klass.compose_properties(hash: attrs_hash[gdas][i])
-          # フォームパラメーターから GameDetail サブクラスへの属性値へ合成
-      attrs_hash[gdas][i][:number] = j
-      j += 1
-      logger.debug(">>>> properites : #{attrs_hash[gdas][i][:properties]}")
-    }
-    attrs_hash[gdas].each { |key, value|
-      attrs_hash[gdas][key] = attrs_hash[gdas][key].reject { |k, v|
-        klass.additional_attr_symbols.any? { |i| i.to_s == k }
-          # スーパークラスの GameDetails にないものは削除しておく
+    if not attrs_hash[gdas].blank?
+      attrs_hash[gdas].each { |i|
+        attrs_hash[gdas][i][:properties] =
+          klass.compose_properties(hash: attrs_hash[gdas][i])
+            # フォームパラメーターから GameDetail サブクラスの属性値へ合成
+        attrs_hash[gdas][i][:number] = j
+        j += 1
       }
-    }
-    attrs_hash[:game_details_attributes] = attrs_hash.delete(gdas) # 名称変更
+    end
     attrs_hash
   end
 
