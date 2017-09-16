@@ -10,9 +10,11 @@
 GameDetail.create(game_code: 1291101, properties: {
   "score":"0-0",
   "judge":"3-0",
+  "progress":"灯台-なし",
 })
 GameDetail.create(game_code: 1291102, properties: {
   "score":"0-0",
   "judge":"2-1",
+  "progress":"灯台-灯台",
   "memo":"釧路は旭川より灯台完成が早かった。"
 })
