@@ -4,13 +4,18 @@
 <%= f.label :opponent_height, "対戦相手が積み上げた高さ：" %>
 <%= f.text_field :opponent_height %>cm<br />
 <%= f.label :judge, "審査員判定：" %>
-<%= f.check_box :judge, {:checked => false}, true, false %><br />
-<div class="judge_score___nested_field_for_replace_with_index__ hidden">
-  <%= f.label :judge_to_me, "#{@robot.name}への票数" %>
-  <%= f.text_field :judge_to_me %><br />
-  <%= f.label :judge_to_opponent, "対戦相手への票数" %>
-  <%= f.text_field :judge_to_opponent %><br />
-</div>
+<%= f.check_box :judge, :as => :boolean %><br />
+<% logger.debug(">>>> f.object.judge: #{f.object.judge}") %>
+<% if f.object.judge %>
+  <div class="judge_score___nested_field_for_replace_with_index__">
+<% else %>
+  <div class="judge_score___nested_field_for_replace_with_index__ hidden">
+<% end %>
+    <%= f.label :judge_to_me, "#{@robot.name}への票数" %>
+    <%= f.text_field :judge_to_me %><br />
+    <%= f.label :judge_to_opponent, "対戦相手への票数" %>
+    <%= f.text_field :judge_to_opponent %><br />
+  </div>
 <%= f.hidden_field :_destroy %>
 <%= f.remove_nested_fields_link '削除', class: 'btn btn-danger',
   role: 'button' %><br />

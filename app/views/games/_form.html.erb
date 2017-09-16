@@ -30,18 +30,18 @@
     <br />
 
     <div class="enclosure">
-    <%= f.label @gd_sym, "試合詳細" %>
-    <%= f.nested_fields_for @gd_sym, wrapper_tag: :div do |detail| %>
-      <div class="enclosure">
-        <div class="replay"></div>
-        <%= render "games/game_details/game_detail" +
-          @game.contest_nth.ordinalize, f: detail %>
-      </div>
-    <% end %>
-    <%= f.add_nested_fields_link @gd_sym, '追加', class: 'btn btn-primary',
-      role: 'button' %>
-    </div>
-    <br /><br />
+      <%= f.label @gd_sym, "試合詳細" %>
+      <%= f.nested_fields_for @gd_sym, wrapper_tag: :div do |detail| %>
+        <div class="enclosure">
+          <div class="replay"></div>
+          <%= render "games/game_details/game_detail" +
+            @game.contest_nth.ordinalize, f: detail %>
+        </div>
+      <% end %>
+      <%= f.add_nested_fields_link @gd_sym, '追加', class: 'btn btn-primary',
+        role: 'button' %>
+    </div><br />
+    <br />
 
     <%= f.submit button_label, class: "btn btn-primary",
       data: { disable_with: '処理中・・・' } %><br /><br />
