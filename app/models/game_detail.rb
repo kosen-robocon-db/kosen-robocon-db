@@ -1,4 +1,5 @@
 class GameDetail < ApplicationRecord
+  serialize :properties, JSON
 
   # number は試合詳細の相対的な順番を表す。
   # 例えば、number1 < number2 であれば number2 が再試合である。

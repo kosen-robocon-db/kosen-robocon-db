@@ -77,9 +77,9 @@ ActiveRecord::Schema.define(version: 20170402003007) do
     t.integer  "winner_robot_code", null: false
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
-    t.index ["code"], name: "index_Games_on_code", unique: true
-    t.index ["contest_nth"], name: "index_Games_on_contest_nth"
-    t.index ["region_code"], name: "index_Games_on_region_code"
+    t.index ["code"], name: "index_games_on_code", unique: true
+    t.index ["contest_nth"], name: "index_games_on_contest_nth"
+    t.index ["region_code"], name: "index_games_on_region_code"
   end
 
   create_table "prize_histories", force: :cascade do |t|
