@@ -7,15 +7,15 @@
 # Game.create(code: 1291202, contest_nth: 29, region_code: 1, round: 2, game: 2, left_robot_code: 129110101, right_robot_code: 129110501, winner_robot_code: 129110101)
 # Game.create(code: 1291301, contest_nth: 29, region_code: 1, round: 3, game: 1, left_robot_code: 129110201, right_robot_code: 129110101, winner_robot_code: 129110101)
 bulk_insert_data = []
-bulk_insert_data << GameDetail.new(game_code: 1291101, properties: '{
+bulk_insert_data << GameDetail.new(game_code: 1291101, number: 1, properties: '{
   "score":"0-0",
   "judge":"3-0",
   "progress":"灯台-なし"
-}')
-bulk_insert_data << GameDetail.new(game_code: 1291102, properties: '{
+}'.gsub(/\n| /, ""))
+bulk_insert_data << GameDetail.new(game_code: 1291102, number: 1, properties: '{
   "score":"0-0",
   "judge":"2-1",
   "progress":"灯台-灯台",
   "memo":"釧路は旭川より灯台完成が早かった。"
-}')
+}'.gsub(/\n| /, ""))
 GameDetail.import bulk_insert_data
