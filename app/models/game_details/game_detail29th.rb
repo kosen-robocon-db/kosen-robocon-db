@@ -68,6 +68,7 @@ class GameDetail29th < GameDetail
       h["judge"].to_s.split(/-/)[0] if not h["judge"].blank?
     self.judge_to_opponent =
       h["judge"].to_s.split(/-/)[1] if not h["judge"].blank?
+    self.progress = h["progress"].blank? ? false : true
     self.my_progress =
       h["progress"].to_s.split(/-/)[0] if not h["progress"].blank?
     self.opponent_progress =

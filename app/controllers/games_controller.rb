@@ -9,9 +9,9 @@ class GamesController < ApplicationController
     Game.confirm_or_associate(game_details_sub_class_sym: @gd_sym)
     @game = Game.new(robot_code: @robot.code, contest_nth: @robot.contest_nth)
     # @game.send(@gd_sym).new
-    @game.send(@gd_sym).new(judge: false)
+    @game.send(@gd_sym).new(judge: false, progress: false)
       # GameDetail サブクラスのインスタンス生成
-      # 審査員判定チェックボックスを外しておく
+      # 審査員判定および課題進捗度チェックボックスを外しておく
   end
 
   def create
