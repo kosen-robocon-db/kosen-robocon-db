@@ -6,10 +6,6 @@ class Game < ApplicationRecord
   belongs_to :robot,        foreign_key: :left_robot_code,   primary_key: :code
   belongs_to :robot,        foreign_key: :right_robot_code,  primary_key: :code
   belongs_to :robot,        foreign_key: :winner_robot_code, primary_key: :code
-  # has_many   :game_details, foreign_key: :game_code,         primary_key: :code,
-  #   dependent: :destroy, inverse_of: :game, index_errors: true
-  # accepts_nested_attributes_for :game_details, allow_destroy: true,
-  #     reject_if: :all_blank
 
   validates :code,              presence: true, uniqueness: true
   validates :contest_nth,       presence: true
@@ -55,24 +51,15 @@ class Game < ApplicationRecord
     self.victory = self.robot_code == self.winner_robot_code ? "true" : "false"
   end
 
-  def self.to_csv
-    CSV.generate do |csv|
-      csv << csv_column_names # カラム名の配列を先頭に
-      all.each do |game|
-        csv << game.csv_column_values
-      end
-    end
-  end
-
-  def self.csv_column_names
+  def self.csv_headers
     # UTF-8出力される
     [ "試合コード", "大会回", "地区コード", "回戦", "試合",
-      "対戦ロボットコード（左）", "対戦ロボコンコード（右）", "勝利ロボットコード" ]
+      "ロボットコード（左）", "ロボコンコード（右）", "勝利ロボットコード" ]
   end
 
-  def csv_column_values
-    [ self.code, self.contest_nth, self.region_code, self.round, self.game,
-      self.left_robot_code, self.right_robot_code, self.winner_robot_code ]
+  def self.csv_column_syms
+    [ :code, :contest_nth, :region_code, :round, :game,
+        :left_robot_code, :right_robot_code, :winner_robot_code ]
   end
 
   private

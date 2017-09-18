@@ -48,6 +48,9 @@ gem 'jquery-turbolinks'
 # ネスト構造のフォーム用
 gem 'nested_form_fields'
 
+# CSV Download
+gem 'to_csv-rails'
+
 # 開発作業用ツール
 # ERD出力
 group :tools do
