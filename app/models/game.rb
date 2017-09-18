@@ -57,11 +57,22 @@ class Game < ApplicationRecord
 
   def self.to_csv
     CSV.generate do |csv|
-      csv << column_names # カラム名の配列を先頭に
+      csv << csv_column_names # カラム名の配列を先頭に
       all.each do |game|
-        csv << game.attributes.values_at(*column_names)
+        csv << game.csv_column_values
       end
     end
+  end
+
+  def self.csv_column_names
+    # UTF-8出力される
+    [ "試合コード", "大会回", "地区コード", "回戦", "試合",
+      "対戦ロボットコード（左）", "対戦ロボコンコード（右）", "勝利ロボットコード" ]
+  end
+
+  def csv_column_values
+    [ self.code, self.contest_nth, self.region_code, self.round, self.game,
+      self.left_robot_code, self.right_robot_code, self.winner_robot_code ]
   end
 
   private

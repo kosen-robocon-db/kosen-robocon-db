@@ -64,7 +64,6 @@ class GamesController < ApplicationController
   def index
     @games = Game.all
     respond_to do |format|
-      # format.html
       format.csv { send_data @games.to_csv }
     end
   end
