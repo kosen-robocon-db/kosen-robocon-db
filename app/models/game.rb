@@ -55,6 +55,15 @@ class Game < ApplicationRecord
     self.victory = self.robot_code == self.winner_robot_code ? "true" : "false"
   end
 
+  def self.to_csv
+    CSV.generate do |csv|
+      csv << column_names # カラム名の配列を先頭に
+      all.each do |game|
+        csv << game.attributes.values_at(*column_names)
+      end
+    end
+  end
+
   private
 
   def compose_attributes

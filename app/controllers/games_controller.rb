@@ -1,6 +1,7 @@
 class GamesController < ApplicationController
   before_action :logged_in_user,
     only: [ :new, :create, :edit, :update, :destroy ]
+  before_action :admin_user, only: :index
 
   def new
     @robot = Robot.find_by(code:
@@ -58,6 +59,14 @@ class GamesController < ApplicationController
     Game.find_by(code: params[:code]).destroy
     flash[:success] = "試合情報の一つを削除しました。"
     redirect_to robot_path(code: params[:robot_code])
+  end
+
+  def index
+    @games = Game.all
+    respond_to do |format|
+      # format.html
+      format.csv { send_data @games.to_csv }
+    end
   end
 
   private
