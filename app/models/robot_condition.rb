@@ -12,4 +12,13 @@ class RobotCondition < ApplicationRecord
   def to_param
     "#{robot_code}"
   end
+
+  def self.csv_headers
+    # UTF-8出力される
+    [ "ロボットコード", "動態保存", "復刻", "メモ" ]
+  end
+
+  def self.csv_column_syms
+    [ :robot_code, :fully_operational, :restoration, :memo ]
+  end
 end
