@@ -5,11 +5,11 @@
 # 112341234,1,1 --> "大分",112341234,"スプレもん",1,"完全作動",1,"復元"
 # row[0],row[1],row[2] --> row[2],row[4],row[6]
 require "csv"
-ROBOT_CONDITIONS_CSV_FILE_PATH="db/robot_conditions.csv"
+ROBOT_CONDITIONS_CSV_FILE_PATH="db/seeds/csv/robot_conditions.csv"
 bulk_insert_data = []
 if FileTest.exist?(ROBOT_CONDITIONS_CSV_FILE_PATH) then
   codes = {}
-  csv = CSV.read(ROBOT_CONDITIONS_CSV_FILE_PATH, headers: false)
+  csv = CSV.read(ROBOT_CONDITIONS_CSV_FILE_PATH, headers: true)
   csv.each do |row|
     robot = Robot.find_by(code: row[0])
     if robot then
