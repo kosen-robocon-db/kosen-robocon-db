@@ -123,3 +123,9 @@
 </div>
 
 <%= render "shared/prize_histories", prize_histories: @prize_histories %>
+
+<div class="row">
+  <div class="col-lg-12">
+    <p><%= link_to fa_icon("chevron-left", text: "所属キャンパスへ戻る"), campus_path(@robot.campus_code) %></p>
+  </div>
+</div>
