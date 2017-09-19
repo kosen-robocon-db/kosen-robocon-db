@@ -11,4 +11,13 @@ class GameDetail < ApplicationRecord
     [ :id, :_destroy ]
   end
 
+  def self.csv_headers
+    # UTF-8出力される
+    [ "試合コード", "試合番号（再試合）", "属性(JSON)" ]
+  end
+
+  def self.csv_column_syms
+    [ :game_code, :number, :properties ]
+  end
+
 end
