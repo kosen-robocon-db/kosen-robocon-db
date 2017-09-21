@@ -12,6 +12,6 @@ class Campus < ApplicationRecord
 
   #== scopes
 
-  scope :on_page, -> page { paginate(page: page, per_page: 50) }
+  scope :on_page, -> page { paginate(page: page, per_page: 70) }
   scope :order_default, -> { order("code asc") }
 end
