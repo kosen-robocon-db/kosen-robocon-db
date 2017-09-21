@@ -17,7 +17,7 @@ class Robot < ApplicationRecord
 
   #== scopes
 
-  scope :on_page, -> page { paginate(page: page, per_page: 50) }
+  scope :on_page, -> page { paginate(page: page, per_page: 60) }
   scope :order_default, -> { order("contest_nth asc, campus_code asc, team asc") }
 
   def self.team_choices
