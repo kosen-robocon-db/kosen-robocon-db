@@ -16,8 +16,8 @@ if FileTest.exist?(ROBOT_CONDITIONS_CSV_FILE_PATH) then
       bulk_insert_data << RobotCondition.new(
         robot_code: robot.code,
         # existence: row[1],
-        restoration: row[1],
-        fully_operational: row[2]
+        fully_operational: row[1],
+        restoration: row[2]
       )
     end
   end
