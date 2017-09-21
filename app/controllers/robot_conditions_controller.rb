@@ -37,7 +37,7 @@ class RobotConditionsController < ApplicationController
   end
 
   def index
-    @conditions = RobotCondition.all
+    @conditions = RobotCondition.all.order("robot_code ASC")
     respond_to do |format|
       format.csv { send_data @conditions.to_a.to_csv(
         :only => RobotCondition.csv_column_syms,
