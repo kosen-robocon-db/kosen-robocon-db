@@ -42,7 +42,10 @@
             <td><%= link_to robot.name, robot_path(robot.code) %></td>
             <td><%= robot.kana %></td>
             <td><%= robot.team %></td>
-            <td><%= robot.robot_condition.blank? ? "" : "現存" %></td>
+            <td><% if not robot.robot_condition.blank? %>
+              <%#= "現存" %>
+              <%= robot.robot_condition.fully_operational ? "動態保存" : "静態保存" %>
+              <% end %></td>
           </tr>
         <% end %>
       </tbody>
