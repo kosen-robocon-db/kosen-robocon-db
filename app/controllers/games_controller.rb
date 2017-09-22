@@ -9,10 +9,13 @@ class GamesController < ApplicationController
     @gd_sym = game_details_sub_class_sym(contest_nth: @robot.contest_nth)
     Game.confirm_or_associate(game_details_sub_class_sym: @gd_sym)
     @game = Game.new(robot_code: @robot.code, contest_nth: @robot.contest_nth)
-    # @game.send(@gd_sym).new
-    @game.send(@gd_sym).new(judge: false, progress: false)
+    case @robot.contest_nth
       # GameDetail サブクラスのインスタンス生成
-      # 審査員判定および課題進捗度チェックボックスを外しておく
+    when 29 then
+      @game.send(@gd_sym).new(judge: false, progress: false)
+        # 審査員判定および課題進捗度チェックボックスを外しておく
+        # 将来的にモデル内で処理
+    end
   end
 
   def create
@@ -101,5 +104,9 @@ class GamesController < ApplicationController
   def game_details_sub_class_sym(contest_nth:)
     "game_detail#{contest_nth.ordinalize}s".to_sym
   end
+
+  # def game_details_sub_class
+  #   @gd_sym.to_s.singularize.classify.constantize unless @gd_sym.blank?
+  # end
 
 end
