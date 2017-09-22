@@ -51,6 +51,9 @@ gem 'nested_form_fields'
 # CSV Download
 gem 'to_csv-rails'
 
+# Javascript/Coffeescript 拡張用
+gem 'gon'
+
 # 開発作業用ツール
 # ERD出力
 group :tools do

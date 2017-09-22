@@ -16,6 +16,7 @@ class GamesController < ApplicationController
         # 審査員判定および課題進捗度チェックボックスを外しておく
         # 将来的にモデル内で処理
     end
+    gon.contest_nth = @robot.contest_nth
   end
 
   def create
@@ -42,6 +43,7 @@ class GamesController < ApplicationController
     @game = Game.find_by(code: params[:code])
     @game.subjective_view_by(robot_code: @robot.code)
     @game.send(@gd_sym).each { |i| i.decompose_properties }
+    gon.contest_nth = @robot.contest_nth
   end
 
   def update
