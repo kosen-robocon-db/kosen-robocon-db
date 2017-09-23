@@ -1,7 +1,8 @@
 {
   "name": "kosen-robocon-db-pr",
   "scripts": {
-    "postdeploy": "rails db:migrate db:seed"
+    "postdeploy": "rails db:migrate db:seed",
+    "postdeploy": "wget http://dl.ipafont.ipa.go.jp/IPAexfont/IPAexfont00301.zip"
   },
   "env": {
   },
