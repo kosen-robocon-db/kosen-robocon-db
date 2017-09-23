@@ -1,5 +1,6 @@
 class RobotConditionsController < ApplicationController
   before_action :logged_in_user, only: [:new, :create, :edit, :update, :destroy]
+  before_action :admin_user, only: :index
 
   def new
     @robot = Robot.find_by(code: params[:robot_code])
@@ -33,6 +34,17 @@ class RobotConditionsController < ApplicationController
     @robot = Robot.find_by(code: params[:robot_code])
     @robot.robot_condition.destroy
     redirect_to robot_path(code: @robot.code)
+  end
+
+  def index
+    @conditions = RobotCondition.all.order("robot_code ASC")
+    respond_to do |format|
+      format.csv { send_data @conditions.to_a.to_csv(
+        :only => RobotCondition.csv_column_syms,
+        :header => true,
+        :header_columns => RobotCondition.csv_headers
+        ) }
+    end
   end
 
   private

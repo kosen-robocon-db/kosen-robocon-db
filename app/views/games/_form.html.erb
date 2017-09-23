@@ -29,6 +29,9 @@
     <label><%= f.radio_button :victory, false %>負け</label><br />
     <br />
 
+    <% case @robot.contest_nth %>
+    <%# 第29回大会のみ実装 %>
+    <% when 29 then %>
     <div class="enclosure">
       <%= f.label @gd_sym, "試合詳細" %>
       <%= f.nested_fields_for @gd_sym, wrapper_tag: :div do |detail| %>
@@ -42,6 +45,7 @@
         role: 'button' %>
     </div><br />
     <br />
+    <% end %>
 
     <%= f.submit button_label, class: "btn btn-primary",
       data: { disable_with: '処理中・・・' } %><br /><br />

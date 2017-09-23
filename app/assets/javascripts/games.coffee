@@ -30,24 +30,26 @@ $ ->
     replay_labels()
 
   # when judge/progress cheched/unchecked
-  $('form').on 'change', (event) ->
-    if /^game_game_detail29ths_attributes_\d+_judge$/.test(event.target.id)
-      i = event.target.id.match(/_\d+_/)[0].replace(/_/g, '')
-      if $('#game_game_detail29ths_attributes_' + i + '_judge')[0].checked
-        $('.judge_score_' + i).toggleClass('hidden')
-      else
-        $('.judge_score_' + i).toggleClass('hidden')
-        $('#game_game_detail29ths_attributes_' + i +
-          '_judge_to_me').val('')
-        $('#game_game_detail29ths_attributes_' + i +
-          '_judge_to_opponent').val('')
-    if /^game_game_detail29ths_attributes_\d+_progress$/.test(event.target.id)
-      i = event.target.id.match(/_\d+_/)[0].replace(/_/g, '')
-      if $('#game_game_detail29ths_attributes_' + i + '_progress')[0].checked
-        $('.progress_' + i).toggleClass('hidden')
-      else
-        $('.progress_' + i).toggleClass('hidden')
-        $('#game_game_detail29ths_attributes_' + i +
-          '_my_progress').val('')
-        $('#game_game_detail29ths_attributes_' + i +
-          '_opponent_progress').val('')
+  switch gon.contest_nth
+    when 29
+      $('form').on 'change', (event) ->
+        if /^game_game_detail29ths_attributes_\d+_judge$/.test(event.target.id)
+          i = event.target.id.match(/_\d+_/)[0].replace(/_/g, '')
+          if $('#game_game_detail29ths_attributes_' + i + '_judge')[0].checked
+            $('.judge_score_' + i).toggleClass('hidden')
+          else
+            $('.judge_score_' + i).toggleClass('hidden')
+            $('#game_game_detail29ths_attributes_' + i +
+              '_judge_to_me').val('')
+            $('#game_game_detail29ths_attributes_' + i +
+              '_judge_to_opponent').val('')
+        if /^game_game_detail29ths_attributes_\d+_progress$/.test(event.target.id)
+          i = event.target.id.match(/_\d+_/)[0].replace(/_/g, '')
+          if $('#game_game_detail29ths_attributes_' + i + '_progress')[0].checked
+            $('.progress_' + i).toggleClass('hidden')
+          else
+            $('.progress_' + i).toggleClass('hidden')
+            $('#game_game_detail29ths_attributes_' + i +
+              '_my_progress').val('')
+            $('#game_game_detail29ths_attributes_' + i +
+              '_opponent_progress').val('')

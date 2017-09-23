@@ -1,5 +1,5 @@
 require "csv"
-ROBOT_CSV_FILE_PATH="db/robot_name_entries.csv"
+ROBOT_CSV_FILE_PATH="db/seeds/csv/robots.csv"
 bulk_insert_data = []
 if FileTest.exist?(ROBOT_CSV_FILE_PATH) then
   codes = {}

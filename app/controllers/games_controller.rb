@@ -1,6 +1,7 @@
 class GamesController < ApplicationController
   before_action :logged_in_user,
     only: [ :new, :create, :edit, :update, :destroy ]
+  before_action :admin_user, only: :index
 
   def new
     @robot = Robot.find_by(code:
@@ -8,10 +9,14 @@ class GamesController < ApplicationController
     @gd_sym = game_details_sub_class_sym(contest_nth: @robot.contest_nth)
     Game.confirm_or_associate(game_details_sub_class_sym: @gd_sym)
     @game = Game.new(robot_code: @robot.code, contest_nth: @robot.contest_nth)
-    # @game.send(@gd_sym).new
-    @game.send(@gd_sym).new(judge: false)
+    case @robot.contest_nth
       # GameDetail サブクラスのインスタンス生成
-      # 審査員判定チェックボックスを外しておく
+    when 29 then
+      @game.send(@gd_sym).new(judge: false, progress: false)
+        # 審査員判定および課題進捗度チェックボックスを外しておく
+        # 将来的にモデル内で処理
+    end
+    gon.contest_nth = @robot.contest_nth
   end
 
   def create
@@ -38,6 +43,7 @@ class GamesController < ApplicationController
     @game = Game.find_by(code: params[:code])
     @game.subjective_view_by(robot_code: @robot.code)
     @game.send(@gd_sym).each { |i| i.decompose_properties }
+    gon.contest_nth = @robot.contest_nth
   end
 
   def update
@@ -58,6 +64,17 @@ class GamesController < ApplicationController
     Game.find_by(code: params[:code]).destroy
     flash[:success] = "試合情報の一つを削除しました。"
     redirect_to robot_path(code: params[:robot_code])
+  end
+
+  def index
+    @games = Game.all
+    respond_to do |format|
+      format.csv { send_data @games.to_a.to_csv(
+        :only => Game.csv_column_syms,
+        :header => true,
+        :header_columns => Game.csv_headers
+        ) }
+    end
   end
 
   private
@@ -89,5 +106,9 @@ class GamesController < ApplicationController
   def game_details_sub_class_sym(contest_nth:)
     "game_detail#{contest_nth.ordinalize}s".to_sym
   end
+
+  # def game_details_sub_class
+  #   @gd_sym.to_s.singularize.classify.constantize unless @gd_sym.blank?
+  # end
 
 end
