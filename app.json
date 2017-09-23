@@ -1,7 +1,7 @@
 {
   "name": "kosen-robocon-db-pr",
   "scripts": {
-    "postdeploy": "rails db:migrate db:seed",
+    "postdeploy": "rails db:migrate db:seed font:ipa",
   },
   "env": {
   },
