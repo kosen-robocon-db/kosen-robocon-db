@@ -2,7 +2,9 @@
   <div class="col-lg-12">
     <h3>統計情報</h3>
     <ul>
-      <li>ロボット保存現況PDF</li>
+      <li><%= link_to fa_icon("file-pdf-o", text:"ロボット保管状況"),
+        robot_conditions_path(format: "pdf"),
+        :class => 'btn btn-primary' %></li>
     </ul>
   </div>
 </div>

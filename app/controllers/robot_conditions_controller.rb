@@ -37,13 +37,26 @@ class RobotConditionsController < ApplicationController
   end
 
   def index
-    @conditions = RobotCondition.all.order("robot_code ASC")
     respond_to do |format|
-      format.csv { send_data @conditions.to_a.to_csv(
-        :only => RobotCondition.csv_column_syms,
-        :header => true,
-        :header_columns => RobotCondition.csv_headers
-        ) }
+      format.csv do
+        @conditions = RobotCondition.all.order("robot_code ASC")
+        send_data @conditions.to_a.to_csv(
+          :only => RobotCondition.csv_column_syms,
+          :header => true,
+          :header_columns => RobotCondition.csv_headers
+        )
+      end
+      format.pdf do
+        @conditions =  RobotCondition.all.joins(:robot).order("robot_code ASC")
+        # @conditions =  RobotCondition.all.joins(:robot).joins(:campus).order("robot_code ASC")
+        # RobotCondition.find :all, :include => {:robot => :campus},
+        #   :order => "robot_code ASC"
+        pdf = RobotConditionsPDF.new(robot_conditions: @conditions)
+        send_data pdf.render,
+          filename:    "conditions.pdf",
+          type:        "application/pdf",
+          disposition: "inline"
+      end
     end
   end
 
