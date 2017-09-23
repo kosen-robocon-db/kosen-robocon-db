@@ -58,9 +58,6 @@ gem 'gon'
 gem 'prawn'
 gem 'prawn-table'
 
-# for zip file decompression
-gem 'rubyzip'
-
 # 開発作業用ツール
 # ERD出力
 group :tools do
