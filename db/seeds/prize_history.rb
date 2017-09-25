@@ -14,6 +14,7 @@ bulk_insert_data << PrizeHistory.new(contest_nth:  6, region_code: 1, campus_cod
 bulk_insert_data << PrizeHistory.new(contest_nth:  6, region_code: 0, campus_code: 1010, robot_code: 106110102, prize_kind:  1) # 優勝
 bulk_insert_data << PrizeHistory.new(contest_nth: 11, region_code: 0, campus_code: 1010, robot_code: 111110101, prize_kind:  3) # ベスト4
 bulk_insert_data << PrizeHistory.new(contest_nth: 11, region_code: 0, campus_code: 1010, robot_code: 111110101, prize_kind: 14) # 大賞
+bulk_insert_data << PrizeHistory.new(contest_nth: 16, region_code: 1, campus_code: 1010, robot_code: 116110101, prize_kind:  1) # 北海道地区優勝
 bulk_insert_data << PrizeHistory.new(contest_nth: 16, region_code: 0, campus_code: 1010, robot_code: 116110101, prize_kind:  1) # 優勝
 bulk_insert_data << PrizeHistory.new(contest_nth: 20, region_code: 0, campus_code: 1010, robot_code: 120110101, prize_kind: 62) # 特別賞（電気事業連合会）
 bulk_insert_data << PrizeHistory.new(contest_nth: 23, region_code: 0, campus_code: 1010, robot_code: 123110102, prize_kind:  3) # ベスト4
@@ -55,6 +56,7 @@ bulk_insert_data << PrizeHistory.new(contest_nth:  8, region_code: 0, campus_cod
 
 # 徳山
 # Campus.create(region_code: 6, code: 6460, name: "徳山工業高等専門学校", abbreviation: "徳山", latitude: 34.052226, longitude: 131.846532)
+bulk_insert_data << PrizeHistory.new(contest_nth:  4, region_code: 6, campus_code: 6460, robot_code: 104664601, prize_kind:  1) # 中国地区大会優勝
 bulk_insert_data << PrizeHistory.new(contest_nth:  4, region_code: 0, campus_code: 6460, robot_code: 104664601, prize_kind:  2) # 準優勝
 bulk_insert_data << PrizeHistory.new(contest_nth:  5, region_code: 0, campus_code: 6460, robot_code: 105664601, prize_kind: 11) # アイデア賞
 bulk_insert_data << PrizeHistory.new(contest_nth:  7, region_code: 0, campus_code: 6460, robot_code: 107664601, prize_kind:  3) # ベスト４

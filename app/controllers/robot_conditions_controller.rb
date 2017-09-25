@@ -47,10 +47,8 @@ class RobotConditionsController < ApplicationController
         )
       end
       format.pdf do
-        @conditions =  RobotCondition.all.joins(:robot).order("robot_code ASC")
-        # @conditions =  RobotCondition.all.joins(:robot).joins(:campus).order("robot_code ASC")
-        # RobotCondition.find :all, :include => {:robot => :campus},
-        #   :order => "robot_code ASC"
+        @conditions =  RobotCondition.all.includes(
+          :robot => :campus ).order("robots.campus_code ASC")
         pdf = RobotConditionsPDF.new(robot_conditions: @conditions)
         send_data pdf.render,
           filename:    "conditions.pdf",
