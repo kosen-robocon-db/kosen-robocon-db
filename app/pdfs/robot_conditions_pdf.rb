@@ -1,7 +1,8 @@
 class RobotConditionsPDF < Prawn::Document
 
   TITLE = "高専ロボコンデータベース ロボット保管状況"
-  COPYRIGHT_HOLDER = "高専ロボコンデータベース製作委員会"
+  COPYRIGHT_HOLDER = "© 2016-2017 高専ロボコンデータベース製作委員会"
+
   FONT = "vendor/fonts/ipaexg.ttf"
 
   def initialize(robot_conditions:)
@@ -12,10 +13,9 @@ class RobotConditionsPDF < Prawn::Document
       "#{Time.current.strftime('%Y年%m月%d日 %H時%M分%S秒 JST 版')}"
 
     font FONT
-
     cover
     start_new_page
-    disclaimer
+    notice
     start_new_page
     content
     page_header
@@ -25,26 +25,23 @@ class RobotConditionsPDF < Prawn::Document
   def cover
     # Be cool more than this!
     default_leading 30
-    text TITLE.gsub(/ /, "\n"),
-      align: :center, valign: :center, size: 30
+    text TITLE.gsub(/ /, "\n"), align: :center, valign: :center, size: 30
     move_down 38
-    text @date_time_version,
-      align: :center, valign: :center, size: 8
+    text @date_time_version,    align: :center, valign: :center, size: 8
     move_down 400
-    text COPYRIGHT_HOLDER,
-      align: :center, valign: :center, size: 20
+    text COPYRIGHT_HOLDER,      align: :center, valign: :center, size: 20
   end
 
-  def disclaimer
-    pad = 5
+  def notice
     bounding_box(
-      [pad, bounds.height - pad], :width => bounds.width - (pad * 2),
-      :height => bounds.height - (pad * 2) ) do
-      text "この資料は・・・", size: 11
+      [ bounds.left + 50, bounds.top - 50 ],
+      :width => bounds.width - 100,
+    ) do
+      text disclaimer, size: 11
       text "高専ロボコンデータベース製作委員会", align: :right, size: 11
-      move_down 44
-      text "This document ...", size: 11
-      text "Kosen Robocon Database Development Commitee", align: :right, size: 11
+      # move_down 44
+      # text "This document ...", size: 11
+      # text "Kosen Robocon Database Development Commitee", align: :right, size: 11
     end
   end
 
@@ -102,4 +99,13 @@ class RobotConditionsPDF < Prawn::Document
     number_pages string, options
   end
 
+  def disclaimer
+    <<-EOS.unindent
+      この資料は高専ロボコンを愛する有志により運営されている高専ロボコンデータベース
+    より出力されました。「クリエイティブ・コモンズ 表示 4.0 国際 ライセンス」の下に
+    提供されています。そのライセンスの条件（クレジット表示など）に従えば何方でも自由に
+    この資料を扱うことができます。取り扱っている情報には間違いが含まれている可能性が
+    十分にありますが、それよって生じた如何なる損害にも責任は持ちません。
+    EOS
+  end
 end

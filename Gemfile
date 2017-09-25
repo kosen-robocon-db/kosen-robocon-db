@@ -61,6 +61,9 @@ gem 'prawn-table'
 # for zip file decompression
 gem 'rubyzip'
 
+# for here document
+gem 'unindent'
+
 # 開発作業用ツール
 # ERD出力
 group :tools do
