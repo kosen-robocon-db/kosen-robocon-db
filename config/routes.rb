@@ -28,4 +28,5 @@ Rails.application.routes.draw do
   resources :robot_conditions, only: :index
   resources :games, only: :index
   resources :game_details, only: :index
+  resources :prize_histories, only: :index
 end

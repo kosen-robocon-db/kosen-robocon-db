@@ -12,4 +12,13 @@ class PrizeHistory < ApplicationRecord
   validates :prize_kind,  presence: true
 
   scope :order_default, -> { order("contest_nth asc") }
+
+  def self.csv_headers
+    # UTF-8出力される
+    [ "大会回", "地区コード", "キャンパスコード", "ロボットコード", "受賞コード" ]
+  end
+
+  def self.csv_column_syms
+    [ :contest_nth, :region_code, :campus_code, :robot_code, :prize_kind ]
+  end
 end
