@@ -28,10 +28,11 @@
                   <li class="divider"></li>
                   <li><%= link_to fa_icon("users", text:"ユーザー一覧"), users_path %></li>
                   <li class="divider"></li>
+                  <li><%= link_to fa_icon("table", text:"ロボット"), robots_path(format: "csv") %></li>
                   <li><%= link_to fa_icon("table", text:"ロボット状態"), robot_conditions_path(format: "csv") %></li>
                   <li><%= link_to fa_icon("table", text:"試合"), games_path(format: "csv") %></li>
                   <li><%= link_to fa_icon("table", text:"試合詳細"), game_details_path(format: "csv") %></li>
-                  <li><%= link_to fa_icon("table", text:"優勝／受賞歴"), prize_histories_path(format: "csv") %></li>
+                  <li><%= link_to fa_icon("table", text:"優勝・受賞歴"), prize_histories_path(format: "csv") %></li>
                 <% end %>
               </ul>
             </li>
