@@ -1,6 +1,6 @@
 # ロボットコードに含まれるA/Bチームの情報が書き換えられたらこの情報も書き換える必要がある
 require "csv"
-CSV_FILE_PATH = "db/seeds/csv/prize.db"
+CSV_FILE_PATH = "db/seeds/csv/prize_histories.csv"
 bulk_insert_data = []
 if FileTest.exist?(CSV_FILE_PATH) then
   csv = CSV.read(CSV_FILE_PATH, headers: true)

@@ -1,21 +1,14 @@
-# 取り扱いによっては、CSVファイルは数字の羅列ではなく、
-# キャンパス略称や、ロボット名、状況・状態の文字列を隣の列に置くことも考えてもよい。
-# 112341234,1,1,1 --> "大分",112341234,"スプレもん",1,"現存",1,"復元",1,"完全作動"
-# row[0],row[1],row[2],row[3] --> row[2],row[4],row[6],row[8]
-# 112341234,1,1 --> "大分",112341234,"スプレもん",1,"完全作動",1,"復元"
-# row[0],row[1],row[2] --> row[2],row[4],row[6]
 require "csv"
-ROBOT_CONDITIONS_CSV_FILE_PATH="db/seeds/csv/robot_conditions.csv"
+CSV_FILE_PATH = "db/seeds/csv/robot_conditions.csv"
 bulk_insert_data = []
-if FileTest.exist?(ROBOT_CONDITIONS_CSV_FILE_PATH) then
+if FileTest.exist?(CSV_FILE_PATH) then
   codes = {}
-  csv = CSV.read(ROBOT_CONDITIONS_CSV_FILE_PATH, headers: true)
+  csv = CSV.read(CSV_FILE_PATH, headers: true)
   csv.each do |row|
-    robot = Robot.find_by(code: row[0])
+    robot = Robot.find_by(code: row[0]) # 全チームのAB区別が判明次第無くす
     if robot then
       bulk_insert_data << RobotCondition.new(
         robot_code: robot.code,
-        # existence: row[1],
         fully_operational: row[1],
         restoration: row[2]
       )

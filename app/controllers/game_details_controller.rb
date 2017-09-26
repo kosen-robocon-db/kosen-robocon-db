@@ -6,7 +6,6 @@ class GameDetailsController < ApplicationController
         send_data render_to_string, filename: "game_details.json", type: :json
       end
       format.csv do
-        @game_details.each { |i| i.properties.gsub!( /\{|\}|"/, "" ) }
         send_data @game_details.to_a.to_csv(
           :only => GameDetail.csv_column_syms,
           :header => true,

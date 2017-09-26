@@ -73,7 +73,7 @@ class GamesController < ApplicationController
         :only => Game.csv_column_syms,
         :header => true,
         :header_columns => Game.csv_headers
-        ) }
+      ) }
     end
   end
 
