@@ -3,7 +3,9 @@ class PrizeHistoriesController < ApplicationController
   before_action :admin_user, only: :index
 
   def new
-    @prize_history = Robot.find_by(code: params[:robot_code]).prize_histories.new
+    robot = Robot.find_by(code: params[:robot_code])
+    @prize_history = robot.prize_histories.new
+    @regions = Region.where(code: [ 0, robot.campus.region_code ])
   end
 
   def create
