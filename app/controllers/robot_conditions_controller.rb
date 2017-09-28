@@ -1,6 +1,6 @@
 class RobotConditionsController < ApplicationController
   before_action :logged_in_user, only: [:new, :create, :edit, :update, :destroy]
-  before_action :admin_user, only: :index
+  # before_action :admin_user, only: :index
 
   def new
     @robot = Robot.find_by(code: params[:robot_code])
@@ -37,13 +37,24 @@ class RobotConditionsController < ApplicationController
   end
 
   def index
-    @conditions = RobotCondition.all.order("robot_code ASC")
     respond_to do |format|
-      format.csv { send_data @conditions.to_a.to_csv(
-        :only => RobotCondition.csv_column_syms,
-        :header => true,
-        :header_columns => RobotCondition.csv_headers
-        ) }
+      format.csv do
+        @conditions = RobotCondition.all.order("robot_code ASC")
+        send_data @conditions.to_a.to_csv(
+          :only => RobotCondition.csv_column_syms,
+          :header => true,
+          :header_columns => RobotCondition.csv_headers
+        )
+      end
+      format.pdf do
+        @conditions =  RobotCondition.all.includes(
+          :robot => :campus ).order("robots.campus_code ASC")
+        pdf = RobotConditionsPDF.new(robot_conditions: @conditions)
+        send_data pdf.render,
+          filename:    "conditions.pdf",
+          type:        "application/pdf",
+          disposition: "inline"
+      end
     end
   end
 

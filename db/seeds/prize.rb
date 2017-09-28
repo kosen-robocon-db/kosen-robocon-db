@@ -3,7 +3,8 @@ bulk_insert_data = []
 # 各賞の詳細な調査が必要。
 bulk_insert_data << Prize.new(kind: 1, name: "優勝")
 bulk_insert_data << Prize.new(kind: 2, name: "準優勝")
-bulk_insert_data << Prize.new(kind: 3, name: "ベスト４")
+bulk_insert_data << Prize.new(kind: 3, name: "ベスト４") # 入力便宜上用意
+bulk_insert_data << Prize.new(kind: 4, name: "ベスト４") # 入力便宜上用意
 
 bulk_insert_data << Prize.new(kind: 11, name: "アイデア賞")
 bulk_insert_data << Prize.new(kind: 12, name: "アイデア倒れ賞")
@@ -42,5 +43,14 @@ bulk_insert_data << Prize.new(kind: 65, name: "特別賞（株式会社安川電
 bulk_insert_data << Prize.new(kind: 66, name: "特別賞（東京エレクトロンＦＥ株式会社）")
 bulk_insert_data << Prize.new(kind: 67, name: "特別賞（田中貴金属グル－プ）")
 bulk_insert_data << Prize.new(kind: 68, name: "特別賞（ローム株式会社）")
+
+bulk_insert_data << Prize.new(kind: 71, name: "特別賞（北海道電力株式会社）")
+bulk_insert_data << Prize.new(kind: 72, name: "特別賞（東北電力株式会社）")
+bulk_insert_data << Prize.new(kind: 73, name: "特別賞（東京電力株式会社）")
+bulk_insert_data << Prize.new(kind: 74, name: "特別賞（中部・北陸電力株式会社）")
+bulk_insert_data << Prize.new(kind: 75, name: "特別賞（関西電力株式会社）")
+bulk_insert_data << Prize.new(kind: 76, name: "特別賞（中国電力株式会社）")
+bulk_insert_data << Prize.new(kind: 77, name: "特別賞（四国電力株式会社）")
+bulk_insert_data << Prize.new(kind: 78, name: "特別賞（九州・沖縄電力株式会社）")
 
 Prize.import bulk_insert_data

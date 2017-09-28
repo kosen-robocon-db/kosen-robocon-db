@@ -16,5 +16,7 @@ module RoboconDb
     config.i18n.default_locale = :ja
 
     config.autoload_paths << Rails.root.join("app/models/game_details")
+
+    config.time_zone = 'Tokyo'
   end
 end

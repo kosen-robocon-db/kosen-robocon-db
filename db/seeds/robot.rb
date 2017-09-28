@@ -1,14 +1,17 @@
 require "csv"
-ROBOT_CSV_FILE_PATH="db/seeds/csv/robots.csv"
+OLD_CSV_FILE_PATH="db/seeds/csv/robots_old_style.csv"
+CSV_FILE_PATH="db/seeds/csv/robots.csv"
 bulk_insert_data = []
-if FileTest.exist?(ROBOT_CSV_FILE_PATH) then
+if FileTest.exist?(OLD_CSV_FILE_PATH) then
   codes = {}
-  csv = CSV.read(ROBOT_CSV_FILE_PATH, headers: false)
+  csv = CSV.read(OLD_CSV_FILE_PATH, headers: false) # ヘッダーなしに注意
   csv.each do |row|
+    # 改行文字列が混入していることがあるので、取り除く
+    row.map! { |r| r.to_s.chomp }
     # '1'（1桁）＋大会コード （2桁）+ 地区コード（1桁） + キャンパスコード（4桁） + チーム（1桁）
-    campus = Campus.find_by(code: row[2])
+    campus = Campus.find_by(code: row[2].to_i)
     if campus then # row[0]からrow[4]まで存在するかどうか確認すべきだが省略
-      code = "1" + ("%02d" % row[0]) + campus.region_code.to_s + campus.code.to_s
+      code = "1" + ("%02d" % row[0].to_i) + campus.region_code.to_s + campus.code.to_s
       case row[5]
       when "A" then
         code += "1"
@@ -25,25 +28,27 @@ if FileTest.exist?(ROBOT_CSV_FILE_PATH) then
         end
         team = ""
       end
-      # puts code, row[0]), campus, row[3], row[4], team
-      # 例外を処理する必要あり
-      # Robot.create(
-      #   code: code.to_i,
-      #   contest_nth: row[0],
-      #   campus_code: campus.code,
-      #   name: row[3],
-      #   kana: row[4],
-      #   team: team
-      # )
       bulk_insert_data << Robot.new(
         code: code.to_i,
-        contest_nth: row[0],
+        contest_nth: row[0].to_i,
         campus_code: campus.code,
         name: row[3],
         kana: row[4],
         team: team
       )
     end
+  end
+elsif FileTest.exist?(CSV_FILE_PATH) then
+  csv = CSV.read(CSV_FILE_PATH, headers: true)
+  csv.each do |row|
+    bulk_insert_data << Robot.new(
+      code:        row[0],
+      contest_nth: row[1],
+      campus_code: row[2],
+      team:        row[3],
+      name:        row[4],
+      kana:        row[5]
+    )
   end
 else
   bulk_insert_data << Robot.new(code: 102110100, contest_nth:  2, campus_code: Campus.find_by(abbreviation: "旭川").code, name: "ビッグシューター", kana: "ビッグシューター")

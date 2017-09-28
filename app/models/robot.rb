@@ -31,4 +31,23 @@ class Robot < ApplicationRecord
   def to_param
     "#{code}"
   end
+
+  def self.csv_headers
+    # UTF-8出力される
+    [ "ロボットコード", "回", "キャンパスコード", "A/B", "ロボット名", "フリガナ" ]
+  end
+
+  def self.csv_column_syms
+    [ :code, :contest_nth, :campus_code, :team, :name, :kana ]
+  end
+
+  def self.to_csv(options = {})
+    # attributes = %w{id email name}
+    CSV.generate(headers: true, force_quotes: true) do |csv|
+      csv << csv_headers
+      all.each do |user|
+        csv << csv_column_syms.map{ |attr| user.send(attr).to_s }
+      end
+    end
+  end
 end

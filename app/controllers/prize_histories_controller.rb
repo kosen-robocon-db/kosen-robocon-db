@@ -1,8 +1,11 @@
 class PrizeHistoriesController < ApplicationController
   before_action :logged_in_user, only: [:new, :create, :edit, :update, :destroy]
+  before_action :admin_user, only: :index
 
   def new
-    @prize_history = Robot.find_by(code: params[:robot_code]).prize_histories.new
+    robot = Robot.find_by(code: params[:robot_code])
+    @prize_history = robot.prize_histories.new
+    @regions = Region.where(code: [ 0, robot.campus.region_code ])
   end
 
   def create
@@ -37,6 +40,17 @@ class PrizeHistoriesController < ApplicationController
     PrizeHistory.find(params[:id]).destroy
     flash[:success] = "優勝／受賞歴の一つを削除しました。"
     redirect_to robot_path(code: params[:robot_code])
+  end
+
+  def index
+    @prize_histories = PrizeHistory.all
+    respond_to do |format|
+      format.csv { send_data @prize_histories.to_a.to_csv(
+        :only => PrizeHistory.csv_column_syms,
+        :header => true,
+        :header_columns => PrizeHistory.csv_headers
+        ) }
+    end
   end
 
   private

@@ -3,11 +3,17 @@
   <%= form_for prize_history, :url=>{:action => action} do |f| %>
     <%= render 'shared/error_messages', obj: prize_history %>
     <%= f.label :region_code, "地区" %><br />
-    <%= f.collection_select :region_code, Region.all, :code, :name %><br /><br />
+    <%= f.collection_select :region_code, @regions, :code, :name %><br /><br />
     <%= f.label :prize_kind, "賞種類" %><br />
     <%= f.collection_select :prize_kind, Prize.all, :kind, :name %><br /><br />
     <%= f.submit button_label, class: "btn btn-primary",
       data: { disable_with: '処理中・・・' } %><br /><br />
   <% end %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <p><%= link_to fa_icon("chevron-left", text: "前へ戻る"), robot_path(prize_history.robot.code) %></p>
   </div>
 </div>

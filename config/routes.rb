@@ -14,13 +14,20 @@ Rails.application.routes.draw do
 
   resources :campuses, only: [:index, :show], param: :code
   resources :contests, only: [:index, :show], param: :nth
-  resources :contest_entries, only: [:index]
+  # resources :contest_entries, only: [:index]
+  resource :statistics, except: [:index, :show, :new, :create, :edit, :update, :destroy] do
+    member do
+      get 'home'
+    end
+  end
   resources :robots, only: [:show, :edit, :update], param: :code do
     resource  :robot_conditions, only: [:new, :create, :edit, :update, :destroy]
     resources :prize_histories,  only: [:new, :create, :edit, :update, :destroy]
     resources :games, only: [:new, :create, :edit, :update, :destroy], param: :code
   end
+  resources :robots, only: :index
   resources :robot_conditions, only: :index
   resources :games, only: :index
   resources :game_details, only: :index
+  resources :prize_histories, only: :index
 end
