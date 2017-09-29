@@ -1,7 +1,7 @@
 require 'open-uri'
 require 'zip'
 namespace :font do
-  desc 'Prepare IPA fonts'
+  desc 'Downloads and decompresses IPA fonts'
   task ipa: :environment do
 
     BASE_URL = 'http://dl.ipafont.ipa.go.jp/IPAexfont'
@@ -10,8 +10,8 @@ namespace :font do
     FOLDER = 'vendor/fonts'
     FILE_PATH = FOLDER + '/' + TARGET + '.zip'
 
-    File.open(FILE_PATH, 'wb') do |saved_file|
-      open(DOWNLOAD_URL, 'rb') do |read_file|
+    open(FILE_PATH, 'wb') do |saved_file|
+      open(DOWNLOAD_URL) do |read_file|
         saved_file.write(read_file.read)
       end
     end

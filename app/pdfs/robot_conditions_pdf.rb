@@ -3,7 +3,7 @@ class RobotConditionsPDF < Prawn::Document
   TITLE = "高専ロボコンデータベース ロボット保管状況"
   COPYRIGHT_HOLDER = "© 2016-2017 高専ロボコンデータベース製作委員会"
 
-  FONT = "vendor/fonts/ipaexg.ttf"
+  FONT = "vendor/assets/fonts/ipaexg.ttf"
 
   def initialize(robot_conditions:)
     @conditions = robot_conditions
