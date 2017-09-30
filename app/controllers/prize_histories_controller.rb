@@ -23,7 +23,9 @@ class PrizeHistoriesController < ApplicationController
   end
 
   def edit
+    robot = Robot.find_by(code: params[:robot_code])
     @prize_history = PrizeHistory.find_by(id: params[:id])
+    @regions = Region.where(code: [ 0, robot.campus.region_code ])
   end
 
   def update
