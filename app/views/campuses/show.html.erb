@@ -38,7 +38,7 @@
       <tbody>
         <% @robots.each do |robot| %>
           <tr>
-            <td><%= link_to robot.contest.nth, contest_path(robot.contest.nth), title: robot.contest.name %></td>
+            <td align="right"><%= link_to robot.contest.nth, contest_path(robot.contest.nth), title: robot.contest.name %></td>
             <td><%= link_to robot.name, robot_path(robot.code) %></td>
             <td><%= robot.kana %></td>
             <td><%= robot.team %></td>
