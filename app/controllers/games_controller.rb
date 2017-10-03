@@ -17,6 +17,7 @@ class GamesController < ApplicationController
         # 将来的にモデル内で処理
     end
     gon.contest_nth = @robot.contest_nth
+    @regions = Region.where(code: [ 0, @robot.campus.region_code ])
   end
 
   def create
@@ -44,6 +45,7 @@ class GamesController < ApplicationController
     @game.subjective_view_by(robot_code: @robot.code)
     @game.send(@gd_sym).each { |i| i.decompose_properties }
     gon.contest_nth = @robot.contest_nth
+    @regions = Region.where(code: [ 0, @robot.campus.region_code ])
   end
 
   def update
