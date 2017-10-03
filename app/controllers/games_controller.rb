@@ -28,6 +28,7 @@ class GamesController < ApplicationController
     h["robot_code"] = @robot.code.to_s
     h["code"] = Game.get_code(hash: h).to_s
     @game = Game.new(h)
+    @regions = Region.where(code: [ 0, @robot.campus.region_code ])
     if @game.save then
       flash[:success] = "試合情報の新規作成成功"
       redirect_to robot_url(params[:robot_code])
@@ -54,6 +55,7 @@ class GamesController < ApplicationController
     Game.confirm_or_associate(game_details_sub_class_sym: @gd_sym)
     @game = Game.find_by(code: params[:code])
     @game.robot_code = @robot.code
+    @regions = Region.where(code: [ 0, @robot.campus.region_code ])
     if @game.update(regularize(attrs_hash: game_params)) then
       flash[:success] = "試合情報の編集成功"
       redirect_to robot_url(code: params[:robot_code])
