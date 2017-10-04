@@ -46,7 +46,7 @@ class Robot < ApplicationRecord
     CSV.generate(headers: true, force_quotes: true) do |csv|
       csv << csv_headers
       all.each do |user|
-        csv << csv_column_syms.map{ |attr| user.send(attr).to_s }
+        csv << csv_column_syms.map{ |attr| "#{user.send(attr).to_s}" }
       end
     end
   end
