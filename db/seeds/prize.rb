@@ -10,7 +10,7 @@ bulk_insert_data << Prize.new(kind: 4, name: "ベスト４") # 入力便宜上�
 bulk_insert_data << Prize.new(kind: 11, name: "アイデア賞")
 bulk_insert_data << Prize.new(kind: 12, name: "アイデア倒れ賞")
 bulk_insert_data << Prize.new(kind: 13, name: "技術賞")
-bulk_insert_data << Prize.new(kind: 14, name: "大賞")
+bulk_insert_data << Prize.new(kind: 14, name: "ロボコン大賞")
 bulk_insert_data << Prize.new(kind: 15, name: "ベストデザイン賞")
 bulk_insert_data << Prize.new(kind: 16, name: "芸術賞")
 bulk_insert_data << Prize.new(kind: 17, name: "デザイン賞")
