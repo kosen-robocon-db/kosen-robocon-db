@@ -81,6 +81,18 @@ class GamesController < ApplicationController
     end
   end
 
+  # Canvasを使ったシングル・エリミネーション・ブラケットの描画検証
+  def draw_bracket
+    robots = Robot.where(contest_nth: 29, campus_code: 8000...9000).includes(:campus)
+    gon.robots = robots
+    gon.campuses = robots.map { |i| i.campus }
+    games = Game.where(contest_nth: 29, region_code: 8).order(:round, :game)
+    gon.games = games
+    bracket = SingleElimination.new(games: games, robots: robots)
+    gon.entries = bracket.entries
+    # gon.arr = [ [0, 1, 2, 3], [1, 1, 2], [2, 2], [3] ]
+  end
+
   private
   def game_params
     h = { "#{@gd_sym.to_s}_attributes" =>

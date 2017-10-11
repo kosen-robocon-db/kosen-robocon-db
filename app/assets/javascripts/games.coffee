@@ -53,3 +53,79 @@ $ ->
               '_my_progress').val('')
             $('#game_game_detail29ths_attributes_' + i +
               '_opponent_progress').val('')
+
+  $('canvas').each ->
+    canvas = $('#draw_bracket')
+    if canvas
+      ctx = canvas[0].getContext('2d')
+
+      ctx.putPoint = (x, y, r)-> # x,yに点を描画
+        @.beginPath()
+        @.arc(x, y, @.lineWidth * r, 0, Math.PI*2, false)
+        @.closePath()
+        @.fill()
+
+      ctx.drawLine = (sx, sy, ex, ey)-> # 始点(sx, sy) から 終点(ex, ey)に線を描画
+        @.beginPath()
+        @.moveTo(sx, sy)
+        @.lineTo(ex, ey)
+        @.closePath()
+        @.stroke()
+
+      ctx.drawText = (t, x, y)->
+        @.beginPath()
+        @.closePath();
+        @.fillText(t, x, y)
+
+      ctx.drawRect = (x, y, w, h)->
+        @.beginPath();
+        @.rect(x, y, w, h)
+        @.closePath();
+        @.stroke()
+
+      ctx.drawImg = (url, x, y)->
+        @.beginPath();
+        img = new Image()
+        img.onload = ->
+          ctx.drawImage(img, x, y)
+        img.src = url
+        @.closePath();
+        @.stroke
+
+      ctx.drawRoundRect = (x, y, w, h, r)->
+        if w < 2 * r
+          r = w / 2
+        if h < 2 * r
+          r = h / 2
+        @.beginPath();
+        @.moveTo(x+r, y)
+        @.arcTo(x+w, y,   x+w, y+h, r)
+        @.arcTo(x+w, y+h, x,   y+h, r)
+        @.arcTo(x,   y+h, x,   y,   r)
+        @.arcTo(x,   y,   x+w, y,   r)
+        @.closePath();
+        @.stroke()
+
+      # ctx.fillStyle = 'white'
+      # ctx.fillRect(0, 0, 1000, 750) # 背景を白に
+      # ctx.putPoint(500, 500)
+      # ctx.drawLine(100, 50, 900, 700)
+      # ctx.drawText("ほげ", 700, 400)
+      # ctx.drawRect(500, 100, 100, 200)
+      # ctx.drawImg('http://yoppa.org/works/cuc/html5_logo.png', 0, 0)
+      ctx.lineWidth = 1
+      ctx.fillStyle = 'black'
+      ctx.font = "16px 'HGS創英角ｺﾞｼｯｸUB' "
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'top'
+      # for value, index in gon.robots
+      for value, index in gon.entries
+        ctx.lineWidth = 0.5
+        ctx.drawRoundRect(100, 100 + index * 26 - 2, 400, 22, 4)
+        # ctx.drawText(gon.campuses[index].abbreviation + value.team + ' ' + value.name,
+        ctx.drawText(gon.entries[index],
+          300, 100 + index * 26)
+      ctx.drawImg('/assets/crown_width_50px.png', 900, 325)
+      # for value_i, index_i in gon.arr
+      #   for value_j, index_j in value_i
+      #     ctx.drawText(value_j, 700 + index_j * 20, 100 + index_i * 24)

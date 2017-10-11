@@ -64,6 +64,9 @@ gem 'rubyzip'
 # for here document
 gem 'unindent'
 
+# for sinble elimination bracket output
+gem 'rubytree'
+
 # 開発作業用ツール
 # ERD出力
 group :tools do
