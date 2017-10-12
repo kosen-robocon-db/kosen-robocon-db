@@ -6,7 +6,7 @@
     <%= f.hidden_field :contest_nth %>
 
     <%= f.label :region_code, "地区" %>:
-    <%= f.collection_select :region_code, Region.all, :code, :name %><br />
+    <%= f.collection_select :region_code, @regions, :code, :name %><br />
 
     <%= f.label :round, "回戦" %>:
     <% round_array = [["予選", 0], ["1回戦", 1], ["2回戦", 2], ["3回戦", 3],

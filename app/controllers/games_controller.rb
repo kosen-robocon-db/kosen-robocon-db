@@ -17,6 +17,7 @@ class GamesController < ApplicationController
         # 将来的にモデル内で処理
     end
     gon.contest_nth = @robot.contest_nth
+    @regions = Region.where(code: [ 0, @robot.campus.region_code ])
   end
 
   def create
@@ -27,6 +28,7 @@ class GamesController < ApplicationController
     h["robot_code"] = @robot.code.to_s
     h["code"] = Game.get_code(hash: h).to_s
     @game = Game.new(h)
+    @regions = Region.where(code: [ 0, @robot.campus.region_code ])
     if @game.save then
       flash[:success] = "試合情報の新規作成成功"
       redirect_to robot_url(params[:robot_code])
@@ -44,6 +46,7 @@ class GamesController < ApplicationController
     @game.subjective_view_by(robot_code: @robot.code)
     @game.send(@gd_sym).each { |i| i.decompose_properties }
     gon.contest_nth = @robot.contest_nth
+    @regions = Region.where(code: [ 0, @robot.campus.region_code ])
   end
 
   def update
@@ -52,6 +55,7 @@ class GamesController < ApplicationController
     Game.confirm_or_associate(game_details_sub_class_sym: @gd_sym)
     @game = Game.find_by(code: params[:code])
     @game.robot_code = @robot.code
+    @regions = Region.where(code: [ 0, @robot.campus.region_code ])
     if @game.update(regularize(attrs_hash: game_params)) then
       flash[:success] = "試合情報の編集成功"
       redirect_to robot_url(code: params[:robot_code])
@@ -75,6 +79,35 @@ class GamesController < ApplicationController
         :header_columns => Game.csv_headers
       ) }
     end
+  end
+
+  # Canvasを使ったシングル・エリミネーション・ブラケットの描画検証
+  def draw_bracket
+    robots = Robot.where(contest_nth: 29, campus_code: 8000...9000).includes(:campus)
+    gon.robots = robots
+    gon.campuses = robots.map { |i| i.campus }
+    games = Game.where(contest_nth: 29, region_code: 8).order(:round, :game)
+    gon.games = games
+    bracket = SingleElimination.new(games: games, robots: robots)
+    gon.entries = bracket.entries
+    # bracket.lines
+    gon.lines = [ # 0:負け 1:勝ち 2:スルー 3:データなし
+      [ # １回戦
+        2, 2, 2, 1, 0, 2, 2, 2, 1, 0, 2, 2, 2, 1, 0, 2, 2, 2, 1, 0
+      ],
+      [ # ２回戦
+        0, 1, 0, 1, 3, 1, 0, 1, 0, 3, 1, 0, 0, 1, 3, 1, 0, 1, 0, 3
+      ],
+      [ # ３回戦
+        3, 0, 3, 1, 3, 0, 3, 1, 3, 3, 1, 3, 3, 0, 3, 1, 3, 0, 3, 3
+      ],
+      [ # 準決勝
+        3, 3, 3, 1, 3, 3, 3, 0, 3, 3, 1, 3, 3, 3, 3, 0, 3, 3, 3, 3
+      ],
+      [ # 決勝
+        3, 3, 3, 1, 3, 3, 3, 3, 3, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3
+      ]
+    ]
   end
 
   private

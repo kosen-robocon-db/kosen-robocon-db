@@ -89,6 +89,7 @@
           <th>地区／全国</th>
           <th>試合</th>
           <th>対戦キャンパス</th>
+          <th>A/B</th>
           <th>対戦チーム</th>
           <th>勝敗</th>
           <th></th>
@@ -103,9 +104,14 @@
           %>
           <tr>
             <td><%= game.region.name %></td>
-            <td><%= link_to game.round.to_s+"回戦 第"+game.game.to_s+"試合",
+            <td><%= link_to game_name(
+              nth: @robot.contest_nth,
+              region: @robot.campus.region_code,
+              round: game.round,
+              game: game.game),
               robot_game_path(robot_code: @robot.code, code: game.code) %></td>
             <td><%= link_to opponent.campus.abbreviation, campus_path(opponent.campus.code) %></td>
+            <td><%= opponent.team %></td>
             <td><%= link_to opponent.name, robot_path(opponent.code) %></td>
             <td><%= opponent.code != game.winner_robot_code ? "勝ち" : "負け" %></td>
             <td align="right">

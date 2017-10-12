@@ -28,4 +28,5 @@ bulk_insert_data << Contest.new(nth: 26, year: 2013, name: "Shall We Jump?")
 bulk_insert_data << Contest.new(nth: 27, year: 2014, name: "出前迅速")
 bulk_insert_data << Contest.new(nth: 28, year: 2015, name: "輪花繚乱")
 bulk_insert_data << Contest.new(nth: 29, year: 2016, name: "ロボット・ニューフロンティア")
+bulk_insert_data << Contest.new(nth: 30, year: 2017, name: "大江戸ロボット忍法帳")
 Contest.import bulk_insert_data
