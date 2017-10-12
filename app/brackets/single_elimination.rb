@@ -15,7 +15,23 @@ class SingleElimination
     @games = games
     @robots = robots
     @tree = game_code_tree
+    # @entries = entries
   end
+
+  # def lines # 上位進出線
+  #   h = {}
+  #   rounds = @games.to_a.count_kinds_of(attribute: :round).sort
+  #   Rails.logger.debug(">>>> rounds: #{rounds.to_yaml}")
+  #   rounds.each do |round|
+  #     games = @games.select { |g| g.round == round }
+  #
+  #   end
+  #   h
+  #
+  #   @entries.each
+  #
+  #
+  # end
 
   def entries
     a = []
@@ -40,7 +56,8 @@ class SingleElimination
               break if has_children
             end
             next if has_children
-            a << "#{robot.campus.abbreviation}#{robot.team} #{robot.name}"
+            a << [ robot.code,
+              "#{robot.campus.abbreviation}#{robot.team} #{robot.name}" ]
           end
         end
       end
@@ -50,12 +67,11 @@ class SingleElimination
 
   private
 
-  # 再帰を使わずに処理
   def game_code_tree
     rounds = @games.to_a.count_kinds_of(attribute: :round).sort.reverse
     final_round = rounds.min { |x, y| x[1] <=> y[1] }[0]
     root_data = @games.select { |i| i.round == final_round }[0]
-    tree = BinaryTreeNode.new(root_data.code.to_s, "決勝戦詳細情報")
+    tree = BinaryTreeNode.new(root_data.code.to_s, root_data.winner_robot_code.to_s)
     parents_data = []
     parents_data << root_data
     rounds.each do |round, count|
@@ -67,10 +83,10 @@ class SingleElimination
             if is_related?(parent: parent_data, child: game_data) then
               if round == 5 then
                 parent << BinaryTreeNode.new(game_data.code.to_s,
-                  "準決勝第#{game_data.game.to_s}試合詳細")
+                  game_data.winner_robot_code.to_s)
               else
                 parent << BinaryTreeNode.new(game_data.code.to_s,
-                  "#{game_data.round.to_s}回戦第#{game_data.game.to_s}試合詳細")
+                  game_data.winner_robot_code.to_s)
               end
             end
           end
@@ -80,8 +96,6 @@ class SingleElimination
     end
     tree
   end
-
-  private
 
   def is_related?(parent:, child:)
     case parent.left_robot_code

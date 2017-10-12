@@ -90,7 +90,24 @@ class GamesController < ApplicationController
     gon.games = games
     bracket = SingleElimination.new(games: games, robots: robots)
     gon.entries = bracket.entries
-    # gon.arr = [ [0, 1, 2, 3], [1, 1, 2], [2, 2], [3] ]
+    # bracket.lines
+    gon.lines = [ # 0:負け 1:勝ち 2:スルー 3:データなし
+      [ # １回戦
+        2, 2, 2, 1, 0, 2, 2, 2, 1, 0, 2, 2, 2, 1, 0, 2, 2, 2, 1, 0
+      ],
+      [ # ２回戦
+        0, 1, 0, 1, 3, 1, 0, 1, 0, 3, 1, 0, 0, 1, 3, 1, 0, 1, 0, 3
+      ],
+      [ # ３回戦
+        3, 0, 3, 1, 3, 0, 3, 1, 3, 3, 1, 3, 3, 0, 3, 1, 3, 0, 3, 3
+      ],
+      [ # 準決勝
+        3, 3, 3, 1, 3, 3, 3, 0, 3, 3, 1, 3, 3, 3, 3, 0, 3, 3, 3, 3
+      ],
+      [ # 決勝
+        3, 3, 3, 1, 3, 3, 3, 3, 3, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3
+      ]
+    ]
   end
 
   private

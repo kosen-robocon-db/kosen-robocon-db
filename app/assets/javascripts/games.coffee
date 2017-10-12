@@ -115,7 +115,7 @@ $ ->
       # ctx.drawImg('http://yoppa.org/works/cuc/html5_logo.png', 0, 0)
       ctx.lineWidth = 1
       ctx.fillStyle = 'black'
-      ctx.font = "16px 'HGS創英角ｺﾞｼｯｸUB' "
+      ctx.font = "16px bold"
       ctx.textAlign = 'center'
       ctx.textBaseline = 'top'
       # for value, index in gon.robots
@@ -123,9 +123,24 @@ $ ->
         ctx.lineWidth = 0.5
         ctx.drawRoundRect(100, 100 + index * 26 - 2, 400, 22, 4)
         # ctx.drawText(gon.campuses[index].abbreviation + value.team + ' ' + value.name,
-        ctx.drawText(gon.entries[index],
+        ctx.drawText(gon.entries[index][1],
           300, 100 + index * 26)
-      ctx.drawImg('/assets/crown_width_50px.png', 900, 325)
-      # for value_i, index_i in gon.arr
-      #   for value_j, index_j in value_i
-      #     ctx.drawText(value_j, 700 + index_j * 20, 100 + index_i * 24)
+      ctx.drawImg('/assets/crown_width_50px.png', 950, 325)
+      ctx.lineWidth = 1
+      o_y = 9
+      width = 75
+      for vi, ii in gon.lines
+        # break if ii > 1
+        for vj, ij in vi
+          if ii > 0 and gon.lines[ii - 1][ij] == 2
+            o_xi = 1
+          else
+            o_xi = 0
+          switch vj
+            when 0
+              ctx.strokeStyle = 'black'
+              ctx.drawLine(500 + width * (ii - o_xi), 100 + (ij) * 26 + o_y, 500 + width * (ii + 1), 100 + (ij) * 26 + o_y)
+            when 1
+              ctx.strokeStyle = 'red'
+              ctx.drawLine(500 + width * (ii - o_xi), 100 + (ij) * 26 + o_y, 500 + width * (ii + 1), 100 + (ij) * 26 + o_y)
+            else
