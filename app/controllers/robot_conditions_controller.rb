@@ -40,11 +40,7 @@ class RobotConditionsController < ApplicationController
     respond_to do |format|
       format.csv do
         @conditions = RobotCondition.all.order("robot_code ASC")
-        send_data @conditions.to_a.to_csv(
-          :only => RobotCondition.csv_column_syms,
-          :header => true,
-          :header_columns => RobotCondition.csv_headers
-        )
+        send_data @conditions.to_csv
       end
       format.pdf do
         @conditions =  RobotCondition.all.includes(

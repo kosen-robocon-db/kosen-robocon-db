@@ -73,11 +73,7 @@ class GamesController < ApplicationController
   def index
     @games = Game.all
     respond_to do |format|
-      format.csv { send_data @games.to_a.to_csv(
-        :only => Game.csv_column_syms,
-        :header => true,
-        :header_columns => Game.csv_headers
-      ) }
+      format.csv { send_data @games.to_csv }
     end
   end
 

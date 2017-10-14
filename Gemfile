@@ -49,7 +49,7 @@ gem 'jquery-turbolinks'
 gem 'nested_form_fields'
 
 # CSV Download
-gem 'to_csv-rails'
+# gem 'to_csv-rails'
 
 # Javascript/Coffeescript 拡張用
 gem 'gon'

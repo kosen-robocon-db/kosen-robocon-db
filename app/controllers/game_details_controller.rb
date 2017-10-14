@@ -7,11 +7,7 @@ class GameDetailsController < ApplicationController
       end
       format.csv do
         @game_details.each { |i| i.properties.gsub!( /\"/, "\"\"" ) }
-        send_data @game_details.to_a.to_csv(
-          :only => GameDetail.csv_column_syms,
-          :header => true,
-          :header_columns => GameDetail.csv_headers
-        )
+        send_data @game_details.to_csv
       end
     end
   end

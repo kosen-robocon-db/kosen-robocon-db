@@ -213,7 +213,6 @@ GEM
     thor (0.19.4)
     thread_safe (0.3.5)
     tilt (2.0.5)
-    to_csv-rails (0.1.5)
     ttfunk (1.5.1)
     turbolinks (5.0.1)
       turbolinks-source (~> 5)
@@ -270,7 +269,6 @@ DEPENDENCIES
   sqlite3
   squasher (>= 0.6.0)
   therubyracer
-  to_csv-rails
   turbolinks (~> 5)
   uglifier (>= 1.3.0)
   unindent
