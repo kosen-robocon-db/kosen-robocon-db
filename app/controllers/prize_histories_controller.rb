@@ -45,7 +45,7 @@ class PrizeHistoriesController < ApplicationController
   end
 
   def index
-    @prize_histories = PrizeHistory.all
+    @prize_histories = PrizeHistory.all.order_default
     respond_to do |format|
       format.csv { send_data @prize_histories.to_csv }
     end
