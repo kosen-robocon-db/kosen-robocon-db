@@ -49,7 +49,7 @@ gem 'jquery-turbolinks'
 gem 'nested_form_fields'
 
 # CSV Download
-gem 'to_csv-rails'
+# gem 'to_csv-rails'
 
 # Javascript/Coffeescript 拡張用
 gem 'gon'
@@ -68,9 +68,11 @@ gem 'unindent'
 gem 'rubytree'
 
 # 開発作業用ツール
-# ERD出力
 group :tools do
   # gem 'rails-erd', group: [:development, :test]
+  # ERD出力
   gem 'rails-erd'
+
+  # マイグレーションファイルをinit_schemaに纏めるツール
   gem 'squasher', '>= 0.6.0'
 end

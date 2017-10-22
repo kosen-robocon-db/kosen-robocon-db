@@ -25,14 +25,9 @@ class RobotsController < ApplicationController
   end
 
   def index
-    @robots = Robot.all
+    @robots = Robot.all.order_default
     respond_to do |format|
-      format.csv { send_data @robots.to_csv(
-        :only => Robot.csv_column_syms,
-        :header => true,
-        :header_columns => Robot.csv_headers,
-        :force_quotes => true
-      ) }
+      format.csv { send_data @robots.to_csv }
     end
   end
 

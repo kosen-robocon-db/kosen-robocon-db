@@ -11,7 +11,13 @@ class PrizeHistory < ApplicationRecord
   validates :robot_code,  presence: true
   validates :prize_kind,  presence: true
 
-  scope :order_default, -> { order("contest_nth asc") }
+  scope :order_default, -> { order(
+    contest_nth: :asc,
+    region_code: :desc,
+    campus_code: :asc,
+    prize_kind: :asc
+  ) }
+
 
   def self.csv_headers
     # UTF-8出力される
