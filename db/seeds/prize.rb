@@ -19,6 +19,7 @@ bulk_insert_data << Prize.new(kind: 17, name: "デザイン賞")
 bulk_insert_data << Prize.new(kind: 21, name: "完全燃賞")
 bulk_insert_data << Prize.new(kind: 22, name: "優秀賞")
 bulk_insert_data << Prize.new(kind: 23, name: "パフォーマンス賞")
+bulk_insert_data << Prize.new(kind: 24, name: "審査員賞") # 2000年第13回九州地区など
 
 # その他の賞
 bulk_insert_data << Prize.new(kind: 31, name: "応援団賞")
