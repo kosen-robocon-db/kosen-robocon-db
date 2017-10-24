@@ -41,6 +41,8 @@ bulk_insert_data << Prize.new(kind: 51, name: "特別賞")
 bulk_insert_data << Prize.new(kind: 52, name: "省エネルギーセンター賞")
 bulk_insert_data << Prize.new(kind: 53, name: "電気事業連合会賞")
 bulk_insert_data << Prize.new(kind: 54, name: "NECグループ賞") # 地区大会
+bulk_insert_data << Prize.new(kind: 55, name: "審査員特別賞")
+  # 審査員賞と同じものであるが、呼称が異なり、「特別」とあるので、特別賞に包含
 
 # 特別賞（電力会社以外）
 bulk_insert_data << Prize.new(kind: 61, name: "特別賞（本田技研工業株式会社）")
