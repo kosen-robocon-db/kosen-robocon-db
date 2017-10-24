@@ -13,8 +13,8 @@ class PrizeHistory < ApplicationRecord
 
   scope :order_default, -> { order(
     contest_nth: :asc,
+    robot_code: :asc,
     region_code: :desc,
-    campus_code: :asc,
     prize_kind: :asc
   ) }
 
