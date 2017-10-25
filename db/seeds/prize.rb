@@ -63,5 +63,6 @@ bulk_insert_data << Prize.new(kind: 75, name: "特別賞（関西電力株式会
 bulk_insert_data << Prize.new(kind: 76, name: "特別賞（中国電力株式会社）")
 bulk_insert_data << Prize.new(kind: 77, name: "特別賞（四国電力株式会社）")
 bulk_insert_data << Prize.new(kind: 78, name: "特別賞（九州・沖縄電力株式会社）")
+bulk_insert_data << Prize.new(kind: 79, name: "特別賞（九州電力株式会社）")
 
 Prize.import bulk_insert_data
