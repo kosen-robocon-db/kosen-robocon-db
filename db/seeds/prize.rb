@@ -19,6 +19,7 @@ bulk_insert_data << Prize.new(kind: 17, name: "デザイン賞")
 bulk_insert_data << Prize.new(kind: 21, name: "完全燃賞")
 bulk_insert_data << Prize.new(kind: 22, name: "優秀賞")
 bulk_insert_data << Prize.new(kind: 23, name: "パフォーマンス賞")
+bulk_insert_data << Prize.new(kind: 24, name: "審査員賞") # 2000年第13回九州地区など
 
 # その他の賞
 bulk_insert_data << Prize.new(kind: 31, name: "応援団賞")
@@ -40,6 +41,8 @@ bulk_insert_data << Prize.new(kind: 51, name: "特別賞")
 bulk_insert_data << Prize.new(kind: 52, name: "省エネルギーセンター賞")
 bulk_insert_data << Prize.new(kind: 53, name: "電気事業連合会賞")
 bulk_insert_data << Prize.new(kind: 54, name: "NECグループ賞") # 地区大会
+bulk_insert_data << Prize.new(kind: 55, name: "審査員特別賞")
+  # 審査員賞と同じものであるが、呼称が異なり、「特別」とあるので、特別賞に包含
 
 # 特別賞（電力会社以外）
 bulk_insert_data << Prize.new(kind: 61, name: "特別賞（本田技研工業株式会社）")
@@ -60,5 +63,6 @@ bulk_insert_data << Prize.new(kind: 75, name: "特別賞（関西電力株式会
 bulk_insert_data << Prize.new(kind: 76, name: "特別賞（中国電力株式会社）")
 bulk_insert_data << Prize.new(kind: 77, name: "特別賞（四国電力株式会社）")
 bulk_insert_data << Prize.new(kind: 78, name: "特別賞（九州・沖縄電力株式会社）")
+bulk_insert_data << Prize.new(kind: 79, name: "特別賞（九州電力株式会社）")
 
 Prize.import bulk_insert_data
