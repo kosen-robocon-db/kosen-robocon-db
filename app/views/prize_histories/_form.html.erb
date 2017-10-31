@@ -5,7 +5,8 @@
     <%= f.label :region_code, "地区" %><br />
     <%= f.collection_select :region_code, @regions, :code, :name %><br /><br />
     <%= f.label :prize_kind, "賞種類" %><br />
-    <%= f.collection_select :prize_kind, Prize.all, :kind, :name %><br /><br />
+    <%= f.collection_select :prize_kind, Prize.all, :kind,
+      :name %><br /><br />
     <%= f.submit button_label, class: "btn btn-primary",
       data: { disable_with: '処理中・・・' } %><br /><br />
   <% end %>
