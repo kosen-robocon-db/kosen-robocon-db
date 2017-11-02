@@ -10,6 +10,7 @@ ContestEntry.delete_all
 Contest.delete_all
 Campus.delete_all
 Region.delete_all
+Advancement.delete_all
 
 # ファイル名の先頭で読み込み順を与える場合には
 # db/seedsディレクトリ中のファイルをグロービングさせるコードを利用。
@@ -30,3 +31,4 @@ load(File.join(Rails.root, 'db', 'seeds', 'game_detail.rb'))
 load(File.join(Rails.root, 'db', 'seeds', 'prize.rb'))
 load(File.join(Rails.root, 'db', 'seeds', 'prize_history.rb'))
 load(File.join(Rails.root, 'db', 'seeds', 'robot_condition.rb'))
+load(File.join(Rails.root, 'db', 'seeds', 'advancement.rb'))

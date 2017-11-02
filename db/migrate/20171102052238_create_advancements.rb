@@ -7,5 +7,6 @@ class CreateAdvancements < ActiveRecord::Migration[5.0]
 
       t.timestamps
     end
+    add_index :advancements, [:case], unique: true
   end
 end
