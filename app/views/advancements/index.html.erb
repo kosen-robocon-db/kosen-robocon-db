@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Advancements</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Robot code</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @advancements.each do |advancement| %>
+      <tr>
+        <td><%= advancement.robot_code %></td>
+        <td><%= link_to 'Show', advancement %></td>
+        <td><%= link_to 'Edit', edit_advancement_path(advancement) %></td>
+        <td><%= link_to 'Destroy', advancement, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Advancement', new_advancement_path %>
