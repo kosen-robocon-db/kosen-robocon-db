@@ -1,1 +1,0 @@
-json.partial! "advancements/advancement", advancement: @advancement

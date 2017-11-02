@@ -10,20 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171101233654) do
-
-  create_table "advancements", force: :cascade do |t|
-    t.integer  "contest_nth", null: false
-    t.integer  "region_code", null: false
-    t.integer  "campus_code", null: false
-    t.integer  "robot_code",  null: false
-    t.integer  "reason_code", null: false
-    t.boolean  "decline",     null: false
-    t.string   "memo"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.index ["robot_code"], name: "index_advancements_on_robot_code", unique: true
-  end
+ActiveRecord::Schema.define(version: 20170402003007) do
 
   create_table "campus_histories", force: :cascade do |t|
     t.integer  "campus_code",  null: false

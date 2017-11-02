@@ -24,14 +24,12 @@ Rails.application.routes.draw do
     resource  :robot_conditions, only: [:new, :create, :edit, :update, :destroy]
     resources :prize_histories,  only: [:new, :create, :edit, :update, :destroy]
     resources :games, only: [:new, :create, :edit, :update, :destroy], param: :code
-    resources :advancements, only: [:new, :create, :edit, :update, :destroy]
   end
   resources :robots, only: :index
   resources :robot_conditions, only: :index
   resources :games, only: :index
   resources :game_details, only: :index
   resources :prize_histories, only: :index
-  resources :advancements, only: :index
 
   get 'draw_bracket', to: 'games#draw_bracket'
 

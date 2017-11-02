@@ -1,2 +1,0 @@
-class Advancement < ApplicationRecord
-end
