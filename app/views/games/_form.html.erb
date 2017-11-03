@@ -19,7 +19,7 @@
 
     <%= f.label :opponent_robot_code, "対戦相手" %>:
     <% robots_array = Robot.where(contest_nth: @game.contest_nth).
-      includes(:campus).map{ |i| [
+      includes(:campus).order("robots.code").map{ |i| [
         i.campus.abbreviation.to_s.ljust(5, "　")+i.name, i.code] } %>
     <%= f.select :opponent_robot_code, robots_array %><br />
 

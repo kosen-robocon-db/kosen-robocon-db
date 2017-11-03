@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Advancement Histories</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Robot code</th>
+      <th>Case code</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @advancement_histories.each do |advancement_history| %>
+      <tr>
+        <td><%= advancement_history.robot_code %></td>
+        <td><%= advancement_history.advancement_code %></td>
+        <td><%= link_to 'Show', advancement_history %></td>
+        <td><%= link_to 'Edit', edit_advancement_history_path(advancement_history) %></td>
+        <td><%= link_to 'Destroy', advancement_history, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Advancement History', new_advancement_history_path %>
