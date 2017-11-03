@@ -1,0 +1,7 @@
+<% provide(:title, "全国大会進出情報の新規作成") %>
+
+<%= render "shared/title", title: (yield :title) %>
+
+<h4>ロボット名：<%= @robot.name %></h4><br>
+
+<%= render "form", robot: @robot, action: :create, button_label: "新規作成" %>

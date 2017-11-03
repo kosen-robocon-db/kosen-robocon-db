@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="col-lg-12">
+    <%= form_for robot.advancement_history || AdvancementHistory.new(robot_code: robot.code),
+      :url=>{:action => action} do |f| %>
+
+      <%= render 'shared/error_messages', obj: robot %>
+
+      <%= f.label "進出ケース" %>：
+      <%=
+        f.collection_select :advancement_case, Advancement.all, :case, :case_name
+      %>
+      <br /><br />
+
+      <%= f.label "辞退" %>：
+      <%= f.check_box :decline, {}, "true", "false" %><br />
+
+      <%= f.label "特記事項" %>：
+      <%= f.text_field :memo, class: 'form-control' %><br />
+
+      <%= f.submit button_label, class: "btn btn-primary",
+        data: { disable_with: '処理中・・・' } %><br /><br />
+    <% end %>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <p><%= link_to fa_icon("chevron-left", text: "前へ戻る"), robot_path(robot.code) %></p>
+  </div>
+</div>

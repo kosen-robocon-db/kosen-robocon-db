@@ -1,10 +1,11 @@
 class Robot < ApplicationRecord
-  belongs_to :contest,         foreign_key: :contest_nth, primary_key: :nth
-  belongs_to :campus,          foreign_key: :campus_code, primary_key: :code
-  has_one    :robot_condition, foreign_key: :robot_code,  primary_key: :code
-  has_many   :prize_histories, foreign_key: :robot_code,  primary_key: :code,
+  belongs_to :contest,             foreign_key: :contest_nth, primary_key: :nth
+  belongs_to :campus,              foreign_key: :campus_code, primary_key: :code
+  has_one    :robot_condition,     foreign_key: :robot_code,  primary_key: :code
+  has_many   :prize_histories,     foreign_key: :robot_code,  primary_key: :code,
     dependent: :destroy
   #accepts_nested_attributes_for :prize_histories
+  has_one    :advancement_history, foreign_key: :robot_code,  primary_key: :code
 
   #==validates
 
