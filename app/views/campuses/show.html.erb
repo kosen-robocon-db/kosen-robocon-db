@@ -17,6 +17,9 @@
 
 <%= render "prize_histories/prize_histories", prize_histories: @prize_histories %>
 
+<%= render "advancement_histories/advancement_histories",
+  advancement_histories: @advancement_histories %>
+
 <div class="row">
   <div class="col-lg-12">
     <%= will_paginate @robots, inner_window: 2, outer_window: 0  %>
