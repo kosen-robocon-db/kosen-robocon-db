@@ -131,6 +131,7 @@
 
 <div class="row">
   <div class="col-lg-12">
+    <h4>現存情報</h4>
     <% if !@robot.robot_condition.blank? then %>
     <div align="right">
       <%= link_to fa_icon("pencil-square", text:"編集"), edit_robot_robot_conditions_path(@robot.code) %>
