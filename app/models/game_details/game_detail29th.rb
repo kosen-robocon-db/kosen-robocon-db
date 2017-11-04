@@ -12,10 +12,10 @@ class GameDetail29th < GameDetail
   # validates :judge,             inclusion: { in: ["true", "false"] }
   with_options if: :judge do
     validates :judge_to_me,       numericality: {
-      only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 3
+      only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 5
     }
     validates :judge_to_opponent, numericality: {
-      only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 3
+      only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 5
     }
   end
   with_options if: :progress do
