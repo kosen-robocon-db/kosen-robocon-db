@@ -11,4 +11,7 @@ bulk_insert_data << Advancement.new(case: 4, case_name: "辞退由来の繰り�
   description: "他チーム辞退により繰り上がりで推薦されたロボットまたはチーム")
   # It's a rare case.
 
+bulk_insert_data << Advancement.new(case: 10, case_name: "エキシビジョン試合参加依頼",
+    description: "トーナメントには参加できないが全国大会でも披露されるべきと判断されたロボットまたはチーム")
+  # コードを
 Advancement.import bulk_insert_data
