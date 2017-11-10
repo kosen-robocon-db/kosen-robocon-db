@@ -76,3 +76,6 @@ group :tools do
   # マイグレーションファイルをinit_schemaに纏めるツール
   gem 'squasher', '>= 0.6.0'
 end
+
+# 運用向けツール
+gem 'addressable'
