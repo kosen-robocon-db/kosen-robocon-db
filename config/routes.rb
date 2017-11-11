@@ -13,7 +13,9 @@ Rails.application.routes.draw do
   end
 
   resources :campuses, only: [:index, :show], param: :code
-  resources :contests, only: [:index, :show], param: :nth
+  resources :contests, only: [:index, :show], param: :nth do
+    resources :prize_histories, only: [:show], param: :region_code
+  end
   # resources :contest_entries, only: [:index]
   resource :statistics, except: [:index, :show, :new, :create, :edit, :update, :destroy] do
     member do

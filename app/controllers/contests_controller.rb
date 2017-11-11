@@ -6,5 +6,6 @@ class ContestsController < ApplicationController
   def show
     @contest = Contest.find_by(nth: params[:nth])
     @robots = @contest.robots.includes(:campus).order_default.on_page(params[:page])
+    @regions = Region.where("code <= 8")
   end
 end
