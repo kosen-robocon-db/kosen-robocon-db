@@ -5,6 +5,8 @@ class RobotCondition < ApplicationRecord
   validates :fully_operational, inclusion: { in: [true, false] }
   validates :restoration,       inclusion: { in: [true, false] }
 
+  scope :order_csv, -> { order(robot_code: :asc) }
+
   def to_key
     ["#{robot_code}"]
   end

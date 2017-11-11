@@ -19,6 +19,8 @@ class Game < ApplicationRecord
   attr_accessor :robot_code, :opponent_robot_code, :victory
   validates :victory, inclusion: { in: ["true", "false"] }
 
+  scope :order_csv, -> { order(id: :asc) }
+
   def self.confirm_or_associate(game_details_sub_class_sym:)
     sym = game_details_sub_class_sym # 変数名が長すぎるのでコピー
     if self.reflect_on_all_associations(:has_many).none? { |i| i.name == sym }

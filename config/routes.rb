@@ -32,6 +32,7 @@ Rails.application.routes.draw do
   resources :game_details, only: :index
   resources :prize_histories, only: :index
   resources :advancement_histories, only: :index
+  resources :download, only: :index
 
   get 'draw_bracket', to: 'games#draw_bracket'
 
