@@ -39,6 +39,18 @@ class GameDetail29th < GameDetail
   # SRP(Single Responsibility Principle, 単一責任原則)に従っていないが
   # このクラス内で実装する。
   def self.compose_properties(hash:)
+
+    # 高さまたは審査委員判定より、値をそのままか交換を決定（優勢な方を先に配置）
+    if hash[:my_height] < hash[:opponent_height] ||
+      hash[:judge_to_me] < hash[:judge_to_opponent] then
+      hash[:my_height], hash[:opponent_height] =
+        hash[:opponent_height], hash[:my_height]
+      hash[:judge_to_me], hash[:judge_to_opponent] =
+        hash[:judge_to_opponent], hash[:judge_to_me]
+      hash[:my_progress], hash[:opponent_progress] =
+        hash[:opponent_progress], hash[:my_progress]
+    end
+
     a = []
     a.push(%Q["score":"#{hash[:my_height]}-#{hash[:opponent_height]}"]) if
       not hash[:my_height].blank? and not hash[:opponent_height].blank?
@@ -56,8 +68,7 @@ class GameDetail29th < GameDetail
 
   # SRP(Single Responsibility Principle, 単一責任原則)に従っていないが
   # このクラス内で実装する。
-  def decompose_properties
-    logger.debug(">>>> porperties: #{self.properties}")
+  def decompose_properties(victory)
     h = JSON.parse(self.properties)
     self.my_height =
       h["score"].to_s.split(/-/)[0] if not h["score"].blank?
@@ -73,5 +84,26 @@ class GameDetail29th < GameDetail
       h["progress"].to_s.split(/-/)[0] if not h["progress"].blank?
     self.opponent_progress =
       h["progress"].to_s.split(/-/)[1] if not h["progress"].blank?
+
+    # 勝敗と高さまたは審査委員判定より、値をそのままか交換を決定
+    case victory
+    when "true"
+      swap_properties if self.my_height < self.opponent_height ||
+        self.judge_to_me < self.judge_to_opponent
+    when "false"
+      swap_properties if self.my_height > self.opponent_height ||
+        self.judge_to_me > self.judge_to_opponent
+    end
+  end
+
+  private
+
+  def swap_properties
+    self.my_height, self.opponent_height =
+      self.opponent_height, self.my_height
+    self.judge_to_me, self.judge_to_opponent =
+      self.judge_to_opponent, self.judge_to_me
+    self.my_progress, self.opponent_progress =
+      self.opponent_progress, self.my_progress
   end
 end
