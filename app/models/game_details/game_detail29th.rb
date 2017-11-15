@@ -70,20 +70,15 @@ class GameDetail29th < GameDetail
   # このクラス内で実装する。
   def decompose_properties(victory)
     h = JSON.parse(self.properties)
-    self.my_height =
-      h["score"].to_s.split(/-/)[0] if not h["score"].blank?
-    self.opponent_height =
-      h["score"].to_s.split(/-/)[1] if not h["score"].blank?
+
+    self.my_height, self.opponent_height =
+      h["score"].to_s.split(/-/) if not h["score"].blank?
     self.judge = h["judge"].blank? ? false : true
-    self.judge_to_me =
-      h["judge"].to_s.split(/-/)[0] if not h["judge"].blank?
-    self.judge_to_opponent =
-      h["judge"].to_s.split(/-/)[1] if not h["judge"].blank?
+    self.judge_to_me, self.judge_to_opponent =
+      h["judge"].to_s.split(/-/) if not h["judge"].blank?
     self.progress = h["progress"].blank? ? false : true
-    self.my_progress =
-      h["progress"].to_s.split(/-/)[0] if not h["progress"].blank?
-    self.opponent_progress =
-      h["progress"].to_s.split(/-/)[1] if not h["progress"].blank?
+    self.my_progress, self.opponent_progress =
+      h["progress"].to_s.split(/-/) if not h["progress"].blank?
 
     # 勝敗と高さまたは審査委員判定より、値をそのままか交換を決定
     case victory
