@@ -28,6 +28,17 @@
 
 <div class="row">
   <div class="col-lg-12">
+    <div class="pull-left">
+      <p><%= link_to_prior_contest params[:nth] %></p>
+    </div>
+    <div class="pull-right">
+      <p><%= link_to_posterior_contest params[:nth] %></p>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
     <%= will_paginate @robots, inner_window: 2, outer_window: 0  %>
   </div>
 </div>
@@ -61,6 +72,17 @@
 <div class="row">
   <div class="col-lg-12">
     <%= will_paginate @robots, inner_window: 2, outer_window: 0  %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="pull-left">
+      <p><%= link_to_prior_contest params[:nth] %></p>
+    </div>
+    <div class="pull-right">
+      <p><%= link_to_posterior_contest params[:nth] %></p>
+    </div>
   </div>
 </div>
 
