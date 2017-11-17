@@ -5,10 +5,12 @@
 <div class="row">
   <div class="col-lg-12">
     <div class="pull-left">
-      <p><%= link_to_prior_page params[:contest_nth], params[:region_code] %></p>
+      <p><%= link_to_prior_prize_history params[:contest_nth],
+        params[:region_code] %></p>
     </div>
     <div class="pull-right">
-      <p><%= link_to_posterior_page params[:contest_nth], params[:region_code] %></p>
+      <p><%= link_to_posterior_prize_history params[:contest_nth],
+        params[:region_code] %></p>
     </div>
   </div>
 </div>
