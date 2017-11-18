@@ -15,6 +15,8 @@ class GamesController < ApplicationController
       @game.send(@gd_sym).new(judge: false, progress: false)
         # 審査員判定および課題進捗度チェックボックスを外しておく
         # 将来的にモデル内で処理
+    when 30 then
+      @game.send(@gd_sym).new(judge: false)
     end
     gon.contest_nth = @robot.contest_nth
     @regions = Region.where(code: [ 0, @robot.campus.region_code ])

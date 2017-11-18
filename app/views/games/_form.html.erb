@@ -30,8 +30,8 @@
     <br />
 
     <% case @robot.contest_nth %>
-    <%# 第29回大会のみ実装 %>
-    <% when 29 then %>
+    <%# 第29-30回大会のみ実装 %>
+    <% when 29, 30 then %>
     <div class="enclosure">
       <%= f.label @gd_sym, "試合詳細" %>
       <%= f.nested_fields_for @gd_sym, wrapper_tag: :div do |detail| %>
