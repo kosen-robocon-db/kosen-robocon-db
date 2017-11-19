@@ -29,20 +29,20 @@ $ ->
   $('form').on 'fields_removed.nested_form_fields', (event, param) ->
     replay_labels()
 
-  # when judge/progress cheched/unchecked
+  # when jury/progress cheched/unchecked
   switch gon.contest_nth
     when 29
       $('form').on 'change', (event) ->
-        if /^game_game_detail29ths_attributes_\d+_judge$/.test(event.target.id)
+        if /^game_game_detail29ths_attributes_\d+_jury$/.test(event.target.id)
           i = event.target.id.match(/_\d+_/)[0].replace(/_/g, '')
-          if $('#game_game_detail29ths_attributes_' + i + '_judge')[0].checked
-            $('.judge_score_' + i).toggleClass('hidden')
+          if $('#game_game_detail29ths_attributes_' + i + '_jury')[0].checked
+            $('.jury_votes_' + i).toggleClass('hidden')
           else
-            $('.judge_score_' + i).toggleClass('hidden')
+            $('.jury_votes_' + i).toggleClass('hidden')
             $('#game_game_detail29ths_attributes_' + i +
-              '_judge_to_me').val('')
+              '_my_jury_votes').val('')
             $('#game_game_detail29ths_attributes_' + i +
-              '_judge_to_opponent').val('')
+              '_opponent_jury_voites').val('')
         if /^game_game_detail29ths_attributes_\d+_progress$/.test(event.target.id)
           i = event.target.id.match(/_\d+_/)[0].replace(/_/g, '')
           if $('#game_game_detail29ths_attributes_' + i + '_progress')[0].checked
@@ -55,16 +55,16 @@ $ ->
               '_opponent_progress').val('')
     when 30
       $('form').on 'change', (event) ->
-        if /^game_game_detail30ths_attributes_\d+_judge$/.test(event.target.id)
+        if /^game_game_detail30ths_attributes_\d+_jury$/.test(event.target.id)
           i = event.target.id.match(/_\d+_/)[0].replace(/_/g, '')
-          if $('#game_game_detail30ths_attributes_' + i + '_judge')[0].checked
-            $('.judge_score_' + i).toggleClass('hidden')
+          if $('#game_game_detail30ths_attributes_' + i + '_jury')[0].checked
+            $('.jury_votes_' + i).toggleClass('hidden')
           else
-            $('.judge_score_' + i).toggleClass('hidden')
+            $('.jury_votes_' + i).toggleClass('hidden')
             $('#game_game_detail30ths_attributes_' + i +
-              '_judge_to_me').val('')
+              '_my_jury_votes').val('')
             $('#game_game_detail30ths_attributes_' + i +
-              '_judge_to_opponent').val('')
+              '_opponent_jury_votes').val('')
 
 ################################################################################
 

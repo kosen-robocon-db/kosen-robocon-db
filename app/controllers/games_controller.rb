@@ -12,11 +12,11 @@ class GamesController < ApplicationController
     case @robot.contest_nth
       # GameDetail サブクラスのインスタンス生成
     when 29 then
-      @game.send(@gd_sym).new(judge: false, progress: false)
+      @game.send(@gd_sym).new(jury: false, progress: false)
         # 審査員判定および課題進捗度チェックボックスを外しておく
         # 将来的にモデル内で処理
     when 30 then
-      @game.send(@gd_sym).new(judge: false)
+      @game.send(@gd_sym).new(jury: false)
     end
     gon.contest_nth = @robot.contest_nth
     @regions = Region.where(code: [ 0, @robot.campus.region_code ])
