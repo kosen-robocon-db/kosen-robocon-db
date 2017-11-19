@@ -15,6 +15,8 @@ class GamesController < ApplicationController
       @game.send(@gd_sym).new(judge: false, progress: false)
         # 審査員判定および課題進捗度チェックボックスを外しておく
         # 将来的にモデル内で処理
+    when 30 then
+      @game.send(@gd_sym).new(judge: false)
     end
     gon.contest_nth = @robot.contest_nth
     @regions = Region.where(code: [ 0, @robot.campus.region_code ])
@@ -44,7 +46,7 @@ class GamesController < ApplicationController
     Game.confirm_or_associate(game_details_sub_class_sym: @gd_sym)
     @game = Game.find_by(code: params[:code])
     @game.subjective_view_by(robot_code: @robot.code)
-    @game.send(@gd_sym).each { |i| i.decompose_properties }
+    @game.send(@gd_sym).each { |i| i.decompose_properties(@game.victory) }
     gon.contest_nth = @robot.contest_nth
     @regions = Region.where(code: [ 0, @robot.campus.region_code ])
   end
@@ -86,22 +88,39 @@ class GamesController < ApplicationController
     gon.games = games
     bracket = SingleElimination.new(games: games, robots: robots)
     gon.entries = bracket.entries
-    # bracket.lines
-    gon.lines = [ # 0:負け 1:勝ち 2:スルー 3:データなし
+    # gon.lines = [ # 0:データなし 1:勝ち 2:負け 3:スルー
+    #   [ # １回戦
+    #     3, 3, 3, 1, 2, 3, 3, 3, 1, 2, 3, 3, 3, 1, 2, 3, 3, 3, 1, 2
+    #   ],
+    #   [ # ２回戦
+    #     2, 1, 2, 1, 0, 1, 2, 1, 2, 0, 1, 2, 2, 1, 0, 1, 2, 1, 2, 0
+    #   ],
+    #   [ # ３回戦
+    #     0, 2, 0, 1, 0, 2, 0, 1, 0, 0, 1, 0, 0, 2, 0, 1, 0, 2, 0, 0
+    #   ],
+    #   [ # 準決勝
+    #     0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0
+    #   ],
+    #   [ # 決勝
+    #     0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0
+    #   ]
+    # ]
+    gon.line_pairs = [
       [ # １回戦
-        2, 2, 2, 1, 0, 2, 2, 2, 1, 0, 2, 2, 2, 1, 0, 2, 2, 2, 1, 0
+        [3, 4, 3], [8, 9, 8], [13, 14, 13], [18, 19, 18]
       ],
       [ # ２回戦
-        0, 1, 0, 1, 3, 1, 0, 1, 0, 3, 1, 0, 0, 1, 3, 1, 0, 1, 0, 3
+        [0, 1, 1], [2, 3, 3], [7, 8, 7], [5, 6, 5],
+        [10, 11, 10], [12, 13, 13], [15, 16, 16], [17, 18, 17]
       ],
       [ # ３回戦
-        3, 0, 3, 1, 3, 0, 3, 1, 3, 3, 1, 3, 3, 0, 3, 1, 3, 0, 3, 3
+        [1, 3, 3], [5, 7, 7], [10, 13, 10], [15, 17, 15]
       ],
       [ # 準決勝
-        3, 3, 3, 1, 3, 3, 3, 0, 3, 3, 1, 3, 3, 3, 3, 0, 3, 3, 3, 3
+        [3, 7, 3], [10, 15, 10]
       ],
       [ # 決勝
-        3, 3, 3, 1, 3, 3, 3, 3, 3, 3, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3
+        [3, 10, 3]
       ]
     ]
   end

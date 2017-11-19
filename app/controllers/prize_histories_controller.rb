@@ -3,13 +3,17 @@ class PrizeHistoriesController < ApplicationController
   before_action :admin_user, only: :index
 
   def show
-    region      = Region.find_by("code = ?", params[:region_code])
-    logger.debug(">>>> region.code: #{region.code}")
-    @tournament = region.code == 0 ? "#{region.name}大会" : "#{region.name}地区大会"
-    @results = PrizeHistory.where("contest_nth = ? and region_code = ? and prize_kind <= 4",
-      params[:contest_nth], params[:region_code]).order("prize_kind asc")
-    @prizes  = PrizeHistory.where("contest_nth = ? and region_code = ? and prize_kind >  4",
-      params[:contest_nth], params[:region_code]).order("prize_kind asc")
+    region = Region.find_by("code = ?", params[:region_code])
+    @tournament = region.code == 0 ?
+      "#{region.name}大会" : "#{region.name}地区大会"
+    @results = PrizeHistory.where(
+      "contest_nth = ? and region_code = ? and prize_kind <= 4",
+      params[:contest_nth], params[:region_code]).order("prize_kind asc"
+    )
+    @prizes  = PrizeHistory.where(
+      "contest_nth = ? and region_code = ? and prize_kind >  4",
+      params[:contest_nth], params[:region_code]).order("prize_kind asc"
+    )
   end
 
   def new

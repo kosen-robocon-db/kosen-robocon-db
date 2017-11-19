@@ -53,6 +53,20 @@ $ ->
               '_my_progress').val('')
             $('#game_game_detail29ths_attributes_' + i +
               '_opponent_progress').val('')
+    when 30
+      $('form').on 'change', (event) ->
+        if /^game_game_detail30ths_attributes_\d+_judge$/.test(event.target.id)
+          i = event.target.id.match(/_\d+_/)[0].replace(/_/g, '')
+          if $('#game_game_detail30ths_attributes_' + i + '_judge')[0].checked
+            $('.judge_score_' + i).toggleClass('hidden')
+          else
+            $('.judge_score_' + i).toggleClass('hidden')
+            $('#game_game_detail30ths_attributes_' + i +
+              '_judge_to_me').val('')
+            $('#game_game_detail30ths_attributes_' + i +
+              '_judge_to_opponent').val('')
+
+################################################################################
 
   $('canvas').each ->
     canvas = $('#draw_bracket')
@@ -106,41 +120,107 @@ $ ->
         @.closePath();
         @.stroke()
 
-      # ctx.fillStyle = 'white'
-      # ctx.fillRect(0, 0, 1000, 750) # 背景を白に
-      # ctx.putPoint(500, 500)
-      # ctx.drawLine(100, 50, 900, 700)
-      # ctx.drawText("ほげ", 700, 400)
-      # ctx.drawRect(500, 100, 100, 200)
-      # ctx.drawImg('http://yoppa.org/works/cuc/html5_logo.png', 0, 0)
+      # 基本設定
       ctx.lineWidth = 1
       ctx.fillStyle = 'black'
       ctx.font = "16px bold"
       ctx.textAlign = 'center'
       ctx.textBaseline = 'top'
-      # for value, index in gon.robots
+
+      # 基本の座標とサイズ
+      console.log("canvas width", canvas[0].width) # canvas[0].widthを利用
+      console.log("canvas height", canvas[0].height) # cvanvas[0].heightを利用
+      entry_attrs = { # graphic attributes
+        "lineWidth" : 0.5
+        "left" : 0
+        "width" : 400
+        "height" : 22
+        "roundRadius" : 4
+        "gap" : 4
+        "textTopOffset" : 2
+      }
+      entry_attrs["totalHeight"] = entry_attrs["height"] + entry_attrs["gap"]
+      entry_attrs["top"] =
+        (canvas[0].height - gon.entries.length * entry_attrs["totalHeight"]) / 2
+      crown_attrs = {
+        "width" : 50
+        "height" : 50
+        "left" : canvas[0].width - 50
+        "top" : ( canvas[0].height - 50 ) / 2
+      }
+      line_attrs = {
+        "hLength" : (canvas[0].width - entry_attrs.width - crown_attrs.width) /
+          gon.entries.length
+      }
+
+      # 描画デバッグのための中心線
+      ctx.drawLine(0, canvas[0].height / 2, canvas[0].width - 1, canvas[0].height / 2)
+
+      # エントリー
       for value, index in gon.entries
-        ctx.lineWidth = 0.5
-        ctx.drawRoundRect(100, 100 + index * 26 - 2, 400, 22, 4)
-        # ctx.drawText(gon.campuses[index].abbreviation + value.team + ' ' + value.name,
-        ctx.drawText(gon.entries[index][1],
-          300, 100 + index * 26)
-      ctx.drawImg('/assets/crown_width_50px.png', 950, 325)
+        ctx.lineWidth = entry_attrs.lineWidth
+        ctx.drawRoundRect(
+          entry_attrs.left,
+          entry_attrs.top + index * entry_attrs.totalHeight,
+          entry_attrs.width,
+          entry_attrs.height,
+          entry_attrs.roundRadius
+        )
+        ctx.drawText(
+          "#{index} #{gon.entries[index][1]}",
+          entry_attrs.left + entry_attrs.width / 2,
+          entry_attrs.top + index * entry_attrs.totalHeight +
+            entry_attrs.textTopOffset
+        )
+
+      # 王冠
+      ctx.drawImg(
+        '/assets/crown_width_50px.png',
+        crown_attrs.left,
+        crown_attrs.top
+      )
+
       ctx.lineWidth = 1
       o_y = 9
       width = 75
-      for vi, ii in gon.lines
-        # break if ii > 1
+      for vi, ii in gon.line_pairs
+        continue if ii < 2
         for vj, ij in vi
-          if ii > 0 and gon.lines[ii - 1][ij] == 2
-            o_xi = 1
-          else
-            o_xi = 0
-          switch vj
-            when 0
-              ctx.strokeStyle = 'black'
-              ctx.drawLine(500 + width * (ii - o_xi), 100 + (ij) * 26 + o_y, 500 + width * (ii + 1), 100 + (ij) * 26 + o_y)
-            when 1
-              ctx.strokeStyle = 'red'
-              ctx.drawLine(500 + width * (ii - o_xi), 100 + (ij) * 26 + o_y, 500 + width * (ii + 1), 100 + (ij) * 26 + o_y)
-            else
+          # console.log(vi, vj)
+          switch ii
+            when 0 # １回戦
+              # console.log("１回戦")
+              continue
+            when 1 # ２回戦
+              # console.log("２回戦")
+              continue
+            else   # ３回戦以降決勝まで
+              # console.log("３回戦以降")
+              for ik in [0, 1]
+                if vj[ik] == vj[2]
+                  ctx.strokeStyle = 'red'
+                else
+                  ctx.strokeStyle = 'black'
+                o_xi = 0
+                if vj[ik] < vj[1 - ik]
+                  vertical = 13
+                else
+                  vertical = -13
+                ctx.drawLine(
+                  500 + width * (ii - o_xi),
+                  100 + vj[ik] * 26 + o_y,
+                  500 + width * (ii + 1),
+                  100 + vj[ik] * 26 + o_y
+                )
+                ctx.drawLine(
+                  500 + width * (ii + 1),
+                  100 + vj[ik] * 26 + o_y,
+                  500 + width * (ii + 1),
+                  100 + vj[ik] * 26 + o_y + vertical
+                )
+                ctx.drawLine(
+                  500 + width * (ii - o_xi + 1),
+                  100 + vj[ik] * 26 + o_y + vertical,
+                  500 + width * (ii + 2),
+                  100 + vj[ik] * 26 + o_y + vertical
+                ) if vj[ik] == vj[2] # 勝利チームのみ描画
