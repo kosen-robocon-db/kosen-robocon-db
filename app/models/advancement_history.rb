@@ -14,6 +14,7 @@ class AdvancementHistory < ApplicationRecord
     campus_code: :asc,
     robot_code: :asc,
   ) }
+  scope :order_csv, -> { order(robot_code: :asc) }
 
   def self.csv_headers
     # UTF-8出力される

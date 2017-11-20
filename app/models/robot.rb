@@ -20,6 +20,7 @@ class Robot < ApplicationRecord
 
   scope :on_page, -> page { paginate(page: page, per_page: 60) }
   scope :order_default, -> { order("contest_nth asc, campus_code asc, team asc") }
+  scope :order_csv, -> { order(contest_nth: :asc, campus_code: :asc, team: :asc) }
 
   def self.team_choices
     [["分からないまたはAB区別なし",""],["Ａチーム","A"],["Ｂチーム","B"]]

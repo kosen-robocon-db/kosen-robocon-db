@@ -6,6 +6,7 @@ class GameDetail < ApplicationRecord
   # 更新時に number1 が削除された場合、number2 はそのまま DB に記録される。
   # 将来の機能によっては最初の大戦は全て'1'とするべきだろう。
   scope :order_default, -> { order("number asc") }
+  scope :order_csv, -> { order(id: :asc) }
 
   def self.attr_syms_for_params
     [ :id, :_destroy ]

@@ -17,7 +17,12 @@ class PrizeHistory < ApplicationRecord
     region_code: :desc,
     prize_kind: :asc
   ) }
-
+  scope :order_csv, -> { order(
+    contest_nth: :asc,
+    robot_code: :asc,
+    region_code: :desc,
+    prize_kind: :asc
+  ) }
 
   def self.csv_headers
     # UTF-8出力される
