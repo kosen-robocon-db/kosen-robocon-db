@@ -1,9 +1,9 @@
 require "csv"
-CSV_FILE_PATH = "db/seeds/csv/robot_conditions.csv"
+csv_file_path = "db/seeds/csv/robot_conditions.csv"
 bulk_insert_data = []
-if FileTest.exist?(CSV_FILE_PATH) then
+if FileTest.exist?(csv_file_path) then
   codes = {}
-  csv = CSV.read(CSV_FILE_PATH, headers: true)
+  csv = CSV.read(csv_file_path, headers: true)
   csv.each do |row|
     robot = Robot.find_by(code: row[0]) # 全チームのAB区別が判明次第無くす
     if robot then

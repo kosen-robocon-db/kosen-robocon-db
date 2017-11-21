@@ -1,8 +1,8 @@
 require "csv"
-CSV_FILE_PATH="db/seeds/csv/game_details.csv"
+csv_file_path = "db/seeds/csv/game_details.csv"
 bulk_insert_data = []
-if FileTest.exist?(CSV_FILE_PATH) then
-  csv = CSV.read(CSV_FILE_PATH, headers: true)
+if FileTest.exist?(csv_file_path) then
+  csv = CSV.read(csv_file_path, headers: true)
   csv.each do |row|
     bulk_insert_data << GameDetail.new(
       game_code:  row[0],

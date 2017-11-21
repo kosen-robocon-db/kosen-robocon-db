@@ -1,33 +1,8 @@
 require "csv"
-OLD_CSV_FILE_PATH="db/seeds/csv/games_old_style.csv"
-CSV_FILE_PATH="db/seeds/csv/games.csv"
+csv_file_path = "db/seeds/csv/games.csv"
 bulk_insert_data = []
-if FileTest.exist?(OLD_CSV_FILE_PATH) then
-  csv = CSV.read(OLD_CSV_FILE_PATH, headers: false)
-  csv.each do |row|
-    contest = Contest.find_by(code: row[0]) # contest_nth : 大会回
-    region = Region.find_by(code: row[1]) # region_code : 地区コード（0は全国）
-    round = row[2] # 何等かのチェックが必要？ # round : 回戦、game参照
-    game = row[3] # 何等かのチェックが必要？ # game : 試合、1回戦(round)第1試合(game)
-    left_robot = Robot.find_by(code: row[4]) # left_robot_code : 対戦した一方のチーム
-    right_robot = Robot.find_by(code: row[5]) # right_robot_code : 対戦したもう一方のチーム
-    winner_robot = Robot.find_by(code: row[6]) # winner_robot_code : 勝ったチーム
-    if contest && region && left_robot && right_robot && winner_robot then
-      code = "1" + ("%02d" % contest.nth) + region.code.to_s + round.to_s + ("%02d" % game) # code : 試合コード
-      bulk_insert_data << Game.new(
-        code: code.to_i,
-        contest_nth: row[0],
-        region_code: row[1],
-        round: row[2],
-        game: row[3],
-        left_robot_code: row[4],
-        right_robot_code: row[5],
-        winner_robot_code: row[6]
-      )
-    end
-  end
-elsif FileTest.exist?(CSV_FILE_PATH) then
-  csv = CSV.read(CSV_FILE_PATH, headers: true)
+if FileTest.exist?(csv_file_path) then
+  csv = CSV.read(csv_file_path, headers: true)
   csv.each do |row|
     bulk_insert_data << Game.new(
       code:              row[0],

@@ -1,9 +1,8 @@
-# ロボットコードに含まれるA/Bチームの情報が書き換えられたらこの情報も書き換える必要がある
 require "csv"
-CSV_FILE_PATH = "db/seeds/csv/advancement_histories.csv"
+csv_file_path = "db/seeds/csv/advancement_histories.csv"
 bulk_insert_data = []
-if FileTest.exist?(CSV_FILE_PATH) then
-  csv = CSV.read(CSV_FILE_PATH, headers: true)
+if FileTest.exist?(csv_file_path) then
+  csv = CSV.read(csv_file_path, headers: true)
   csv.each do |row|
     bulk_insert_data << AdvancementHistory.new(
       contest_nth:      row[0],
