@@ -1,7 +1,7 @@
 class GameDetail30th < GameDetail
   attr_accessor :my_robot_baloon, :opponent_robot_baloon,
    :my_base_baloon, :opponent_base_baloon,
-   :jury, :jury_to_me, :jury_to_opponent,
+   :jury, :my_jury_votes, :opponent_jury_votes,
    :time
 
   validates :my_robot_baloon, numericality: {
@@ -88,7 +88,7 @@ class GameDetail30th < GameDetail
     self.my_jury_votes, self.opponent_jury_votes =
       h["jury"].to_s.split(/-/) if not h["jury"].blank?
 
-    # 勝敗と高さまたは審査委員判定より、値をそのままか交換を決定
+    # 勝敗と高さまたは審査委員判定より、値をそのままか交換かを決定
     case victory
     when "true"
       swap_properties if self.my_robot_baloon < self.opponent_robot_baloon ||
@@ -114,7 +114,7 @@ class GameDetail30th < GameDetail
       self.opponent_robot_baloon, self.my_robot_baloon
     self.my_base_baloon, self.opponent_base_baloon =
       self.opponent_base_baloon, self.my_base_baloon
-    self.jury_to_me, self.jury_to_opponent =
-      self.jury_to_opponent, self.jury_to_me
+    self.my_jury_votes, self.opponent_jury_votes =
+      self.opponent_jury_votes, self.my_jury_votes
   end
 end
