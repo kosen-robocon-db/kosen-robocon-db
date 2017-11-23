@@ -53,7 +53,7 @@ class GameDetail29th < GameDetail
     end
 
     a = []
-    a.push(%Q["score":"#{hash[:my_height]}-#{hash[:opponent_height]}"]) if
+    a.push(%Q["height":"#{hash[:my_height]}-#{hash[:opponent_height]}"]) if
       not hash[:my_height].blank? and not hash[:opponent_height].blank?
     a.push(%Q["jury":"#{hash[:my_jury_votes]}-#{hash[:opponent_jury_votes]}"]) if
       not hash[:my_jury_votes].blank? and not hash[:opponent_jury_votes].blank?
@@ -73,7 +73,7 @@ class GameDetail29th < GameDetail
     h = JSON.parse(self.properties)
 
     self.my_height, self.opponent_height =
-      h["score"].to_s.split(/-/) if not h["score"].blank?
+      h["height"].to_s.split(/-/) if not h["height"].blank?
     self.jury = h["jury"].blank? ? false : true
     self.my_jury_votes, self.opponent_jury_votes =
       h["jury"].to_s.split(/-/) if not h["jury"].blank?
