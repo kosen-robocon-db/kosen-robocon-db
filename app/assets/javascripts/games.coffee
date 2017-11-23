@@ -29,20 +29,20 @@ $ ->
   $('form').on 'fields_removed.nested_form_fields', (event, param) ->
     replay_labels()
 
-  # when jury/progress cheched/unchecked
+  # when jury_votes/progress cheched/unchecked
   switch gon.contest_nth
     when 29
       $('form').on 'change', (event) ->
-        if /^game_game_detail29ths_attributes_\d+_jury$/.test(event.target.id)
+        if /^game_game_detail29ths_attributes_\d+_jury_votes$/.test(event.target.id)
           i = event.target.id.match(/_\d+_/)[0].replace(/_/g, '')
-          if $('#game_game_detail29ths_attributes_' + i + '_jury')[0].checked
+          if $('#game_game_detail29ths_attributes_' + i + '_jury_votes')[0].checked
             $('.jury_votes_' + i).toggleClass('hidden')
           else
             $('.jury_votes_' + i).toggleClass('hidden')
             $('#game_game_detail29ths_attributes_' + i +
               '_my_jury_votes').val('')
             $('#game_game_detail29ths_attributes_' + i +
-              '_opponent_jury_voites').val('')
+              '_opponent_jury_votes').val('')
         if /^game_game_detail29ths_attributes_\d+_progress$/.test(event.target.id)
           i = event.target.id.match(/_\d+_/)[0].replace(/_/g, '')
           if $('#game_game_detail29ths_attributes_' + i + '_progress')[0].checked
@@ -55,9 +55,9 @@ $ ->
               '_opponent_progress').val('')
     when 30
       $('form').on 'change', (event) ->
-        if /^game_game_detail30ths_attributes_\d+_jury$/.test(event.target.id)
+        if /^game_game_detail30ths_attributes_\d+_jur_votes$/.test(event.target.id)
           i = event.target.id.match(/_\d+_/)[0].replace(/_/g, '')
-          if $('#game_game_detail30ths_attributes_' + i + '_jury')[0].checked
+          if $('#game_game_detail30ths_attributes_' + i + '_jury_votes')[0].checked
             $('.jury_votes_' + i).toggleClass('hidden')
           else
             $('.jury_votes_' + i).toggleClass('hidden')

@@ -1,6 +1,6 @@
 class GameDetail29th < GameDetail
   attr_accessor :my_height, :opponent_height,
-    :jury, :my_jury_votes, :opponent_jury_votes,
+    :jury_votes, :my_jury_votes, :opponent_jury_votes,
     :progress, :my_progress, :opponent_progress
 
   validates :my_height,         numericality: {
@@ -9,8 +9,8 @@ class GameDetail29th < GameDetail
   validates :opponent_height,   numericality: {
     only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 1000
   }
-  # validates :jury,             inclusion: { in: ["true", "false"] }
-  with_options if: :jury do
+  # validates :jury_votes,             inclusion: { in: ["true", "false"] }
+  with_options if: :jury_votes do
     validates :my_jury_votes,       numericality: {
       only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 5
     }
@@ -26,7 +26,7 @@ class GameDetail29th < GameDetail
   def self.additional_attr_symbols
     [
       :my_height, :opponent_height,
-      :jury, :my_jury_votes, :opponent_jury_votes,
+      :jury_votes, :my_jury_votes, :opponent_jury_votes,
       :progress, :my_progress, :opponent_progress
     ]
   end
@@ -55,7 +55,7 @@ class GameDetail29th < GameDetail
     a = []
     a.push(%Q["height":"#{hash[:my_height]}-#{hash[:opponent_height]}"]) if
       not hash[:my_height].blank? and not hash[:opponent_height].blank?
-    a.push(%Q["jury":"#{hash[:my_jury_votes]}-#{hash[:opponent_jury_votes]}"]) if
+    a.push(%Q["jury_votes":"#{hash[:my_jury_votes]}-#{hash[:opponent_jury_votes]}"]) if
       not hash[:my_jury_votes].blank? and not hash[:opponent_jury_votes].blank?
     a.push(%Q["progress":"#{hash[:my_progress]}-#{hash[:opponent_progress]}"]) if
       not hash[:my_progress].blank? and not hash[:opponent_progress].blank?
@@ -74,9 +74,9 @@ class GameDetail29th < GameDetail
 
     self.my_height, self.opponent_height =
       h["height"].to_s.split(/-/) if not h["height"].blank?
-    self.jury = h["jury"].blank? ? false : true
+    self.jury_votes = h["jury_votes"].blank? ? false : true
     self.my_jury_votes, self.opponent_jury_votes =
-      h["jury"].to_s.split(/-/) if not h["jury"].blank?
+      h["jury_votes"].to_s.split(/-/) if not h["jury_votes"].blank?
     self.progress = h["progress"].blank? ? false : true
     self.my_progress, self.opponent_progress =
       h["progress"].to_s.split(/-/) if not h["progress"].blank?

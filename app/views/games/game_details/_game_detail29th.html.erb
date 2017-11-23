@@ -3,15 +3,15 @@
 <%= f.text_field :my_height %>cm<br />
 <%= f.label :opponent_height, "対戦相手が積み上げた高さ：" %>
 <%= f.text_field :opponent_height %>cm<br />
-<%= f.label :jury, "審査員判定：" %>
-<% if f.object.jury %>
-  <%= f.check_box :jury, {:checked => true}, true, false %><br />
+<%= f.label :jury_votes, "審査員判定：" %>
+<% if f.object.jury_votes %>
+  <%= f.check_box :jury_votes, {:checked => true}, true, false %><br />
   <div class="jury_votes___nested_field_for_replace_with_index__">
 <% else %>
-  <%= f.check_box :jury, {:checked => false}, true, false %><br />
+  <%= f.check_box :jury_votes, {:checked => false}, true, false %><br />
   <div class="jury_votes___nested_field_for_replace_with_index__ hidden">
 <% end %>
-    <%= f.label :my_jury_voites, "#{@robot.name}への票数" %>
+    <%= f.label :my_jury_votes, "#{@robot.name}への票数" %>
     <%= f.text_field :my_jury_votes %><br />
     <%= f.label :opponent_jury_votes, "対戦相手への票数" %>
     <%= f.text_field :opponent_jury_votes %><br />

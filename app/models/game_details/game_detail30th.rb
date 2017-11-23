@@ -1,7 +1,7 @@
 class GameDetail30th < GameDetail
   attr_accessor :my_robot_baloon, :opponent_robot_baloon,
    :my_base_baloon, :opponent_base_baloon,
-   :jury, :my_jury_votes, :opponent_jury_votes,
+   :jury_votes, :my_jury_votes, :opponent_jury_votes,
    :time
 
   validates :my_robot_baloon, numericality: {
@@ -19,7 +19,7 @@ class GameDetail30th < GameDetail
   # validates :time, numericality: {
   #   only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 10
   # }
-  with_options if: :jury do
+  with_options if: :jury_votes do
     validates :my_jury_votes,       numericality: {
       only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 5
     }
@@ -32,7 +32,7 @@ class GameDetail30th < GameDetail
     [
       :my_robot_baloon, :opponent_robot_baloon,
       :my_base_baloon, :opponent_base_baloon,
-      :jury, :my_jury_votes, :opponent_jury_votes,
+      :jury_votes, :my_jury_votes, :opponent_jury_votes,
       :time
     ]
   end
@@ -65,7 +65,7 @@ class GameDetail30th < GameDetail
       not hash[:my_base_baloon].blank? and not hash[:opponent_base_baloon].blank?
     a.push(%Q["time":"#{hash[:time]}"]) if
       not hash[:time].blank?
-    a.push(%Q["jury":"#{hash[:my_jury_votes]}-#{hash[:opponent_jury_votes]}"]) if
+    a.push(%Q["jury_votes":"#{hash[:my_jury_votes]}-#{hash[:opponent_jury_votes]}"]) if
       not hash[:my_jury_votes].blank? and not hash[:opponent_jury_votes].blank?
     j = ''
     for i in a
@@ -86,7 +86,7 @@ class GameDetail30th < GameDetail
     self.time =
       h["time"].to_s.split(/-/) if not h["time"].blank?
     self.my_jury_votes, self.opponent_jury_votes =
-      h["jury"].to_s.split(/-/) if not h["jury"].blank?
+      h["jury_votes"].to_s.split(/-/) if not h["jury_votes"].blank?
 
     # 勝敗と高さまたは審査委員判定より、値をそのままか交換かを決定
     case victory
