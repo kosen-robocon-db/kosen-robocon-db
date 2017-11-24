@@ -6,6 +6,7 @@ PrizeHistory.delete_all
 Prize.delete_all
 GameDetail.delete_all
 Game.delete_all
+RoundName.delete_all
 Robot.delete_all
 CampusHistory.delete_all
 ContestEntry.delete_all
@@ -27,6 +28,7 @@ load(File.join(Rails.root, 'db', 'seeds', 'contest.rb'))
 load(File.join(Rails.root, 'db', 'seeds', 'contest_entry.rb'))
 load(File.join(Rails.root, 'db', 'seeds', 'campus_history.rb'))
 load(File.join(Rails.root, 'db', 'seeds', 'robot.rb'))
+load(File.join(Rails.root, 'db', 'seeds', 'round_name.rb'))
 load(File.join(Rails.root, 'db', 'seeds', 'game.rb'))
 load(File.join(Rails.root, 'db', 'seeds', 'game_detail.rb'))
 load(File.join(Rails.root, 'db', 'seeds', 'prize.rb'))
