@@ -107,7 +107,7 @@
             <td><%= game.region.name %></td>
             <td><%= link_to game_name(
               nth: @robot.contest_nth,
-              region: @robot.campus.region_code,
+              region: game.region_code,
               round: game.round,
               game: game.game),
               robot_game_path(robot_code: @robot.code, code: game.code) %></td>
