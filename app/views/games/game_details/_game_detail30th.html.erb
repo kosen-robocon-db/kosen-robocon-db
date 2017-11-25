@@ -9,18 +9,18 @@
 <%= f.label :opponent_base_baloon, "対戦相手の砦に残った風船の数：" %>
 <%= f.text_field :opponent_base_baloon %>個<br />
 
-<%= f.label :judge, "審査員判定：" %>
-<% if f.object.judge %>
-  <%= f.check_box :judge, {:checked => true}, true, false %><br />
-  <div class="judge_score___nested_field_for_replace_with_index__">
+<%= f.label :jury_votes, "審査員判定：" %>
+<% if f.object.jury_votes %>
+  <%= f.check_box :jury_votes, {:checked => true}, true, false %><br />
+  <div class="jury_votes___nested_field_for_replace_with_index__">
 <% else %>
-  <%= f.check_box :judge, {:checked => false}, true, false %><br />
-  <div class="judge_score___nested_field_for_replace_with_index__ hidden">
+  <%= f.check_box :jury_votes, {:checked => false}, true, false %><br />
+  <div class="jury_votes___nested_field_for_replace_with_index__ hidden">
 <% end %>
-    <%= f.label :judge_to_me, "#{@robot.name}への票数" %>
-    <%= f.text_field :judge_to_me %><br />
-    <%= f.label :judge_to_opponent, "対戦相手への票数" %>
-    <%= f.text_field :judge_to_opponent %><br />
+    <%= f.label :my_jury_votes, "#{@robot.name}への票数" %>
+    <%= f.text_field :my_jury_votes %><br />
+    <%= f.label :opponent_jury_votes, "対戦相手への票数" %>
+    <%= f.text_field :opponent_jury_votes %><br />
   </div>
 
 <%= f.label :time, "試合時間：" %>

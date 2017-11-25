@@ -1,45 +1,8 @@
 require "csv"
-OLD_CSV_FILE_PATH="db/seeds/csv/robots_old_style.csv"
-CSV_FILE_PATH="db/seeds/csv/robots.csv"
+csv_file_path = "db/seeds/csv/robots.csv"
 bulk_insert_data = []
-if FileTest.exist?(OLD_CSV_FILE_PATH) then
-  codes = {}
-  csv = CSV.read(OLD_CSV_FILE_PATH, headers: false) # ヘッダーなしに注意
-  csv.each do |row|
-    # 改行文字列が混入していることがあるので、取り除く
-    row.map! { |r| r.to_s.chomp }
-    # '1'（1桁）＋大会コード （2桁）+ 地区コード（1桁） + キャンパスコード（4桁） + チーム（1桁）
-    campus = Campus.find_by(code: row[2].to_i)
-    if campus then # row[0]からrow[4]まで存在するかどうか確認すべきだが省略
-      code = "1" + ("%02d" % row[0].to_i) + campus.region_code.to_s + campus.code.to_s
-      case row[5]
-      when "A" then
-        code += "1"
-        team = "A"
-      when "B" then
-        code += "2"
-        team = "B"
-      else
-        if codes.has_key?((code+"1").to_i) then
-          code += "2"
-        else
-          code += "1"
-          codes[code.to_i] = nil
-        end
-        team = ""
-      end
-      bulk_insert_data << Robot.new(
-        code: code.to_i,
-        contest_nth: row[0].to_i,
-        campus_code: campus.code,
-        name: row[3],
-        kana: row[4],
-        team: team
-      )
-    end
-  end
-elsif FileTest.exist?(CSV_FILE_PATH) then
-  csv = CSV.read(CSV_FILE_PATH, headers: true)
+if FileTest.exist?(csv_file_path) then
+  csv = CSV.read(csv_file_path, headers: true)
   csv.each do |row|
     bulk_insert_data << Robot.new(
       code:        row[0],

@@ -1,7 +1,7 @@
 class GameDetail30th < GameDetail
   attr_accessor :my_robot_baloon, :opponent_robot_baloon,
    :my_base_baloon, :opponent_base_baloon,
-   :judge, :judge_to_me, :judge_to_opponent,
+   :jury_votes, :my_jury_votes, :opponent_jury_votes,
    :time
 
   validates :my_robot_baloon, numericality: {
@@ -19,11 +19,11 @@ class GameDetail30th < GameDetail
   # validates :time, numericality: {
   #   only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 10
   # }
-  with_options if: :judge do
-    validates :judge_to_me,       numericality: {
+  with_options if: :jury_votes do
+    validates :my_jury_votes,       numericality: {
       only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 5
     }
-    validates :judge_to_opponent, numericality: {
+    validates :opponent_jury_votes, numericality: {
       only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 5
     }
   end
@@ -32,7 +32,7 @@ class GameDetail30th < GameDetail
     [
       :my_robot_baloon, :opponent_robot_baloon,
       :my_base_baloon, :opponent_base_baloon,
-      :judge, :judge_to_me, :judge_to_opponent,
+      :jury_votes, :my_jury_votes, :opponent_jury_votes,
       :time
     ]
   end
@@ -45,18 +45,17 @@ class GameDetail30th < GameDetail
   # SRP(Single Responsibility Principle, 単一責任原則)に従っていないが
   # このクラス内で実装する。
   def self.compose_properties(hash:)
-
     # 風船の数で、値をそのままか交換を決定（優勢な方を先に配置。勝敗は関係ない。）
     # リフクレションでもっと簡潔に書けないか？
     if hash[:my_robot_baloon] < hash[:opponent_robot_baloon] ||
       hash[:my_base_baloon] < hash[:opponent_base_baloon] ||
-      hash[:judge_to_me] < hash[:judge_to_opponent] then
+      hash[:my_jury_votes] < hash[:opponent_jury_votes] then
       hash[:my_robot_baloon], hash[:opponent_robot_baloon] =
         hash[:opponent_robot_baloon], hash[:my_robot_baloon]
       hash[:my_base_baloon], hash[:opponent_base_baloon] =
         hash[:opponent_base_baloon], hash[:my_base_baloon]
-      hash[:judge_to_me], hash[:judge_to_opponent] =
-        hash[:judge_to_opponent], hash[:judge_to_me]
+      hash[:my_jury_votes], hash[:opponent_jury_votes] =
+        hash[:opponent_jury_votes], hash[:my_jury_votes]
     end
 
     a = []
@@ -66,8 +65,8 @@ class GameDetail30th < GameDetail
       not hash[:my_base_baloon].blank? and not hash[:opponent_base_baloon].blank?
     a.push(%Q["time":"#{hash[:time]}"]) if
       not hash[:time].blank?
-    a.push(%Q["judge":"#{hash[:judge_to_me]}-#{hash[:judge_to_opponent]}"]) if
-      not hash[:judge_to_me].blank? and not hash[:judge_to_opponent].blank?
+    a.push(%Q["jury_votes":"#{hash[:my_jury_votes]}-#{hash[:opponent_jury_votes]}"]) if
+      not hash[:my_jury_votes].blank? and not hash[:opponent_jury_votes].blank?
     j = ''
     for i in a
       j += ',' if not j.blank?
@@ -86,19 +85,25 @@ class GameDetail30th < GameDetail
       h["base-baloon"].to_s.split(/-/) if not h["base-baloon"].blank?
     self.time =
       h["time"].to_s.split(/-/) if not h["time"].blank?
-    self.judge_to_me, self.judge_to_opponent =
-      h["judge"].to_s.split(/-/) if not h["judge"].blank?
+    self.my_jury_votes, self.opponent_jury_votes =
+      h["jury_votes"].to_s.split(/-/) if not h["jury_votes"].blank?
 
-    # 勝敗と高さまたは審査委員判定より、値をそのままか交換を決定
+    # 勝敗と高さまたは審査委員判定より、値をそのままか交換かを決定
     case victory
     when "true"
       swap_properties if self.my_robot_baloon < self.opponent_robot_baloon ||
         self.my_base_baloon < self.opponent_base_baloon ||
-        self.judge_to_me < self.judge_to_opponent
+          (
+            !self.my_jury_votes.blank? && !self.opponent_jury_votes.blank? &&
+              self.my_jury_votes < self.opponent_jury_votes
+          )
     when "false"
       swap_properties if self.my_robot_baloon > self.opponent_robot_baloon ||
         self.my_base_baloon > self.opponent_base_baloon ||
-        self.judge_to_me > self.judge_to_opponent
+          (
+            !self.my_jury_votes.blank? && !self.opponent_jury_votes.blank? &&
+              self.my_jury_votes > self.opponent_jury_votes
+          )
     end
   end
 
@@ -109,7 +114,7 @@ class GameDetail30th < GameDetail
       self.opponent_robot_baloon, self.my_robot_baloon
     self.my_base_baloon, self.opponent_base_baloon =
       self.opponent_base_baloon, self.my_base_baloon
-    self.judge_to_me, self.judge_to_opponent =
-      self.judge_to_opponent, self.judge_to_me
+    self.my_jury_votes, self.opponent_jury_votes =
+      self.opponent_jury_votes, self.my_jury_votes
   end
 end
