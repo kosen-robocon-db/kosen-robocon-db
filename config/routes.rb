@@ -38,4 +38,10 @@ Rails.application.routes.draw do
 
   get 'draw_bracket', to: 'games#draw_bracket'
 
+  resources :round_names, except: [:index, :show, :new, :create, :edit, :update, :destroy] do
+    collection do
+      get 'get'
+    end
+  end
+
 end

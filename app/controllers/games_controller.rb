@@ -20,6 +20,8 @@ class GamesController < ApplicationController
     end
     gon.contest_nth = @robot.contest_nth
     @regions = Region.where(code: [ 0, @robot.campus.region_code ])
+    @round_names = RoundName.where(contest_nth: @robot.contest_nth,
+      region_code: 0) #.pluck(:name, :round)
   end
 
   def create
@@ -31,6 +33,8 @@ class GamesController < ApplicationController
     h["code"] = Game.get_code(hash: h).to_s
     @game = Game.new(h)
     @regions = Region.where(code: [ 0, @robot.campus.region_code ])
+    @round_names = RoundName.where(contest_nth: @robot.contest_nth,
+      region_code: 0) #.pluck(:name, :round)
     if @game.save then
       flash[:success] = "試合情報の新規作成成功"
       redirect_to robot_url(params[:robot_code])
@@ -49,6 +53,8 @@ class GamesController < ApplicationController
     @game.send(@gd_sym).each { |i| i.decompose_properties(@game.victory) }
     gon.contest_nth = @robot.contest_nth
     @regions = Region.where(code: [ 0, @robot.campus.region_code ])
+    @round_names = RoundName.where(contest_nth: @robot.contest_nth,
+      region_code: 0) #.pluck(:name, :round)
   end
 
   def update
@@ -58,6 +64,8 @@ class GamesController < ApplicationController
     @game = Game.find_by(code: params[:code])
     @game.robot_code = @robot.code
     @regions = Region.where(code: [ 0, @robot.campus.region_code ])
+    @round_names = RoundName.where(contest_nth: @robot.contest_nth,
+      region_code: 0) #.pluck(:name, :round)
     if @game.update(regularize(attrs_hash: game_params)) then
       flash[:success] = "試合情報の編集成功"
       redirect_to robot_url(code: params[:robot_code])
