@@ -6,10 +6,7 @@ class RoundNamesController < ApplicationController
         round_names = RoundName.where(
           contest_nth: params[:contest_nth],
           region_code: params[:region_code]
-        ) #.pluck(:name, :round)
-        logger.debug(">>>> round_names:#{round_names.select(:round, :name).as_json(except: :id)}")
-        # render partial: '/round_names/form_round',
-        #   locals: { round_names: round_names }
+        )
         render json: round_names.select(:round, :name).as_json(except: :id)
       end
     end
