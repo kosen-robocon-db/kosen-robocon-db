@@ -9,9 +9,7 @@
     <%= f.collection_select :region_code, @regions, :code, :name %><br />
 
     <%= f.label :round, "回戦" %>:
-    <% round_array = [["予選", 0], ["1回戦", 1], ["2回戦", 2], ["3回戦", 3],
-      ["4回戦", 4], ["準決勝", 5], ["決勝", 6]] %>
-    <%= f.select :round, round_array %><br />
+    <%= f.collection_select :round, @round_names, :round, :name %><br />
 
     <%= f.label :game, "試合" %>:
     <% game_array = Array.new(16){ |i| ["第"+(i+1).to_s+"試合", i+1] } %>
@@ -25,7 +23,7 @@
 
     <%= f.label :victory, "勝敗" %>:
     <label><%= f.radio_button :victory, true, {:checked=>true} %>勝ち</label>
-    &nbsp&nbsp
+    &nbsp;&nbsp;
     <label><%= f.radio_button :victory, false %>負け</label><br />
     <br />
 

@@ -9,7 +9,9 @@ class GameDetail < ApplicationRecord
   scope :order_csv, -> { order(id: :asc) }
 
   def self.attr_syms_for_params
-    [ :id, :_destroy ]
+    # [ :id, :_destroy ]
+    # [ :number, :_destroy ]
+    [ :id, :number, :_destroy ]
   end
 
   def self.csv_headers

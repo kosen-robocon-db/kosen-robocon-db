@@ -66,6 +66,28 @@ $ ->
             $('#game_game_detail30ths_attributes_' + i +
               '_opponent_jury_votes').val('')
 
+  # 試合(game)で地区を変更すると回戦も変化させる
+  $(document).on 'change', '#game_region_code', ->
+    contest_nth = $('[id=game_contest_nth]').val();
+    $.ajax(
+      type: 'GET'
+      url: '/round_names/get'
+      dataType: "json"
+      data: {
+        contest_nth: contest_nth,
+        region_code: $(this).val()
+      }
+    ).done (results) ->
+      i = 0 # each with indexを使うと意図したとおりに動かなかったので制御変数を使うことにした
+      $.each results, ->
+        option = $('<option>').val(this.round).text(this.name)
+        if i == 0
+          $('#game_round').html option
+        else
+          $('#game_round').append(option)
+        i += 1
+
+
 ################################################################################
 
   $('canvas').each ->

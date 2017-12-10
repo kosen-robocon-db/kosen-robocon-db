@@ -20,6 +20,8 @@ class GamesController < ApplicationController
     end
     gon.contest_nth = @robot.contest_nth
     @regions = Region.where(code: [ 0, @robot.campus.region_code ])
+    @round_names = RoundName.where(contest_nth: @robot.contest_nth,
+      region_code: 0) #.pluck(:name, :round)
   end
 
   def create
@@ -31,6 +33,8 @@ class GamesController < ApplicationController
     h["code"] = Game.get_code(hash: h).to_s
     @game = Game.new(h)
     @regions = Region.where(code: [ 0, @robot.campus.region_code ])
+    @round_names = RoundName.where(contest_nth: @robot.contest_nth,
+      region_code: @game.region_code)
     if @game.save then
       flash[:success] = "試合情報の新規作成成功"
       redirect_to robot_url(params[:robot_code])
@@ -49,6 +53,8 @@ class GamesController < ApplicationController
     @game.send(@gd_sym).each { |i| i.decompose_properties(@game.victory) }
     gon.contest_nth = @robot.contest_nth
     @regions = Region.where(code: [ 0, @robot.campus.region_code ])
+    @round_names = RoundName.where(contest_nth: @robot.contest_nth,
+      region_code: @game.region_code)
   end
 
   def update
@@ -58,12 +64,38 @@ class GamesController < ApplicationController
     @game = Game.find_by(code: params[:code])
     @game.robot_code = @robot.code
     @regions = Region.where(code: [ 0, @robot.campus.region_code ])
-    if @game.update(regularize(attrs_hash: game_params)) then
-      flash[:success] = "試合情報の編集成功"
-      redirect_to robot_url(code: params[:robot_code])
+    @round_names = RoundName.where(contest_nth: @robot.contest_nth,
+      region_code: @game.region_code)
+    h = regularize(attrs_hash: game_params)
+    if @game.region_code.to_i != h['region_code'].to_i or
+      @game.round.to_i != h['round'].to_i or
+      @game.game.to_i != h['game'].to_i then
+      # game_code の変更がある場合
+      h["robot_code"] = @robot.code.to_s
+      h["code"] = Game.get_code(hash: h).to_s
+      old_game_code = @game.code
+      gdas = "#{@gd_sym.to_s}_attributes".to_sym
+      h[gdas].each{ |i| # id を nil にしないと新しいレコードが登録されない
+        h[gdas][i][:id] = nil
+      }
+      @game = Game.new(h)
+      if @game.save then
+        Game.find_by(code: old_game_code).destroy
+        flash[:success] = "試合情報の編集成功"
+        redirect_to robot_url(code: params[:robot_code])
+      else
+        render :edit
+      end
     else
-      render :edit
+      # game_code の変更がない場合
+      if @game.update(h) then
+        flash[:success] = "試合情報の編集成功"
+        redirect_to robot_url(code: params[:robot_code])
+      else
+        render :edit
+      end
     end
+
   end
 
   def destroy
