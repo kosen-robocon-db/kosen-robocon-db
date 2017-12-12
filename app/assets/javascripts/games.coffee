@@ -55,7 +55,7 @@ $ ->
               '_opponent_progress').val('')
     when 30
       $('form').on 'change', (event) ->
-        if /^game_game_detail30ths_attributes_\d+_jur_votes$/.test(event.target.id)
+        if /^game_game_detail30ths_attributes_\d+_jury_votes$/.test(event.target.id)
           i = event.target.id.match(/_\d+_/)[0].replace(/_/g, '')
           if $('#game_game_detail30ths_attributes_' + i + '_jury_votes')[0].checked
             $('.jury_votes_' + i).toggleClass('hidden')
