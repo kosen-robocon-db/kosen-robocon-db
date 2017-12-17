@@ -85,6 +85,7 @@ class GameDetail30th < GameDetail
       h["base-baloon"].to_s.split(/-/) if not h["base-baloon"].blank?
     self.time =
       h["time"].to_s.split(/-/) if not h["time"].blank?
+    self.jury_votes = h["jury_votes"].blank? ? false : true
     self.my_jury_votes, self.opponent_jury_votes =
       h["jury_votes"].to_s.split(/-/) if not h["jury_votes"].blank?
 
