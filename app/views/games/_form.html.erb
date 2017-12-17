@@ -32,7 +32,8 @@
     <% when 29, 30 then %>
     <div class="enclosure">
       <%= f.label @gd_sym, "試合詳細" %><br />
-      詳細が分からないときは「削除」ボタンを押下して省略することができます。
+      詳細が分からないときは「削除」ボタンを押下して省略することができます。<br />
+      省略されているときは「追加」ボタンを押下して表示することができます。<br />
       <%= f.nested_fields_for @gd_sym, wrapper_tag: :div do |detail| %>
         <div class="enclosure">
           <div class="replay"></div>
