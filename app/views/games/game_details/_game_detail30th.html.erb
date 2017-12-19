@@ -1,13 +1,27 @@
 <%= f.hidden_field :id %>
 
-<%= f.label :my_robot_baloon, "#{@robot.name}のロボットに残った風船の数：" %>
-<%= f.text_field :my_robot_baloon %>個<br />
-<%= f.label :opponent_robot_baloon, "対戦相手のロボットに残った風船の数：" %>
-<%= f.text_field :opponent_robot_baloon %>個<br />
+<%
+  baloon_numbers = Array([["不明", GameDetail30th::UNKNOWN_VALUE_FOR_LOSE]])
+  baloon_numbers.concat( Array.new(11) { |i| [i.to_s+"個", i] } )
+%>
+
 <%= f.label :my_base_baloon, "#{@robot.name}の砦に残った風船の数：" %>
-<%= f.text_field :my_base_baloon %>個<br />
+<%= f.select :my_base_baloon, baloon_numbers %><br />
 <%= f.label :opponent_base_baloon, "対戦相手の砦に残った風船の数：" %>
-<%= f.text_field :opponent_base_baloon %>個<br />
+<%= f.select :opponent_base_baloon, baloon_numbers %><br />
+<%= f.label :my_robot_baloon, "#{@robot.name}のロボットに残った風船の数：" %>
+<%= f.select :my_robot_baloon, baloon_numbers %><br />
+<%= f.label :opponent_robot_baloon, "対戦相手のロボットに残った風船の数：" %>
+<%= f.select :opponent_robot_baloon, baloon_numbers %><br />
+
+<%#= f.label :my_robot_baloon, "#{@robot.name}のロボットに残った風船の数：" %>
+<%#= f.text_field :my_robot_baloon %><%# 個<br /> %>
+<%#= f.label :opponent_robot_baloon, "対戦相手のロボットに残った風船の数：" %>
+<%#= f.text_field :opponent_robot_baloon %><%# 個<br /> %>
+<%#= f.label :my_base_baloon, "#{@robot.name}の砦に残った風船の数：" %>
+<%#= f.text_field :my_base_baloon %><%# 個<br /> %>
+<%#= f.label :opponent_base_baloon, "対戦相手の砦に残った風船の数：" %>
+<%#= f.text_field :opponent_base_baloon %><%# 個<br /> %>
 
 <%= f.label :jury_votes, "審査員判定：" %>
 <% if f.object.jury_votes %>
