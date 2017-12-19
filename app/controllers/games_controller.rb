@@ -9,6 +9,7 @@ class GamesController < ApplicationController
     @gd_sym = game_details_sub_class_sym(contest_nth: @robot.contest_nth)
     Game.confirm_or_associate(game_details_sub_class_sym: @gd_sym)
     @game = Game.new(robot_code: @robot.code, contest_nth: @robot.contest_nth)
+    # 下記のコードはもっと洗練されるべき
     case @robot.contest_nth
       # GameDetail サブクラスのインスタンス生成
     when 29 then
@@ -67,6 +68,7 @@ class GamesController < ApplicationController
     @round_names = RoundName.where(contest_nth: @robot.contest_nth,
       region_code: @game.region_code)
     h = regularize(attrs_hash: game_params)
+    # 下記のコードはもっと洗練されるべき
     if @game.region_code.to_i != h['region_code'].to_i or
       @game.round.to_i != h['round'].to_i or
       @game.game.to_i != h['game'].to_i then
@@ -174,7 +176,8 @@ class GamesController < ApplicationController
     if not attrs_hash[gdas].blank?
       attrs_hash[gdas].each { |i|
         attrs_hash[gdas][i][:properties] =
-          klass.compose_properties(hash: attrs_hash[gdas][i])
+          klass.compose_properties(hash: attrs_hash[gdas][i],
+            victory: attrs_hash[:victory])
             # フォームパラメーターから GameDetail サブクラスの属性値へ合成
         attrs_hash[gdas][i][:number] = j
         j += 1

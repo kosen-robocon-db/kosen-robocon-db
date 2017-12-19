@@ -38,7 +38,7 @@ class GameDetail29th < GameDetail
 
   # SRP(Single Responsibility Principle, 単一責任原則)に従っていないが
   # このクラス内で実装する。
-  def self.compose_properties(hash:)
+  def self.compose_properties(hash:, victory:)
 
     # 高さまたは審査委員判定より、値をそのままか交換を決定（優勢な方を先に配置）
     # 存在チェックをしてないので例外が出力される可能性がある
