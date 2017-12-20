@@ -28,7 +28,7 @@ class RobotsController < ApplicationController
   def index
     @robots = Robot.all.order_default
     respond_to do |format|
-      format.csv { send_data @robots.to_csv }
+      format.csv { send_data @robots.order_csv.to_csv }
     end
   end
 
