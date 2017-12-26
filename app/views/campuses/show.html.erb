@@ -53,6 +53,8 @@
                     case: robot.advancement_history.advancement_case
                   ).case_name
                 %>
+              <% elsif robot.contest_nth <= 3 %>
+                地区大会なし
               <% end %>
             </td>
             <td><% if not robot.robot_condition.blank? %>
