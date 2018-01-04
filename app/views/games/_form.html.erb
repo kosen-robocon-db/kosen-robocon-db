@@ -17,15 +17,42 @@
 
     <%= f.label :opponent_robot_code, "対戦相手" %>:
     <% robots_array = Robot.where(contest_nth: @game.contest_nth).
-      includes(:campus).order("robots.code").map{ |i| [
-        i.campus.abbreviation.to_s.ljust(5, "　")+i.name, i.code] } %>
+        includes(:campus).order("robots.code").map{ |i| [
+          i.campus.abbreviation.to_s.ljust(5, "　")+i.name, i.code ] }
+        # 下記はGameモデルで自動的に追加されるべき
+        robots_array.push([
+          "　"*5 + Game::Constant::NO_OPPONENT.name,
+          Game::Constant::NO_OPPONENT.code
+        ])
+    %>
     <%= f.select :opponent_robot_code, robots_array %><br />
 
     <%= f.label :victory, "勝敗" %>:
-    <label><%= f.radio_button :victory, true, {:checked=>true} %>勝ち</label>
+    <%= f.radio_button :victory, true, {:checked=>true} %>勝ち
     &nbsp;&nbsp;
-    <label><%= f.radio_button :victory, false %>負け</label><br />
+    <%= f.radio_button :victory, false %>負け
     <br />
+    <%= f.label :reasons_for_victory, "勝敗事由"%>：
+    <%
+      # DBにマスターテーブルを持ったほうが良さそう？
+      reasons = { # 事由が増えることを見越して値の間隔をあけたほうが良さそう
+        1 => "不戦勝",                    # どちらかというと勝利側
+        2 => "引き分け（審査員判定/推薦）", # どちらでもない
+        3 => "試合開始前棄権",             # どちらかというと敗北側
+        4 => "試合途中棄権",               # どちらかというと敗北側
+        5 => "失格"                       # どちらかというと敗北側
+      }
+      checked = @game.reasons_for_victory.presence || []
+      reasons.each do |key, value|
+        concat f.check_box :reasons_for_victory,
+          { multiple: true, checked: checked.include?(key.to_s) }, key # , nil
+        concat value
+    %>
+    &nbsp;&nbsp;
+    <%
+      end
+    %>
+    <br /><br />
 
     <% case @robot.contest_nth %>
     <%# 第29-30回大会のみ実装 %>

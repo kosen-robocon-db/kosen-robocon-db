@@ -164,7 +164,8 @@ class GamesController < ApplicationController
     h = { "#{@gd_sym.to_s}_attributes" =>
       @gd_sym.to_s.classify.constantize.attr_syms_for_params }
     a = [
-      :contest_nth, :region_code, :round, :game, :opponent_robot_code, :victory
+      :contest_nth, :region_code, :round, :game, :opponent_robot_code, :victory,
+      { :reasons_for_victory => [] }
     ].push(h)
     params.require(:game).permit(a)
   end
