@@ -91,11 +91,17 @@ class Game < ApplicationRecord
     ]
   end
 
-  # reasons_for_victoryのセッターをオーバーライド
-  def reasons_for_victory=(array=[])
+  def self.convert(array=[])
     a = 0 # ゼロは事由なし
     array.each { |v| a += 2 ** ( v.to_i - 1 ) if v =~ /\A[1-9][0-9]*\z/ }
-    write_attribute(:reasons_for_victory, a)
+    a
+  end
+
+  # reasons_for_victoryのセッターをオーバーライド
+  def reasons_for_victory=(array=[])
+    # a = 0 # ゼロは事由なし
+    # array.each { |v| a += 2 ** ( v.to_i - 1 ) if v =~ /\A[1-9][0-9]*\z/ }
+    write_attribute(:reasons_for_victory, Game.convert(array))
   end
 
   # reasons_for_victoryのゲッターをオーバーライド
@@ -109,6 +115,22 @@ class Game < ApplicationRecord
       end
     end
     a
+  end
+
+  # Game(試合情報)だけ特別な#to_csvをオーバーライド
+  def self.to_csv(options = {})
+    CSV.generate(headers: true, force_quotes: true) do |csv|
+      csv << csv_headers
+      all.each do |record|
+        csv << csv_column_syms.map do |attr|
+          if attr != :reasons_for_victory
+            "#{record.send(attr).to_s}"
+          else
+            "#{convert(record.reasons_for_victory)}"
+          end
+        end
+      end
+    end
   end
 
   private
