@@ -11,6 +11,21 @@ class Game < ApplicationRecord
   end
   Constant.freeze # 定数への再代入を防ぐためにモジュールに対してフリーズを実施
 
+  # 試合途中棄権をretireとすべきところを、
+  # 第1回はレースであった、そして度々レースがあったので、
+  # レースなどでよく使われているDNFにし、
+  # それに合わせて試合前棄権をDNS、失格をDSQとした。
+  # 1,2,3,...などの数値の代わりに日本語テキスト表示をするために
+  # enum_help(GEM)をインストールし（必須）、
+  # kosen-robocon.ja.ymlに日本語テキストを記している。
+  enum reasons: {
+    unearned_win: 1, # 不戦勝
+    draw: 2,         # 引き分け（審査員判定・推薦）
+    DNS: 3,          # Do Not Start 試合開始前棄権
+    DNF: 4,          # Do Not Finish 試合途中棄権
+    DSQ: 5,          # Disqualification 失格　
+  }
+
   before_validation :compose_attributes
 
   belongs_to :contest,      foreign_key: :contest_nth,       primary_key: :nth

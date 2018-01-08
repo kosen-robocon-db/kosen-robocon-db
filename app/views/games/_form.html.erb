@@ -34,19 +34,12 @@
     <br />
     <%= f.label :reasons_for_victory, "勝敗事由"%>：
     <%
-      # DBにマスターテーブルを持ったほうが良さそう？
-      reasons = { # 事由が増えることを見越して値の間隔をあけたほうが良さそう
-        1 => "不戦勝",                    # どちらかというと勝利側
-        2 => "引き分け（審査員判定/推薦）", # どちらでもない
-        3 => "試合開始前棄権",             # どちらかというと敗北側
-        4 => "試合途中棄権",               # どちらかというと敗北側
-        5 => "失格"                       # どちらかというと敗北側
-      }
       checked = @game.reasons_for_victory.presence || []
-      reasons.each do |key, value|
+      Game.reasons.each do |key, value|
         concat f.check_box :reasons_for_victory,
-          { multiple: true, checked: checked.include?(key.to_s) }, key # , nil
-        concat value
+          { multiple: true, checked: checked.include?(value.to_s) },
+          value # , nil
+        concat Game.reasons_i18n[key]
     %>
     &nbsp;&nbsp;
     <%
