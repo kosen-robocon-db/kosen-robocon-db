@@ -105,19 +105,38 @@
           %>
           <tr>
             <td><%= game.region.name %></td>
-            <td><%= link_to game_name(
-              nth: @robot.contest_nth,
-              region: game.region_code,
-              round: game.round,
-              game: game.game),
-              robot_game_path(robot_code: @robot.code, code: game.code) %></td>
-            <% if opponent.campus.presence then %>
-            <td><%= link_to opponent.campus.abbreviation, campus_path(opponent.campus.code) %></td>
-            <% else %>
-            <td></td>
-            <% end %>
+            <td>
+              <%#=
+                link_to game_name(
+                  nth: @robot.contest_nth,
+                  region: game.region_code,
+                  round: game.round,
+                  game: game.game),
+                  robot_game_path(robot_code: @robot.code, code: game.code)
+              %>
+              <%=
+                game_name(
+                  nth: @robot.contest_nth,
+                  region: game.region_code,
+                  round: game.round,
+                  game: game.game
+                )
+              %>
+            </td>
+            <% if opponent.campus.code != Campus::Constant::NO_CAMPUS.code then %>
+            <td>
+              <%=
+                link_to opponent.campus.abbreviation,
+                  campus_path(opponent.campus.code)
+              %>
+            </td>
             <td><%= opponent.team %></td>
             <td><%= link_to opponent.name, robot_path(opponent.code) %></td>
+            <% else %>
+            <td></td>
+            <td></td>
+            <td><%= opponent.name %></td>
+            <% end %>
             <td>
               <%
                 if game.winner_robot_code == Game::Constant::NO_WINNER.code

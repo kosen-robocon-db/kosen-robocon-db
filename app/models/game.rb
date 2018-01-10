@@ -1,20 +1,12 @@
 class Game < ApplicationRecord
   module Constant
     NO_OPPONENT = Robot.new(
-      code: 100000000,
-      contest_nth: 0,
-      campus_code: 0,
-      team: "",
-      name: "対戦相手なし",
-      kana: "タイセンアイテナシ"
+      code: 100000001, contest_nth: 0, campus_code: 0,
+      name: "対戦相手なし", kana: "タイセンアイテナシ"
     ).freeze
-    NO_WINNER = Robot.new(
-      code: 100000001,
-      contest_nth: 0,
-      campus_code: 0,
-      team: "",
-      name: "勝者なし", # 「両者失格」が相応しいがDBテーブルに登録するコードは勝者なしの意味
-      kana: "ショウシャナシ"
+    NO_WINNER = Robot.new( # 「両者失格」が相応しいがDBテーブルに登録するコードは勝者なしの意味
+      code: 100000002, contest_nth: 0, campus_code: 0,
+      name: "勝者なし", kana: "ショウシャナシ"
     ).freeze
     WIN = 'win'
     LOSE = 'lose'
@@ -39,11 +31,11 @@ class Game < ApplicationRecord
 
   before_validation :compose_attributes
 
-  belongs_to :contest,      foreign_key: :contest_nth,       primary_key: :nth
-  belongs_to :region,       foreign_key: :region_code,       primary_key: :code
-  belongs_to :robot,        foreign_key: :left_robot_code,   primary_key: :code
-  belongs_to :robot,        foreign_key: :right_robot_code,  primary_key: :code
-  belongs_to :robot,        foreign_key: :winner_robot_code, primary_key: :code
+  belongs_to :contest, foreign_key: :contest_nth,       primary_key: :nth
+  belongs_to :region,  foreign_key: :region_code,       primary_key: :code
+  belongs_to :robot,   foreign_key: :left_robot_code,   primary_key: :code
+  belongs_to :robot,   foreign_key: :right_robot_code,  primary_key: :code
+  belongs_to :robot,   foreign_key: :winner_robot_code, primary_key: :code
 
   validates :code,              presence: true, uniqueness: true
   validates :contest_nth,       presence: true
@@ -90,7 +82,7 @@ class Game < ApplicationRecord
     self.robot_code = robot_code
     self.opponent_robot_code = self.robot_code == self.left_robot_code ?
       self.right_robot_code : self.left_robot_code
-    if self.winner_robot_code != Game::Constant::NO_WINNER.code
+    if self.winner_robot_code != Constant::NO_WINNER.code
       self.victory = self.robot_code == self.winner_robot_code ?
         Constant::WIN : Constant::LOSE
     else
@@ -150,7 +142,7 @@ class Game < ApplicationRecord
     a
   end
 
-  # Game(試合情報)だけ特別な#to_csvをオーバーライド
+  # 特別な#to_csvをオーバーライド
   def self.to_csv(options = {})
     CSV.generate(headers: true, force_quotes: true) do |csv|
       csv << csv_headers

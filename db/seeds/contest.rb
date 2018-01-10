@@ -1,4 +1,5 @@
 bulk_insert_data = []
+bulk_insert_data << Contest::Constant::NO_CONTEST
 bulk_insert_data << Contest.new(nth:  1, year: 1988, name: "乾電池カー・スピードレース")
 bulk_insert_data << Contest.new(nth:  2, year: 1989, name: "オクトパスフットボール")
 bulk_insert_data << Contest.new(nth:  3, year: 1990, name: "ニュートロンスター")

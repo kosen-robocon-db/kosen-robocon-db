@@ -1,4 +1,5 @@
 bulk_insert_data = []
+bulk_insert_data << Campus::Constant::NO_CAMPUS
 bulk_insert_data << Campus.new(region_code: 1, code: 1010, name: "旭川工業高等専門学校", abbreviation: "旭川", latitude: 43.812361, longitude: 142.353665)
 # bulk_insert_data << Campus.new(region_code: Region.find_by(name: "北海道").code, code: 1010, name: "旭川工業高等専門学校", abbreviation: "旭川", latitude: 43.812361, longitude: 142.353665)
 bulk_insert_data << Campus.new(region_code: 1, code: 1020, name: "釧路工業高等専門学校", abbreviation: "釧路", latitude: 43.01606, longitude: 144.26112)

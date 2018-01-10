@@ -18,7 +18,8 @@
     <%= f.label :opponent_robot_code, "対戦相手" %>:
     <% robots_array = Robot.where(contest_nth: @game.contest_nth).
         includes(:campus).order("robots.code").map{ |i| [
-          i.campus.abbreviation.to_s.ljust(5, "　")+i.name, i.code ] }
+          i.campus.abbreviation.to_s.ljust(5, "　") + i.name, i.code
+         ] }
         # 下記はGameモデルで自動的に追加されるべき
         robots_array.push([
           "　"*5 + Game::Constant::NO_OPPONENT.name,
