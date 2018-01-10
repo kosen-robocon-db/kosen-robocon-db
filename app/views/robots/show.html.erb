@@ -99,8 +99,8 @@
       <tbody>
         <% @games.each do |game| %>
           <%
-            left_robot = Robot.joins(:campus).find_by(code: game.left_robot_code)
-            right_robot = Robot.joins(:campus).find_by(code: game.right_robot_code)
+            left_robot = Robot.joins(:campus).find_by(code: game.left_robot_code) || Game::Constant::NO_OPPONENT
+            right_robot = Robot.joins(:campus).find_by(code: game.right_robot_code) || Game::Constant::NO_OPPONENT
             opponent = @robot.code != left_robot.code ? left_robot : right_robot
           %>
           <tr>
@@ -111,7 +111,11 @@
               round: game.round,
               game: game.game),
               robot_game_path(robot_code: @robot.code, code: game.code) %></td>
+            <% if opponent.campus.presence then %>
             <td><%= link_to opponent.campus.abbreviation, campus_path(opponent.campus.code) %></td>
+            <% else %>
+            <td></td>
+            <% end %>
             <td><%= opponent.team %></td>
             <td><%= link_to opponent.name, robot_path(opponent.code) %></td>
             <td><%= opponent.code != game.winner_robot_code ? "勝ち" : "負け" %></td>

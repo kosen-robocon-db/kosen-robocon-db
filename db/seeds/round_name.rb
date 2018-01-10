@@ -75,6 +75,7 @@ for nth in 4..16 do
   bulk_insert_data << RoundName.new(contest_nth: nth, region_code: 8, round: 3, name: "3回戦")
   bulk_insert_data << RoundName.new(contest_nth: nth, region_code: 8, round: 4, name: "準決勝")
   bulk_insert_data << RoundName.new(contest_nth: nth, region_code: 8, round: 5, name: "決勝")
+
 end
 
 ################################################################################
@@ -345,5 +346,20 @@ for nth in 23..30 do
   bulk_insert_data << RoundName.new(contest_nth: nth, region_code: 8, round: 4, name: "準決勝")
   bulk_insert_data << RoundName.new(contest_nth: nth, region_code: 8, round: 5, name: "決勝")
 end
+
+# 各回、全国および各地区にエキシビジョンを追加
+for nth in 1..3 do
+  bulk_insert_data << RoundName.new(contest_nth: nth, region_code: 0,
+    round: 9, name: "エキシビジョン")
+end
+for nth in 4..30 do
+  for region in 0..8 do
+    bulk_insert_data << RoundName.new(contest_nth: nth, region_code: region,
+      round: 9, name: "エキシビジョン")
+  end
+end
+
+# 昇順ソートしておく
+bulk_insert_data.sort_by! { | b | [ b.contest_nth, b.region_code, b.round ] }
 
 RoundName.import bulk_insert_data

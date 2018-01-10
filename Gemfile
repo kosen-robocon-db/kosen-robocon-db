@@ -67,6 +67,9 @@ gem 'unindent'
 # for sinble elimination bracket output
 gem 'rubytree'
 
+# for enum i18n
+gem 'enum_help'
+
 # 開発作業用ツール
 group :tools do
   # gem 'rails-erd', group: [:development, :test]
