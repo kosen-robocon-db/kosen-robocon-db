@@ -28,9 +28,11 @@
     <%= f.select :opponent_robot_code, robots_array %><br />
 
     <%= f.label :victory, "勝敗" %>:
-    <%= f.radio_button :victory, true, {:checked=>true} %>勝ち
+    <%= f.radio_button :victory, Game::Constant::WIN, {:checked=>true} %>勝ち
     &nbsp;&nbsp;
-    <%= f.radio_button :victory, false %>負け
+    <%= f.radio_button :victory, Game::Constant::LOSE %>負け
+    &nbsp;&nbsp;
+    <%= f.radio_button :victory, Game::Constant::BOTH_DSQ %>両者失格
     <br />
     <%= f.label :reasons_for_victory, "勝敗事由"%>：
     <%

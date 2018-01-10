@@ -118,7 +118,16 @@
             <% end %>
             <td><%= opponent.team %></td>
             <td><%= link_to opponent.name, robot_path(opponent.code) %></td>
-            <td><%= opponent.code != game.winner_robot_code ? "勝ち" : "負け" %></td>
+            <td>
+              <%
+                if game.winner_robot_code == Game::Constant::NO_WINNER.code
+                  concat "両者失格"
+                else
+                  concat @robot.code == game.winner_robot_code ? "勝ち" : "負け"
+                end
+              %>
+              <%#= opponent.code != game.winner_robot_code ? "勝ち" : "負け" %>
+            </td>
             <td align="right">
               <%= link_to fa_icon("pencil-square", text:"編集"),
                 edit_robot_game_path(robot_code: @robot.code, code: game.code) %>
