@@ -1,0 +1,9 @@
+ja:
+  enums:
+    game:
+      reasons:
+        unearned_win: 不戦勝
+        draw: 引き分け（審査員判定・推薦）
+        DNS: 試合開始前棄権
+        DNF: 試合途中棄権
+        DSQ: 失格
