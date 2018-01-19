@@ -52,7 +52,7 @@
 
     <% case @robot.contest_nth %>
     <%# 第29-30回大会のみ実装 %>
-    <% when 29, 30 then %>
+    <% when 1, 29, 30 then %>
     <div class="enclosure">
       <%= f.label @gd_sym, "試合詳細" %><br />
       詳細が分からないときは「削除」ボタンを押下して省略することができます。<br />

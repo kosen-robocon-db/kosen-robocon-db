@@ -1,0 +1,30 @@
+<%= f.hidden_field :id %>
+<%
+  numbers = Array( [ [ "--", "--" ] ] )
+  numbers.concat( Array.new(60) { |i|
+    [ i.to_s.rjust(2, "0"), i.to_s.rjust(2, "0") ] } )
+%>
+<table>
+  <tr>
+    <%# 下記の:my_timeは何ら影響がない %>
+    <td><%= f.label :my_time, "#{@robot.name}のタイム：" %></td>
+    <td>
+      <%= f.select :my_time_minute, numbers %>分
+      <%= f.select :my_time_second, numbers %>秒
+    </td>
+  </tr>
+  <tr>
+    <%# 下記の:opponent_timeは何ら影響がない %>
+    <td><%= f.label :opponent_time, "対戦相手のタイム：" %></td>
+    <td>
+      <%= f.select :opponent_time_minute, numbers %>分
+      <%= f.select :opponent_time_second, numbers %>秒
+    </td>
+  </tr>
+</table>
+<%= f.label :memo, "メモ：" %>
+<%= f.text_field :memo %><br/>
+</br>
+<%= f.hidden_field :_destroy %>
+<%= f.remove_nested_fields_link '削除', class: 'btn btn-danger',
+  role: 'button' %><br />

@@ -12,6 +12,8 @@ class GamesController < ApplicationController
     # 下記のコードはもっと洗練されるべき
     case @robot.contest_nth
       # GameDetail サブクラスのインスタンス生成
+    when  1 then
+      @game.send(@gd_sym).new
     when 29 then
       @game.send(@gd_sym).new(jury_votes: false, progress: false)
         # 審査員判定および課題進捗度チェックボックスを外しておく
