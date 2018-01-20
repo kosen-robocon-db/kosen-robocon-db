@@ -2,10 +2,9 @@ class Campus < ApplicationRecord
   module Constant
     NO_CAMPUS = Campus.new(
       code: 0, region_code: 0, name: "キャンパスなし", abbreviation: "キャンパスなし"
-    ).freeze
+    )
   end
-  Constant.freeze # 定数への再代入を防ぐためにモジュールに対してフリーズを実施
-
+  
   belongs_to :region, foreign_key: :region_code, primary_key: :code
   has_many :robots, foreign_key: :campus_code, primary_key: :code, dependent: :destroy
   has_many :campus_history, foreign_key: :campus_code, primary_key: :code, dependent: :destroy
