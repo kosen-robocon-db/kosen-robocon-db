@@ -3,10 +3,9 @@ class Robot < ApplicationRecord
     NO_ROBOT = Robot.new( # このまま使われなかったらリファクタリング時に削除すべき
       code: 100000000, contest_nth: 0, campus_code: 0,
       name: "", kana: ""
-    ).freeze
+    )
   end
-  Constant.freeze # 定数への再代入を防ぐためにモジュールに対してフリーズを実施
-
+  
   belongs_to :contest,             foreign_key: :contest_nth, primary_key: :nth
   belongs_to :campus,              foreign_key: :campus_code, primary_key: :code
   has_one    :robot_condition,     foreign_key: :robot_code,  primary_key: :code
