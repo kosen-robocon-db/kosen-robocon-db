@@ -21,7 +21,7 @@
       <tbody>
         <% @contests.each do |contest| %>
           <tr>
-            <td><%= contest.nth %></td>
+            <td align="right"><%= contest.nth %></td>
             <td><%= contest.year %></td>
             <td><%= link_to contest.name, contest_path(contest.nth) %></td>
           </tr>

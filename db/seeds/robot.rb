@@ -1,6 +1,8 @@
 require "csv"
 csv_file_path = "db/seeds/csv/robots.csv"
 bulk_insert_data = []
+bulk_insert_data << Game::Constant::NO_OPPONENT
+bulk_insert_data << Game::Constant::NO_WINNER
 if FileTest.exist?(csv_file_path) then
   csv = CSV.read(csv_file_path, headers: true)
   csv.each do |row|

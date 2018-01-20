@@ -18,7 +18,8 @@
     <%= f.label :opponent_robot_code, "対戦相手" %>:
     <% robots_array = Robot.where(contest_nth: @game.contest_nth).
         includes(:campus).order("robots.code").map{ |i| [
-          i.campus.abbreviation.to_s.ljust(5, "　")+i.name, i.code ] }
+          i.campus.abbreviation.to_s.ljust(5, "　") + i.name, i.code
+         ] }
         # 下記はGameモデルで自動的に追加されるべき
         robots_array.push([
           "　"*5 + Game::Constant::NO_OPPONENT.name,
@@ -28,9 +29,11 @@
     <%= f.select :opponent_robot_code, robots_array %><br />
 
     <%= f.label :victory, "勝敗" %>:
-    <%= f.radio_button :victory, true, {:checked=>true} %>勝ち
+    <%= f.radio_button :victory, Game::Constant::WIN, {:checked=>true} %>勝ち
     &nbsp;&nbsp;
-    <%= f.radio_button :victory, false %>負け
+    <%= f.radio_button :victory, Game::Constant::LOSE %>負け
+    &nbsp;&nbsp;
+    <%= f.radio_button :victory, Game::Constant::BOTH_DSQ %>両者失格
     <br />
     <%= f.label :reasons_for_victory, "勝敗事由"%>：
     <%
@@ -49,7 +52,7 @@
 
     <% case @robot.contest_nth %>
     <%# 第29-30回大会のみ実装 %>
-    <% when 29, 30 then %>
+    <% when 1, 29, 30 then %>
     <div class="enclosure">
       <%= f.label @gd_sym, "試合詳細" %><br />
       詳細が分からないときは「削除」ボタンを押下して省略することができます。<br />

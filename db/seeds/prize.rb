@@ -3,7 +3,7 @@ bulk_insert_data = []
 # ベスト４以上の成績
 bulk_insert_data << Prize.new(kind: 1, name: "優勝")
 bulk_insert_data << Prize.new(kind: 2, name: "準優勝")
-bulk_insert_data << Prize.new(kind: 3, name: "ベスト４") # 入力便宜上用意
+# bulk_insert_data << Prize.new(kind: 3, name: "ベスト４") # 入力便宜上用意
 bulk_insert_data << Prize.new(kind: 4, name: "ベスト４") # 入力便宜上用意
 
 # 主要賞

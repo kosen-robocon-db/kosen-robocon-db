@@ -1,4 +1,12 @@
 class Robot < ApplicationRecord
+  module Constant
+    NO_ROBOT = Robot.new( # このまま使われなかったらリファクタリング時に削除すべき
+      code: 100000000, contest_nth: 0, campus_code: 0,
+      name: "", kana: ""
+    ).freeze
+  end
+  Constant.freeze # 定数への再代入を防ぐためにモジュールに対してフリーズを実施
+
   belongs_to :contest,             foreign_key: :contest_nth, primary_key: :nth
   belongs_to :campus,              foreign_key: :campus_code, primary_key: :code
   has_one    :robot_condition,     foreign_key: :robot_code,  primary_key: :code
@@ -41,6 +49,20 @@ class Robot < ApplicationRecord
 
   def self.csv_column_syms
     [ :code, :contest_nth, :campus_code, :team, :name, :kana ]
+  end
+
+  # 特別な#to_csvをオーバーライド
+  def self.to_csv(options = {})
+    codes = []
+    codes << Game::Constant::NO_OPPONENT.code
+    codes << Game::Constant::NO_WINNER.code
+    logger.debug(">>>> codes:#{codes.to_yaml}")
+    CSV.generate(headers: true, force_quotes: true) do |csv|
+      csv << csv_headers
+      where.not(code: codes).each do |record|
+        csv << csv_column_syms.map{ |attr| "#{record.send(attr).to_s}" }
+      end
+    end
   end
 
 end
