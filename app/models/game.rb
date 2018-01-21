@@ -3,17 +3,16 @@ class Game < ApplicationRecord
     NO_OPPONENT = Robot.new(
       code: 100000001, contest_nth: 0, campus_code: 0,
       name: "対戦相手なし", kana: "タイセンアイテナシ"
-    ).freeze
+    )
     NO_WINNER = Robot.new(
       code: 100000002, contest_nth: 0, campus_code: 0,
       name: "勝者なし", kana: "ショウシャナシ"
-    ).freeze # 「両者失格」が相応しいがDBテーブルに登録するコードは勝者なしの意味
-    WIN = '1'.freeze # 勝ち         滅多に増えることはないと見積もり、
-    LOSE = '2'.freeze # 負け        またDBに保存されることがないので、
-    SOLO = '3'.freeze # 単独競技     freezeさせた定数として扱う
-    BOTH_DSQ = '4'.freeze # 両者失格
+    )
+    WIN = '1' # 勝ち
+    LOSE = '2' # 負け
+    SOLO = '3' # 単独競技     
+    BOTH_DSQ = '4' # 両者失格
   end
-  Constant.freeze # 定数への再代入を防ぐためにモジュールに対してフリーズを実施
 
   # 試合途中棄権をretireとすべきところを、
   # 第1回はレースであった、そして度々レースがあったので、

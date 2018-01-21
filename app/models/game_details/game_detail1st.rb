@@ -1,12 +1,11 @@
 class GameDetail1st < GameDetail
   module Constant
-    UNKNOWN_VALUE = "--".freeze
-    UNKNOWN_VALUE_FOR_WIN      = "-W".freeze
-    UNKNOWN_VALUE_FOR_LOSE     = "-L".freeze
-    UNKNOWN_VALUE_FOR_BOTH_DSQ = "-B".freeze
+    UNKNOWN_VALUE = "--"
+    UNKNOWN_VALUE_FOR_WIN      = "-W"
+    UNKNOWN_VALUE_FOR_LOSE     = "-L"
+    UNKNOWN_VALUE_FOR_BOTH_DSQ = "-B"
   end
-  Constant.freeze
-
+  
   REX_DD   = /[0-9]{2}/ # Double Digit, 2桁数字
   REX_TIME = /([0-9\-]{2}\.[0-9\-][0-9\-WLB])-([0-9\-]{2}\.[0-9\-][0-9\-WLB])/
 
