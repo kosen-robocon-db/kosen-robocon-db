@@ -139,7 +139,6 @@
             <% end %>
             <td>
               <% # 出来ればモデルと共用のヘルパーメソッド化すべき
-
                 case game.winner_robot_code
                 when Game::Constant::NO_WINNER.code then
                   case opponent.code
@@ -151,12 +150,18 @@
                     concat "両者失格"
                   end
                 else
-                  if @robot.code == game.winner_robot_code then
-                    logger.debug(">>>> view: robot(my) = winner")
-                    concat "勝ち"
+                  case opponent.code
+                  when Game::Constant::NO_OPPONENT.code then
+                    logger.debug(">>>> view: NO_OPPONENT")
+                    concat "不戦勝"
                   else
-                    logger.debug(">>>> view: opponent = winner")
-                    concat "負け"
+                    if @robot.code == game.winner_robot_code then
+                      logger.debug(">>>> view: robot(my) = winner")
+                      concat "勝ち"
+                    else
+                      logger.debug(">>>> view: opponent = winner")
+                      concat "負け"
+                    end
                   end
                 end
               %>
