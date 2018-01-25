@@ -35,6 +35,8 @@
     &nbsp;&nbsp;
     <%= f.radio_button :victory, Game::Constant::SOLO %>予選単独競技（勝ち負けなし）
     &nbsp;&nbsp;
+    <%= f.radio_button :victory, Game::Constant::BYE %>不戦勝
+    &nbsp;&nbsp;
     <%= f.radio_button :victory, Game::Constant::BOTH_DSQ %>両者失格
     <br />
     <%= f.label :reasons_for_victory, "勝敗事由"%>：

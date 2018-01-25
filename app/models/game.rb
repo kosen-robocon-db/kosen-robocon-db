@@ -8,10 +8,21 @@ class Game < ApplicationRecord
       code: 100000002, contest_nth: 0, campus_code: 0,
       name: "勝者なし", kana: "ショウシャナシ"
     )
+    # Gameモデル／テーブルはleft_robot_code、right_robot_code、そして
+    # winner_robot_codeで勝敗を確定する。
+    # robot_code_1から見た場合：
+    # left_robot_code | right_robot_code | winner_robot_code |
+    # ----------------+------------------+-------------------+---------
+    # robot_code_1    | robot_code_2     | robot_code_1/2    | WIN/LOSE
+    # robot_code_1    | NO_OPPONENT      | NO_WINNER         | SOLO
+    # robot_code_1    | NO_OPPONENT      | robot_code_1      | BYE
+    # robot_code_1    | robot_code_2     | NO_WINNER         | BOTH_DSQ
+    # ※ NO_OPPONENT及びNO_WINNERは同じ値でも機能する？
     WIN = '1' # 勝ち
     LOSE = '2' # 負け
-    SOLO = '3' # 単独競技     
-    BOTH_DSQ = '4' # 両者失格
+    SOLO = '3' # 単独競技
+    BYE = '4' # 不戦勝
+    BOTH_DSQ = '5' # 両者失格
   end
 
   # 試合途中棄権をretireとすべきところを、
@@ -22,11 +33,10 @@ class Game < ApplicationRecord
   # enum_help(GEM)をインストールし（必須）、
   # kosen-robocon.ja.ymlに日本語テキストを記している。
   enum reasons: {
-    unearned_win: 1, # 不戦勝
-    draw: 2,         # 引き分け（審査員判定・推薦で勝ち負け）
-    DNS: 3,          # Do Not Start 負け側が試合開始前棄権
-    DNF: 4,          # Do Not Finish 負け側が試合途中棄権
-    DSQ: 5,          # Disqualification 負け側が失格　
+    draw: 1,         # 引き分け（審査員判定・推薦で勝ち負け）
+    DNS: 2,          # Do Not Start 負け側が試合開始前棄権
+    DNF: 3,          # Do Not Finish 負け側が試合途中棄権
+    DSQ: 4          # Disqualification 負け側が失格　
   }
 
   before_validation :compose_attributes
@@ -48,7 +58,8 @@ class Game < ApplicationRecord
 
   attr_accessor :robot_code, :opponent_robot_code, :victory
   validates :victory, inclusion: { in: [
-    Constant::WIN, Constant::LOSE, Constant::SOLO, Constant::BOTH_DSQ
+    Constant::WIN, Constant::LOSE, Constant::SOLO, Constant::BYE,
+    Constant::BOTH_DSQ
   ] }
 
   scope :order_csv, -> { order(id: :asc) }
@@ -101,12 +112,18 @@ class Game < ApplicationRecord
         self.victory = Constant::BOTH_DSQ
       end
     else
-      if self.robot_code == self.winner_robot_code then
-        logger.debug(">>>> subjective_view_by: robot(my) = winner")
-        self.victory = Constant::WIN
+      case self.opponent_robot_code
+      when Constant::NO_OPPONENT.code then
+        logger.debug(">>>> subjective_view_by: NO_OPPONENT")
+        self.victory = Constant::BYE
       else
-        logger.debug(">>>> subjective_view_by: opponent = winner")
-        self.victory = Constant::LOSE
+        if self.robot_code == self.winner_robot_code then
+          logger.debug(">>>> subjective_view_by: robot(my) = winner")
+          self.victory = Constant::WIN
+        else
+          logger.debug(">>>> subjective_view_by: opponent = winner")
+          self.victory = Constant::LOSE
+        end
       end
     end
   end
@@ -116,12 +133,12 @@ class Game < ApplicationRecord
     # 「勝敗事由コード」としているが、勝敗事由が固まり次第、
     # 「不戦勝」や「失格」などを分解し、１ビットまたは１バイトのカラムに変更すべき。
     # 現在は増えて変更が容易いように整数値に変換して格納している。
-    # 1 1 1 1 1 b = 31 = 0x1F, ex. 5なら試合前棄権があって不戦勝
-    # | | | | |__"不戦勝"
+    # 1 1 1 1 b = 15 = 0xF
     # | | | |____"引き分け（審査員判定/推薦）"
     # | | |______"試合開始前棄権"
     # | |________"試合途中棄権"
     # |__________"失格"
+    # 二進数化する必要はあるのか？
     [
       "試合コード", "大会回", "地区コード", "回戦", "試合",
       "ロボットコード（左）", "ロボットコード（右）", "勝利ロボットコード",
@@ -202,6 +219,10 @@ class Game < ApplicationRecord
       logger.debug(">>>> compose_attributes:SOLO")
       self.right_robot_code  = Constant::NO_OPPONENT.code
       self.winner_robot_code = Constant::NO_WINNER.code
+    when Constant::BYE then
+      logger.debug(">>>> compose_attributes:BYE")
+      self.right_robot_code = Constant::NO_OPPONENT.code
+      self.winner_robot_code = self.robot_code
     when Constant::BOTH_DSQ then
       logger.debug(">>>> compose_attributes:BOTH_DSQ")
       self.winner_robot_code = Constant::NO_WINNER.code
