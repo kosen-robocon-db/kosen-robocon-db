@@ -1,12 +1,11 @@
 class GameDetail1st < GameDetail
   module Constant
-    UNKNOWN_VALUE = "--".freeze
-    UNKNOWN_VALUE_FOR_WIN      = "-W".freeze
-    UNKNOWN_VALUE_FOR_LOSE     = "-L".freeze
-    UNKNOWN_VALUE_FOR_BOTH_DSQ = "-B".freeze
+    UNKNOWN_VALUE = "--"
+    UNKNOWN_VALUE_FOR_WIN      = "-W"
+    UNKNOWN_VALUE_FOR_LOSE     = "-L"
+    UNKNOWN_VALUE_FOR_BOTH_DSQ = "-B"
   end
-  Constant.freeze
-
+  
   REX_DD   = /[0-9]{2}/ # Double Digit, 2桁数字
   REX_TIME = /([0-9\-]{2}\.[0-9\-][0-9\-WLB])-([0-9\-]{2}\.[0-9\-][0-9\-WLB])/
 
@@ -43,6 +42,7 @@ class GameDetail1st < GameDetail
         end
       else
         hash[:my_time_minute] = Constant::UNKNOWN_VALUE
+        logger.debug(">>>> compose_properties:#{victory}")
         case victory # 不明の場合は勝敗に応じた不明値を設定
         when Game::Constant::WIN      then
           hash[:my_time_second] = Constant::UNKNOWN_VALUE_FOR_WIN
@@ -70,11 +70,12 @@ class GameDetail1st < GameDetail
         end
       else
         hash[:opponent_time_minute] = Constant::UNKNOWN_VALUE
+        logger.debug(">>>> compose_properties:#{victory}")
         case victory # 不明の場合は勝敗に応じた不明値を設定
         when Game::Constant::WIN      then
-          hash[:opponent_time_second] = Constant::UNKNOWN_VALUE_FOR_WIN
-        when Game::Constant::LOSE     then
           hash[:opponent_time_second] = Constant::UNKNOWN_VALUE_FOR_LOSE
+        when Game::Constant::LOSE     then
+          hash[:opponent_time_second] = Constant::UNKNOWN_VALUE_FOR_WIN
         when Game::Constant::BOTH_DSQ then
           hash[:opponent_time_second] = Constant::UNKNOWN_VALUE_FOR_BOTH_DSQ
         else
