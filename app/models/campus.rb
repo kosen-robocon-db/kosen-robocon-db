@@ -5,6 +5,7 @@ class Campus < ApplicationRecord
     )
   end
 
+  
   belongs_to :region, foreign_key: :region_code, primary_key: :code
   has_many :robots, foreign_key: :campus_code, primary_key: :code, dependent: :destroy
   has_many :campus_history, foreign_key: :campus_code, primary_key: :code, dependent: :destroy
