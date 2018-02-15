@@ -1,4 +1,6 @@
 class GameDetail29th < GameDetail
+  REX    = /-/
+
   attr_accessor :my_height, :opponent_height,
     :jury_votes, :my_jury_votes, :opponent_jury_votes,
     :progress, :my_progress, :opponent_progress
@@ -32,80 +34,44 @@ class GameDetail29th < GameDetail
   end
 
   def self.attr_syms_for_params
-    s = super()
+    s = super() || []
     s.concat( additional_attr_symbols )
   end
 
   # SRP(Single Responsibility Principle, 単一責任原則)に従っていないが
   # このクラス内で実装する。
-  def self.compose_properties(hash:, victory:)
-
-    # 高さまたは審査委員判定より、値をそのままか交換を決定（優勢な方を先に配置）
-    # 存在チェックをしてないので例外が出力される可能性がある
-    if hash[:my_height] < hash[:opponent_height] ||
-      hash[:my_jury_votes] < hash[:opponent_jury_votes] then
-      hash[:my_height], hash[:opponent_height] =
-        hash[:opponent_height], hash[:my_height]
-      hash[:my_jury_votes], hash[:opponent_jury_votes] =
-        hash[:opponent_jury_votes], hash[:my_jury_votes]
-      hash[:my_progress], hash[:opponent_progress] =
-        hash[:opponent_progress], hash[:my_progress]
+  def self.compose_properties(hash:)
+    logger.debug(">>>> compose_properties, hash:#{hash.to_yaml}")
+    h = super(hash: hash) || {}
+    properties = %w( height jury_votes progress )
+    properties.each do |pr|
+      my_sym, opponent_sym = "my_#{pr}".to_sym, "opponent_#{pr}".to_sym
+      if hash[my_sym].present? and hash[opponent_sym].present?
+        hash["#{pr}"] = "#{hash[my_sym]}-#{hash[opponent_sym]}"
+      end
     end
-
-    a = []
-    a.push(%Q["height":"#{hash[:my_height]}-#{hash[:opponent_height]}"]) if
-      not hash[:my_height].blank? and not hash[:opponent_height].blank?
-    a.push(%Q["jury_votes":"#{hash[:my_jury_votes]}-#{hash[:opponent_jury_votes]}"]) if
-      not hash[:my_jury_votes].blank? and not hash[:opponent_jury_votes].blank?
-    a.push(%Q["progress":"#{hash[:my_progress]}-#{hash[:opponent_progress]}"]) if
-      not hash[:my_progress].blank? and not hash[:opponent_progress].blank?
-    j = ''
-    for i in a
-      j += ',' if not j.blank?
-      j += i
-    end
-    '{' + j + '}'
+    return h
   end
 
   # SRP(Single Responsibility Principle, 単一責任原則)に従っていないが
   # このクラス内で実装する。
-  def decompose_properties(victory)
+  # DBには想定外の値がない前提である
+  def decompose_properties(robot:)
     h = JSON.parse(self.properties)
-
+    if h["robot"].present? then # テーブルカラムにすべきでは？ 必ずコードがある前提
+      self.my_robot_code, self.opponent_robot_code = h["robot"].to_s.split(REX)
+    end # テーブルカラムにすれば全ての継承クラスで同じコードを書かなくて済むはず！
     self.my_height, self.opponent_height =
-      h["height"].to_s.split(/-/) if not h["height"].blank?
-    self.jury_votes = h["jury_votes"].blank? ? false : true
+      h["height"].to_s.split(REX) if h["height"].present?
+    self.jury_votes = h["jury_votes"].present? ? true : false
     self.my_jury_votes, self.opponent_jury_votes =
-      h["jury_votes"].to_s.split(/-/) if not h["jury_votes"].blank?
-    self.progress = h["progress"].blank? ? false : true
+      h["jury_votes"].to_s.split(REX) if h["jury_votes"].present?
+    self.progress = h["progress"].present? ? true : false
     self.my_progress, self.opponent_progress =
-      h["progress"].to_s.split(/-/) if not h["progress"].blank?
+      h["progress"].to_s.split(REX) if h["progress"].present?
 
-    # 勝敗と高さまたは審査委員判定より、値をそのままか交換を決定
-    case victory
-    when "true"
-      swap_properties if self.my_height < self.opponent_height ||
-        (
-          !self.my_jury_votes.blank? && !self.opponent_jury_votes.blank? &&
-            self.my_jury_votes < self.opponent_jury_votes
-        )
-    when "false"
-      swap_properties if self.my_height > self.opponent_height ||
-        (
-          !self.my_jury_votes.blank? && !self.opponent_jury_votes.blank? &&
-            self.my_jury_votes > self.opponent_jury_votes
-        )
-    end
+    roots = %w( robot_code height jury_votes progress)
+    swap_properties(roots) unless robot.code == self.my_robot_code
   end
 
-  private
-
-  def swap_properties
-    self.my_height, self.opponent_height =
-      self.opponent_height, self.my_height
-    self.my_jury_votes, self.opponent_jury_votes =
-      self.opponent_jury_votes, self.my_jury_votes
-    self.my_progress, self.opponent_progress =
-      self.opponent_progress, self.my_progress
-  end
 end

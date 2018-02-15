@@ -18,10 +18,10 @@ class Game < ApplicationRecord
     # robot_code_1    | NO_OPPONENT      | robot_code_1      | BYE
     # robot_code_1    | robot_code_2     | NO_WINNER         | BOTH_DSQ
     # ※ NO_OPPONENT及びNO_WINNERは同じ値でも機能する？
-    WIN = '1' # 勝ち
-    LOSE = '2' # 負け
-    SOLO = '3' # 単独競技
-    BYE = '4' # 不戦勝
+    WIN      = '1' # 勝ち
+    LOSE     = '2' # 負け
+    SOLO     = '3' # 単独競技
+    BYE      = '4' # 不戦勝
     BOTH_DSQ = '5' # 両者失格
   end
 
@@ -33,10 +33,10 @@ class Game < ApplicationRecord
   # enum_help(GEM)をインストールし（必須）、
   # kosen-robocon.ja.ymlに日本語テキストを記している。
   enum reasons: {
-    draw: 1,         # 引き分け（審査員判定・推薦で勝ち負け）
-    DNS: 2,          # Do Not Start 負け側が試合開始前棄権
-    DNF: 3,          # Do Not Finish 負け側が試合途中棄権
-    DSQ: 4          # Disqualification 負け側が失格　
+    draw: 1,      # 引き分け（審査員判定・推薦で勝ち負け）
+    DNS:  2,      # Do Not Start 負け側が試合開始前棄権
+    DNF:  3,      # Do Not Finish 負け側が試合途中棄権
+    DSQ:  4       # Disqualification 負け側が失格　
   }
 
   before_validation :compose_attributes
@@ -234,5 +234,3 @@ class Game < ApplicationRecord
   end
 
 end
-
-      

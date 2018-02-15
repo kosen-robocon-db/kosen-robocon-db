@@ -1,7 +1,7 @@
 <%= f.hidden_field :id %>
 
 <%
-  baloon_numbers = Array([["不明", GameDetail30th::UNKNOWN_VALUE_FOR_LOSE]])
+  baloon_numbers = Array([["不明", GameDetail30th::Constant::UNKNOWN_VALUE]])
   baloon_numbers.concat( Array.new(11) { |i| [i.to_s+"個", i] } )
 %>
 
