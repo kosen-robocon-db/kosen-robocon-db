@@ -54,7 +54,7 @@ class GamesController < ApplicationController
     Game.confirm_or_associate(game_details_sub_class_sym: @gd_sym)
     @game = Game.find_by(code: params[:code])
     @game.subjective_view_by(robot_code: @robot.code)
-    @game.send(@gd_sym).each { |i| i.decompose_properties(@robot) }
+    @game.send(@gd_sym).each { |i| i.decompose_properties(robot: @robot) }
     gon.contest_nth = @robot.contest_nth
     @regions = Region.where(code: [ 0, @robot.campus.region_code ])
     @round_names = RoundName.where(contest_nth: @robot.contest_nth,
