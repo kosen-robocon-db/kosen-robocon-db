@@ -1,9 +1,9 @@
 class GameDetail29th < GameDetail
-  REX    = /-/
+  REX = /-/
 
-  attr_accessor :my_height, :opponent_height,
-    :jury_votes, :my_jury_votes, :opponent_jury_votes,
-    :progress, :my_progress, :opponent_progress
+  attr_accessor :my_height, :opponent_height
+  attr_accessor :jury_votes, :my_jury_votes, :opponent_jury_votes
+  attr_accessor :progress, :my_progress, :opponent_progress
 
   validates :my_height,         numericality: {
     only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 1000
@@ -47,7 +47,7 @@ class GameDetail29th < GameDetail
     properties.each do |pr|
       my_sym, opponent_sym = "my_#{pr}".to_sym, "opponent_#{pr}".to_sym
       if hash[my_sym].present? and hash[opponent_sym].present?
-        hash["#{pr}"] = "#{hash[my_sym]}-#{hash[opponent_sym]}"
+        h["#{pr}"] = "#{hash[my_sym]}-#{hash[opponent_sym]}"
       end
     end
     return h
@@ -61,6 +61,8 @@ class GameDetail29th < GameDetail
     if h["robot"].present? then # テーブルカラムにすべきでは？ 必ずコードがある前提
       self.my_robot_code, self.opponent_robot_code = h["robot"].to_s.split(REX)
     end # テーブルカラムにすれば全ての継承クラスで同じコードを書かなくて済むはず！
+    # ^^^^ 親クラスの上記部分だけyieldのようなもので呼び出せないか？
+
     self.my_height, self.opponent_height =
       h["height"].to_s.split(REX) if h["height"].present?
     self.jury_votes = h["jury_votes"].present? ? true : false
@@ -70,8 +72,10 @@ class GameDetail29th < GameDetail
     self.my_progress, self.opponent_progress =
       h["progress"].to_s.split(REX) if h["progress"].present?
 
+    # my_robot_code側から見ているので、ロボットコード異なる場合は左右の値を交換する
     roots = %w( robot_code height jury_votes progress)
-    swap_properties(roots) unless robot.code == self.my_robot_code
+    # vvvv 親クラスの下記部分だけyieldのようなもので呼び出せないか？
+    swap_properties(roots) unless robot.code.to_i == self.my_robot_code.to_i
   end
 
 end

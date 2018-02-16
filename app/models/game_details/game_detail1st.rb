@@ -5,12 +5,12 @@ class GameDetail1st < GameDetail
 
   DELIMITER      = "-"
   DELIMITER_TIME = ":"
-  REX       = /#{DELIMITER}|#{DELIMITER_TIME}/
-  REX_MS    = /([0-5][0-9]|#{Constant::UNKNOWN_VALUE})/
+  REX    = /#{DELIMITER}|#{DELIMITER_TIME}/
+  REX_MS = /([0-5][0-9]|#{Constant::UNKNOWN_VALUE})/
 
-  attr_accessor :my_time_minute, :my_time_second,
-    :opponent_time_minute, :opponent_time_second,
-    :memo
+  attr_accessor :my_time_minute, :my_time_second
+  attr_accessor :opponent_time_minute, :opponent_time_second
+  attr_accessor :memo
 
   # 下記の*_time_minnute, *_time_second検証は現バージョンんでは必要ないかもしれない。
   with_options if: :my_time_minute do
@@ -68,6 +68,7 @@ class GameDetail1st < GameDetail
       self.my_robot_code, self.opponent_robot_code =
         h["robot"].to_s.split(DELIMITER)
     end # テーブルカラムにすれば全ての継承クラスで同じコードを書かなくて済むはず！
+    # ^^^^ 親クラスの上記部分だけyieldのようなもので呼び出せないか？
 
     if h["time"].present? then
       self.my_time_minute, self.my_time_second,
@@ -78,6 +79,7 @@ class GameDetail1st < GameDetail
 
     # my_robot_code側から見ているので、ロボットコード異なる場合は左右の値を交換する
     roots = %w( robot_code time_minute time_second )
+    # vvvv 親クラスの下記部分だけyieldのようなもので呼び出せないか？
     swap_properties(roots) unless robot.code.to_i == self.my_robot_code.to_i
   end
 
