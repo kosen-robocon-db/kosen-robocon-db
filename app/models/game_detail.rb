@@ -12,8 +12,13 @@ class GameDetail < ApplicationRecord
   scope :order_default, -> { order("number asc") }
   scope :order_csv, -> { order(id: :asc) }
 
+  def self.additional_attr_symbols
+    []
+  end
+
   def self.attr_syms_for_params
-    [ :id, :number, :_destroy ]
+    s = [ :id, :number, :_destroy ]
+    s.concat( additional_attr_symbols )
   end
 
   def self.csv_headers

@@ -35,11 +35,6 @@ class GameDetail1st < GameDetail
     ]
   end
 
-  def self.attr_syms_for_params
-    s = super() || []
-    s.concat( additional_attr_symbols )
-  end
-
   def self.compose_properties(hash:)
     h = super(hash: hash) || {}
     if

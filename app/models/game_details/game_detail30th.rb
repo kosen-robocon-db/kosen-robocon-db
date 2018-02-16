@@ -47,11 +47,6 @@ class GameDetail30th < GameDetail
     ]
   end
 
-  def self.attr_syms_for_params
-    s = super() || []
-    s.concat( additional_attr_symbols )
-  end
-
   # SRP(Single Responsibility Principle, 単一責任原則)に従っていないが
   # このクラス内で実装する。
   def self.compose_properties(hash:)
