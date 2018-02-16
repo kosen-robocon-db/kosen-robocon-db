@@ -34,7 +34,6 @@ class GamesController < ApplicationController
     h = regularize(attrs_hash: game_params)
     h["robot_code"] = @robot.code.to_s
     h["code"] = Game.get_code(hash: h).to_s
-    logger.debug(">>>> controller, h: #{h.to_yaml}")
     @game = Game.new(h)
     @regions = Region.where(code: [ 0, @robot.campus.region_code ])
     @round_names = RoundName.where(contest_nth: @robot.contest_nth,

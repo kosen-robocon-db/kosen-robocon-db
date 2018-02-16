@@ -143,23 +143,18 @@
                 when Game::Constant::NO_WINNER.code then
                   case opponent.code
                   when Game::Constant::NO_OPPONENT.code then
-                    logger.debug(">>>> view:NO_WINNER, NO_OPPONENT")
                     concat "単独競技につき勝ち負けなし"
                   else
-                    logger.debug(">>>> view:NO_WINNER")
                     concat "両者失格"
                   end
                 else
                   case opponent.code
                   when Game::Constant::NO_OPPONENT.code then
-                    logger.debug(">>>> view: NO_OPPONENT")
                     concat "不戦勝"
                   else
                     if @robot.code == game.winner_robot_code then
-                      logger.debug(">>>> view: robot(my) = winner")
                       concat "勝ち"
                     else
-                      logger.debug(">>>> view: opponent = winner")
                       concat "負け"
                     end
                   end

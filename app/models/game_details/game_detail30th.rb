@@ -7,9 +7,6 @@ class GameDetail30th < GameDetail
 
   REX    = /-/
   REX_BL = /([0-9]|10|#{Constant::UNKNOWN_VALUE})/
-  # REX_BS = /#{REX_B}-#{REX_B}/
-  # REX_V  = /([0-5]|#{Constant::UNKNOWN_VALUE})/
-  # REX_VS = /#{REX_V}-#{REX_V}/
 
   attr_accessor :my_robot_baloon, :opponent_robot_baloon
   attr_accessor :my_base_baloon, :opponent_base_baloon
@@ -58,7 +55,6 @@ class GameDetail30th < GameDetail
   # SRP(Single Responsibility Principle, 単一責任原則)に従っていないが
   # このクラス内で実装する。
   def self.compose_properties(hash:)
-    logger.debug(">>>> compose_properties, hash:#{hash.to_yaml}")
     h = super(hash: hash) || {}
     properties = %w( base_baloon robot_baloon jury_votes )
     properties.each do |pr|

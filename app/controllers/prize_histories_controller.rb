@@ -15,13 +15,11 @@ class PrizeHistoriesController < ApplicationController
       params[:contest_nth], params[:region_code]
     ).order("prize_kind asc")
     if params[:region_code] != "0" then
-      logger.debug(">>>> 全国大会進出検索:#{params[:region_code]}")
       @advancement_histories = AdvancementHistory.where(
         "contest_nth = ? and region_code = ?",
         params[:contest_nth], params[:region_code]
       ).order("advancement_case asc")
     else
-      logger.debug(">>>> 全国大会進出検索")
       @advancement_histories = AdvancementHistory.where(
         "contest_nth = ?",
         params[:contest_nth]

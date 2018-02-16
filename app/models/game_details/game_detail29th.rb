@@ -41,7 +41,6 @@ class GameDetail29th < GameDetail
   # SRP(Single Responsibility Principle, 単一責任原則)に従っていないが
   # このクラス内で実装する。
   def self.compose_properties(hash:)
-    logger.debug(">>>> compose_properties, hash:#{hash.to_yaml}")
     h = super(hash: hash) || {}
     properties = %w( height jury_votes progress )
     properties.each do |pr|
