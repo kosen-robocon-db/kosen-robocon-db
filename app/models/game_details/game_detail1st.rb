@@ -3,10 +3,14 @@ class GameDetail1st < GameDetail
     UNKNOWN_VALUE = "__" # DB/モデル用。"--"では正規表現利用の文字列区切りで面倒。
   end
 
-  DELIMITER      = "-"
+  # my_robot_code側から見ているので、
+  # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
+  ROOTS          = %w( robot_code time_minute time_second )
+  
+  # DELIMITER      = "-"
   DELIMITER_TIME = ":"
-  REX    = /#{DELIMITER}|#{DELIMITER_TIME}/
-  REX_MS = /([0-5][0-9]|#{Constant::UNKNOWN_VALUE})/
+  REX            = /#{DELIMITER}|#{DELIMITER_TIME}/
+  REX_MS         = /([0-5][0-9]|#{Constant::UNKNOWN_VALUE})/
 
   attr_accessor :my_time_minute, :my_time_second
   attr_accessor :opponent_time_minute, :opponent_time_second
@@ -27,12 +31,17 @@ class GameDetail1st < GameDetail
   end
   validates :memo, length: { maximum: 255 }
 
+  # DBにはないがpropertyに納めたいフォーム上の属性
   def self.additional_attr_symbols
     [
       :my_time_minute, :my_time_second,
       :opponent_time_minute, :opponent_time_second,
       :memo
     ]
+  end
+
+  def roots
+    ROOTS
   end
 
   def self.compose_properties(hash:)
@@ -58,24 +67,14 @@ class GameDetail1st < GameDetail
   end
 
   def decompose_properties(robot:)
-    h = JSON.parse(self.properties)
-    if h["robot"].present? then # テーブルカラムにすべきでは？ 必ずコードがある前提
-      self.my_robot_code, self.opponent_robot_code =
-        h["robot"].to_s.split(DELIMITER)
-    end # テーブルカラムにすれば全ての継承クラスで同じコードを書かなくて済むはず！
-    # ^^^^ 親クラスの上記部分だけyieldのようなもので呼び出せないか？
-
-    if h["time"].present? then
-      self.my_time_minute, self.my_time_second,
-        self.opponent_time_minute, self.opponent_time_second =
-          h["time"].to_s.split(REX) # この時点ではREにマッチしたとしている
+    super(robot: robot) do |h|
+      if h["time"].present? then
+        self.my_time_minute, self.my_time_second,
+          self.opponent_time_minute, self.opponent_time_second =
+            h["time"].to_s.split(REX) # この時点ではREにマッチしたとしている
+      end
+      self.memo = h["memo"].presence || ''
     end
-    self.memo = h["memo"].presence || ''
-
-    # my_robot_code側から見ているので、ロボットコード異なる場合は左右の値を交換する
-    roots = %w( robot_code time_minute time_second )
-    # vvvv 親クラスの下記部分だけyieldのようなもので呼び出せないか？
-    swap_properties(roots) unless robot.code.to_i == self.my_robot_code.to_i
   end
 
 end

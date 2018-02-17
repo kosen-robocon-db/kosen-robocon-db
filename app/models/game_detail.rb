@@ -1,4 +1,6 @@
 class GameDetail < ApplicationRecord
+  DELIMITER = "-"
+
   serialize :properties, JSON
   after_initialize :reset_swap_state
 
@@ -6,6 +8,7 @@ class GameDetail < ApplicationRecord
   # 例えば、number1 < number2 であれば number2 が再試合である。
   # 更新時に number1 が削除された場合、number2 はそのまま DB に記録される。
   # 将来の機能によっては最初の大戦は全て'1'とするべきだろう。
+  # number を含めた UNIQUE index を作るべき
 
   attr_accessor :my_robot_code, :opponent_robot_code, :victory
 
@@ -34,6 +37,20 @@ class GameDetail < ApplicationRecord
     if hash[:my_robot_code].present? and hash[:opponent_robot_code].present?
       { "robot" => "#{hash[:my_robot_code]}-#{hash[:opponent_robot_code]}" }
     end
+  end
+
+  def roots
+    %w()
+  end
+
+  def decompose_properties(robot:)
+    h = JSON.parse(self.properties)
+    if h["robot"].present? then # 必ずrobotのコードがある前提だが・・・
+      self.my_robot_code, self.opponent_robot_code =
+        h["robot"].to_s.split(DELIMITER)
+    end
+    yield h
+    swap_properties(roots) unless robot.code.to_i == self.my_robot_code.to_i
   end
 
   def swap_properties(attribute_roots = %w(robot_code))

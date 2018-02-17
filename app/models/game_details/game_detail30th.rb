@@ -5,7 +5,11 @@ class GameDetail30th < GameDetail
     BALOON_MAX = 10
   end
 
-  REX    = /-/
+  # my_robot_code側から見ているので、
+  # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
+  ROOTS  = %w( base_baloon robot_baloon jury_votes )
+  
+  REX    = /#{DELIMITER}/
   REX_BL = /([0-9]|10|#{Constant::UNKNOWN_VALUE})/
 
   attr_accessor :my_robot_baloon, :opponent_robot_baloon
@@ -38,6 +42,7 @@ class GameDetail30th < GameDetail
     }
   end
 
+  # DBにはないがpropertyに納めたいフォーム上の属性
   def self.additional_attr_symbols
     [
       :my_robot_baloon, :opponent_robot_baloon,
@@ -47,12 +52,13 @@ class GameDetail30th < GameDetail
     ]
   end
 
-  # SRP(Single Responsibility Principle, 単一責任原則)に従っていないが
-  # このクラス内で実装する。
+  def roots
+    ROOTS
+  end
+
   def self.compose_properties(hash:)
     h = super(hash: hash) || {}
-    properties = %w( base_baloon robot_baloon jury_votes )
-    properties.each do |pr|
+    ROOTS.each do |pr|
       my_sym, opponent_sym = "my_#{pr}".to_sym, "opponent_#{pr}".to_sym
       if hash[my_sym].present? and hash[opponent_sym].present?
         h["#{pr}"] = "#{hash[my_sym]}-#{hash[opponent_sym]}"
@@ -62,27 +68,17 @@ class GameDetail30th < GameDetail
     return h
   end
 
-  # SRP(Single Responsibility Principle, 単一責任原則)に従っていないが
-  # このクラス内で実装する。
   def decompose_properties(robot:)
-    h = JSON.parse(self.properties)
-    if h["robot"].present? then # テーブルカラムにすべきでは？ 必ずコードがある前提
-      self.my_robot_code, self.opponent_robot_code = h["robot"].to_s.split(REX)
-    end # テーブルカラムにすれば全ての継承クラスで同じコードを書かなくて済むはず！
-
-    self.my_base_baloon, self.opponent_base_baloon =
-      h["base_baloon"].to_s.split(REX) if h["base_baloon"].present?
-    self.my_robot_baloon, self.opponent_robot_baloon =
-      h["robot_baloon"].to_s.split(REX) if h["robot_baloon"].present?
-    self.jury_votes = h["jury_votes"].present? ? true : false
-    self.my_jury_votes, self.opponent_jury_votes =
-      h["jury_votes"].to_s.split(REX) if h["jury_votes"].present?
-    self.time = h["time"].to_s if h["time"].present?
-
-    # my_robot_code側から見ているので、ロボットコード異なる場合は左右の値を交換する
-    roots = %w( base_baloon robot_baloon jury_votes )
-    # vvvv 親クラスの下記部分だけyieldのようなもので呼び出せないか？
-    swap_properties(roots) unless robot.code.to_i == self.my_robot_code.to_i
+    super(robot: robot) do |h|
+      self.my_base_baloon, self.opponent_base_baloon =
+        h["base_baloon"].to_s.split(REX) if h["base_baloon"].present?
+      self.my_robot_baloon, self.opponent_robot_baloon =
+        h["robot_baloon"].to_s.split(REX) if h["robot_baloon"].present?
+      self.jury_votes = h["jury_votes"].present? ? true : false
+      self.my_jury_votes, self.opponent_jury_votes =
+        h["jury_votes"].to_s.split(REX) if h["jury_votes"].present?
+      self.time = h["time"].to_s if h["time"].present?
+    end
   end
 
 end
