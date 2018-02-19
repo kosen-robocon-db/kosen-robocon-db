@@ -12,7 +12,7 @@ class GamesController < ApplicationController
     # 下記のコードはもっと洗練されるべき
     case @robot.contest_nth
       # GameDetail サブクラスのインスタンス生成
-    when  1 then
+    when 1,2 then
       @game.send(@gd_sym).new
     when 29 then
       @game.send(@gd_sym).new(jury_votes: false, progress: false)
