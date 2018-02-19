@@ -1,4 +1,5 @@
 class GameDetail < ApplicationRecord
+  ROOTS     = %w()
   DELIMITER = "-"
 
   serialize :properties, JSON
@@ -40,7 +41,7 @@ class GameDetail < ApplicationRecord
   end
 
   def roots
-    %w()
+    ROOTS
   end
 
   def decompose_properties(robot:)
@@ -65,6 +66,10 @@ class GameDetail < ApplicationRecord
 
   private
 
+  # 更新時、left_robot_codeとright_robot_codeの内容（位置ではない）に変化がなければ
+  # 更新前のleft_robot_codeとright_robot_code、及びproperties内の左右の位置のままで
+  # 値だけを更新したかったが、その実装をしなくてもいまのところ害はないので、
+  # propertiesの左右交換したことを示す状態フラグを実装するに留めている。
   def reset_swap_state
     @swapped = false
   end
