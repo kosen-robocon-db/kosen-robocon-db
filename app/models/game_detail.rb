@@ -1,6 +1,7 @@
 class GameDetail < ApplicationRecord
   ROOTS     = %w()
   DELIMITER = "-"
+  DELIMITER_TIME = ":"
 
   serialize :properties, JSON
   after_initialize :reset_swap_state

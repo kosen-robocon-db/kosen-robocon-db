@@ -8,14 +8,14 @@ class GameDetail30th < GameDetail
   # my_robot_code側から見ているので、
   # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
   ROOTS  = %w( base_baloon robot_baloon jury_votes )
-  
-  REX    = /#{DELIMITER}/
+
   REX_BL = /([0-9]|10|#{Constant::UNKNOWN_VALUE})/
+  REX_MS = /([0-5][0-9]|#{Constant::UNKNOWN_VALUE})/
 
   attr_accessor :my_robot_baloon, :opponent_robot_baloon
   attr_accessor :my_base_baloon, :opponent_base_baloon
   attr_accessor :jury_votes, :my_jury_votes, :opponent_jury_votes
-  attr_accessor :time
+  attr_accessor :time_minute, :time_second
 
   with_options if: :my_robot_baloon do
     validates :my_robot_baloon, format: { with: REX_BL }
@@ -29,10 +29,12 @@ class GameDetail30th < GameDetail
   with_options if: :opponent_base_baloon do
     validates :opponent_base_baloon, format: { with: REX_BL }
   end
-  # validates :time, numericality: {
-  #   only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 10
-  # }
-  # 審査員判定の票に関しては、今回一つもなかったので、改善を施していない。
+  with_options if: :time_minute do
+    validates :time_minute, format: { with: REX_MS }
+  end
+  with_options if: :time_second do
+    validates :time_second, format: { with: REX_MS }
+  end
   with_options if: :jury_votes do
     validates :my_jury_votes,       numericality: {
       only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 5
@@ -48,7 +50,7 @@ class GameDetail30th < GameDetail
       :my_robot_baloon, :opponent_robot_baloon,
       :my_base_baloon, :opponent_base_baloon,
       :jury_votes, :my_jury_votes, :opponent_jury_votes,
-      :time
+      :time_minute, :time_second
     ]
   end
 
@@ -64,7 +66,13 @@ class GameDetail30th < GameDetail
         h["#{pr}"] = "#{hash[my_sym]}-#{hash[opponent_sym]}"
       end
     end
-    h["time"] = "#{hash[:time]}" if hash[:time].present?
+    if hash[:time_minute].present? and hash[:time_second].present? then
+      h["time"] = "\
+        #{hash[:time_minute]}\
+        #{DELIMITER_TIME}\
+        #{hash[:time_second]}\
+      ".gsub(/(\s| )+/, '')
+    end
     return h
   end
 
@@ -77,7 +85,10 @@ class GameDetail30th < GameDetail
       self.jury_votes = h["jury_votes"].present? ? true : false
       self.my_jury_votes, self.opponent_jury_votes =
         h["jury_votes"].to_s.split(REX) if h["jury_votes"].present?
-      self.time = h["time"].to_s if h["time"].present?
+      if h["time"].present? then
+        self.time_minute, self.time_second =
+          h["time"].to_s.split(DELIMITER_TIME)
+      end
     end
   end
 
