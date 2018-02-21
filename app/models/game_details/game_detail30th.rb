@@ -9,8 +9,8 @@ class GameDetail30th < GameDetail
   # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
   ROOTS  = %w( base_baloon robot_baloon jury_votes )
 
-  REX_BL = /([0-9]|10|#{Constant::UNKNOWN_VALUE})/
-  REX_MS = /([0-5][0-9]|#{Constant::UNKNOWN_VALUE})/
+  REX_BL  = /([0-9]|10|#{Constant::UNKNOWN_VALUE})/
+  REX_MS  = /([0-5][0-9]|#{Constant::UNKNOWN_VALUE})/
 
   attr_accessor :my_robot_baloon, :opponent_robot_baloon
   attr_accessor :my_base_baloon, :opponent_base_baloon
@@ -63,7 +63,7 @@ class GameDetail30th < GameDetail
     ROOTS.each do |pr|
       my_sym, opponent_sym = "my_#{pr}".to_sym, "opponent_#{pr}".to_sym
       if hash[my_sym].present? and hash[opponent_sym].present?
-        h["#{pr}"] = "#{hash[my_sym]}-#{hash[opponent_sym]}"
+        h["#{pr}"] = "#{hash[my_sym]}#{DELIMITER}#{hash[opponent_sym]}"
       end
     end
     if hash[:time_minute].present? and hash[:time_second].present? then
@@ -79,12 +79,12 @@ class GameDetail30th < GameDetail
   def decompose_properties(robot:)
     super(robot: robot) do |h|
       self.my_base_baloon, self.opponent_base_baloon =
-        h["base_baloon"].to_s.split(REX) if h["base_baloon"].present?
+        h["base_baloon"].to_s.split(DELIMITER) if h["base_baloon"].present?
       self.my_robot_baloon, self.opponent_robot_baloon =
-        h["robot_baloon"].to_s.split(REX) if h["robot_baloon"].present?
+        h["robot_baloon"].to_s.split(DELIMITER) if h["robot_baloon"].present?
       self.jury_votes = h["jury_votes"].present? ? true : false
       self.my_jury_votes, self.opponent_jury_votes =
-        h["jury_votes"].to_s.split(REX) if h["jury_votes"].present?
+        h["jury_votes"].to_s.split(DELIMITER) if h["jury_votes"].present?
       if h["time"].present? then
         self.time_minute, self.time_second =
           h["time"].to_s.split(DELIMITER_TIME)

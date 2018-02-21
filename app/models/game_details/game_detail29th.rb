@@ -3,8 +3,6 @@ class GameDetail29th < GameDetail
   # my_robot_code側から見ているので、
   # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
   ROOTS = %w( robot_code height jury_votes progress )
-  
-  REX   = /#{DELIMITER}/
 
   attr_accessor :my_height, :opponent_height
   attr_accessor :jury_votes, :my_jury_votes, :opponent_jury_votes
@@ -16,7 +14,6 @@ class GameDetail29th < GameDetail
   validates :opponent_height,   numericality: {
     only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 1000
   }
-  # validates :jury_votes,             inclusion: { in: ["true", "false"] }
   with_options if: :jury_votes do
     validates :my_jury_votes,       numericality: {
       only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 5
@@ -59,13 +56,13 @@ class GameDetail29th < GameDetail
   def decompose_properties(robot:)
     super(robot: robot) do |h|
       self.my_height, self.opponent_height =
-        h["height"].to_s.split(REX) if h["height"].present?
+        h["height"].to_s.split(DELIMITER) if h["height"].present?
       self.jury_votes = h["jury_votes"].present? ? true : false
       self.my_jury_votes, self.opponent_jury_votes =
-        h["jury_votes"].to_s.split(REX) if h["jury_votes"].present?
+        h["jury_votes"].to_s.split(DELIMITER) if h["jury_votes"].present?
       self.progress = h["progress"].present? ? true : false
       self.my_progress, self.opponent_progress =
-        h["progress"].to_s.split(REX) if h["progress"].present?
+        h["progress"].to_s.split(DELIMITER) if h["progress"].present?
     end
   end
 
