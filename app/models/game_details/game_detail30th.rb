@@ -11,6 +11,7 @@ class GameDetail30th < GameDetail
 
   REX_BL  = /([0-9]|10|#{Constant::UNKNOWN_VALUE})/
   REX_MS  = /([0-5][0-9]|#{Constant::UNKNOWN_VALUE})/
+  REX_VT  = /([0-5]|#{Constant::UNKNOWN_VALUE})/
 
   attr_accessor :my_robot_baloon, :opponent_robot_baloon
   attr_accessor :my_base_baloon, :opponent_base_baloon
@@ -36,12 +37,8 @@ class GameDetail30th < GameDetail
     validates :time_second, format: { with: REX_MS }
   end
   with_options if: :jury_votes do
-    validates :my_jury_votes,       numericality: {
-      only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 5
-    }
-    validates :opponent_jury_votes, numericality: {
-      only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 5
-    }
+    validates :my_jury_votes, format: { with: REX_VT }
+    validates :opponent_jury_votes, format: { with: REX_VT }
   end
 
   # DBにはないがpropertyに納めたいフォーム上の属性
