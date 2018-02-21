@@ -6,9 +6,7 @@ class GameDetail1st < GameDetail
   # my_robot_code側から見ているので、
   # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
   ROOTS          = %w( robot_code time_minute time_second )
-  
-  # DELIMITER      = "-"
-  DELIMITER_TIME = ":"
+
   REX            = /#{DELIMITER}|#{DELIMITER_TIME}/
   REX_MS         = /([0-5][0-9]|#{Constant::UNKNOWN_VALUE})/
 
