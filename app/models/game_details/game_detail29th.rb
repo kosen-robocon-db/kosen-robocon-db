@@ -47,7 +47,7 @@ class GameDetail29th < GameDetail
     ROOTS.each do |pr|
       my_sym, opponent_sym = "my_#{pr}".to_sym, "opponent_#{pr}".to_sym
       if hash[my_sym].present? and hash[opponent_sym].present?
-        h["#{pr}"] = "#{hash[my_sym]}-#{hash[opponent_sym]}"
+        h["#{pr}"] = "#{hash[my_sym]}#{DELIMITER}#{hash[opponent_sym]}"
       end
     end
     return h

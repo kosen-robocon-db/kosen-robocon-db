@@ -1,7 +1,12 @@
 class GameDetail < ApplicationRecord
-  ROOTS     = %w()
-  DELIMITER = "-"
+  module Constant
+    UNKNOWN_VALUE = "__"
+  end
+
+  ROOTS          = %w()
+  DELIMITER      = "-"
   DELIMITER_TIME = ":"
+  REX_MS         = /([0-5][0-9]|#{Constant::UNKNOWN_VALUE})/
 
   serialize :properties, JSON
   after_initialize :reset_swap_state

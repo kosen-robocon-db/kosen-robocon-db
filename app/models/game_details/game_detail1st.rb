@@ -1,14 +1,10 @@
 class GameDetail1st < GameDetail
-  module Constant
-    UNKNOWN_VALUE = "__" # DB/モデル用。"--"では正規表現利用の文字列区切りで面倒。
-  end
 
   # my_robot_code側から見ているので、
   # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
-  ROOTS          = %w( robot_code time_minute time_second )
+  ROOTS = %w( robot_code time_minute time_second )
 
-  REX            = /#{DELIMITER}|#{DELIMITER_TIME}/
-  REX_MS         = /([0-5][0-9]|#{Constant::UNKNOWN_VALUE})/
+  REX   = /#{DELIMITER}|#{DELIMITER_TIME}/
 
   attr_accessor :my_time_minute, :my_time_second
   attr_accessor :opponent_time_minute, :opponent_time_second

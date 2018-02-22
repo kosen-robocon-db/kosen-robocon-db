@@ -1,5 +1,11 @@
 <%= f.hidden_field :id %>
 <%= f.hidden_field :number %>
+<%
+  vote_numbers = Array([["不明","#{GameDetail::Constant::UNKNOWN_VALUE}"]])
+  vote_numbers.concat( Array.new(5) { |i| [ i.to_s, i.to_s ] } )
+    # 何故か空欄行が最後に付け足されるようにみえる。
+    # カーニング調整がうまくいってないので行間が蓄積されて丁度1行分空いてしまう（推測）
+%>
 <%= f.label :my_height, "#{@robot.name}が積み上げた高さ：" %>
 <%= f.text_field :my_height %>cm<br />
 <%= f.label :opponent_height, "対戦相手が積み上げた高さ：" %>
@@ -12,25 +18,24 @@
   <%= f.check_box :jury_votes, {:checked => false}, true, false %><br />
   <div class="jury_votes___nested_field_for_replace_with_index__ hidden">
 <% end %>
-    <%= f.label :my_jury_votes, "#{@robot.name}への票数" %>
-    <%= f.text_field :my_jury_votes %><br />
-    <%= f.label :opponent_jury_votes, "対戦相手への票数" %>
-    <%= f.text_field :opponent_jury_votes %><br />
+    &nbsp;&nbsp;<%= f.label :my_jury_votes, "#{@robot.name}への票数" %>
+    &nbsp;&nbsp;<%= f.select :my_jury_votes, vote_numbers %><br />
+    &nbsp;&nbsp;<%= f.label :opponent_jury_votes, "対戦相手への票数" %>
+    &nbsp;&nbsp;<%= f.select :opponent_jury_votes, vote_numbers %><br />
   </div>
 <%= f.label :progress, "課題進捗度：" %>
-  <% if f.object.progress %>
-    <%= f.check_box :progress, {:checked => true}, true, false %><br />
-    <div class="progress___nested_field_for_replace_with_index__">
-  <% else %>
-    <%= f.check_box :progress, {:checked => false}, true, false %><br />
-    <div class="progress___nested_field_for_replace_with_index__ hidden">
-  <% end %>
-      <%= f.label :my_progress, "#{@robot.name}の課題達成度" %>
-      <%= f.text_field :my_progress %><br />
-      <%= f.label :opponent_progress, "対戦相手の課題達成度" %>
-      <%= f.text_field :opponent_progress %><br />
-    </div>
-
+<% if f.object.progress %>
+  <%= f.check_box :progress, {:checked => true}, true, false %><br />
+  <div class="progress___nested_field_for_replace_with_index__">
+<% else %>
+  <%= f.check_box :progress, {:checked => false}, true, false %><br />
+  <div class="progress___nested_field_for_replace_with_index__ hidden">
+<% end %>
+    &nbsp;&nbsp;<%= f.label :my_progress, "#{@robot.name}の課題達成度" %>
+    &nbsp;&nbsp;<%= f.text_field :my_progress %><br />
+    &nbsp;&nbsp;<%= f.label :opponent_progress, "対戦相手の課題達成度" %>
+    &nbsp;&nbsp;<%= f.text_field :opponent_progress %><br />
+  </div>
 <%= f.hidden_field :_destroy %>
 <%= f.remove_nested_fields_link '削除', class: 'btn btn-danger',
   role: 'button' %><br />

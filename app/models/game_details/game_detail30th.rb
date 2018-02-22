@@ -1,6 +1,5 @@
 class GameDetail30th < GameDetail
   module Constant
-    UNKNOWN_VALUE = "__"
     BALOON_MIN = 0
     BALOON_MAX = 10
   end
@@ -9,9 +8,8 @@ class GameDetail30th < GameDetail
   # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
   ROOTS  = %w( base_baloon robot_baloon jury_votes )
 
-  REX_BL  = /([0-9]|10|#{Constant::UNKNOWN_VALUE})/
-  REX_MS  = /([0-5][0-9]|#{Constant::UNKNOWN_VALUE})/
-  REX_VT  = /([0-5]|#{Constant::UNKNOWN_VALUE})/
+  REX_BL  = /([0-9]|10|#{GameDetail::Constant::UNKNOWN_VALUE})/
+  REX_VT  = /([0-5]|#{GameDetail::Constant::UNKNOWN_VALUE})/
 
   attr_accessor :my_robot_baloon, :opponent_robot_baloon
   attr_accessor :my_base_baloon, :opponent_base_baloon

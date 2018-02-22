@@ -1,5 +1,4 @@
 <%= f.hidden_field :id %>
-
 <%
   baloon_numbers = Array([["不明", GameDetail30th::Constant::UNKNOWN_VALUE]])
   baloon_numbers.concat( Array.new(11) { |i| [i.to_s.rjust(2, ' ')+"個", i] } )
@@ -8,9 +7,10 @@
   time_numbers.concat( Array.new(60) { |i|
     [ i.to_s.rjust(2, "0"), i.to_s.rjust(2, "0") ] } )
   vote_numbers = Array([["不明","#{GameDetail30th::Constant::UNKNOWN_VALUE}"]])
-  vote_numbers.concat( Array.new(6) { |i| [ i.to_s, i.to_s ] } )
+  vote_numbers.concat( Array.new(5) { |i| [ i.to_s, i.to_s ] } )
+    # 何故か空欄行が最後に付け足されるようにみえる。
+    # カーニング調整がうまくいってないので行間が蓄積されて丁度1行分空いてしまう（推測）
 %>
-
 <%= f.label :my_base_baloon, "#{@robot.name}の砦に残った風船の数：" %>
 <%= f.select :my_base_baloon, baloon_numbers %><br />
 <%= f.label :opponent_base_baloon, "対戦相手の砦に残った風船の数：" %>
@@ -19,7 +19,6 @@
 <%= f.select :my_robot_baloon, baloon_numbers %><br />
 <%= f.label :opponent_robot_baloon, "対戦相手のロボットに残った風船の数：" %>
 <%= f.select :opponent_robot_baloon, baloon_numbers %><br />
-
 <%= f.label :jury_votes, "審査員判定：" %>
 <% if f.object.jury_votes %>
   <%= f.check_box :jury_votes, {:checked => true}, true, false %><br />
@@ -33,11 +32,9 @@
     &nbsp;&nbsp;<%= f.label :opponent_jury_votes, "対戦相手への票数" %>
     &nbsp;&nbsp;<%= f.select :opponent_jury_votes, vote_numbers %><br />
   </div>
-
 <%= f.label :time_minute, "試合時間：" %>
 <%= f.select :time_minute, time_numbers %>分
 <%= f.select :time_second, time_numbers %>秒<br />
-
 <%= f.hidden_field :_destroy %>
 <%= f.remove_nested_fields_link '削除', class: 'btn btn-danger',
   role: 'button' %><br />
