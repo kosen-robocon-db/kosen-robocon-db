@@ -4,6 +4,8 @@ class GameDetail29th < GameDetail
   # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
   ROOTS = %w( robot_code height jury_votes progress )
 
+  REX_VT  = /([0-5]|#{GameDetail::Constant::UNKNOWN_VALUE})/
+
   attr_accessor :my_height, :opponent_height
   attr_accessor :jury_votes, :my_jury_votes, :opponent_jury_votes
   attr_accessor :progress, :my_progress, :opponent_progress
@@ -15,12 +17,8 @@ class GameDetail29th < GameDetail
     only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 1000
   }
   with_options if: :jury_votes do
-    validates :my_jury_votes,       numericality: {
-      only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 5
-    }
-    validates :opponent_jury_votes, numericality: {
-      only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 5
-    }
+    validates :my_jury_votes, format: { with: REX_VT }
+    validates :opponent_jury_votes, format: { with: REX_VT }
   end
   with_options if: :progress do
     validates :my_progress,       presence: true
