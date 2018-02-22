@@ -1,12 +1,12 @@
 <%= f.hidden_field :id %>
 <%
-  baloon_numbers = Array([["不明", GameDetail30th::Constant::UNKNOWN_VALUE]])
+  baloon_numbers = Array([["不明", GameDetail::Constant::UNKNOWN_VALUE]])
   baloon_numbers.concat( Array.new(11) { |i| [i.to_s.rjust(2, ' ')+"個", i] } )
     # 空白が左詰めされない・・・
-  time_numbers = Array([["不明","#{GameDetail30th::Constant::UNKNOWN_VALUE}"]])
+  time_numbers = Array([["不明","#{GameDetail::Constant::UNKNOWN_VALUE}"]])
   time_numbers.concat( Array.new(60) { |i|
     [ i.to_s.rjust(2, "0"), i.to_s.rjust(2, "0") ] } )
-  vote_numbers = Array([["不明","#{GameDetail30th::Constant::UNKNOWN_VALUE}"]])
+  vote_numbers = Array([["不明","#{GameDetail::Constant::UNKNOWN_VALUE}"]])
   vote_numbers.concat( Array.new(5) { |i| [ i.to_s, i.to_s ] } )
     # 何故か空欄行が最後に付け足されるようにみえる。
     # カーニング調整がうまくいってないので行間が蓄積されて丁度1行分空いてしまう（推測）
