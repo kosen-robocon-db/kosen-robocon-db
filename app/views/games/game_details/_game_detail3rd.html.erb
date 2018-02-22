@@ -1,0 +1,19 @@
+<%= f.hidden_field :id %>
+<%
+  point_numbers = Array([["不明", GameDetail::Constant::UNKNOWN_VALUE]])
+  point_numbers.concat( Array.new(17) { |i| [i.to_s.rjust(2, ' ')+"個", i] } )
+    # 空白が左詰めされない・・・
+%>
+<%= f.label :my_point, "#{@robot.name}の点数：" %>
+<%= f.select :my_point, point_numbers %><br />
+<%= f.label :opponent_point, "対戦相手の点数：" %>
+<%= f.select :opponent_point, point_numbers %><br />
+<%= f.label :extra_time, "延長(30秒)：" %>
+<%= f.check_box :extra_time, { checked: f.object.extra_time }, true, false %>
+<br />
+<%= f.label :janken, "じゃんけん決着：" %>
+<%= f.check_box :janken, { checked: f.object.janken }, true, false %>
+<br />
+<%= f.hidden_field :_destroy %>
+<%= f.remove_nested_fields_link '削除', class: 'btn btn-danger',
+  role: 'button' %><br />
