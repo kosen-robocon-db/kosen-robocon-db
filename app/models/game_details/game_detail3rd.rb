@@ -8,17 +8,20 @@ class GameDetail3rd < GameDetail
 
   attr_accessor :my_point, :opponent_point
   attr_accessor :extra_time
-  attr_accessor :janken
+  attr_accessor :recommended, :janken
+  attr_accessor :memo
 
   validates :my_point, format: { with: REX_PT }
   validates :opponent_point, format: { with: REX_PT }
+  validates :memo, length: { maximum: 255 }
 
   # DBにはないがpropertyに納めたいフォーム上の属性
   def self.additional_attr_symbols
     [
       :my_point, :opponent_point,
       :extra_time,
-      :janken
+      :recommended, :janken,
+      :memo
     ]
   end
 
@@ -37,7 +40,9 @@ class GameDetail3rd < GameDetail
       end
     end
     h["extra_time"] = "true" if hash[:extra_time].present?
+    h["recommended"] = "true" if hash[:recommended].present?
     h["janken"]     = "true" if hash[:janken].present?
+    h["memo"] = "#{hash[:memo]}" if hash[:memo].present?
     return h
   end
 
@@ -46,7 +51,10 @@ class GameDetail3rd < GameDetail
       self.my_point, self.opponent_point =
         h["point"].to_s.split(DELIMITER) if h["point"].present?
       self.extra_time = h["extra_time"].present? ? true : false
+      self.recommended = h["recommended"].present? ? true : false
       self.janken = h["janken"].present? ? true : false
+        # 上三つは h[].presence || false のようにしたらよいのではないだろうか？
+      self.memo = h["memo"].presence || ''
     end
   end
 
