@@ -22,7 +22,8 @@
 <%= f.check_box :janken, { checked: f.object.janken }, true, false %>
 <br />
 <%= f.label :memo, "メモ：" %>
-<%= f.text_field :memo %><br/>
+<%= f.text_field :memo %><br />
+<br />
 <%= f.hidden_field :_destroy %>
 <%= f.remove_nested_fields_link '削除', class: 'btn btn-danger',
   role: 'button' %><br />

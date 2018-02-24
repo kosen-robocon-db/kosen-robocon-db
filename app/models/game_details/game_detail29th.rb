@@ -9,6 +9,7 @@ class GameDetail29th < GameDetail
   attr_accessor :my_height, :opponent_height
   attr_accessor :jury_votes, :my_jury_votes, :opponent_jury_votes
   attr_accessor :progress, :my_progress, :opponent_progress
+  attr_accessor :memo
 
   validates :my_height,         numericality: {
     only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 1000
@@ -24,13 +25,15 @@ class GameDetail29th < GameDetail
     validates :my_progress,       presence: true
     validates :opponent_progress, presence: true
   end
+  validates :memo, length: { maximum: 255 }
 
   # DBにはないがpropertyに納めたいフォーム上の属性
   def self.additional_attr_symbols
     [
       :my_height, :opponent_height,
       :jury_votes, :my_jury_votes, :opponent_jury_votes,
-      :progress, :my_progress, :opponent_progress
+      :progress, :my_progress, :opponent_progress,
+      :memo
     ]
   end
 
@@ -48,6 +51,7 @@ class GameDetail29th < GameDetail
         h["#{pr}"] = "#{hash[my_sym]}#{DELIMITER}#{hash[opponent_sym]}"
       end
     end
+    h["memo"] = "#{hash[:memo]}" if hash[:memo].present?
     return h
   end
 
@@ -61,6 +65,7 @@ class GameDetail29th < GameDetail
       self.progress = h["progress"].present? ? true : false
       self.my_progress, self.opponent_progress =
         h["progress"].to_s.split(DELIMITER) if h["progress"].present?
+      self.memo = h["memo"].presence || ''
     end
   end
 

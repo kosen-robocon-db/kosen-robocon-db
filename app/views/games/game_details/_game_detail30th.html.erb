@@ -35,6 +35,9 @@
 <%= f.label :time_minute, "試合時間：" %>
 <%= f.select :time_minute, time_numbers %>分
 <%= f.select :time_second, time_numbers %>秒<br />
+<%= f.label :memo, "メモ：" %>
+<%= f.text_field :memo %><br />
+<br />
 <%= f.hidden_field :_destroy %>
 <%= f.remove_nested_fields_link '削除', class: 'btn btn-danger',
   role: 'button' %><br />

@@ -15,6 +15,7 @@ class GameDetail30th < GameDetail
   attr_accessor :my_base_baloon, :opponent_base_baloon
   attr_accessor :jury_votes, :my_jury_votes, :opponent_jury_votes
   attr_accessor :time_minute, :time_second
+  attr_accessor :memo
 
   with_options if: :my_robot_baloon do
     validates :my_robot_baloon, format: { with: REX_BL }
@@ -38,6 +39,7 @@ class GameDetail30th < GameDetail
     validates :my_jury_votes, format: { with: REX_VT }
     validates :opponent_jury_votes, format: { with: REX_VT }
   end
+  validates :memo, length: { maximum: 255 }
 
   # DBにはないがpropertyに納めたいフォーム上の属性
   def self.additional_attr_symbols
@@ -45,7 +47,8 @@ class GameDetail30th < GameDetail
       :my_robot_baloon, :opponent_robot_baloon,
       :my_base_baloon, :opponent_base_baloon,
       :jury_votes, :my_jury_votes, :opponent_jury_votes,
-      :time_minute, :time_second
+      :time_minute, :time_second,
+      :memo
     ]
   end
 
@@ -68,6 +71,7 @@ class GameDetail30th < GameDetail
         #{hash[:time_second]}\
       ".gsub(/(\s| )+/, '')
     end
+    h["memo"] = "#{hash[:memo]}" if hash[:memo].present?
     return h
   end
 
@@ -84,6 +88,7 @@ class GameDetail30th < GameDetail
         self.time_minute, self.time_second =
           h["time"].to_s.split(DELIMITER_TIME)
       end
+      self.memo = h["memo"].presence || ''
     end
   end
 

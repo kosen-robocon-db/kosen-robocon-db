@@ -36,6 +36,9 @@
     &nbsp;&nbsp;<%= f.label :opponent_progress, "対戦相手の課題達成度" %>
     &nbsp;&nbsp;<%= f.text_field :opponent_progress %><br />
   </div>
+<%= f.label :memo, "メモ：" %>
+<%= f.text_field :memo %><br />
+<br />
 <%= f.hidden_field :_destroy %>
 <%= f.remove_nested_fields_link '削除', class: 'btn btn-danger',
   role: 'button' %><br />
