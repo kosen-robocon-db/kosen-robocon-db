@@ -1,6 +1,6 @@
 <%= f.hidden_field :id %>
 <%
-  point_numbers = Array([["不明", GameDetail::Constant::UNKNOWN_VALUE]])
+  point_numbers = Array([["--", GameDetail::Constant::UNKNOWN_VALUE]])
   point_numbers.concat( Array.new(17) { |i| [i.to_s.rjust(2, ' ')+"点", i] } )
     # 空白が左詰めされない・・・
 %>

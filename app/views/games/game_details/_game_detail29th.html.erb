@@ -1,7 +1,7 @@
 <%= f.hidden_field :id %>
 <%= f.hidden_field :number %>
 <%
-  vote_numbers = Array([["不明","#{GameDetail::Constant::UNKNOWN_VALUE}"]])
+  vote_numbers = Array([["--","#{GameDetail::Constant::UNKNOWN_VALUE}"]])
   vote_numbers.concat( Array.new(5) { |i| [ i.to_s, i.to_s ] } )
     # 何故か空欄行が最後に付け足されるようにみえる。
     # カーニング調整がうまくいってないので行間が蓄積されて丁度1行分空いてしまう（推測）

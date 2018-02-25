@@ -1,6 +1,6 @@
 <%= f.hidden_field :id %>
 <%
-  numbers = Array( [ [ "不明", "#{GameDetail::Constant::UNKNOWN_VALUE}" ] ] )
+  numbers = Array( [ [ "--", "#{GameDetail::Constant::UNKNOWN_VALUE}" ] ] )
   numbers.concat( Array.new(60) { |i|
     [ i.to_s.rjust(2, "0"), i.to_s.rjust(2, "0") ] } )
 %>
