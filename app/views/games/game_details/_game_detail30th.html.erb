@@ -8,17 +8,25 @@
     [ i.to_s.rjust(2, "0"), i.to_s.rjust(2, "0") ] } )
   vote_numbers = Array([["--","#{GameDetail::Constant::UNKNOWN_VALUE}"]])
   vote_numbers.concat( Array.new(5) { |i| [ i.to_s, i.to_s ] } )
-    # 何故か空欄行が最後に付け足されるようにみえる。
-    # カーニング調整がうまくいってないので行間が蓄積されて丁度1行分空いてしまう（推測）
 %>
-<%= f.label :my_base_baloon, "#{@robot.name}の砦に残った風船の数：" %>
-<%= f.select :my_base_baloon, baloon_numbers %><br />
-<%= f.label :opponent_base_baloon, "対戦相手の砦に残った風船の数：" %>
-<%= f.select :opponent_base_baloon, baloon_numbers %><br />
-<%= f.label :my_robot_baloon, "#{@robot.name}のロボットに残った風船の数：" %>
-<%= f.select :my_robot_baloon, baloon_numbers %><br />
-<%= f.label :opponent_robot_baloon, "対戦相手のロボットに残った風船の数：" %>
-<%= f.select :opponent_robot_baloon, baloon_numbers %><br />
+<table>
+  <tr>
+    <td><%= f.label :my_base_baloon, "#{@robot.name}の砦に残った風船の数：" %></td>
+    <td><%= f.select :my_base_baloon, baloon_numbers %></td>
+  </tr>
+  <tr>
+    <td><%= f.label :opponent_base_baloon, "対戦相手の砦に残った風船の数：" %></td>
+    <td><%= f.select :opponent_base_baloon, baloon_numbers %></td>
+  </tr>
+  <tr>
+    <td><%= f.label :my_robot_baloon, "#{@robot.name}のロボットに残った風船の数：" %></td>
+    <td><%= f.select :my_robot_baloon, baloon_numbers %></td>
+  </tr>
+  <tr>
+    <td><%= f.label :opponent_robot_baloon, "対戦相手のロボットに残った風船の数：" %></td>
+    <td><%= f.select :opponent_robot_baloon, baloon_numbers %></td>
+  </tr>
+</table>
 <%= f.label :jury_votes, "審査員判定：" %>
 <% if f.object.jury_votes %>
   <%= f.check_box :jury_votes, {:checked => true}, true, false %><br />
@@ -27,10 +35,18 @@
   <%= f.check_box :jury_votes, {:checked => false}, true, false %><br />
   <div class="jury_votes___nested_field_for_replace_with_index__ hidden">
 <% end %>
-    &nbsp;&nbsp;<%= f.label :my_jury_votes, "#{@robot.name}への票数" %>
-    &nbsp;&nbsp;<%= f.select :my_jury_votes, vote_numbers %><br />
-    &nbsp;&nbsp;<%= f.label :opponent_jury_votes, "対戦相手への票数" %>
-    &nbsp;&nbsp;<%= f.select :opponent_jury_votes, vote_numbers %><br />
+    <table>
+      <tr>
+        <td><%= ("&nbsp;"*4).html_safe %></td>
+        <td><%= f.label :my_jury_votes, "#{@robot.name}への票数：" %></td>
+        <td><%= f.select :my_jury_votes, vote_numbers %></td>
+      </tr>
+      <tr>
+        <td><%= ("&nbsp;"*4).html_safe %></td>
+        <td><%= f.label :opponent_jury_votes, "対戦相手への票数：" %></td>
+        <td><%= f.select :opponent_jury_votes, vote_numbers %></td>
+      </tr>
+    </table>
   </div>
 <%= f.label :time_minute, "試合時間：" %>
 <%= f.select :time_minute, time_numbers %>分

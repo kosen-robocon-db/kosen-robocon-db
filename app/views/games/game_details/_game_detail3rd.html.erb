@@ -4,10 +4,16 @@
   point_numbers.concat( Array.new(17) { |i| [i.to_s.rjust(2, ' ')+"点", i] } )
     # 空白が左詰めされない・・・
 %>
-<%= f.label :my_point, "#{@robot.name}の点数：" %>
-<%= f.select :my_point, point_numbers %><br />
-<%= f.label :opponent_point, "対戦相手の点数：" %>
-<%= f.select :opponent_point, point_numbers %><br />
+<table>
+  <tr>
+    <td><%= f.label :my_point, "#{@robot.name}の点数：" %></td>
+    <td><%= f.select :my_point, point_numbers %></td>
+  </tr>
+  <tr>
+    <td><%= f.label :opponent_point, "対戦相手の点数：" %></td>
+    <td><%= f.select :opponent_point, point_numbers %></td>
+  </tr>
+</table>
 <%= f.label :extra_time, "延長(30秒)：" %>
 <%= f.check_box :extra_time, { checked: f.object.extra_time }, true, false %>
 <br />
@@ -17,7 +23,7 @@
 %>
 <%= f.label :recommended, "審査委員推薦" %>
 <%= f.check_box :recommended, { checked: f.object.recommended }, true, false %>
-<br />
+&nbsp;&nbsp;
 <%= f.label :janken, "じゃんけん決着：" %>
 <%= f.check_box :janken, { checked: f.object.janken }, true, false %>
 <br />
