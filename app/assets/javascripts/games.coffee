@@ -1,3 +1,51 @@
+Number::ordinal = ->
+  return 'th' if 11 <= this % 100 <= 13
+  switch this % 10
+    when 1 then 'st'
+    when 2 then 'nd'
+    when 3 then 'rd'
+    else        'th'
+
+Number::ordinalize = ->
+  this + this.ordinal()
+
+################################################################################
+
+class GameDetailAttributes
+
+  constructor: (args) ->
+    console.log 'create GameDetail'
+    return unless args.nth or args.attributes
+    @nth = args.nth ? 0
+    @attributes = args.attributes
+    @prefix = 'game_game_detail' +
+      parseInt(@nth).ordinalize() + 's' +
+      '_attributes_'
+    @regexs = (///^#{@prefix}\d_#{i}$/// for i in @attributes)
+    console.log @nth
+    console.log @attributes
+    console.log @prefix
+    console.log @regexs
+
+  # public methods
+  switch: (event) ->
+    console.log 'switch method runs'
+    console.log event.target.id
+    console.log @nth
+    console.log @regexs
+    return if @nth = 0
+    for regex, i in @regexs
+      if regex.test(event.target.id)
+        i = event.target.id.match(/_\d+_/)[0].replace(/_/g, '')
+        if $('#' + @prefix + i + '_' + @attributes[i])[0].checked
+          $('.' + @attributes[i] + '_' + i).toggleClass('hidden')
+        else
+          $('.' + @attributes[i] + '_' + i).toggleClass('hidden')
+          $('#' + @prefix + i + '_my_' + @attributes[i]).val('')
+          $('#' + @prefix + i + '_opponent_' + @attributes[i]).val('')
+
+################################################################################
+
 $ ->
   # write/rewrite for a label
   replay_label = (counter, element) ->
@@ -15,56 +63,23 @@ $ ->
         c += 1
         replay_label c, $(@).children('div.enclosure').children('div.replay')
 
+################################################################################
+
   # run on load
   c = 0
   $('div.replay').each ->
     c += 1
     replay_label c, $(@)
+  console.log 'run on load, gon.contest_nth:' + gon.contest_nth
 
-  # when game_detail added
-  $('form').on 'fields_added.nested_form_fields', (event, param) ->
-    replay_labels()
-
-  # when game_detail removed
-  $('form').on 'fields_removed.nested_form_fields', (event, param) ->
-    replay_labels()
-
-  # when jury_votes/progress cheched/unchecked
-  switch gon.contest_nth
-    when 29
-      $('form').on 'change', (event) ->
-        if /^game_game_detail29ths_attributes_\d+_jury_votes$/.test(event.target.id)
-          i = event.target.id.match(/_\d+_/)[0].replace(/_/g, '')
-          if $('#game_game_detail29ths_attributes_' + i + '_jury_votes')[0].checked
-            $('.jury_votes_' + i).toggleClass('hidden')
-          else
-            $('.jury_votes_' + i).toggleClass('hidden')
-            $('#game_game_detail29ths_attributes_' + i +
-              '_my_jury_votes').val('')
-            $('#game_game_detail29ths_attributes_' + i +
-              '_opponent_jury_votes').val('')
-        if /^game_game_detail29ths_attributes_\d+_progress$/.test(event.target.id)
-          i = event.target.id.match(/_\d+_/)[0].replace(/_/g, '')
-          if $('#game_game_detail29ths_attributes_' + i + '_progress')[0].checked
-            $('.progress_' + i).toggleClass('hidden')
-          else
-            $('.progress_' + i).toggleClass('hidden')
-            $('#game_game_detail29ths_attributes_' + i +
-              '_my_progress').val('')
-            $('#game_game_detail29ths_attributes_' + i +
-              '_opponent_progress').val('')
-    when 30
-      $('form').on 'change', (event) ->
-        if /^game_game_detail30ths_attributes_\d+_jury_votes$/.test(event.target.id)
-          i = event.target.id.match(/_\d+_/)[0].replace(/_/g, '')
-          if $('#game_game_detail30ths_attributes_' + i + '_jury_votes')[0].checked
-            $('.jury_votes_' + i).toggleClass('hidden')
-          else
-            $('.jury_votes_' + i).toggleClass('hidden')
-            $('#game_game_detail30ths_attributes_' + i +
-              '_my_jury_votes').val('')
-            $('#game_game_detail30ths_attributes_' + i +
-              '_opponent_jury_votes').val('')
+  # モデルでスイッチ表示する属性情報を持たせようと思ったがここで持たせることにした
+  if gon.contest_nth
+    switch gon.contest_nth
+      when 29
+        attr = [ 'jury_votes', 'progress' ]
+      when 30
+        attr = [ 'jury_votes' ]
+    gda = new GameDetailAttributes({nth: gon.contest_nth, attributes: attr})
 
   # 試合(game)で地区を変更すると回戦も変化させる
   $(document).on 'change', '#game_region_code', ->
@@ -78,7 +93,9 @@ $ ->
         region_code: $(this).val()
       }
     ).done (results) ->
-      i = 0 # each with indexを使うと意図したとおりに動かなかったので制御変数を使うことにした
+      i = 0
+        # each with indexを使うと意図したとおりに動かなかったので
+        # 制御変数を使うことにした
       $.each results, ->
         option = $('<option>').val(this.round).text(this.name)
         if i == 0
@@ -86,3 +103,14 @@ $ ->
         else
           $('#game_round').append(option)
         i += 1
+
+  # when game_detail added
+  $('form').on 'fields_added.nested_form_fields', (event, param) ->
+    replay_labels()
+
+  # when game_detail removed
+  $('form').on 'fields_removed.nested_form_fields', (event, param) ->
+    replay_labels()
+
+  $('form').on 'change', (event) ->
+    gda.switch(event)
