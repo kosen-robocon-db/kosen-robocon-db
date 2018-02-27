@@ -11,7 +11,10 @@
     <%= csrf_meta_tags %>
     <%= render 'layouts/shim' %>
   </head>
-  <body>
+  <%#= html_tag(:body, data: {controller: controller.controller_name.camelize,
+    action: controller.action_name}) %>
+    <%= "<body data-controller=\"#{controller.controller_name.camelize}\"
+      data-action=\"#{controller.action_name}\">".html_safe %>
     <%= render 'layouts/header' %>
     <div class="container" id="content">
       <% flash.each do |message_type, message| %>

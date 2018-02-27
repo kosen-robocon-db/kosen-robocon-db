@@ -1,52 +1,54 @@
-Number::ordinal = ->
-  return 'th' if 11 <= this % 100 <= 13
-  switch this % 10
-    when 1 then 'st'
-    when 2 then 'nd'
-    when 3 then 'rd'
-    else        'th'
-
-Number::ordinalize = ->
-  this + this.ordinal()
-
-################################################################################
-
-class GameDetailAttributes
-
-  constructor: (args) ->
-    console.log 'create GameDetail'
-    return unless args.nth or args.attributes
-    @nth = args.nth ? 0
-    @attributes = args.attributes
-    @prefix = 'game_game_detail' +
-      parseInt(@nth).ordinalize() + 's' +
-      '_attributes_'
-    @regexs = (///^#{@prefix}\d_#{i}$/// for i in @attributes)
-    console.log @nth
-    console.log @attributes
-    console.log @prefix
-    console.log @regexs
-
-  # public methods
-  switch: (event) ->
-    console.log 'switch method runs'
-    console.log event.target.id
-    console.log @nth
-    console.log @regexs
-    return if @nth = 0
-    for regex, i in @regexs
-      if regex.test(event.target.id)
-        i = event.target.id.match(/_\d+_/)[0].replace(/_/g, '')
-        if $('#' + @prefix + i + '_' + @attributes[i])[0].checked
-          $('.' + @attributes[i] + '_' + i).toggleClass('hidden')
-        else
-          $('.' + @attributes[i] + '_' + i).toggleClass('hidden')
-          $('#' + @prefix + i + '_my_' + @attributes[i]).val('')
-          $('#' + @prefix + i + '_opponent_' + @attributes[i]).val('')
-
-################################################################################
-
 $ ->
+  controller = $('body').data('controller')
+  action     = $('body').data('action')
+  return if controller != "Games" || ( action != "new" && action != "edit" )
+    # Gamesコントローラーのnewまたはecitアクション以外は次からを実行させない
+    # ページ遷移時に必要なスクリプトファイルだけ読み込ませればよいが
+    # 読み込ませなくすればよいが今回はこの形式を採用
+
+  ##############################################################################
+
+  # Numberオブジェクトに序数メソッドを追加
+  Number::ordinal = ->
+    return 'th' if 11 <= this % 100 <= 13
+    switch this % 10
+      when 1 then 'st'
+      when 2 then 'nd'
+      when 3 then 'rd'
+      else        'th'
+
+  Number::ordinalize = ->
+    this + this.ordinal()
+
+  ##############################################################################
+
+  # 表示／非表示が切り替えられる対戦チーム同士の属性のためのクラス
+  class GameDetailAttributes
+
+    constructor: (args) ->
+      return unless args.nth or args.attributes
+      @nth = args.nth ? 0
+      @attributes = args.attributes
+      @prefix = 'game_game_detail' +
+        parseInt(@nth).ordinalize() + 's' +
+        '_attributes_'
+      @regexs = (///^#{@prefix}\d_#{i}$/// for i in @attributes)
+
+    # public methods
+    switch: (event) ->
+      return if @nth = 0
+      for regex, i in @regexs
+        if regex.test(event.target.id)
+          j = event.target.id.match(/_\d+_/)[0].replace(/_/g, '')
+          if $('#' + @prefix + j + '_' + @attributes[i])[0].checked
+            $('.' + @attributes[i] + '_' + j).toggleClass('hidden')
+          else
+            $('.' + @attributes[i] + '_' + j).toggleClass('hidden')
+            $('#' + @prefix + j + '_my_' + @attributes[i]).val('')
+            $('#' + @prefix + j + '_opponent_' + @attributes[i]).val('')
+
+  ##############################################################################
+
   # write/rewrite for a label
   replay_label = (counter, element) ->
     switch counter
@@ -63,15 +65,15 @@ $ ->
         c += 1
         replay_label c, $(@).children('div.enclosure').children('div.replay')
 
-################################################################################
+  ##############################################################################
 
-  # run on load
+  # 試合詳細の「再試合」ラベル表示
   c = 0
   $('div.replay').each ->
     c += 1
     replay_label c, $(@)
-  console.log 'run on load, gon.contest_nth:' + gon.contest_nth
 
+  # 表示／非表示が切り替えられる対戦チーム同士の属性を調べるためのオブジェクトを生成
   # モデルでスイッチ表示する属性情報を持たせようと思ったがここで持たせることにした
   if gon.contest_nth
     switch gon.contest_nth
@@ -112,5 +114,8 @@ $ ->
   $('form').on 'fields_removed.nested_form_fields', (event, param) ->
     replay_labels()
 
+  # フォームの変更があれば、
+  # 表示／非表示が切り替えられる対戦チーム同士の属性のチェックボックス変更の調査、
+  # 変更された場合の処理をGameDetailAttributesのオブジェクトに任せる
   $('form').on 'change', (event) ->
     gda.switch(event)
