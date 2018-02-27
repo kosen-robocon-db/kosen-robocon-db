@@ -49,6 +49,15 @@ $ ->
 
   ##############################################################################
 
+  # GameDetailAttributesクラスのオブジェクト生成用データ
+  # モデルでスイッチ表示する属性情報を持たせようと思ったがここで持たせることにした
+  switching_attributes = {
+    29: [ 'jury_votes', 'progress' ]
+    30: [ 'jury_votes' ]
+  }
+
+  ##############################################################################
+
   # write/rewrite for a label
   replay_label = (counter, element) ->
     switch counter
@@ -74,14 +83,12 @@ $ ->
     replay_label c, $(@)
 
   # 表示／非表示が切り替えられる対戦チーム同士の属性を調べるためのオブジェクトを生成
-  # モデルでスイッチ表示する属性情報を持たせようと思ったがここで持たせることにした
-  if gon.contest_nth
-    switch gon.contest_nth
-      when 29
-        attr = [ 'jury_votes', 'progress' ]
-      when 30
-        attr = [ 'jury_votes' ]
-    gda = new GameDetailAttributes({nth: gon.contest_nth, attributes: attr})
+  # switching_attributesに登録されてなければスルー
+  if gon.contest_nth  && gon.contest_nth of switching_attributes
+    gda = new GameDetailAttributes({
+      nth: gon.contest_nth,
+      attributes: switching_attributes[gon.contest_nth]
+    })
 
   # 試合(game)で地区を変更すると回戦も変化させる
   $(document).on 'change', '#game_region_code', ->
@@ -118,4 +125,5 @@ $ ->
   # 表示／非表示が切り替えられる対戦チーム同士の属性のチェックボックス変更の調査、
   # 変更された場合の処理をGameDetailAttributesのオブジェクトに任せる
   $('form').on 'change', (event) ->
-    gda.switch(event)
+    if gda
+      gda.switch(event)
