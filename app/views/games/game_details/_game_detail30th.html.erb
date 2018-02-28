@@ -7,47 +7,51 @@
   time_numbers.concat( Array.new(60) { |i|
     [ i.to_s.rjust(2, "0"), i.to_s.rjust(2, "0") ] } )
   vote_numbers = Array([["--","#{GameDetail::Constant::UNKNOWN_VALUE}"]])
-  vote_numbers.concat( Array.new(5) { |i| [ i.to_s, i.to_s ] } )
+  vote_numbers.concat( Array.new(6) { |i| [ i.to_s, i.to_s ] } )
 %>
 <table>
   <tr>
-    <td><%= f.label :my_base_baloon, "#{@robot.name}の砦に残った風船の数：" %></td>
+    <td><%= f.label :my_base_baloon,
+      "#{@robot.name}の砦に残った風船の数：" %></td>
     <td><%= f.select :my_base_baloon, baloon_numbers %></td>
   </tr>
   <tr>
-    <td><%= f.label :opponent_base_baloon, "対戦相手の砦に残った風船の数：" %></td>
+    <td><%= f.label :opponent_base_baloon,
+      "対戦相手の砦に残った風船の数：" %></td>
     <td><%= f.select :opponent_base_baloon, baloon_numbers %></td>
   </tr>
   <tr>
-    <td><%= f.label :my_robot_baloon, "#{@robot.name}のロボットに残った風船の数：" %></td>
+    <td><%= f.label :my_robot_baloon,
+      "#{@robot.name}のロボットに残った風船の数：" %></td>
     <td><%= f.select :my_robot_baloon, baloon_numbers %></td>
   </tr>
   <tr>
-    <td><%= f.label :opponent_robot_baloon, "対戦相手のロボットに残った風船の数：" %></td>
+    <td><%= f.label :opponent_robot_baloon,
+      "対戦相手のロボットに残った風船の数：" %></td>
     <td><%= f.select :opponent_robot_baloon, baloon_numbers %></td>
   </tr>
 </table>
 <%= f.label :jury_votes, "審査員判定：" %>
+<%= f.check_box :jury_votes, {:checked => f.object.jury_votes}, true, false %>
+<br />
 <% if f.object.jury_votes %>
-  <%= f.check_box :jury_votes, {:checked => true}, true, false %><br />
-  <div class="jury_votes___nested_field_for_replace_with_index__">
+<div class="jury_votes___nested_field_for_replace_with_index__">
 <% else %>
-  <%= f.check_box :jury_votes, {:checked => false}, true, false %><br />
-  <div class="jury_votes___nested_field_for_replace_with_index__ hidden">
+<div class="jury_votes___nested_field_for_replace_with_index__ hidden">
 <% end %>
-    <table>
-      <tr>
-        <td><%= ("&nbsp;"*4).html_safe %></td>
-        <td><%= f.label :my_jury_votes, "#{@robot.name}への票数：" %></td>
-        <td><%= f.select :my_jury_votes, vote_numbers %></td>
-      </tr>
-      <tr>
-        <td><%= ("&nbsp;"*4).html_safe %></td>
-        <td><%= f.label :opponent_jury_votes, "対戦相手への票数：" %></td>
-        <td><%= f.select :opponent_jury_votes, vote_numbers %></td>
-      </tr>
-    </table>
-  </div>
+  <table>
+    <tr>
+      <td><%= ("&nbsp;"*4).html_safe %></td>
+      <td><%= f.label :my_jury_votes, "#{@robot.name}への票数：" %></td>
+      <td><%= f.select :my_jury_votes, vote_numbers %></td>
+    </tr>
+    <tr>
+      <td><%= ("&nbsp;"*4).html_safe %></td>
+      <td><%= f.label :opponent_jury_votes, "対戦相手への票数：" %></td>
+      <td><%= f.select :opponent_jury_votes, vote_numbers %></td>
+    </tr>
+  </table>
+</div>
 <%= f.label :time_minute, "試合時間：" %>
 <%= f.select :time_minute, time_numbers %>分
 <%= f.select :time_second, time_numbers %>秒<br />

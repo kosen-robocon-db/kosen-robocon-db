@@ -51,6 +51,8 @@ class GameDetail29th < GameDetail
         h["#{pr}"] = "#{hash[my_sym]}#{DELIMITER}#{hash[opponent_sym]}"
       end
     end
+    h.delete("jury_votes") unless hash["jury_votes"].present?
+    h.delete("progress") unless hash["progress"].present?
     h["memo"] = "#{hash[:memo]}" if hash[:memo].present?
     return h
   end

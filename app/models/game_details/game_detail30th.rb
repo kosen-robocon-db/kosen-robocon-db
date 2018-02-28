@@ -64,6 +64,7 @@ class GameDetail30th < GameDetail
         h["#{pr}"] = "#{hash[my_sym]}#{DELIMITER}#{hash[opponent_sym]}"
       end
     end
+    h.delete("jury_votes") unless hash["jury_votes"].present?
     if hash[:time_minute].present? and hash[:time_second].present? then
       h["time"] = "\
         #{hash[:time_minute]}\
