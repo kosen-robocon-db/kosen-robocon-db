@@ -16,7 +16,7 @@ class GamesController < ApplicationController
     gon.contest_nth = @robot.contest_nth
     @regions = Region.where(code: [ 0, @robot.campus.region_code ])
     @round_names = RoundName.where(contest_nth: @robot.contest_nth,
-      region_code: 0) #.pluck(:name, :round)
+      region_code: 0)
   end
 
   def create

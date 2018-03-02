@@ -48,9 +48,6 @@ gem 'jquery-turbolinks'
 # ネスト構造のフォーム用
 gem 'nested_form_fields'
 
-# CSV Download
-# gem 'to_csv-rails'
-
 # Javascript/Coffeescript 拡張用
 gem 'gon'
 
@@ -72,7 +69,7 @@ gem 'enum_help'
 
 # 開発作業用ツール
 group :tools do
-  # gem 'rails-erd', group: [:development, :test]
+
   # ERD出力
   gem 'rails-erd'
 
