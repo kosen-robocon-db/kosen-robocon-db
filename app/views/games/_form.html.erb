@@ -4,30 +4,27 @@
     <%= render 'shared/error_messages', obj: @game %>
     <%= f.label :contest_nth, "大会回:第#{@game.contest_nth}回" %><br />
     <%= f.hidden_field :contest_nth %>
-
     <%= f.label :region_code, "地区" %>:
     <%= f.collection_select :region_code, @regions, :code, :name %><br />
-
     <%= f.label :round, "回戦" %>:
     <%= f.collection_select :round, @round_names, :round, :name %><br />
-
     <%= f.label :game, "試合" %>:
     <% game_array = Array.new(16){ |i| ["第"+(i+1).to_s+"試合", i+1] } %>
     <%= f.select :game, game_array %><br />
-
     <%= f.label :opponent_robot_code, "対戦相手" %>:
-    <% robots_array = Robot.where(contest_nth: @game.contest_nth).
-        includes(:campus).order("robots.code").map{ |i| [
-          i.campus.abbreviation.to_s.ljust(5, "　") + i.name, i.code
-         ] }
+    <%
+      robots_array = Robot.where(contest_nth: @game.contest_nth).
+        where.not(code: [@robot.code]).
+          includes(:campus).order("robots.code").map{ |i| [
+            i.campus.abbreviation.to_s.ljust(5, "　") + i.name, i.code
+          ] }
         # 下記はGameモデルで自動的に追加されるべき
-        robots_array.push([
-          "　"*5 + Game::Constant::NO_OPPONENT.name,
-          Game::Constant::NO_OPPONENT.code
-        ])
+      robots_array.push([
+        "　"*5 + Game::Constant::NO_OPPONENT.name,
+        Game::Constant::NO_OPPONENT.code
+      ])
     %>
     <%= f.select :opponent_robot_code, robots_array %><br />
-
     <%= f.label :victory, "勝敗" %>:
     <%= f.radio_button :victory, Game::Constant::WIN, {:checked=>true} %>勝ち
     &nbsp;&nbsp;
@@ -53,10 +50,10 @@
       end
     %>
     <br /><br />
-
-    <% case @robot.contest_nth %>
-    <%# 第29-30回大会のみ実装 %>
-    <% when 1, 2, 29, 30 then %>
+    <%
+      case @robot.contest_nth
+      when 1..3, 29, 30 then
+    %>
     <div class="enclosure">
       <%= f.label @gd_sym, "試合詳細" %><br />
       詳細が分からないときは「削除」ボタンを押下して省略することができます。<br />
@@ -73,7 +70,6 @@
     </div><br />
     <br />
     <% end %>
-
     <%= f.submit button_label, class: "btn btn-primary",
       data: { disable_with: '処理中・・・' } %><br /><br />
   <% end %>

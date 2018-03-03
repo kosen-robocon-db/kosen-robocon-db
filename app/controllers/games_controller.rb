@@ -9,22 +9,14 @@ class GamesController < ApplicationController
     @gd_sym = game_details_sub_class_sym(contest_nth: @robot.contest_nth)
     Game.confirm_or_associate(game_details_sub_class_sym: @gd_sym)
     @game = Game.new(robot_code: @robot.code, contest_nth: @robot.contest_nth)
-    # 下記のコードはもっと洗練されるべき
     case @robot.contest_nth
-      # GameDetail サブクラスのインスタンス生成
-    when  1 then
-      @game.send(@gd_sym).new
-    when 29 then
-      @game.send(@gd_sym).new(jury_votes: false, progress: false)
-        # 審査員判定および課題進捗度チェックボックスを外しておく
-        # 将来的にモデル内で処理
-    when 30 then
-      @game.send(@gd_sym).new(jury_votes: false)
+    when 1..3,29,30 then
+      @game.send(@gd_sym).new # GameDetail サブクラスのインスタンス生成
     end
     gon.contest_nth = @robot.contest_nth
     @regions = Region.where(code: [ 0, @robot.campus.region_code ])
     @round_names = RoundName.where(contest_nth: @robot.contest_nth,
-      region_code: 0) #.pluck(:name, :round)
+      region_code: 0)
   end
 
   def create
@@ -53,7 +45,7 @@ class GamesController < ApplicationController
     Game.confirm_or_associate(game_details_sub_class_sym: @gd_sym)
     @game = Game.find_by(code: params[:code])
     @game.subjective_view_by(robot_code: @robot.code)
-    @game.send(@gd_sym).each { |i| i.decompose_properties(@game.victory) }
+    @game.send(@gd_sym).each { |i| i.decompose_properties(robot: @robot) }
     gon.contest_nth = @robot.contest_nth
     @regions = Region.where(code: [ 0, @robot.campus.region_code ])
     @round_names = RoundName.where(contest_nth: @robot.contest_nth,
@@ -115,53 +107,8 @@ class GamesController < ApplicationController
     end
   end
 
-  # Canvasを使ったシングル・エリミネーション・ブラケットの描画検証
-  def draw_bracket
-    robots = Robot.where(contest_nth: 29, campus_code: 8000...9000).includes(:campus)
-    gon.robots = robots
-    gon.campuses = robots.map { |i| i.campus }
-    games = Game.where(contest_nth: 29, region_code: 8).order(:round, :game)
-    gon.games = games
-    bracket = SingleElimination.new(games: games, robots: robots)
-    gon.entries = bracket.entries
-    # gon.lines = [ # 0:データなし 1:勝ち 2:負け 3:スルー
-    #   [ # １回戦
-    #     3, 3, 3, 1, 2, 3, 3, 3, 1, 2, 3, 3, 3, 1, 2, 3, 3, 3, 1, 2
-    #   ],
-    #   [ # ２回戦
-    #     2, 1, 2, 1, 0, 1, 2, 1, 2, 0, 1, 2, 2, 1, 0, 1, 2, 1, 2, 0
-    #   ],
-    #   [ # ３回戦
-    #     0, 2, 0, 1, 0, 2, 0, 1, 0, 0, 1, 0, 0, 2, 0, 1, 0, 2, 0, 0
-    #   ],
-    #   [ # 準決勝
-    #     0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0
-    #   ],
-    #   [ # 決勝
-    #     0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0
-    #   ]
-    # ]
-    gon.line_pairs = [
-      [ # １回戦
-        [3, 4, 3], [8, 9, 8], [13, 14, 13], [18, 19, 18]
-      ],
-      [ # ２回戦
-        [0, 1, 1], [2, 3, 3], [7, 8, 7], [5, 6, 5],
-        [10, 11, 10], [12, 13, 13], [15, 16, 16], [17, 18, 17]
-      ],
-      [ # ３回戦
-        [1, 3, 3], [5, 7, 7], [10, 13, 10], [15, 17, 15]
-      ],
-      [ # 準決勝
-        [3, 7, 3], [10, 15, 10]
-      ],
-      [ # 決勝
-        [3, 10, 3]
-      ]
-    ]
-  end
-
   private
+
   def game_params
     h = { "#{@gd_sym.to_s}_attributes" =>
       @gd_sym.to_s.classify.constantize.attr_syms_for_params }
@@ -178,10 +125,13 @@ class GamesController < ApplicationController
     j = 1
     if not attrs_hash[gdas].blank?
       attrs_hash[gdas].each { |i|
+        attrs_hash[gdas][i][:my_robot_code]  = @robot.code.to_s
+        attrs_hash[gdas][i][:opponent_robot_code] =
+          attrs_hash[:opponent_robot_code]
+        attrs_hash[gdas][i][:victory] = attrs_hash[:victory]
         attrs_hash[gdas][i][:properties] =
-          klass.compose_properties(hash: attrs_hash[gdas][i],
-            victory: attrs_hash[:victory])
-            # フォームパラメーターから GameDetail サブクラスの属性値へ合成
+          klass.compose_properties(hash: attrs_hash[gdas][i]).to_json
+            # フォームパラメーターから GameDetail サブクラスの properties を合成
         attrs_hash[gdas][i][:number] = j
         j += 1
       }
@@ -192,9 +142,5 @@ class GamesController < ApplicationController
   def game_details_sub_class_sym(contest_nth:)
     "game_detail#{contest_nth.ordinalize}s".to_sym
   end
-
-  # def game_details_sub_class
-  #   @gd_sym.to_s.singularize.classify.constantize unless @gd_sym.blank?
-  # end
 
 end

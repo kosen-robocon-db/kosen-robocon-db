@@ -1,7 +1,15 @@
 class GameDetail29th < GameDetail
-  attr_accessor :my_height, :opponent_height,
-    :jury_votes, :my_jury_votes, :opponent_jury_votes,
-    :progress, :my_progress, :opponent_progress
+
+  # my_robot_code側から見ているので、
+  # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
+  ROOTS = %w( robot_code height jury_votes progress )
+
+  REX_VT  = /([0-5]|#{GameDetail::Constant::UNKNOWN_VALUE})/
+
+  attr_accessor :my_height, :opponent_height
+  attr_accessor :jury_votes, :my_jury_votes, :opponent_jury_votes
+  attr_accessor :progress, :my_progress, :opponent_progress
+  attr_accessor :memo
 
   validates :my_height,         numericality: {
     only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 1000
@@ -9,103 +17,58 @@ class GameDetail29th < GameDetail
   validates :opponent_height,   numericality: {
     only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 1000
   }
-  # validates :jury_votes,             inclusion: { in: ["true", "false"] }
   with_options if: :jury_votes do
-    validates :my_jury_votes,       numericality: {
-      only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 5
-    }
-    validates :opponent_jury_votes, numericality: {
-      only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 5
-    }
+    validates :my_jury_votes, format: { with: REX_VT }
+    validates :opponent_jury_votes, format: { with: REX_VT }
   end
   with_options if: :progress do
     validates :my_progress,       presence: true
     validates :opponent_progress, presence: true
   end
+  validates :memo, length: { maximum: 255 }
 
+  # DBにはないがpropertyに納めたいフォーム上の属性
   def self.additional_attr_symbols
     [
       :my_height, :opponent_height,
       :jury_votes, :my_jury_votes, :opponent_jury_votes,
-      :progress, :my_progress, :opponent_progress
+      :progress, :my_progress, :opponent_progress,
+      :memo
     ]
   end
 
-  def self.attr_syms_for_params
-    s = super()
-    s.concat( additional_attr_symbols )
+  def roots
+    ROOTS
   end
 
   # SRP(Single Responsibility Principle, 単一責任原則)に従っていないが
   # このクラス内で実装する。
-  def self.compose_properties(hash:, victory:)
-
-    # 高さまたは審査委員判定より、値をそのままか交換を決定（優勢な方を先に配置）
-    # 存在チェックをしてないので例外が出力される可能性がある
-    if hash[:my_height] < hash[:opponent_height] ||
-      hash[:my_jury_votes] < hash[:opponent_jury_votes] then
-      hash[:my_height], hash[:opponent_height] =
-        hash[:opponent_height], hash[:my_height]
-      hash[:my_jury_votes], hash[:opponent_jury_votes] =
-        hash[:opponent_jury_votes], hash[:my_jury_votes]
-      hash[:my_progress], hash[:opponent_progress] =
-        hash[:opponent_progress], hash[:my_progress]
+  def self.compose_properties(hash:)
+    h = super(hash: hash) || {}
+    ROOTS.each do |pr|
+      my_sym, opponent_sym = "my_#{pr}".to_sym, "opponent_#{pr}".to_sym
+      if hash[my_sym].present? and hash[opponent_sym].present?
+        h["#{pr}"] = "#{hash[my_sym]}#{DELIMITER}#{hash[opponent_sym]}"
+      end
     end
-
-    a = []
-    a.push(%Q["height":"#{hash[:my_height]}-#{hash[:opponent_height]}"]) if
-      not hash[:my_height].blank? and not hash[:opponent_height].blank?
-    a.push(%Q["jury_votes":"#{hash[:my_jury_votes]}-#{hash[:opponent_jury_votes]}"]) if
-      not hash[:my_jury_votes].blank? and not hash[:opponent_jury_votes].blank?
-    a.push(%Q["progress":"#{hash[:my_progress]}-#{hash[:opponent_progress]}"]) if
-      not hash[:my_progress].blank? and not hash[:opponent_progress].blank?
-    j = ''
-    for i in a
-      j += ',' if not j.blank?
-      j += i
-    end
-    '{' + j + '}'
+    h.delete("jury_votes") unless hash["jury_votes"].present?
+    h.delete("progress") unless hash["progress"].present?
+    h["memo"] = "#{hash[:memo]}" if hash[:memo].present?
+    return h
   end
 
-  # SRP(Single Responsibility Principle, 単一責任原則)に従っていないが
-  # このクラス内で実装する。
-  def decompose_properties(victory)
-    h = JSON.parse(self.properties)
-
-    self.my_height, self.opponent_height =
-      h["height"].to_s.split(/-/) if not h["height"].blank?
-    self.jury_votes = h["jury_votes"].blank? ? false : true
-    self.my_jury_votes, self.opponent_jury_votes =
-      h["jury_votes"].to_s.split(/-/) if not h["jury_votes"].blank?
-    self.progress = h["progress"].blank? ? false : true
-    self.my_progress, self.opponent_progress =
-      h["progress"].to_s.split(/-/) if not h["progress"].blank?
-
-    # 勝敗と高さまたは審査委員判定より、値をそのままか交換を決定
-    case victory
-    when "true"
-      swap_properties if self.my_height < self.opponent_height ||
-        (
-          !self.my_jury_votes.blank? && !self.opponent_jury_votes.blank? &&
-            self.my_jury_votes < self.opponent_jury_votes
-        )
-    when "false"
-      swap_properties if self.my_height > self.opponent_height ||
-        (
-          !self.my_jury_votes.blank? && !self.opponent_jury_votes.blank? &&
-            self.my_jury_votes > self.opponent_jury_votes
-        )
+  def decompose_properties(robot:)
+    super(robot: robot) do |h|
+      self.my_height, self.opponent_height =
+        h["height"].to_s.split(DELIMITER) if h["height"].present?
+      self.jury_votes = h["jury_votes"].present? ? true : false
+      self.my_jury_votes, self.opponent_jury_votes =
+        h["jury_votes"].to_s.split(DELIMITER) if h["jury_votes"].present?
+      self.progress = h["progress"].present? ? true : false
+      self.my_progress, self.opponent_progress =
+        h["progress"].to_s.split(DELIMITER) if h["progress"].present?
+      self.memo = h["memo"].presence || ''
     end
   end
 
-  private
-
-  def swap_properties
-    self.my_height, self.opponent_height =
-      self.opponent_height, self.my_height
-    self.my_jury_votes, self.opponent_jury_votes =
-      self.opponent_jury_votes, self.my_jury_votes
-    self.my_progress, self.opponent_progress =
-      self.opponent_progress, self.my_progress
-  end
 end

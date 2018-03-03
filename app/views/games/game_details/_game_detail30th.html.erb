@@ -1,45 +1,63 @@
 <%= f.hidden_field :id %>
-
 <%
-  baloon_numbers = Array([["不明", GameDetail30th::UNKNOWN_VALUE_FOR_LOSE]])
-  baloon_numbers.concat( Array.new(11) { |i| [i.to_s+"個", i] } )
+  baloon_numbers = Array([["--", GameDetail::Constant::UNKNOWN_VALUE]])
+  baloon_numbers.concat( Array.new(11) { |i| [i.to_s.rjust(2, ' ')+"個", i] } )
+    # 空白が左詰めされない・・・
+  time_numbers = Array([["--","#{GameDetail::Constant::UNKNOWN_VALUE}"]])
+  time_numbers.concat( Array.new(60) { |i|
+    [ i.to_s.rjust(2, "0"), i.to_s.rjust(2, "0") ] } )
+  vote_numbers = Array([["--","#{GameDetail::Constant::UNKNOWN_VALUE}"]])
+  vote_numbers.concat( Array.new(6) { |i| [ i.to_s, i.to_s ] } )
 %>
-
-<%= f.label :my_base_baloon, "#{@robot.name}の砦に残った風船の数：" %>
-<%= f.select :my_base_baloon, baloon_numbers %><br />
-<%= f.label :opponent_base_baloon, "対戦相手の砦に残った風船の数：" %>
-<%= f.select :opponent_base_baloon, baloon_numbers %><br />
-<%= f.label :my_robot_baloon, "#{@robot.name}のロボットに残った風船の数：" %>
-<%= f.select :my_robot_baloon, baloon_numbers %><br />
-<%= f.label :opponent_robot_baloon, "対戦相手のロボットに残った風船の数：" %>
-<%= f.select :opponent_robot_baloon, baloon_numbers %><br />
-
-<%#= f.label :my_robot_baloon, "#{@robot.name}のロボットに残った風船の数：" %>
-<%#= f.text_field :my_robot_baloon %><%# 個<br /> %>
-<%#= f.label :opponent_robot_baloon, "対戦相手のロボットに残った風船の数：" %>
-<%#= f.text_field :opponent_robot_baloon %><%# 個<br /> %>
-<%#= f.label :my_base_baloon, "#{@robot.name}の砦に残った風船の数：" %>
-<%#= f.text_field :my_base_baloon %><%# 個<br /> %>
-<%#= f.label :opponent_base_baloon, "対戦相手の砦に残った風船の数：" %>
-<%#= f.text_field :opponent_base_baloon %><%# 個<br /> %>
-
+<table>
+  <tr>
+    <td><%= f.label :my_base_baloon,
+      "#{@robot.name}の砦に残った風船の数：" %></td>
+    <td><%= f.select :my_base_baloon, baloon_numbers %></td>
+  </tr>
+  <tr>
+    <td><%= f.label :opponent_base_baloon,
+      "対戦相手の砦に残った風船の数：" %></td>
+    <td><%= f.select :opponent_base_baloon, baloon_numbers %></td>
+  </tr>
+  <tr>
+    <td><%= f.label :my_robot_baloon,
+      "#{@robot.name}のロボットに残った風船の数：" %></td>
+    <td><%= f.select :my_robot_baloon, baloon_numbers %></td>
+  </tr>
+  <tr>
+    <td><%= f.label :opponent_robot_baloon,
+      "対戦相手のロボットに残った風船の数：" %></td>
+    <td><%= f.select :opponent_robot_baloon, baloon_numbers %></td>
+  </tr>
+</table>
 <%= f.label :jury_votes, "審査員判定：" %>
+<%= f.check_box :jury_votes, {:checked => f.object.jury_votes}, true, false %>
+<br />
 <% if f.object.jury_votes %>
-  <%= f.check_box :jury_votes, {:checked => true}, true, false %><br />
-  <div class="jury_votes___nested_field_for_replace_with_index__">
+<div class="jury_votes___nested_field_for_replace_with_index__">
 <% else %>
-  <%= f.check_box :jury_votes, {:checked => false}, true, false %><br />
-  <div class="jury_votes___nested_field_for_replace_with_index__ hidden">
+<div class="jury_votes___nested_field_for_replace_with_index__ hidden">
 <% end %>
-    <%= f.label :my_jury_votes, "#{@robot.name}への票数" %>
-    <%= f.text_field :my_jury_votes %><br />
-    <%= f.label :opponent_jury_votes, "対戦相手への票数" %>
-    <%= f.text_field :opponent_jury_votes %><br />
-  </div>
-
-<%= f.label :time, "試合時間：" %>
-<%= f.text_field :time %>(分：秒)<br />
-
+  <table>
+    <tr>
+      <td><%= ("&nbsp;"*4).html_safe %></td>
+      <td><%= f.label :my_jury_votes, "#{@robot.name}への票数：" %></td>
+      <td><%= f.select :my_jury_votes, vote_numbers %></td>
+    </tr>
+    <tr>
+      <td><%= ("&nbsp;"*4).html_safe %></td>
+      <td><%= f.label :opponent_jury_votes, "対戦相手への票数：" %></td>
+      <td><%= f.select :opponent_jury_votes, vote_numbers %></td>
+    </tr>
+  </table>
+</div>
+<%= f.label :time_minute, "試合時間：" %>
+<%= f.select :time_minute, time_numbers %>分
+<%= f.select :time_second, time_numbers %>秒<br />
+<%= f.label :memo, "メモ：" %>
+<%= f.text_field :memo %><br />
+<br />
 <%= f.hidden_field :_destroy %>
 <%= f.remove_nested_fields_link '削除', class: 'btn btn-danger',
   role: 'button' %><br />

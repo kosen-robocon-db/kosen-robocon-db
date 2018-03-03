@@ -11,7 +11,8 @@
     <%= csrf_meta_tags %>
     <%= render 'layouts/shim' %>
   </head>
-  <body>
+  <%= "<body data-controller=\"#{controller.controller_name.camelize}\"
+    data-action=\"#{controller.action_name}\">".html_safe %>
     <%= render 'layouts/header' %>
     <div class="container" id="content">
       <% flash.each do |message_type, message| %>

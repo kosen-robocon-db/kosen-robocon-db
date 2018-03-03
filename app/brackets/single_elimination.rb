@@ -21,7 +21,6 @@ class SingleElimination
   # def lines # 上位進出線
   #   h = {}
   #   rounds = @games.to_a.count_kinds_of(attribute: :round).sort
-  #   Rails.logger.debug(">>>> rounds: #{rounds.to_yaml}")
   #   rounds.each do |round|
   #     games = @games.select { |g| g.round == round }
   #

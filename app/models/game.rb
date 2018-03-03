@@ -18,10 +18,10 @@ class Game < ApplicationRecord
     # robot_code_1    | NO_OPPONENT      | robot_code_1      | BYE
     # robot_code_1    | robot_code_2     | NO_WINNER         | BOTH_DSQ
     # ※ NO_OPPONENT及びNO_WINNERは同じ値でも機能する？
-    WIN = '1' # 勝ち
-    LOSE = '2' # 負け
-    SOLO = '3' # 単独競技
-    BYE = '4' # 不戦勝
+    WIN      = '1' # 勝ち
+    LOSE     = '2' # 負け
+    SOLO     = '3' # 単独競技
+    BYE      = '4' # 不戦勝
     BOTH_DSQ = '5' # 両者失格
   end
 
@@ -33,10 +33,10 @@ class Game < ApplicationRecord
   # enum_help(GEM)をインストールし（必須）、
   # kosen-robocon.ja.ymlに日本語テキストを記している。
   enum reasons: {
-    draw: 1,         # 引き分け（審査員判定・推薦で勝ち負け）
-    DNS: 2,          # Do Not Start 負け側が試合開始前棄権
-    DNF: 3,          # Do Not Finish 負け側が試合途中棄権
-    DSQ: 4          # Disqualification 負け側が失格　
+    draw: 1,      # 引き分け（審査員判定・推薦で勝ち負け）
+    DNS:  2,      # Do Not Start 負け側が試合開始前棄権
+    DNF:  3,      # Do Not Finish 負け側が試合途中棄権
+    DSQ:  4       # Disqualification 負け側が失格　
   }
 
   before_validation :compose_attributes
@@ -93,35 +93,24 @@ class Game < ApplicationRecord
     self.robot_code = robot_code
     self.opponent_robot_code = self.robot_code == self.left_robot_code ?
       self.right_robot_code : self.left_robot_code
-    # if self.winner_robot_code != Constant::NO_WINNER.code
-    #   self.victory = self.robot_code == self.winner_robot_code ?
-    #     Constant::WIN : Constant::LOSE
-    # else
-    #   self.victory = Constant::BOTH_DSQ
-    # end
     # compose_attributesにある処理と逆処理なのでハッシュ関数化して
     # 両方とも簡単にできないだろうか？
     case self.winner_robot_code
     when Constant::NO_WINNER.code then
       case self.opponent_robot_code
       when Constant::NO_OPPONENT.code then
-        logger.debug(">>>> subjective_view_by:NO_WINNER, NO_OPPONENT")
         self.victory = Constant::SOLO
       else
-        logger.debug(">>>> subjective_view_by:NO_WINNER")
         self.victory = Constant::BOTH_DSQ
       end
     else
       case self.opponent_robot_code
       when Constant::NO_OPPONENT.code then
-        logger.debug(">>>> subjective_view_by: NO_OPPONENT")
         self.victory = Constant::BYE
       else
         if self.robot_code == self.winner_robot_code then
-          logger.debug(">>>> subjective_view_by: robot(my) = winner")
           self.victory = Constant::WIN
         else
-          logger.debug(">>>> subjective_view_by: opponent = winner")
           self.victory = Constant::LOSE
         end
       end
@@ -201,38 +190,22 @@ class Game < ApplicationRecord
   def compose_attributes
     self.left_robot_code = self.robot_code
     self.right_robot_code = self.opponent_robot_code
-    # if self.victory != Constant::BOTH_DSQ
-    #   self.winner_robot_code =
-    #     self.victory == Constant::WIN ? self.robot_code : self.opponent_robot_code
-    # else
-    #   self.winner_robot_code = Constant::NO_WINNER.code
-    # end
-    logger.debug(">>>> compose_attributes, self.victory:#{self.victory}")
     case self.victory
     when Constant::WIN then
-      logger.debug(">>>> compose_attributes:WIN")
       self.winner_robot_code = self.robot_code
     when Constant::LOSE then
-      logger.debug(">>>> compose_attributes:LOSE")
       self.winner_robot_code = self.opponent_robot_code
     when Constant::SOLO then
-      logger.debug(">>>> compose_attributes:SOLO")
       self.right_robot_code  = Constant::NO_OPPONENT.code
       self.winner_robot_code = Constant::NO_WINNER.code
     when Constant::BYE then
-      logger.debug(">>>> compose_attributes:BYE")
       self.right_robot_code = Constant::NO_OPPONENT.code
       self.winner_robot_code = self.robot_code
     when Constant::BOTH_DSQ then
-      logger.debug(">>>> compose_attributes:BOTH_DSQ")
       self.winner_robot_code = Constant::NO_WINNER.code
     else
-      logger.debug(">>>> compose_attributes:else")
       self.winner_robot_code = Constant::NO_WINNER.code
     end
-    logger.debug(">>>> compose_attributes, #{self.opponent_robot_code}, #{self.winner_robot_code}")
   end
 
 end
-
-      

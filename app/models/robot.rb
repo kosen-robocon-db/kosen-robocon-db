@@ -5,7 +5,7 @@ class Robot < ApplicationRecord
       name: "", kana: ""
     )
   end
-  
+
   belongs_to :contest,             foreign_key: :contest_nth, primary_key: :nth
   belongs_to :campus,              foreign_key: :campus_code, primary_key: :code
   has_one    :robot_condition,     foreign_key: :robot_code,  primary_key: :code
@@ -55,7 +55,6 @@ class Robot < ApplicationRecord
     codes = []
     codes << Game::Constant::NO_OPPONENT.code
     codes << Game::Constant::NO_WINNER.code
-    logger.debug(">>>> codes:#{codes.to_yaml}")
     CSV.generate(headers: true, force_quotes: true) do |csv|
       csv << csv_headers
       where.not(code: codes).each do |record|
