@@ -47,17 +47,23 @@
           </td>
         </tr>
         <% end %>
-        <tr><th colspan="4"><h4>全国大会進出</h4></th></tr>
-        <% @advancement_histories.each do |history| %>
-          <tr>
-            <td><%= history.advancement.case_name %></td>
-            <td><%= link_to history.robot.campus.abbreviation,
-              campus_path(history.campus.code) %></td>
-            <td><%= history.robot.team %></td>
-            <td>
-              <%= link_to history.robot.name, robot_path(history.robot.code) %>
-            </td>
-          </tr>
+        <% if params[:contest_nth].to_i >= 4 %>
+          <% if @region.code == 0 %>
+            <tr><th colspan="4"><h4>全国大会出場</h4></th></tr>
+          <% else %>
+            <tr><th colspan="4"><h4>全国大会進出</h4></th></tr>
+          <% end %>
+          <% @advancement_histories.each do |history| %>
+            <tr>
+              <td><%= history.advancement.case_name %></td>
+              <td><%= link_to history.robot.campus.abbreviation,
+                campus_path(history.campus.code) %></td>
+              <td><%= history.robot.team %></td>
+              <td>
+                <%= link_to history.robot.name, robot_path(history.robot.code) %>
+              </td>
+            </tr>
+          <% end %>
         <% end %>
       </tbody>
     </table>
