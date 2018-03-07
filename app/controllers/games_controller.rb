@@ -1,5 +1,5 @@
 class GamesController < ApplicationController
-  
+
   before_action :logged_in_user,
     only: [ :new, :create, :edit, :update, :destroy ]
   before_action :admin_user, only: :index
@@ -11,7 +11,7 @@ class GamesController < ApplicationController
     Game.confirm_or_associate(game_details_sub_class_sym: @gd_sym)
     @game = Game.new(robot_code: @robot.code, contest_nth: @robot.contest_nth)
     case @robot.contest_nth
-    when 1..3,29,30 then
+    when 1..4,29,30 then
       @game.send(@gd_sym).new # GameDetail サブクラスのインスタンス生成
     end
     gon.contest_nth = @robot.contest_nth

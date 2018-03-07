@@ -1,0 +1,38 @@
+<%= f.hidden_field :id %>
+<%
+  point_numbers = Array([["--", GameDetail::Constant::UNKNOWN_VALUE]])
+  point_numbers.concat( Array.new(41) { |i| [i.to_s.rjust(2, ' ')+"点", i] } )
+    # 空白が左詰めされない・・・
+%>
+<table>
+  <tr>
+    <td><%= f.label :my_point, "#{@robot.name}の点数：" %></td>
+    <td><%= f.select :my_point, point_numbers %></td>
+  </tr>
+  <tr>
+    <td><%= f.label :opponent_point, "対戦相手の点数：" %></td>
+    <td><%= f.select :opponent_point, point_numbers %></td>
+  </tr>
+</table>
+<%= f.label :extra_time, "延長(30秒)：" %>
+<%= f.check_box :extra_time, { checked: f.object.extra_time }, true, false %>
+<br />
+<%#
+  高さ、距離、じゃんけん決着、どれでもなし（デフォルト）、
+  この四つからラジオボタンでどれかを選ばせるべきだが、後ほどその改善を施す予定
+%>
+<%= f.label :hight, "高さ" %>
+<%= f.check_box :hight, { checked: f.object.hight }, true, false %>
+&nbsp;&nbsp;
+<%= f.label :distance, "距離" %>
+<%= f.check_box :distance, { checked: f.object.distance }, true, false %>
+&nbsp;&nbsp;
+<%= f.label :janken, "じゃんけん決着：" %>
+<%= f.check_box :janken, { checked: f.object.janken }, true, false %>
+<br />
+<%= f.label :memo, "メモ：" %>
+<%= f.text_field :memo %><br />
+<br />
+<%= f.hidden_field :_destroy %>
+<%= f.remove_nested_fields_link '削除', class: 'btn btn-danger',
+  role: 'button' %><br />
