@@ -18,7 +18,7 @@
     <h4>成績と受賞</h4>
     <%
       # 第1回から第3回まで地区予選はない
-      if params[:nth].to_i < 4 then
+      if @contest.nth < 4 then
         concat link_to "全国大会", contest_prize_history_path(
           contest_nth: @contest.nth, region_code: 0)
       else
