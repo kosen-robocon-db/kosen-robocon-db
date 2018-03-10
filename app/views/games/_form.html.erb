@@ -53,7 +53,7 @@
     <%
       # 許可する大会回を一括でapplicaton.rbなどまたはDBで管理するべき
       case @robot.contest_nth
-      when 1..9, 29, 30 then
+      when 1..8, 29, 30 then
     %>
     <div class="enclosure">
       <%= f.label @gd_sym, "試合詳細" %><br />
