@@ -1,0 +1,35 @@
+<%= f.hidden_field :id %>
+<%
+  gaining_p_numbers = Array([["--", GameDetail::Constant::UNKNOWN_VALUE]])
+  gaining_p_numbers.concat( Array.new(19) { |i| [i.to_s.rjust(2, ' '), i] } )
+    # 空白が左詰めされない・・・
+  art_p_numbers = Array([["--", GameDetail::Constant::UNKNOWN_VALUE]])
+  art_p_numbers.concat( Array.new(10) { |i| [i.to_s.rjust(2, ' '), i] } )
+    # 空白が左詰めされない・・・
+  total_p_numbers = Array([["--", GameDetail::Constant::UNKNOWN_VALUE]])
+  total_p_numbers.concat( Array.new(28) { |i| [ i.to_s.rjust(2, ' '), i ] } )
+    # 空白が左詰めされない・・・
+%>
+<table>
+  <tr>
+    <td><%= f.label :my_gaining_point, "#{@robot.name}の点数：" %></td>
+    <td>得点<%= f.select :my_gaining_point, gaining_p_numbers %>点&nbsp;</td>
+    <td>芸術点<%= f.select :my_art_point, art_p_numbers %>点&nbsp;</td>
+    <td>合計<%= f.select :my_total_point, total_p_numbers%>点</td>
+  </tr>
+  <tr>
+    <td><%= f.label :opponent_gaining_point, "対戦相手の点数：" %></td>
+    <td>得点<%= f.select :opponent_gaining_point, gaining_p_numbers %>点&nbsp;</td>
+    <td>芸術点<%= f.select :opponent_art_point, art_p_numbers %>点&nbsp;</td>
+    <td>合計<%= f.select :opponent_total_point, total_p_numbers %>点</td>
+  </tr>
+</table>
+<%= f.label :extra_time, "延長(60秒)：" %>
+<%= f.check_box :extra_time, { checked: f.object.extra_time }, true, false %>
+<br />
+<%= f.label :memo, "メモ：" %>
+<%= f.text_field :memo %><br />
+<br />
+<%= f.hidden_field :_destroy %>
+<%= f.remove_nested_fields_link '削除', class: 'btn btn-danger',
+  role: 'button' %><br />
