@@ -14,8 +14,8 @@
     <td>得点<%= f.select :opponent_point, point_numbers %>点</td>
   </tr>
 </table>
-<%= f.label :v_goal, "Vゴール：" %>
-<%= f.check_box :v_goal, { checked: f.object.v_goal }, true, false %>
+<%= f.label :v_hole "Vゴール：" %>
+<%= f.check_box :v_hole, { checked: f.object.v_hole }, true, false %>
 <br />
 <%= f.label :extra_time, "延長(30秒)：" %>
 <%= f.check_box :extra_time, { checked: f.object.extra_time }, true, false %>

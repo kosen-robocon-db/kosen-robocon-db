@@ -7,7 +7,7 @@ class GameDetail7th < GameDetail
   REX_PT  = /[0-9]|[1-3][0-9]|40|#{GameDetail::Constant::UNKNOWN_VALUE}/
 
   attr_accessor :my_point, :opponent_point
-  attr_accessor :v_goal
+  attr_accessor :v_hole
   attr_accessor :extra_time # 再々延長ルールはあったが適用される試合はなかったはず
   attr_accessor :memo
 
@@ -22,7 +22,7 @@ class GameDetail7th < GameDetail
   def self.additional_attr_symbols
     [
       :my_point, :opponent_point,
-      :v_goal,
+      :v_hole,
       :extra_time,
       :memo
     ]
@@ -42,7 +42,7 @@ class GameDetail7th < GameDetail
         h["#{pr}"] = "#{hash[my_sym]}#{DELIMITER}#{hash[opponent_sym]}"
       end
     end
-    h["v_goal"] = "true" if hash[:v_goal].present?
+    h["v_hole"] = "true" if hash[:v_hole].present?
     h["extra_time"] = "true" if hash[:extra_time].present?
     h["memo"] = "#{hash[:memo]}" if hash[:memo].present?
     return h
@@ -53,7 +53,7 @@ class GameDetail7th < GameDetail
       if h["point"].present?
         self.my_point, self.opponent_point = h["point"].to_s.split(DELIMITER)
       end
-      self.v_goal = h["v_goal"].present? ? true : false
+      self.v_hole = h["v_hole"].present? ? true : false
       self.extra_time = h["extra_time"].present? ? true : false
       self.memo = h["memo"].presence || ''
     end
