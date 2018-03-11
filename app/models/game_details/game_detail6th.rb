@@ -57,15 +57,15 @@ class GameDetail6th < GameDetail
     super(robot: robot) do |h|
       if h["gaining_point"].present?
         self.my_gaining_point, self.opponent_gaining_point =
-          h["gaining_point"].to_s.split(DELIMITER)
+          h["gaining_point"].to_s.split(REX_SC)[1..-1]
       end
       if h["deducting_point"].present?
         self.my_deducting_point, self.opponent_deducting_point =
-          h["deducting_point"].to_s.split(DELIMITER)
+          h["deducting_point"].to_s.split(REX_SC)[1..-1]
       end
       if h["total_point"].present?
         self.my_total_point, self.opponent_total_point =
-          h["total_point"].to_s.split(DELIMITER)
+          h["total_point"].to_s.split(REX_SC)[1..-1]
       end
       self.extra_time = h["extra_time"].present? ? true : false
       self.memo = h["memo"].presence || ''

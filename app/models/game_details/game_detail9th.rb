@@ -69,7 +69,8 @@ class GameDetail9th < GameDetail
   def decompose_properties(robot:)
     super(robot: robot) do |h|
       if h["point"].present?
-        self.my_point, self.opponent_point = h["point"].to_s.split(DELIMITER)
+        self.my_point, self.opponent_point =
+          h["point"].to_s.split(REX_SC)[1..-1]
       end
       if h["hat_trick"].present? then
         self.hat_trick = true
