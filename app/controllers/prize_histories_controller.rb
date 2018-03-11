@@ -1,11 +1,12 @@
 class PrizeHistoriesController < ApplicationController
+
   before_action :logged_in_user, only: [:new, :create, :edit, :update, :destroy]
   before_action :admin_user, only: :index
 
   def show
-    region = Region.find_by("code = ?", params[:region_code])
-    @tournament = region.code == 0 ?
-      "#{region.name}大会" : "#{region.name}地区大会"
+    @region = Region.find_by("code = ?", params[:region_code])
+    @tournament = @region.code == 0 ?
+      "#{@region.name}大会" : "#{@region.name}地区大会"
     @results = PrizeHistory.where(
       "contest_nth = ? and region_code = ? and prize_kind <= 4",
       params[:contest_nth], params[:region_code]
@@ -69,15 +70,10 @@ class PrizeHistoriesController < ApplicationController
     redirect_to robot_path(code: params[:robot_code])
   end
 
-  def index
-    @prize_histories = PrizeHistory.all.order_default
-    respond_to do |format|
-      format.csv { send_data @prize_histories.to_csv }
-    end
+  private
+
+  def prize_history_params
+    params.require(:prize_history).permit(:region_code, :prize_kind)
   end
 
-  private
-    def prize_history_params
-      params.require(:prize_history).permit(:region_code, :prize_kind)
-    end
 end

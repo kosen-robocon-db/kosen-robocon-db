@@ -7,6 +7,7 @@ class GameDetail < ApplicationRecord
   DELIMITER      = "-"
   DELIMITER_TIME = ":"
   REX_MS         = /([0-5][0-9]|#{Constant::UNKNOWN_VALUE})/
+  REX_SC         = /(--|-\d*|\d*)-(--|-\d*|\d*)/
 
   serialize :properties, JSON
   after_initialize :reset_swap_state

@@ -1,4 +1,5 @@
 class RobotsController < ApplicationController
+
   before_action :logged_in_user, only: [:edit, :update]
   before_action :admin_user, only: :index
 
@@ -25,15 +26,10 @@ class RobotsController < ApplicationController
     end
   end
 
-  def index
-    @robots = Robot.all.order_default
-    respond_to do |format|
-      format.csv { send_data @robots.order_csv.to_csv }
-    end
-  end
-
   private
+
   def robot_params
     params.require(:robot).permit(:name, :kana, :team)
   end
+
 end
