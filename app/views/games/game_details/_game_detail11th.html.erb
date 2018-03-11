@@ -1,0 +1,35 @@
+<%= f.hidden_field :id %>
+<%
+  point_numbers = Array([["--", GameDetail::Constant::UNKNOWN_VALUE]])
+  point_numbers.concat( Array.new(41) { |i| [i.to_s.rjust(2, ' '), i] } )
+    # 空白が左詰めされない・・・
+  total_point_numbers = Array([["--", GameDetail::Constant::UNKNOWN_VALUE]])
+  total_point_numbers.concat( Array.new(46) { |i|
+    [ (i - 5).to_s.rjust(2, ' '), i - 5 ]
+  } )
+    # 空白が左詰めされない・・・
+%>
+<table>
+  <tr>
+    <td><%= f.label :my_gaining_point, "#{@robot.name}の点数：" %></td>
+    <td>得点<%= f.select :my_gaining_point, point_numbers %>点&nbsp;</td>
+    <td>減点<%= f.select :my_deducting_point, point_numbers %>点&nbsp;</td>
+    <td>合計<%= f.select :my_total_point, total_point_numbers%>点</td>
+  </tr>
+  <tr>
+    <td><%= f.label :opponent_gaining_point, "対戦相手の点数：" %></td>
+    <td>得点<%= f.select :opponent_gaining_point, point_numbers %>点&nbsp;</td>
+    <td>減点<%= f.select :opponent_deducting_point, point_numbers %>点&nbsp;</td>
+    <td>合計<%= f.select :opponent_total_point, total_point_numbers %>点</td>
+  </tr>
+</table>
+
+<%= f.label :recommended, "審査員判定（芸術点）：" %>
+<%= f.check_box :recommended, { checked: f.object.recommended }, true, false %>
+<br />
+<%= f.label :memo, "メモ：" %>
+<%= f.text_field :memo %><br />
+<br />
+<%= f.hidden_field :_destroy %>
+<%= f.remove_nested_fields_link '削除', class: 'btn btn-danger',
+  role: 'button' %><br />
