@@ -23,10 +23,12 @@
     <td>合計<%= f.select :opponent_total_point, total_point_numbers %>点</td>
   </tr>
 </table>
-
 <%= f.label :lower_power_quantity, "審査員判定（省電力比較）：" %>
 <%= f.check_box :lower_power_quantity,
   { checked: f.object.lower_power_quantity }, true, false %>
+<br />
+<%= f.label :v_goal, "Vゴール：" %>
+<%= f.check_box :v_goal, { checked: f.object.v_goal }, true, false %>
 <br />
 <%= f.label :memo, "メモ：" %>
 <%= f.text_field :memo %><br />

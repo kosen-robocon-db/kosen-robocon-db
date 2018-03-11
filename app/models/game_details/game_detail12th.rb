@@ -16,6 +16,7 @@ class GameDetail12th < GameDetail
   attr_accessor :my_deducting_point, :opponent_deducting_point
   attr_accessor :my_total_point, :opponent_total_point
   attr_accessor :lower_power_quantity
+  attr_accessor :v_goal
   attr_accessor :memo
 
   # validates に numericality: {} を指定したいところだが(分かり易いが)、
@@ -35,6 +36,7 @@ class GameDetail12th < GameDetail
       :my_deducting_point, :opponent_deducting_point,
       :my_total_point, :opponent_total_point,
       :lower_power_quantity,
+      :v_goal,
       :memo
     ]
   end
@@ -55,6 +57,7 @@ class GameDetail12th < GameDetail
     end
     h["lower_power_quantity"] =
       "true" if hash[:lower_power_quantity].present?
+    h["v_goal"] = "true" if hash[:v_goal].present?
     h["memo"] = "#{hash[:memo]}" if hash[:memo].present?
     return h
   end
@@ -75,6 +78,7 @@ class GameDetail12th < GameDetail
       end
       self.lower_power_quantity =
         h["lower_power_quantity"].present? ? true : false
+        self.v_goal = h["v_goal"].present? ? true : false
       self.memo = h["memo"].presence || ''
     end
   end
