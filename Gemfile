@@ -67,6 +67,9 @@ gem 'rubytree'
 # for enum i18n
 gem 'enum_help'
 
+# for string to boolean
+gem 'to_bool'
+
 # 開発作業用ツール
 group :tools do
 
