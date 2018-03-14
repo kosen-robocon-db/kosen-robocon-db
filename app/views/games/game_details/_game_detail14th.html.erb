@@ -16,6 +16,18 @@
     <td>得点<%= f.select :opponent_point, point_numbers %>点</td>
   </tr>
 </table>
+<table>
+  <tr>
+    <td><%= f.label :my_retry, "#{@robot.name}のリトライ：" %></td>
+    <td><%= f.check_box :my_retry, { checked: f.object.my_retry },
+      true, false %></td>
+  </tr>
+  <tr>
+    <td><%= f.label :opponent_retry, "対戦相手のリトライ：" %></td>
+    <td><%= f.check_box :opponent_retry, { checked: f.object.opponent_retry },
+      true, false %></td>
+  </tr>
+</table>
 <%= f.label :extra_time, "延長(60秒)：" %>
 <%= f.check_box :extra_time, { checked: f.object.extra_time }, true, false %>
 <br />

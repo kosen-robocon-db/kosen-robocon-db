@@ -69,6 +69,10 @@ class GameDetail14th < GameDetail
         self.my_point, self.opponent_point =
           h["point"].to_s.split(REX_SC)[1..-1]
       end
+      if h["retry"].present?
+        self.my_retry, self.opponent_retry =
+          h["retry"].to_s.split(DELIMITER).map{ |x| x.to_bool }
+      end
       self.extra_time = h["extra_time"].present? ? true : false
       self.jury_votes = h["jury_votes"].present? ? true : false
       self.my_jury_votes, self.opponent_jury_votes =
