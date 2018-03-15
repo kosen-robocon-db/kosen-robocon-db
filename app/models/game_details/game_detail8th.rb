@@ -2,60 +2,72 @@ class GameDetail8th < GameDetail
 
   # my_robot_code側から見ているので、
   # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
-  ROOTS = %w( robot_code gaining_point deducting_point total_point
+  STEMS = %w( robot_code gaining_point deducting_point total_point
     basket_drible )
 
-  REX_PT  = /[0-9]|[1-5][0-9]|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_TPT  = /-[1-5]|[0-9]|[1-5][0-9]|#{GameDetail::Constant::UNKNOWN_VALUE}/
+  REX_GPT = /[0-9]|[1-5][0-9]|#{GameDetail::Constant::UNKNOWN_VALUE}/
+  REX_DPT = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
+  REX_TPT = /-[1-5]|[0-9]|[1-5][0-9]|#{GameDetail::Constant::UNKNOWN_VALUE}/
 
   attr_accessor :my_gaining_point, :opponent_gaining_point
   attr_accessor :my_deducting_point, :opponent_deducting_point
   attr_accessor :my_total_point, :opponent_total_point
   attr_accessor :my_basket_drible, :opponent_basket_drible
-  attr_accessor :v_goal
-  attr_accessor :extra_time # 再々延長ルールはあったが適用される試合はなかったはず
+  attr_accessor :special_win, :special_win_time_minute, :special_win_time_second
+  attr_accessor :extra_time
   attr_accessor :memo
 
-  # validates に numericality: {} を指定したいところだが(分かり易いが)、
-  # format: {} のほうが手間がかからないようなので、採用した。
-  validates :my_gaining_point, format: { with: REX_PT }
-  validates :opponent_gaining_point, format: { with: REX_PT }
-  validates :my_deducting_point, format: { with: REX_PT }
-  validates :opponent_deducting_point, format: { with: REX_PT }
-  validates :my_total_point, format: { with: REX_TPT }
-  validates :opponent_total_point, format: { with: REX_TPT }
-  validates :memo, length: { maximum: 255 }
+  validates :my_gaining_point,         format: { with: REX_GPT }
+  validates :opponent_gaining_point,   format: { with: REX_GPT }
+  validates :my_deducting_point,       format: { with: REX_DPT }
+  validates :opponent_deducting_point, format: { with: REX_DPT }
+  validates :my_total_point,           format: { with: REX_TPT }
+  validates :opponent_total_point,     format: { with: REX_TPT }
+  validates :my_basket_drible,       inclusion: { in: [ "true", "false" ] }
+  validates :opponent_basket_drible, inclusion: { in: [ "true", "false" ] }
+  validates :special_win,            inclusion: { in: [ "true", "false" ] }
+  validates :extra_time,             inclusion: { in: [ "true", "false" ] }
+  validates :memo, length: { maximum: MEMO_LEN }
 
-  # DBにはないがpropertyに納めたいフォーム上の属性
+  # DBにカラムはないがpropertyに納めたいフォーム上の属性
   def self.additional_attr_symbols
     [
-      :my_gaining_point, :opponent_gaining_point,
+      :my_gaining_point,   :opponent_gaining_point,
       :my_deducting_point, :opponent_deducting_point,
-      :my_total_point, :opponent_total_point,
-      :my_basket_drible, :opponent_basket_drible,
-      :v_goal,
+      :my_total_point,     :opponent_total_point,
+      :my_basket_drible,   :opponent_basket_drible,
+      :special_win,
       :extra_time,
       :memo
     ]
   end
 
-  def roots
-    ROOTS
+  def stems
+    STEMS
   end
 
-  # SRP(Single Responsibility Principle, 単一責任原則)に従っていないが
-  # このクラス内で実装する。
   def self.compose_properties(hash:)
     h = super(hash: hash) || {}
-    ROOTS.each do |pr|
-      my_sym, opponent_sym = "my_#{pr}".to_sym, "opponent_#{pr}".to_sym
+    STEMS.each do |stm|
+      my_sym, opponent_sym = "my_#{stm}".to_sym, "opponent_#{stm}".to_sym
       if hash[my_sym].present? and hash[opponent_sym].present?
-        h["#{pr}"] = "#{hash[my_sym]}#{DELIMITER}#{hash[opponent_sym]}"
+        h["#{stm}"] = "#{hash[my_sym]}#{DELIMITER}#{hash[opponent_sym]}"
       end
     end
-    h["v_goal"] = "true" if hash[:v_goal].present?
-    h["extra_time"] = "true" if hash[:extra_time].present?
-    h["memo"] = "#{hash[:memo]}" if hash[:memo].present?
+    h["special_win"] = hash[:special_win].presence || "false"
+    if
+      hash[:special_win].presence.to_bool and
+      hash[:special_win_time_minute].present? and
+      hash[:special_win_time_second].present?
+    then
+      h["special_win"] = "\
+        #{hash[:special_win_time_minute]}\
+        #{DELIMITER_TIME}\
+        #{hash[:special_win_time_second]}\
+      ".gsub(/(\s| )+/, '')
+    end
+    h["extra_time"] = hash[:extra_time].presence || "false"
+    h["memo"]       = hash[:memo].presence       || nil
     return h
   end
 
@@ -77,9 +89,11 @@ class GameDetail8th < GameDetail
         self.my_basket_drible, self.opponent_basket_drible =
           h["basket_drible"].to_s.split(DELIMITER) # binary
       end
-      self.v_goal = h["v_goal"].present? ? true : false
-      self.extra_time = h["extra_time"].present? ? true : false
-      self.memo = h["memo"].presence || ''
+      self.special_win = h["special_win"].presence.to_bool || false
+      self.special_win_time_minute, self.special_win_time_second =
+          h["special_win"].to_s.split(DELIMITER_TIME) if self.special_win
+      self.extra_time  = h["extra_time"].presence.to_bool  || false
+      self.memo        = h["memo"].presence                || ''
     end
   end
 

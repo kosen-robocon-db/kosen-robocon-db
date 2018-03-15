@@ -1,13 +1,21 @@
 <%= f.hidden_field :id %>
 <%
-  point_numbers = Array([["--", GameDetail::Constant::UNKNOWN_VALUE]])
-  point_numbers.concat( Array.new(51) { |i| [i.to_s.rjust(2, ' '), i] } )
-    # 空白が左詰めされない・・・
+  gaining_point_numbers = Array([["--", GameDetail::Constant::UNKNOWN_VALUE]])
+  gaining_point_numbers.concat( Array.new(51) { |i|
+    [ i.to_s.rjust(2, ' '), i ]
+  } ) # 空白が左詰めされない・・・
+  deducting_point_numbers = Array([["--", GameDetail::Constant::UNKNOWN_VALUE]])
+  deducting_point_numbers.concat( Array.new(6) { |i|
+    [ i.to_s.rjust(2, ' '), i ]
+  } ) # 空白が左詰めされない・・・
   total_point_numbers = Array([["--", GameDetail::Constant::UNKNOWN_VALUE]])
   total_point_numbers.concat( Array.new(56) { |i|
     [ (i - 5).to_s.rjust(2, ' '), i - 5 ]
+  } ) # 空白が左詰めされない・・・
+  time_numbers = Array([["--", "#{GameDetail::Constant::UNKNOWN_VALUE}"]])
+  time_numbers.concat( Array.new(60) { |i|
+    [ i.to_s.rjust(2, "0"), i.to_s.rjust(2, "0") ]
   } )
-    # 空白が左詰めされない・・・
 %>
 <table>
   <tr>
@@ -43,9 +51,24 @@
     </td>
   </tr>
 </table>
-<%= f.label :v_goal, "Vゴール：" %>
-<%= f.check_box :v_goal, { checked: f.object.v_goal }, true, false %>
+<%= f.label :special_win, "Vゴール：" %>
+<%= f.check_box :special_win, { checked: f.object.special_win }, true, false %>
 <br />
+<% if f.object.special_win %>
+<div class="special_win___nested_field_for_replace_with_index__">
+<% else %>
+<div class="special_win___nested_field_for_replace_with_index__ hidden">
+<% end %>
+  <table>
+    <tr>
+      <td><%= f.label :special_win_time_minute, "タイム：" %></td>
+      <td>
+        <%= f.select :special_win_time_minute, time_numbers %>分
+        <%= f.select :special_win_time_second, time_numbers %>秒
+      </td>
+    </tr>
+  </table>
+</div>
 <%= f.label :extra_time, "延長(60秒)：" %>
 <%= f.check_box :extra_time, { checked: f.object.extra_time }, true, false %>
 <br />

@@ -1,8 +1,8 @@
 class GameDetail1st < GameDetail
 
   # my_robot_code側から見ているので、
-  # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
-  ROOTS = %w( robot_code time_minute time_second )
+  # ロボットコード異なる場合は交換したい値を持つ属性の語幹を書いておく
+  STEMS = %w( robot_code time_minute time_second )
 
   REX   = /#{DELIMITER}|#{DELIMITER_TIME}/
 
@@ -10,22 +10,13 @@ class GameDetail1st < GameDetail
   attr_accessor :opponent_time_minute, :opponent_time_second
   attr_accessor :memo
 
-  # 下記の*_time_minnute, *_time_second検証は現バージョンんでは必要ないかもしれない。
-  with_options if: :my_time_minute do
-    validates :my_time_minute, format: { with: REX_MS }
-  end
-  with_options if: :my_time_second do
-    validates :my_time_second, format: { with: REX_MS }
-  end
-  with_options if: :opponent_time_minute do
-    validates :opponent_time_minute, format: { with: REX_MS }
-  end
-  with_options if: :opponent_time_second do
-    validates :opponent_time_second, format: { with: REX_MS }
-  end
-  validates :memo, length: { maximum: 255 }
+  validates :my_time_minute, format: { with: REX_MS }
+  validates :my_time_second, format: { with: REX_MS }
+  validates :opponent_time_minute, format: { with: REX_MS }
+  validates :opponent_time_second, format: { with: REX_MS }
+  validates :memo, length: { maximum: MEMO_LEN }
 
-  # DBにはないがpropertyに納めたいフォーム上の属性
+  # DBにカラムはないがpropertyに納めたいフォーム上の属性
   def self.additional_attr_symbols
     [
       :my_time_minute, :my_time_second,
@@ -34,8 +25,8 @@ class GameDetail1st < GameDetail
     ]
   end
 
-  def roots
-    ROOTS
+  def stems
+    STEMS
   end
 
   def self.compose_properties(hash:)
@@ -65,7 +56,7 @@ class GameDetail1st < GameDetail
       if h["time"].present? then
         self.my_time_minute, self.my_time_second,
           self.opponent_time_minute, self.opponent_time_second =
-            h["time"].to_s.split(REX) # この時点ではREにマッチしたとしている
+            h["time"].to_s.split(REX)
       end
       self.memo = h["memo"].presence || ''
     end

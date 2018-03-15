@@ -1,22 +1,23 @@
 <%= f.hidden_field :id %>
 <%
-  numbers = Array( [ [ "--", "#{GameDetail::Constant::UNKNOWN_VALUE}" ] ] )
-  numbers.concat( Array.new(60) { |i|
-    [ i.to_s.rjust(2, "0"), i.to_s.rjust(2, "0") ] } )
+  time_numbers = Array([["--", "#{GameDetail::Constant::UNKNOWN_VALUE}"]])
+  time_numbers.concat( Array.new(60) { |i|
+    [ i.to_s.rjust(2, "0"), i.to_s.rjust(2, "0") ]
+  } )
 %>
 <table>
   <tr>
     <td><%= f.label :my_time, "#{@robot.name}のタイム：" %></td>
     <td>
-      <%= f.select :my_time_minute, numbers %>分
-      <%= f.select :my_time_second, numbers %>秒
+      <%= f.select :my_time_minute, time_numbers %>分
+      <%= f.select :my_time_second, time_numbers %>秒
     </td>
   </tr>
   <tr>
     <td><%= f.label :opponent_time, "対戦相手のタイム：" %></td>
     <td>
-      <%= f.select :opponent_time_minute, numbers %>分
-      <%= f.select :opponent_time_second, numbers %>秒
+      <%= f.select :opponent_time_minute, time_numbers %>分
+      <%= f.select :opponent_time_second, time_numbers %>秒
     </td>
   </tr>
 </table>

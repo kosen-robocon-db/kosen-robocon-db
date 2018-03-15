@@ -1,28 +1,41 @@
 <%= f.hidden_field :id %>
 <%
-  point_numbers = Array([["--", GameDetail::Constant::UNKNOWN_VALUE]])
-  point_numbers.concat( Array.new(10) { |i| [i.to_s.rjust(2, ' '), i] } )
-    # 空白が左詰めされない・・・
+  gaining_point_numbers = Array([["--", GameDetail::Constant::UNKNOWN_VALUE]])
+  gaining_point_numbers.concat( Array.new(10) { |i|
+    [ i.to_s.rjust(2, ' '), i ]
+  } ) # 空白が左詰めされない・・・
   time_numbers = Array([["--", "#{GameDetail::Constant::UNKNOWN_VALUE}"]])
   time_numbers.concat( Array.new(60) { |i|
     [ i.to_s.rjust(2, "0"), i.to_s.rjust(2, "0") ] } )
 %>
 <table>
   <tr>
-    <td><%= f.label :my_point, "#{@robot.name}の点数：" %></td>
-    <td>得点<%= f.select :my_point, point_numbers %>点</td>
+    <td><%= f.label :my_gaining_point, "#{@robot.name}の点数：" %></td>
+    <td>得点<%= f.select :my_gaining_point, gaining_point_numbers %>点</td>
   </tr>
   <tr>
-    <td><%= f.label :opponent_point, "対戦相手の点数：" %></td>
-    <td>得点<%= f.select :opponent_point, point_numbers %>点</td>
+    <td><%= f.label :opponent_gaining_point, "対戦相手の点数：" %></td>
+    <td>得点<%= f.select :opponent_gaining_point, gaining_point_numbers %>点</td>
   </tr>
 </table>
-<%= f.label :hat_trick, "ハットトリック：" %>
-<%= f.check_box :hat_trick, { checked: f.object.hat_trick }, true, false %>
-&nbsp;&nbsp;
-<%= f.select :hat_trick_time_minute, time_numbers %>分
-<%= f.select :hat_trick_time_second, time_numbers %>秒
+<%= f.label :special_win, "ハットトリック：" %>
+<%= f.check_box :special_win, { checked: f.object.special_win }, true, false %>
 <br />
+<% if f.object.special_win %>
+<div class="special_win___nested_field_for_replace_with_index__">
+<% else %>
+<div class="special_win___nested_field_for_replace_with_index__ hidden">
+<% end %>
+  <table>
+    <tr>
+      <td><%= f.label :special_win_time_minute, "タイム：" %></td>
+      <td>
+        <%= f.select :special_win_time_minute, time_numbers %>分
+        <%= f.select :special_win_time_second, time_numbers %>秒
+      </td>
+    </tr>
+  </table>
+</div>
 <%= f.label :extra_time, "延長(60秒)：" %>
 <%= f.check_box :extra_time, { checked: f.object.extra_time }, true, false %>
 <br />

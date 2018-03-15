@@ -52,9 +52,12 @@ $ ->
   # GameDetailAttributesクラスのオブジェクト生成用データ
   # モデルでスイッチ表示する属性情報を持たせようと思ったがここで持たせることにした
   switching_attributes = {
+     7: [ 'special_win' ]
+     8: [ 'special_win' ]
+     9: [ 'special_win' ]
     13: [ 'jury_votes' ]
-    14: [ 'jury_votes' ]
-    15: [ 'jury_votes' ]
+    14: [ 'jury_votes', 'retry' ]
+    15: [ 'jury_votes', 'retry' ]
     29: [ 'jury_votes', 'progress' ]
     30: [ 'jury_votes' ]
   }

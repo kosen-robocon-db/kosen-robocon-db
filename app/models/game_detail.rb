@@ -1,27 +1,30 @@
 class GameDetail < ApplicationRecord
+
+  # 現状、大会毎にモデルを分けているが、
+  # 工夫すればこのGameDetailモデルだけで済むのではないか？
+  # 詳細用のビューは大会毎に用意しておくのは変らないが・・・
+  # 30回全ての詳細が揃うまでは現行の方法で実装していく
+
   module Constant
     UNKNOWN_VALUE = "__"
   end
 
-  ROOTS          = %w()
+  STEMS          = %w( robot_code )
   DELIMITER      = "-"
   DELIMITER_TIME = ":"
-  REX_MS         = /([0-5][0-9]|#{Constant::UNKNOWN_VALUE})/
-  REX_SC         = /(--|-\d*|\d*)-(--|-\d*|\d*)/
+  UNKNOWN        = "#{Constant::UNKNOWN_VALUE}"
+  REX_MS         = /([0-5][0-9]|#{UNKNOWN})/
+  REX_SC         = /(#{UNKNOWN}|-\d*|\d*)-(#{UNKNOWN}|-\d*|\d*)/
+  MEMO_LEN       = 256
 
   serialize :properties, JSON
   after_initialize :reset_swap_state
 
-  # number は試合詳細の相対的な順番を表す。
-  # 例えば、number1 < number2 であれば number2 が再試合である。
-  # 更新時に number1 が削除された場合、number2 はそのまま DB に記録される。
-  # 将来の機能によっては最初の大戦は全て'1'とするべきだろう。
-  # number を含めた UNIQUE index を作るべき
-
-  attr_accessor :my_robot_code, :opponent_robot_code, :victory
+  attr_accessor :my_robot_code, :opponent_robot_code, :victory, :memo
 
   scope :order_default, -> { order("number asc") }
-  scope :order_csv, -> { order(id: :asc) }
+  scope :order_csv, -> { order(game_code: :asc, number: :asc) }
+    # インデックスでASC指定はできないのか？
 
   def self.additional_attr_symbols
     []
@@ -47,8 +50,8 @@ class GameDetail < ApplicationRecord
     end
   end
 
-  def roots
-    ROOTS
+  def stems
+    STEMS
   end
 
   def decompose_properties(robot:)
@@ -58,15 +61,16 @@ class GameDetail < ApplicationRecord
         h["robot"].to_s.split(DELIMITER)
     end
     yield h
-    swap_properties(roots) unless robot.code.to_i == self.my_robot_code.to_i
+    # swap_properties(stems) unless robot.code.to_i == self.my_robot_code.to_i
+    swap_properties unless robot.code.to_i == self.my_robot_code.to_i
   end
 
-  def swap_properties(attribute_roots = %w(robot_code))
-    attribute_roots.each do |r|
+  def swap_properties(attribute_stems = STEMS)
+    attribute_stems.each do |s|
       # a,b = b,a が可能ではないので、変数を一つ使用して実装
-      b = self.send("my_#{r}")
-      self.send("my_#{r}=", self.send("opponent_#{r}"))
-      self.send("opponent_#{r}=", b)
+      b = self.send("my_#{s}")
+      self.send("my_#{s}=", self.send("opponent_#{s}"))
+      self.send("opponent_#{s}=", b)
     end
     @swapped = true
   end
