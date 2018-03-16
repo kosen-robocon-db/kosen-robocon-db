@@ -23,7 +23,7 @@ class GameDetail10th < GameDetail
   validates :extra_time, inclusion: { in: [ "true", "false" ] }
   validates :memo, length: { maximum: MEMO_LEN }
 
-  # DBにはないがpropertyに納めたいフォーム上の属性
+  # DBにカラムはないがpropertyに納めたいフォーム上の属性
   def self.additional_attr_symbols
     [
       :my_gaining_point, :opponent_gaining_point,
