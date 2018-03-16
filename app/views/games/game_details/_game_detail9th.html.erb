@@ -1,21 +1,15 @@
 <%= f.hidden_field :id %>
 <%
-  gaining_point_numbers = Array([["--", GameDetail::Constant::UNKNOWN_VALUE]])
-  gaining_point_numbers.concat( Array.new(10) { |i|
-    [ i.to_s.rjust(2, ' '), i ]
-  } ) # 空白が左詰めされない・・・
-  time_numbers = Array([["--", "#{GameDetail::Constant::UNKNOWN_VALUE}"]])
-  time_numbers.concat( Array.new(60) { |i|
-    [ i.to_s.rjust(2, "0"), i.to_s.rjust(2, "0") ] } )
+  gaining_point_numbers = option_numbers end_number: 18
 %>
 <table>
   <tr>
     <td><%= f.label :my_gaining_point, "#{@robot.name}の点数：" %></td>
-    <td>得点<%= f.select :my_gaining_point, gaining_point_numbers %>点</td>
+    <td><%= f.select :my_gaining_point, gaining_point_numbers %>点</td>
   </tr>
   <tr>
     <td><%= f.label :opponent_gaining_point, "対戦相手の点数：" %></td>
-    <td>得点<%= f.select :opponent_gaining_point, gaining_point_numbers %>点</td>
+    <td><%= f.select :opponent_gaining_point, gaining_point_numbers %>点</td>
   </tr>
 </table>
 <%= f.label :special_win, "ハットトリック：" %>

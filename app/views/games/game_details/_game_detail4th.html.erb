@@ -1,9 +1,6 @@
 <%= f.hidden_field :id %>
 <%
-  gaining_point_numbers = Array([["--", GameDetail::Constant::UNKNOWN_VALUE]])
-  gaining_point_numbers.concat( Array.new(41) { |i|
-    [ i.to_s.rjust(2, ' '), i ]
-  } ) # 空白が左詰めされない・・・
+  gaining_point_numbers = option_numbers end_number: 40
 %>
 <table>
   <tr>

@@ -1,10 +1,4 @@
 <%= f.hidden_field :id %>
-<%
-  time_numbers = Array([["--", "#{GameDetail::Constant::UNKNOWN_VALUE}"]])
-  time_numbers.concat( Array.new(60) { |i|
-    [ i.to_s.rjust(2, "0"), i.to_s.rjust(2, "0") ]
-  } )
-%>
 <table>
   <tr>
     <td><%= f.label :my_time, "#{@robot.name}のタイム：" %></td>

@@ -1,17 +1,8 @@
 <%= f.hidden_field :id %>
 <%
-  gaining_point_numbers = Array([["--", GameDetail::Constant::UNKNOWN_VALUE]])
-  gaining_point_numbers.concat( Array.new(16) { |i|
-    [ i.to_s.rjust(2, ' '), i ]
-  } ) # 空白が左詰めされない・・・
-  deducting_point_numbers = Array([["--", GameDetail::Constant::UNKNOWN_VALUE]])
-  deducting_point_numbers.concat( Array.new(9) { |i|
-    [ i.to_s.rjust(2, ' '), i ]
-  } ) # 空白が左詰めされない・・・
-  total_point_numbers = Array([["--", GameDetail::Constant::UNKNOWN_VALUE]])
-  total_point_numbers.concat( Array.new(25) { |i|
-    [ (i - 9).to_s.rjust(2, ' '), i - 9 ]
-  } ) # 空白が左詰めされない・・・
+  gaining_point_numbers   = option_numbers                   end_number: 15
+  deducting_point_numbers = option_numbers                   end_number:  9
+  total_point_numbers     = option_numbers begin_number: -9, end_number: 15
 %>
 <table>
   <tr>
