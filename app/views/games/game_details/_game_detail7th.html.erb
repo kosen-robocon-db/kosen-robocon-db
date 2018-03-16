@@ -9,7 +9,8 @@
   </tr>
   <tr>
     <td><%= f.label :opponent_gaining_point, "対戦相手の点数：" %></td>
-    <td>得点<%= f.select :opponent_gaining_point, gaining_point_numbers %>点</td>
+    <td>得点<%= f.select :opponent_gaining_point,
+      gaining_point_numbers %>点</td>
   </tr>
 </table>
 <%= f.label :special_win, "Vホール：" %>

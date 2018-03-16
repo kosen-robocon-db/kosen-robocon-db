@@ -6,24 +6,22 @@
 %>
 <table>
   <tr>
-    <td><%= f.label :my_gaining_point,
-      "#{@robot.name}の点数：" %></td>
-    <td>得点<%= f.select :my_gaining_point,
-      gaining_point_numbers %>点&nbsp;</td>
-    <td>減点<%= f.select :my_deducting_point,
-      deducting_point_numbers %>点&nbsp;</td>
-    <td>合計<%= f.select :my_total_point,
-      total_point_numbers %>点</td>
+    <td><%= f.label :my_gaining_point, "#{@robot.name}の点数：" %></td>
+    <td>得点<%= f.select :my_gaining_point, gaining_point_numbers %>点</td>
+    <td>&nbsp;</td>
+    <td>減点<%= f.select :my_deducting_point, deducting_point_numbers %>点</td>
+    <td>&nbsp;</td>
+    <td>合計<%= f.select :my_total_point, total_point_numbers %>点</td>
   </tr>
   <tr>
-    <td><%= f.label :opponent_gaining_point,
-      "対戦相手の点数：" %></td>
+    <td><%= f.label :opponent_gaining_point, "対戦相手の点数：" %></td>
     <td>得点<%= f.select :opponent_gaining_point,
-      gaining_point_numbers %>点&nbsp;</td>
+      gaining_point_numbers %>点</td>
+    <td>&nbsp;</td>
     <td>減点<%= f.select :opponent_deducting_point,
-      deducting_point_numbers %>点&nbsp;</td>
-    <td>合計<%= f.select :opponent_total_point,
-      total_point_numbers %>点</td>
+      deducting_point_numbers %>点</td>
+    <td>&nbsp;</td>
+    <td>合計<%= f.select :opponent_total_point, total_point_numbers %>点</td>
   </tr>
 </table>
 <%= f.label :extra_time, "延長(30秒)：" %>
