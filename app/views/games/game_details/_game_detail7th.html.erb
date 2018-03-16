@@ -23,6 +23,7 @@
 <% end %>
   <table>
     <tr>
+      <td><%= ("&nbsp;"*4).html_safe %></td>
       <td><%= f.label :special_win_time_minute, "タイム：" %></td>
       <td>
         <%= f.select :special_win_time_minute, time_numbers %>分
