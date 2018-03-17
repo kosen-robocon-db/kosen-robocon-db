@@ -1,42 +1,63 @@
 <%= f.hidden_field :id %>
 <%
-  point_numbers = Array([["--", GameDetail::Constant::UNKNOWN_VALUE]])
-  point_numbers.concat( Array.new(4) { |i| [i.to_s.rjust(2, ' '), i] } )
-    # 空白が左詰めされない・・・
-  total_point_numbers = Array([["--", GameDetail::Constant::UNKNOWN_VALUE]])
-  total_point_numbers.concat( Array.new(7) { |i|
-    [ (i - 3).to_s.rjust(2, ' '), i - 3 ]
-  } )
-    # 空白が左詰めされない・・・
-  vote_numbers = Array([["--","#{GameDetail::Constant::UNKNOWN_VALUE}"]])
-  vote_numbers.concat( Array.new(6) { |i| [ i.to_s, i.to_s ] } )
+  gaining_point_numbers   = option_numbers                     end_number: 3
+  deducting_point_numbers = option_numbers                     end_number: 3
+  total_point_numbers     = option_numbers begin_number: -3,   end_number: 3
+  retry_numbers = option_numbers digit: 1, padding_string: '', end_number: 1
+  vote_numbers  = option_numbers digit: 1, padding_string: '', end_number: 5
 %>
 <table>
   <tr>
     <td><%= f.label :my_gaining_point, "#{@robot.name}の点数：" %></td>
-    <td>得点<%= f.select :my_gaining_point, point_numbers %>点&nbsp;</td>
-    <td>減点<%= f.select :my_deducting_point, point_numbers %>点&nbsp;</td>
+    <td>得点<%= f.select :my_gaining_point, gaining_point_numbers %>点</td>
+    <td>&nbsp;</td>
+    <td>減点<%= f.select :my_deducting_point, deducting_point_numbers %>点</td>
+    <td>&nbsp;</td>
     <td>合計<%= f.select :my_total_point, total_point_numbers%>点</td>
   </tr>
   <tr>
     <td><%= f.label :opponent_gaining_point, "対戦相手の点数：" %></td>
-    <td>得点<%= f.select :opponent_gaining_point, point_numbers %>点&nbsp;</td>
-    <td>減点<%= f.select :opponent_deducting_point, point_numbers %>点&nbsp;</td>
+    <td>得点<%= f.select :opponent_gaining_point,
+      gaining_point_numbers %>点</td>
+    <td>&nbsp;</td>
+    <td>減点<%= f.select :opponent_deducting_point,
+      deducting_point_numbers %>点</td>
+    <td>&nbsp;</td>
     <td>合計<%= f.select :opponent_total_point, total_point_numbers %>点</td>
   </tr>
 </table>
 <table>
   <tr>
     <td><%= f.label :my_retry, "#{@robot.name}のリトライ：" %></td>
-    <td><%= f.check_box :my_retry, { checked: f.object.my_retry },
-      true, false %></td>
+    <td><%= f.select :my_retry, retry_numbers %>回</td>
+    </td>
   </tr>
   <tr>
     <td><%= f.label :opponent_retry, "対戦相手のリトライ：" %></td>
-    <td><%= f.check_box :opponent_retry, { checked: f.object.opponent_retry },
-      true, false %></td>
+    <td><%= f.select :opponent_retry, retry_numbers %>回</td>
+    </td>
   </tr>
 </table>
+<%= f.label :special_win, "トルネード：" %>
+<%= f.check_box :special_win, { checked: f.object.special_win }, true, false %>
+<br />
+<% if f.object.special_win %>
+<div class="special_win___nested_field_for_replace_with_index__">
+<% else %>
+<div class="special_win___nested_field_for_replace_with_index__ hidden">
+<% end %>
+  <table>
+    <tr>
+      <td><%= ("&nbsp;"*4).html_safe %></td>
+      <td><%= f.label :special_win_time_minute, "タイム：" %></td>
+      <td>
+        <%= f.select :special_win_time_minute, time_numbers %>分
+        <%= f.select :special_win_time_second, time_numbers %>秒
+      </td>
+    </tr>
+  </table>
+</div>
+<br />
 <%= f.label :hight, "同点で高さで決着：" %>
 <%= f.check_box :hight, { checked: f.object.hight }, true, false %>
 <br />

@@ -55,9 +55,10 @@ $ ->
      7: [ 'special_win' ]
      8: [ 'special_win' ]
      9: [ 'special_win' ]
-    13: [ 'jury_votes' ]
-    14: [ 'jury_votes', 'retry' ]
-    15: [ 'jury_votes', 'retry' ]
+    12: [ 'special_win' ]
+    13: [ 'special_win', 'jury_votes' ]
+    14: [ 'jury_votes' ]
+    15: [ 'special_win', 'jury_votes' ]
     29: [ 'jury_votes', 'progress' ]
     30: [ 'jury_votes' ]
   }

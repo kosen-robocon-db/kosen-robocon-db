@@ -1,31 +1,29 @@
 <%= f.hidden_field :id %>
 <%
-  point_numbers = Array([["--", GameDetail::Constant::UNKNOWN_VALUE]])
-  point_numbers.concat( Array.new(80) { |i| [i.to_s.rjust(2, ' '), i] } )
-    # 空白が左詰めされない・・・
-  vote_numbers = Array([["--","#{GameDetail::Constant::UNKNOWN_VALUE}"]])
-  vote_numbers.concat( Array.new(6) { |i| [ i.to_s, i.to_s ] } )
+  gaining_point_numbers = option_numbers                       end_number: 79
+  vote_numbers  = option_numbers digit: 1, padding_string: '', end_number:  5
+  retry_numbers = option_numbers digit: 1, padding_string: '', end_number:  1
 %>
 <table>
   <tr>
-    <td><%= f.label :my_point, "#{@robot.name}の点数：" %></td>
-    <td>得点<%= f.select :my_point, point_numbers %>点</td>
+    <td><%= f.label :my_gaining_point, "#{@robot.name}の点数：" %></td>
+    <td>得点<%= f.select :my_gaining_point, gaining_point_numbers %>点</td>
   </tr>
   <tr>
-    <td><%= f.label :opponent_point, "対戦相手の点数：" %></td>
-    <td>得点<%= f.select :opponent_point, point_numbers %>点</td>
+    <td><%= f.label :opponent_gaining_point, "対戦相手の点数：" %></td>
+    <td>得点<%= f.select :opponent_gaining_point, gaining_point_numbers %>点</td>
   </tr>
 </table>
 <table>
   <tr>
     <td><%= f.label :my_retry, "#{@robot.name}のリトライ：" %></td>
-    <td><%= f.check_box :my_retry, { checked: f.object.my_retry },
-      true, false %></td>
+    <td><%= f.select :my_retry, retry_numbers %>回</td>
+    </td>
   </tr>
   <tr>
     <td><%= f.label :opponent_retry, "対戦相手のリトライ：" %></td>
-    <td><%= f.check_box :opponent_retry, { checked: f.object.opponent_retry },
-      true, false %></td>
+    <td><%= f.select :opponent_retry, retry_numbers %>回</td>
+    </td>
   </tr>
 </table>
 <%= f.label :extra_time, "延長(60秒)：" %>

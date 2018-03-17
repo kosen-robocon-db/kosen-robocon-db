@@ -10,44 +10,53 @@ class GameDetail15th < GameDetail
 
   # my_robot_code側から見ているので、
   # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
-  ROOTS = %w( robot_code gaining_point deducting_point total_point retry
+  STEMS = %w( robot_code gaining_point deducting_point total_point retry
     jury_votes )
 
-  REX_PT = /[0-3]|#{GameDetail::Constant::UNKNOWN_VALUE}/
+  REX_GPT = /[0-3]|#{GameDetail::Constant::UNKNOWN_VALUE}/
   REX_TPT = /-[1-3]|[0-3]|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_VT = /([0-5]|#{GameDetail::Constant::UNKNOWN_VALUE})/
-    # 地区、全国ともに5人？（要確認）
+  REX_RT  = /[0-1]|#{GameDetail::Constant::UNKNOWN_VALUE}/
+  REX_VT  = /([0-5]|#{GameDetail::Constant::UNKNOWN_VALUE})/
 
   attr_accessor :my_gaining_point, :opponent_gaining_point
   attr_accessor :my_deducting_point, :opponent_deducting_point
   attr_accessor :my_total_point, :opponent_total_point
   attr_accessor :my_retry, :opponent_retry
+  attr_accessor :special_win, :special_win_time_minute, :special_win_time_second
   attr_accessor :hight
   attr_accessor :extra_time
   attr_accessor :jury_votes, :my_jury_votes, :opponent_jury_votes
-  attr_accessor :memo # これは game_details に持たせたほうがよいのでは？
+  attr_accessor :memo
 
-  # validates に numericality: {} を指定したいところだが(分かり易いが)、
-  # format: {} のほうが手間がかからないようなので、採用した。
-  validates :my_gaining_point, format: { with: REX_PT }
-  validates :opponent_gaining_point, format: { with: REX_PT }
-  validates :my_deducting_point, format: { with: REX_PT }
-  validates :opponent_deducting_point, format: { with: REX_PT }
-  validates :my_total_point, format: { with: REX_TPT }
-  validates :opponent_total_point, format: { with: REX_TPT }
-  with_options if: :jury_votes do
-    validates :my_jury_votes, format: { with: REX_VT }
-    validates :opponent_jury_votes, format: { with: REX_VT }
+  validates :my_gaining_point,         format: { with: REX_GPT }
+  validates :opponent_gaining_point,   format: { with: REX_GPT }
+  validates :my_deducting_point,       format: { with: REX_DPT }
+  validates :opponent_deducting_point, format: { with: REX_DPT }
+  validates :my_total_point,           format: { with: REX_TPT }
+  validates :opponent_total_point,     format: { with: REX_TPT }
+  validates :my_retry,                 format: { with: REX_RT }
+  validates :opponent_retry,           format: { with: REX_RT }
+  validates :special_win, inclusion: { in: [ "true", "false" ] }
+  with_options if: :special_win do
+    validates :special_win_time_minute, format: { with: REX_MS }
+    validates :special_win_time_second, format: { with: REX_MS }
   end
-  validates :memo, length: { maximum: 255 }
+  validates :hight,       inclusion: { in: [ "true", "false" ] }
+  validates :extra_time,  inclusion: { in: [ "true", "false" ] }
+  with_options if: :jury_votes do
+    validates :my_jury_votes,          format: { with: REX_VT }
+    validates :opponent_jury_votes,    format: { with: REX_VT }
+  end
+  validates :memo, length: { maximum: MEMO_LEN }
 
-  # DBにはないがpropertyに納めたいフォーム上の属性
+  # DBにカラムはないがpropertyに納めたいフォーム上の属性
   def self.additional_attr_symbols
     [
-      :my_gaining_point, :opponent_gaining_point,
+      :my_gaining_point,   :opponent_gaining_point,
       :my_deducting_point, :opponent_deducting_point,
-      :my_total_point, :opponent_total_point,
-      :my_retry, :opponent_retry,
+      :my_total_point,     :opponent_total_point,
+      :my_retry,           :opponent_retry,
+      :special_win, :special_win_time_minute, :special_win_time_second,
       :hight,
       :extra_time,
       :jury_votes, :my_jury_votes, :opponent_jury_votes,
@@ -55,30 +64,39 @@ class GameDetail15th < GameDetail
     ]
   end
 
-  def roots # stems に変更すべき
-    ROOTS # STEMS に変更すべき
+  def stems
+    STEMS
   end
 
-  # SRP(Single Responsibility Principle, 単一責任原則)に従っていないが
-  # このクラス内で実装する。
   def self.compose_properties(hash:)
     h = super(hash: hash) || {}
-    ROOTS.each do |pr|
-      my_sym, opponent_sym = "my_#{pr}".to_sym, "opponent_#{pr}".to_sym
+    STEMS.each do |stm|
+      my_sym, opponent_sym = "my_#{stm}".to_sym, "opponent_#{stm}".to_sym
       if hash[my_sym].present? and hash[opponent_sym].present?
-        h["#{pr}"] = "#{hash[my_sym]}#{DELIMITER}#{hash[opponent_sym]}"
+        h["#{stm}"] = "#{hash[my_sym]}#{DELIMITER}#{hash[opponent_sym]}"
       end
     end
-    h["hight"] = "true" if hash[:hight].present?
-    h["extra_time"] = "true" if hash[:extra_time].present?
-    h.delete("jury_votes") unless hash["jury_votes"].present?
-    h["memo"] = "#{hash[:memo]}" if hash[:memo].present?
+    h["special_win"] = hash[:special_win].presence || "false"
+    if
+      hash[:special_win].presence.to_bool and
+      hash[:special_win_time_minute].present? and
+      hash[:special_win_time_second].present?
+    then
+      h["special_win"] = "\
+        #{hash[:special_win_time_minute]}\
+        #{DELIMITER_TIME}\
+        #{hash[:special_win_time_second]}\
+      ".gsub(/(\s| )+/, '')
+    end
+    h["hight"]      = hash[:hight].presence      || "false"
+    h["extra_time"] = hash[:extra_time].presence || "false"
+    h.delete("jury_votes") unless hash["jury_votes"].presence.to_bool
+    h["memo"]       = hash[:memo].presence       || nil
     return h
   end
 
   def decompose_properties(robot:)
     super(robot: robot) do |h|
-      # *_pointの類はもっと簡潔にまとめられないか？
       if h["gaining_point"].present?
         self.my_gaining_point, self.opponent_gaining_point =
           h["gaining_point"].to_s.split(REX_SC)[1..-1]
@@ -91,16 +109,16 @@ class GameDetail15th < GameDetail
         self.my_total_point, self.opponent_total_point =
           h["total_point"].to_s.split(REX_SC)[1..-1]
       end
-      if h["retry"].present?
-        self.my_retry, self.opponent_retry =
-          h["retry"].to_s.split(DELIMITER).map{ |x| x.to_bool }
-      end
-      self.hight = h["hight"].present? ? true : false      
-      self.extra_time = h["extra_time"].present? ? true : false
-      self.jury_votes = h["jury_votes"].present? ? true : false
+      self.my_retry, self.opponent_retry =
+        h["retry"].to_s.split(DELIMITER) if self.h["retry"].present?
+      self.special_win = h["special_win"].presence.to_bool || false
+      self.special_win_time_minute, self.special_win_time_second =
+          h["special_win"].to_s.split(DELIMITER_TIME) if self.special_win
+      self.extra_time  = h["extra_time"].presence.to_bool  || false
+      self.jury_votes  = h["jury_votes"].presence.to_bool  || false
       self.my_jury_votes, self.opponent_jury_votes =
-        h["jury_votes"].to_s.split(DELIMITER) if h["jury_votes"].present?
-      self.memo = h["memo"].presence || ''
+        h["jury_votes"].to_s.split(DELIMITER_TIME) if self.jury_votes
+      self.memo        = h["memo"].presence                || ''
     end
   end
 
