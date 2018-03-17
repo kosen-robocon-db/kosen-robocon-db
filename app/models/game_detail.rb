@@ -5,6 +5,13 @@ class GameDetail < ApplicationRecord
   # 詳細用のビューは大会毎に用意しておくのは変らないが・・・
   # 30回全ての詳細が揃うまでは現行の方法で実装していく
 
+  # 理想的には、例えば減点などがなく得点だけの大会でも
+  # gaining_pointではなくtotal_point、もしくは新しくresultとして
+  # porpertiesに持たせ、なるべく全回大会で統一し、統計処理し易くすべきだが、
+  # どのような構造でも引き継いだ開発者でも現状の情報の構造で
+  # 様々な開発展開ができると判断し、このままにしておく。
+  # *_pointではなくtimeの大会もあるし・・・
+
   module Constant
     UNKNOWN_VALUE = "__"
   end
@@ -79,7 +86,8 @@ class GameDetail < ApplicationRecord
 
   # 更新時、left_robot_codeとright_robot_codeの内容（位置ではない）に変化がなければ
   # 更新前のleft_robot_codeとright_robot_code、及びproperties内の左右の位置のままで
-  # 値だけを更新したかったが、その実装をしなくてもいまのところ害はないので、
+  # 値だけを更新したかったが、その実装をしなくてもいまのところ害はないので
+  # （必要のないDBのUPDATEの回数が増えるが）
   # propertiesの左右交換したことを示す状態フラグを実装するに留めている。
   def reset_swap_state
     @swapped = false
