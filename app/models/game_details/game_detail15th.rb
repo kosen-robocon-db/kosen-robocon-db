@@ -110,14 +110,14 @@ class GameDetail15th < GameDetail
         self.special_win_time_minute, self.special_win_time_second =
           h["special_win"].to_s.split(DELIMITER_TIME)
       end
-      self.hight       = h["hight"].presence.to_bool       || false
-      self.extra_time  = h["extra_time"].presence.to_bool  || false
+      self.hight       = h["hight"].presence.to_bool      || false
+      self.extra_time  = h["extra_time"].presence.to_bool || false
       if h["jury_votes"].present?
         self.jury_votes = true
         self.my_jury_votes, self.opponent_jury_votes =
           h["jury_votes"].to_s.split(DELIMITER)
       end
-      self.memo        = h["memo"].presence                || ''
+      self.memo        = h["memo"].presence               || ''
     end
   end
 

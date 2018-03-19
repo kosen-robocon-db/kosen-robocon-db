@@ -66,8 +66,8 @@ class GameDetail7th < GameDetail
         self.special_win_time_minute, self.special_win_time_second =
           h["special_win"].to_s.split(DELIMITER_TIME)
       end
-      self.extra_time  = h["extra_time"].presence.to_bool  || false
-      self.memo        = h["memo"].presence                || ''
+      self.extra_time = h["extra_time"].presence.to_bool || false
+      self.memo       = h["memo"].presence               || ''
     end
   end
 
