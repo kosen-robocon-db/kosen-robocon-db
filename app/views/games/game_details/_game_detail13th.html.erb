@@ -1,7 +1,7 @@
 <%= f.hidden_field :id %>
 <%
-  gaining_point_numbers = option_numbers                      end_number: 10
-  vote_numbers = option_numbers digit: 1, padding_string: '', end_number:  5
+  gaining_point_numbers = option_numbers  end_number: 10
+  vote_numbers = option_numbers digit: 1, end_number:  5
 %>
 <table>
   <tr>
@@ -33,7 +33,6 @@
     </tr>
   </table>
 </div>
-<br />
 <%= f.label :jury_votes, "審査員判定：" %>
 <%= f.check_box :jury_votes, {:checked => f.object.jury_votes}, true, false %>
 <br />

@@ -3,8 +3,8 @@
   gaining_point_numbers   = option_numbers                     end_number: 3
   deducting_point_numbers = option_numbers                     end_number: 3
   total_point_numbers     = option_numbers begin_number: -3,   end_number: 3
-  retry_numbers = option_numbers digit: 1, padding_string: '', end_number: 1
-  vote_numbers  = option_numbers digit: 1, padding_string: '', end_number: 5
+  retry_numbers = option_numbers digit: 1,                     end_number: 1
+  vote_numbers  = option_numbers digit: 1,                     end_number: 5
 %>
 <table>
   <tr>
@@ -57,7 +57,6 @@
     </tr>
   </table>
 </div>
-<br />
 <%= f.label :hight, "同点で高さで決着：" %>
 <%= f.check_box :hight, { checked: f.object.hight }, true, false %>
 <br />

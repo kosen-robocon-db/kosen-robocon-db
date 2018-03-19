@@ -51,28 +51,27 @@ class GameDetail < ApplicationRecord
     [ :game_code, :number, :properties ]
   end
 
-  def self.compose_properties(hash:)
-    if hash[:my_robot_code].present? and hash[:opponent_robot_code].present?
-      { "robot" => "#{hash[:my_robot_code]}-#{hash[:opponent_robot_code]}" }
-    end
-  end
-
   def stems
     STEMS
   end
 
+  def self.compose_properties(hash:)
+    if hash[:my_robot_code].present? and hash[:opponent_robot_code].present?
+      {"robot_code" => "#{hash[:my_robot_code]}-#{hash[:opponent_robot_code]}"}
+    end
+  end
+
   def decompose_properties(robot:)
     h = JSON.parse(self.properties)
-    if h["robot"].present? then # 必ずrobotのコードがある前提だが・・・
+    if h["robot_code"].present? then # 必ずrobotのコードがある前提だが・・・
       self.my_robot_code, self.opponent_robot_code =
-        h["robot"].to_s.split(DELIMITER)
+        h["robot_code"].to_s.split(DELIMITER)
     end
     yield h
-    # swap_properties(stems) unless robot.code.to_i == self.my_robot_code.to_i
     swap_properties unless robot.code.to_i == self.my_robot_code.to_i
   end
 
-  def swap_properties(attribute_stems = STEMS)
+  def swap_properties(attribute_stems = stems)
     attribute_stems.each do |s|
       # a,b = b,a が可能ではないので、変数を一つ使用して実装
       b = self.send("my_#{s}")
@@ -80,6 +79,17 @@ class GameDetail < ApplicationRecord
       self.send("opponent_#{s}=", b)
     end
     @swapped = true
+  end
+
+  def self.compose_pairs(hash:, stems:)
+    h = {}
+    stems.each do |stm|
+      my_sym, opponent_sym = "my_#{stm}".to_sym, "opponent_#{stm}".to_sym
+      if hash[my_sym].present? and hash[opponent_sym].present?
+        h["#{stm}"] = "#{hash[my_sym]}#{DELIMITER}#{hash[opponent_sym]}"
+      end
+    end
+    return h
   end
 
   private

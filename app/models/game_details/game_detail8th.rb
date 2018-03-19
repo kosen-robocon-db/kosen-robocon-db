@@ -23,10 +23,13 @@ class GameDetail8th < GameDetail
   validates :opponent_deducting_point, format: { with: REX_DPT }
   validates :my_total_point,           format: { with: REX_TPT }
   validates :opponent_total_point,     format: { with: REX_TPT }
-  validates :my_basket_drible,       inclusion: { in: [ "true", "false" ] }
-  validates :opponent_basket_drible, inclusion: { in: [ "true", "false" ] }
-  validates :special_win,            inclusion: { in: [ "true", "false" ] }
-  validates :extra_time,             inclusion: { in: [ "true", "false" ] }
+  validates :my_basket_drible,       inclusion: { in: [ "true", "false", nil ] }
+  validates :opponent_basket_drible, inclusion: { in: [ "true", "false", nil ] }
+  with_options if: :special_win do
+    validates :special_win_time_minute, format: { with: REX_MS }
+    validates :special_win_time_second, format: { with: REX_MS }
+  end
+  validates :extra_time,             inclusion: { in: [ "true", "false", nil ] }
   validates :memo, length: { maximum: MEMO_LEN }
 
   # DBにカラムはないがpropertyに納めたいフォーム上の属性
@@ -36,7 +39,7 @@ class GameDetail8th < GameDetail
       :my_deducting_point, :opponent_deducting_point,
       :my_total_point,     :opponent_total_point,
       :my_basket_drible,   :opponent_basket_drible,
-      :special_win,
+      :special_win, :special_win_time_minute, :special_win_time_second,
       :extra_time,
       :memo
     ]
@@ -48,13 +51,19 @@ class GameDetail8th < GameDetail
 
   def self.compose_properties(hash:)
     h = super(hash: hash) || {}
-    STEMS.each do |stm|
-      my_sym, opponent_sym = "my_#{stm}".to_sym, "opponent_#{stm}".to_sym
-      if hash[my_sym].present? and hash[opponent_sym].present?
-        h["#{stm}"] = "#{hash[my_sym]}#{DELIMITER}#{hash[opponent_sym]}"
-      end
+    if # compose_pairsで拾えないbasket_dribleのケースに対応
+      hash[:my_basket_drible].present? and
+      hash[:opponent_basket_drible].blank?
+    then
+      hash[:opponent_basket_drible] = "false"
     end
-    h["special_win"] = hash[:special_win].presence || "false"
+    if # compose_pairsで拾えないbasket_dribleのケースに対応
+      hash[:my_basket_drible].blank? and
+      hash[:opponent_basket_drible].present?
+    then
+      hash[:my_basket_drible] = "false"
+    end
+    h.update(compose_pairs(hash: hash, stems: STEMS))
     if
       hash[:special_win].presence.to_bool and
       hash[:special_win_time_minute].present? and
@@ -66,8 +75,8 @@ class GameDetail8th < GameDetail
         #{hash[:special_win_time_second]}\
       ".gsub(/(\s| )+/, '')
     end
-    h["extra_time"] = hash[:extra_time].presence || "false"
-    h["memo"]       = hash[:memo].presence       || nil
+    h["extra_time"] = "true"           if hash[:extra_time].present?
+    h["memo"]       = "#{hash[:memo]}" if hash[:memo].present?
     return h
   end
 
@@ -87,11 +96,13 @@ class GameDetail8th < GameDetail
       end
       if h["basket_drible"].present?
         self.my_basket_drible, self.opponent_basket_drible =
-          h["basket_drible"].to_s.split(DELIMITER) # binary
+          h["basket_drible"].to_s.split(DELIMITER).map{ |x| x.to_bool }
       end
-      self.special_win = h["special_win"].presence.to_bool || false
-      self.special_win_time_minute, self.special_win_time_second =
-          h["special_win"].to_s.split(DELIMITER_TIME) if self.special_win
+      if h["special_win"].present?
+        self.special_win = true
+        self.special_win_time_minute, self.special_win_time_second =
+          h["special_win"].to_s.split(DELIMITER_TIME)
+      end
       self.extra_time  = h["extra_time"].presence.to_bool  || false
       self.memo        = h["memo"].presence                || ''
     end

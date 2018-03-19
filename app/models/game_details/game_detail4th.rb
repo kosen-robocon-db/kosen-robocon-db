@@ -13,10 +13,11 @@ class GameDetail4th < GameDetail
 
   validates :my_gaining_point,       format: { with: REX_GPT }
   validates :opponent_gaining_point, format: { with: REX_GPT }
-  validates :extra_time, inclusion: { in: [ "true", "false" ] }
-  validates :hight,      inclusion: { in: [ "true", "false" ] }
-  validates :distance,   inclusion: { in: [ "true", "false" ] }
-  validates :janken,     inclusion: { in: [ "true", "false" ] }
+  validates :extra_time, inclusion: { in: [ "true", "false", nil ] }
+  validates :hight,      inclusion: { in: [ "true", "false", nil ] }
+  validates :distance,   inclusion: { in: [ "true", "false", nil ] }
+  validates :janken,     inclusion: { in: [ "true", "false", nil ] }
+  validates :extra_time, inclusion: { in: [ "true", "false", nil ] }
   validates :memo, length: { maximum: MEMO_LEN }
 
   # DBにカラムはないがpropertyに納めたいフォーム上の属性
@@ -35,17 +36,12 @@ class GameDetail4th < GameDetail
 
   def self.compose_properties(hash:)
     h = super(hash: hash) || {}
-    STEMS.each do |stm|
-      my_sym, opponent_sym = "my_#{stm}".to_sym, "opponent_#{stm}".to_sym
-      if hash[my_sym].present? and hash[opponent_sym].present?
-        h["#{stm}"] = "#{hash[my_sym]}#{DELIMITER}#{hash[opponent_sym]}"
-      end
-    end
-    h["extra_time"] = hash[:extra_time].presence || "false"
-    h["hight"]      = hash[:hight].presence      || "false"
-    h["distance"]   = hash[:distance].presence   || "false"
-    h["janken"]     = hash[:janken].presence     || "false"
-    h["memo"]       = hash[:memo].presence       || nil
+    h.update(compose_pairs(hash: hash, stems: STEMS))
+    h["extra_time"] = "true"           if hash[:extra_time].present?
+    h["hight"]      = "true"           if hash[:hight].present?
+    h["distance"]   = "true"           if hash[:distance].present?
+    h["janken"]     = "true"           if hash[:janken].present?
+    h["memo"]       = "#{hash[:memo]}" if hash[:memo].present?
     return h
   end
 

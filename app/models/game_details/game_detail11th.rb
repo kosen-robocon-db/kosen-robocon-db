@@ -5,7 +5,7 @@ class GameDetail11th < GameDetail
   STEMS = %w( robot_code gaining_point deducting_point total_point )
 
   REX_GPT = /[0-9]|[1-3][0-9]|40|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_DGT = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
+  REX_DPT = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
   REX_TPT = /-[1-5]|[0-9]|[1-3][0-9]|40|#{GameDetail::Constant::UNKNOWN_VALUE}/
 
   attr_accessor :my_gaining_point, :opponent_gaining_point
@@ -20,7 +20,7 @@ class GameDetail11th < GameDetail
   validates :opponent_deducting_point, format: { with: REX_DPT }
   validates :my_total_point,           format: { with: REX_TPT }
   validates :opponent_total_point,     format: { with: REX_TPT }
-  validates :recommended, inclusion: { in: [ "true", "false" ] }
+  validates :recommended, inclusion: { in: [ "true", "false", nil ] }
   validates :memo, length: { maximum: MEMO_LEN }
 
   # DBにカラムはないがpropertyに納めたいフォーム上の属性
@@ -40,14 +40,9 @@ class GameDetail11th < GameDetail
 
   def self.compose_properties(hash:)
     h = super(hash: hash) || {}
-    STEMS.each do |stm|
-      my_sym, opponent_sym = "my_#{stm}".to_sym, "opponent_#{stm}".to_sym
-      if hash[my_sym].present? and hash[opponent_sym].present?
-        h["#{stm}"] = "#{hash[my_sym]}#{DELIMITER}#{hash[opponent_sym]}"
-      end
-    end
-    h["recommended"] = hash[:recommended].presence || "false"
-    h["memo"]        = hash[:memo].presence        || nil
+    h.update(compose_pairs(hash: hash, stems: STEMS))
+    h["recommended"] = "true"           if hash[:recommended].present?
+    h["memo"]        = "#{hash[:memo]}" if hash[:memo].present?
     return h
   end
 

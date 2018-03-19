@@ -55,5 +55,9 @@ Rails.application.configure do
   Devise.setup do |config|
     config.omniauth :twitter, 'k4FcdCGDOX3feXXm7F7QbESnc', 'TArUyPOanxfprD5tiC0TdZ0y5mQ2HdFrYuSvztyrkT45JMvkzm', :display => 'popup'
   end
-  
+
+  # Added below the configuration in order not to cause error like this:
+  # Cannot render console from 10.0.2.2! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
+  config.web_console.whitelisted_ips = '0.0.0.0/0'
+
 end

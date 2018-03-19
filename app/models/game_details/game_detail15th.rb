@@ -14,6 +14,7 @@ class GameDetail15th < GameDetail
     jury_votes )
 
   REX_GPT = /[0-3]|#{GameDetail::Constant::UNKNOWN_VALUE}/
+  REX_DPT = /[0-3]|#{GameDetail::Constant::UNKNOWN_VALUE}/
   REX_TPT = /-[1-3]|[0-3]|#{GameDetail::Constant::UNKNOWN_VALUE}/
   REX_RT  = /[0-1]|#{GameDetail::Constant::UNKNOWN_VALUE}/
   REX_VT  = /([0-5]|#{GameDetail::Constant::UNKNOWN_VALUE})/
@@ -36,13 +37,12 @@ class GameDetail15th < GameDetail
   validates :opponent_total_point,     format: { with: REX_TPT }
   validates :my_retry,                 format: { with: REX_RT }
   validates :opponent_retry,           format: { with: REX_RT }
-  validates :special_win, inclusion: { in: [ "true", "false" ] }
   with_options if: :special_win do
     validates :special_win_time_minute, format: { with: REX_MS }
     validates :special_win_time_second, format: { with: REX_MS }
   end
-  validates :hight,       inclusion: { in: [ "true", "false" ] }
-  validates :extra_time,  inclusion: { in: [ "true", "false" ] }
+  validates :hight,       inclusion: { in: [ "true", "false", nil ] }
+  validates :extra_time,  inclusion: { in: [ "true", "false", nil ] }
   with_options if: :jury_votes do
     validates :my_jury_votes,          format: { with: REX_VT }
     validates :opponent_jury_votes,    format: { with: REX_VT }
@@ -69,14 +69,8 @@ class GameDetail15th < GameDetail
   end
 
   def self.compose_properties(hash:)
-    h = super(hash: hash) || {}
-    STEMS.each do |stm|
-      my_sym, opponent_sym = "my_#{stm}".to_sym, "opponent_#{stm}".to_sym
-      if hash[my_sym].present? and hash[opponent_sym].present?
-        h["#{stm}"] = "#{hash[my_sym]}#{DELIMITER}#{hash[opponent_sym]}"
-      end
-    end
-    h["special_win"] = hash[:special_win].presence || "false"
+    h = super(hash: hash) || {} # robot_code
+    h.update(compose_pairs(hash: hash, stems: STEMS))
     if
       hash[:special_win].presence.to_bool and
       hash[:special_win_time_minute].present? and
@@ -88,10 +82,10 @@ class GameDetail15th < GameDetail
         #{hash[:special_win_time_second]}\
       ".gsub(/(\s| )+/, '')
     end
-    h["hight"]      = hash[:hight].presence      || "false"
-    h["extra_time"] = hash[:extra_time].presence || "false"
+    h["hight"]      = "true"           if hash[:hight].present?
+    h["extra_time"] = "true"           if hash[:extra_time].present?
     h.delete("jury_votes") unless hash["jury_votes"].presence.to_bool
-    h["memo"]       = hash[:memo].presence       || nil
+    h["memo"]       = "#{hash[:memo]}" if hash[:memo].present?
     return h
   end
 
@@ -110,14 +104,19 @@ class GameDetail15th < GameDetail
           h["total_point"].to_s.split(REX_SC)[1..-1]
       end
       self.my_retry, self.opponent_retry =
-        h["retry"].to_s.split(DELIMITER) if self.h["retry"].present?
-      self.special_win = h["special_win"].presence.to_bool || false
-      self.special_win_time_minute, self.special_win_time_second =
-          h["special_win"].to_s.split(DELIMITER_TIME) if self.special_win
+        h["retry"].to_s.split(DELIMITER) if h["retry"].present?
+      if h["special_win"].present?
+        self.special_win = true
+        self.special_win_time_minute, self.special_win_time_second =
+          h["special_win"].to_s.split(DELIMITER_TIME)
+      end
+      self.hight       = h["hight"].presence.to_bool       || false
       self.extra_time  = h["extra_time"].presence.to_bool  || false
-      self.jury_votes  = h["jury_votes"].presence.to_bool  || false
-      self.my_jury_votes, self.opponent_jury_votes =
-        h["jury_votes"].to_s.split(DELIMITER_TIME) if self.jury_votes
+      if h["jury_votes"].present?
+        self.jury_votes = true
+        self.my_jury_votes, self.opponent_jury_votes =
+          h["jury_votes"].to_s.split(DELIMITER)
+      end
       self.memo        = h["memo"].presence                || ''
     end
   end

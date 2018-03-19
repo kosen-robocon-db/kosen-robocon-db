@@ -7,7 +7,7 @@
 <table>
   <tr>
     <td><%= f.label :my_gaining_point, "#{@robot.name}の点数：" %></td>
-    <td>得点<%= f.select :my_gaining_point, gaining_point_numbers %>点&</td>
+    <td>得点<%= f.select :my_gaining_point, gaining_point_numbers %>点</td>
     <td>&nbsp;</td>
     <td>減点<%= f.select :my_deducting_point, deducting_point_numbers %>点</td>
     <td>&nbsp;</td>
@@ -15,7 +15,7 @@
   </tr>
   <tr>
     <td></td>
-    <td colspan=2>
+    <td colspan=4>
       <%= f.label :my_basket_drible, "バスケット・ドリブル：" %>
     </td>
     <td>
@@ -35,7 +35,7 @@
   </tr>
   <tr>
     <td></td>
-    <td colspan=2>
+    <td colspan=4>
       <%= f.label :opponent_basket_drible, "バスケット・ドリブル：" %>
     </td>
     <td>
