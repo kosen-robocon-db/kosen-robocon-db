@@ -6,7 +6,7 @@ class GameDetail13th < GameDetail
   STEMS = %w( robot_code gaining_point jury_votes )
 
   REX_GPT = /[0-9]|10|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_VT  = /([0-5]|#{GameDetail::Constant::UNKNOWN_VALUE})/
+  REX_VT  = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
 
   attr_accessor :my_gaining_point, :opponent_gaining_point
   attr_accessor :special_win, :special_win_time_minute, :special_win_time_second

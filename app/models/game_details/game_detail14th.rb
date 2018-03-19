@@ -14,7 +14,7 @@ class GameDetail14th < GameDetail
 
   REX_GPT = /[0-9]|[1-7][0-9]|#{GameDetail::Constant::UNKNOWN_VALUE}/
   REX_RT  = /[0-1]|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_VT  = /([0-5]|#{GameDetail::Constant::UNKNOWN_VALUE})/
+  REX_VT  = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
 
   attr_accessor :my_gaining_point, :opponent_gaining_point
   attr_accessor :my_retry, :opponent_retry

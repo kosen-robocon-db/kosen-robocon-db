@@ -17,7 +17,7 @@ class GameDetail15th < GameDetail
   REX_DPT = /[0-3]|#{GameDetail::Constant::UNKNOWN_VALUE}/
   REX_TPT = /-[1-3]|[0-3]|#{GameDetail::Constant::UNKNOWN_VALUE}/
   REX_RT  = /[0-1]|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_VT  = /([0-5]|#{GameDetail::Constant::UNKNOWN_VALUE})/
+  REX_VT  = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
 
   attr_accessor :my_gaining_point, :opponent_gaining_point
   attr_accessor :my_deducting_point, :opponent_deducting_point
