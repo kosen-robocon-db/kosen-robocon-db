@@ -4,7 +4,7 @@ class GameDetail1st < GameDetail
   # ロボットコード異なる場合は交換したい値を持つ属性の語幹を書いておく
   STEMS = %w( robot_code time_minute time_second )
 
-  REX   = /#{DELIMITER}|#{DELIMITER_TIME}/
+  REX_T = /#{DELIMITER}|#{DELIMITER_TIME}/
 
   attr_accessor :my_time_minute, :my_time_second
   attr_accessor :opponent_time_minute, :opponent_time_second
@@ -56,7 +56,7 @@ class GameDetail1st < GameDetail
       if h["time"].present? then
         self.my_time_minute, self.my_time_second,
           self.opponent_time_minute, self.opponent_time_second =
-            h["time"].to_s.split(REX)
+            h["time"].to_s.split(REX_T)
       end
       self.memo = h["memo"].presence || ''
     end

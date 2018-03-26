@@ -57,7 +57,8 @@ class GameDetail < ApplicationRecord
 
   def self.compose_properties(hash:)
     if hash[:my_robot_code].present? and hash[:opponent_robot_code].present?
-      {"robot_code" => "#{hash[:my_robot_code]}-#{hash[:opponent_robot_code]}"}
+      {"robot_code" =>
+        "#{hash[:my_robot_code]}#{DELIMITER}#{hash[:opponent_robot_code]}"}
     end
   end
 

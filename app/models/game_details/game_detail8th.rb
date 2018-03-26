@@ -51,13 +51,13 @@ class GameDetail8th < GameDetail
 
   def self.compose_properties(hash:)
     h = super(hash: hash) || {}
-    if # compose_pairsで拾えないbasket_dribleのケースに対応
+    if # updateで拾えないbasket_dribleのケースに対応
       hash[:my_basket_drible].present? and
       hash[:opponent_basket_drible].blank?
     then
       hash[:opponent_basket_drible] = "false"
     end
-    if # compose_pairsで拾えないbasket_dribleのケースに対応
+    if # updateで拾えないbasket_dribleのケースに対応
       hash[:my_basket_drible].blank? and
       hash[:opponent_basket_drible].present?
     then

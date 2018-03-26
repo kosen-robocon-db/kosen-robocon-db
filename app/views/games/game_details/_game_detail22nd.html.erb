@@ -1,0 +1,88 @@
+<%= f.hidden_field :id %>
+<%
+  gaining_point_numbers = option_numbers digit: 3, end_number: 100, step: 5
+  retry_numbers         = option_numbers digit: 1, end_number:   9
+  vote_numbers          = option_numbers digit: 1, end_number:   5
+%>
+<table>
+  <tr>
+    <td><%= f.label :my_gaining_point, "#{@robot.name}の成功課題と点数：" %></td>
+  </tr>
+  <tr>
+    <td>
+      <%# concat で出力するとchallengesのハッシュが出力されるバグがある %>
+      <%
+        checked = f.object.my_challenges.presence || []
+        GameDetail22nd.challenges.each do |key, value|
+      %>
+      <%= ("&nbsp;"*4).html_safe %>
+      <%= f.check_box :my_challenges,
+            { multiple: true, checked: checked.include?(value.to_s) }, value %>
+      <%= GameDetail22nd.challenges_i18n[key] %><br />
+      <%
+        end
+      %>
+    </td>
+    <td>合計<%= f.select :my_gaining_point, gaining_point_numbers %>点</td>
+  </tr>
+
+  <tr>
+    <td><%= f.label :opponent_gaining_point, "対戦相手の成功課題と点数：" %></td>
+  </tr>
+  <tr>
+    <td>
+      <%# concat で出力するとchallengesのハッシュが出力されるバグがある %>
+      <%
+        checked = f.object.opponent_challenges.presence || []
+        GameDetail22nd.challenges.each do |key, value|
+      %>
+      <%= ("&nbsp;"*4).html_safe %>
+      <%= f.check_box :opponent_challenges,
+            { multiple: true, checked: checked.include?(value.to_s) }, value %>
+      <%= GameDetail22nd.challenges_i18n[key] %><br />
+      <%
+        end
+      %>
+    </td>
+    <td>合計<%= f.select :opponent_gaining_point, gaining_point_numbers %>点</td>
+  </tr>
+</table>
+<table>
+  <tr>
+    <td><%= f.label :my_retry, "#{@robot.name}のリトライ：" %></td>
+    <td><%= f.select :my_retry, retry_numbers %>回</td>
+    </td>
+  </tr>
+  <tr>
+    <td><%= f.label :opponent_retry, "対戦相手のリトライ：" %></td>
+    <td><%= f.select :opponent_retry, retry_numbers %>回</td>
+    </td>
+  </tr>
+</table>
+<%= f.label :jury_votes, "審査員判定：" %>
+<%= f.check_box :jury_votes, {:checked => f.object.jury_votes}, true, false %>
+<br />
+<% if f.object.jury_votes %>
+<div class="jury_votes___nested_field_for_replace_with_index__">
+<% else %>
+<div class="jury_votes___nested_field_for_replace_with_index__ hidden">
+<% end %>
+  <table>
+    <tr>
+      <td><%= ("&nbsp;"*4).html_safe %></td>
+      <td><%= f.label :my_jury_votes, "#{@robot.name}への票数：" %></td>
+      <td><%= f.select :my_jury_votes, vote_numbers %></td>
+    </tr>
+    <tr>
+      <td><%= ("&nbsp;"*4).html_safe %></td>
+      <td><%= f.label :opponent_jury_votes, "対戦相手への票数：" %></td>
+      <td><%= f.select :opponent_jury_votes, vote_numbers %></td>
+    </tr>
+  </table>
+</div>
+<%= f.label :memo, "メモ：" %>
+<%= f.text_field :memo %><br />
+<br />
+<%= f.hidden_field :_destroy %>
+<%= f.remove_nested_fields_link '削除', class: 'btn btn-danger',
+  role: 'button' %><br />

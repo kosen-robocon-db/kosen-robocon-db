@@ -145,7 +145,9 @@ class Game < ApplicationRecord
 
   def self.convert(array=[])
     a = 0 # ゼロは事由なし
-    array.each { |v| a += 2 ** ( v.to_i - 1 ) if v =~ /\A[1-9][0-9]*\z/ }
+    if array.present?
+      array.each { |v| a += 2 ** ( v.to_i - 1 ) if v =~ /\A[1-9][0-9]*\z/ }
+    end
     a
   end
 
@@ -160,7 +162,7 @@ class Game < ApplicationRecord
   def reasons_for_victory
     a = Array.new
     r = read_attribute(:reasons_for_victory)
-    if r.presence
+    if r.present?
       s = r.to_s(2)
       s.split(//).each_with_index do |v, i|
         a.push((s.length - i).to_s) if v =~ /\A1\z/

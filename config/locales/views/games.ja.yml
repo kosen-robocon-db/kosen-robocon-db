@@ -6,3 +6,39 @@ ja:
         DNS: 試合開始前棄権
         DNF: 試合途中棄権
         DSQ: 失格
+    game_detail19th:
+      progresses:
+        start_zone: スタートゾーン
+        moat_zone: お堀越え
+        seesaw_zone: シーソー
+        slalom_zone: スラローム
+        rope_zone: 縄跳び
+        goal_zone: ふるさとゴール
+    game_detail22nd:
+      challenges:
+        present_taking: プレゼントをとる（5点）
+        present_giving: プレゼントを渡す（5点）
+        pair_dancing: ペアダンス（10点）
+        pole_turning: ポールターン（10点）
+        synchronous_spining: シンクロスピン（10点）
+        lifting: リフト（10点）
+        jumping_while_rolling: ローリングジャンプ回転（20点）
+        landing_after_jumping: ローリングジャンプ着地（10点）
+        star_staging: スターステージ（10点）
+        star_coupling: スターカップル（10点）
+    game_detail23rd:
+      progresses:
+        start_zone: スタートゾーン
+        walking_zone: 二足歩行ゾーン
+        connecting_zone: 連結ゾーン
+        inserting_zone: 鍵穴ゾーン
+        goal_zone: ゴール
+    game_detail26th:
+      progresses:
+        start: スタートゾーン
+        jump_rope_1st: 第1ロボット二回縄跳び
+        jump_rope_2nd: 第2ロボット二回縄跳び
+        jump_rope_3rd: 第3ロボット二回縄跳び
+        turn_around: 折り返し
+        human_robot_jump_rope: 人間・ロボットの縄跳び
+        consecutive_jump_rope: 連続縄跳びジャンプ

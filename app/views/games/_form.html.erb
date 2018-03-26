@@ -52,8 +52,8 @@
     <br /><br />
     <%
       # 許可する大会回を一括でapplicaton.rbなどまたはDBで管理するべき
-      case @robot.contest_nth
-      when 1..20, 29, 30 then
+      # case @robot.contest_nth
+      # when 1..20, 29, 30 then
     %>
     <div class="enclosure">
       <%= f.label @gd_sym, "試合詳細" %><br />
@@ -70,7 +70,7 @@
         role: 'button' %>
     </div><br />
     <br />
-    <% end %>
+    <% # end %>
     <%= f.submit button_label, class: "btn btn-primary",
       data: { disable_with: '処理中・・・' } %><br /><br />
   <% end %>

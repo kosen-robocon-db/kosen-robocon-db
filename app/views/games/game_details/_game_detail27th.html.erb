@@ -1,0 +1,87 @@
+<%= f.hidden_field :id %>
+<%
+  order_numbers         = option_numbers digit: 1, end_number:  3
+  gaining_point_numbers = option_numbers           end_number: 49
+  retry_numbers         = option_numbers digit: 1, end_number:  9
+  steamer_fall_numbers  = option_numbers digit: 1, end_number:  9
+  vote_numbers          = option_numbers digit: 1, end_number:  5
+%>
+<table>
+  <tr>
+    <td colspan="4"><%= f.label :my_number_of_order,
+      "#{@robot.name}：" %></td>
+  </tr>
+  <tr>
+    <td><%= ("&nbsp;"*4).html_safe %></td>
+    <td>注文完了数：<%= f.select :my_number_of_order,
+      order_numbers %></td>
+  </tr>
+  <tr>
+    <td><%= ("&nbsp;"*4).html_safe %></td>
+    <td>得点：<%= f.select :my_gaining_point,
+      gaining_point_numbers %>点</td>
+  </tr>
+  <tr>
+    <td><%= ("&nbsp;"*4).html_safe %></td>
+    <td>リトライ回数：<%= f.select :my_retry,
+      retry_numbers %></td>
+  </tr>
+  <tr>
+    <td><%= ("&nbsp;"*4).html_safe %></td>
+    <td>蒸籠落下回数：<%= f.select :my_number_of_steamer_fall,
+      steamer_fall_numbers %></td>
+  </tr>
+  <%##########################################################################%>
+  <tr>
+    <tr>
+      <td colspan="4"><%= f.label :opponent_number_of_order,
+        "対戦相手：" %></td>
+    </tr>
+    <tr>
+      <td><%= ("&nbsp;"*4).html_safe %></td>
+      <td>注文完了数：<%= f.select :opponent_number_of_order,
+        order_numbers %></td>
+    </tr>
+    <tr>
+      <td><%= ("&nbsp;"*4).html_safe %></td>
+      <td>得点：<%= f.select :opponent_gaining_point,
+        gaining_point_numbers %>点</td>
+    </tr>
+    <tr>
+      <td><%= ("&nbsp;"*4).html_safe %></td>
+      <td>リトライ回数：<%= f.select :opponent_retry,
+        retry_numbers %></td>
+    </tr>
+    <tr>
+      <td><%= ("&nbsp;"*4).html_safe %></td>
+      <td>蒸籠落下回数：<%= f.select :opponent_number_of_steamer_fall,
+        steamer_fall_numbers %></td>
+    </tr>
+</table>
+<%= f.label :jury_votes, "審査員判定：" %>
+<%= f.check_box :jury_votes, {:checked => f.object.jury_votes}, true, false %>
+<br />
+<% if f.object.jury_votes %>
+<div class="jury_votes___nested_field_for_replace_with_index__">
+<% else %>
+<div class="jury_votes___nested_field_for_replace_with_index__ hidden">
+<% end %>
+  <table>
+    <tr>
+      <td><%= ("&nbsp;"*4).html_safe %></td>
+      <td><%= f.label :my_jury_votes, "#{@robot.name}への票数：" %></td>
+      <td><%= f.select :my_jury_votes, vote_numbers %></td>
+    </tr>
+    <tr>
+      <td><%= ("&nbsp;"*4).html_safe %></td>
+      <td><%= f.label :opponent_jury_votes, "対戦相手への票数：" %></td>
+      <td><%= f.select :opponent_jury_votes, vote_numbers %></td>
+    </tr>
+  </table>
+</div>
+<%= f.label :memo, "メモ：" %>
+<%= f.text_field :memo %><br />
+<br />
+<%= f.hidden_field :_destroy %>
+<%= f.remove_nested_fields_link '削除', class: 'btn btn-danger',
+  role: 'button' %><br />
