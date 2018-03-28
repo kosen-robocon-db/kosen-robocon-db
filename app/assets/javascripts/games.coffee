@@ -72,7 +72,7 @@ $ ->
     26: [ 'jury_votes' ]
     27: [ 'jury_votes' ]
     28: [ 'my_special_win', 'opponent_special_win', 'jury_votes' ]
-    29: [ 'jury_votes', 'progress' ]
+    29: [ 'progress', 'jury_votes' ]
     30: [ 'jury_votes' ]
   }
 

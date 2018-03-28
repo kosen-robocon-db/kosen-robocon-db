@@ -42,3 +42,11 @@ ja:
         turn_around: 折り返し
         human_robot_jump_rope: 人間・ロボットの縄跳び
         consecutive_jump_rope: 連続縄跳びジャンプ
+    game_detail29th:
+      progresses:
+        lighthouse_building: 灯台建築
+        departure: 出港
+        island_landing: 島上陸
+        continent_landing: 新大陸上陸
+        fort_block_building: 砦建築（ブロック積）
+        fort_symbol_setting: 砦建築（シンボルセット）
