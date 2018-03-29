@@ -13,7 +13,6 @@ class GameDetail18th < GameDetail
   STEMS = %w( robot_code time_minute time_second retry progress distance
     jury_votes )
 
-  REX_T  = /#{DELIMITER}|#{DELIMITER_TIME}/
   REX_RT = /[0-1]|#{GameDetail::Constant::UNKNOWN_VALUE}/
   REX_VT = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
 

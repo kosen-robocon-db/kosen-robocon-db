@@ -4,12 +4,11 @@ class GameDetail1st < GameDetail
   # ロボットコード異なる場合は交換したい値を持つ属性の語幹を書いておく
   STEMS = %w( robot_code time_minute time_second )
 
-  REX_T = /#{DELIMITER}|#{DELIMITER_TIME}/
-
   attr_accessor :my_time_minute, :my_time_second
   attr_accessor :opponent_time_minute, :opponent_time_second
   attr_accessor :memo
 
+  # notice : propertiesを生成した後に次のvalidationが実行される
   validates :my_time_minute, format: { with: REX_MS }
   validates :my_time_second, format: { with: REX_MS }
   validates :opponent_time_minute, format: { with: REX_MS }

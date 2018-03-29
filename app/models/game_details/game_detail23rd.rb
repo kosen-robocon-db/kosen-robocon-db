@@ -13,7 +13,6 @@ class GameDetail23rd < GameDetail
   # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
   STEMS = %w( robot_code progress time_minute time_second retry jury_votes )
 
-  REX_T  = /#{DELIMITER}|#{DELIMITER_TIME}/
   REX_PR = /[0-4]|#{GameDetail::Constant::UNKNOWN_VALUE}/
   REX_RT = /[0-9]|#{GameDetail::Constant::UNKNOWN_VALUE}/
   REX_VT = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/

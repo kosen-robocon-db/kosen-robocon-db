@@ -24,7 +24,6 @@ class GameDetail26th < GameDetail
      retry jury_votes )
 
   REX_PR  = /[0-6]|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_T   = /#{DELIMITER}|#{DELIMITER_TIME}/
   REX_PN  = /[0-9]|#{GameDetail::Constant::UNKNOWN_VALUE}/
   REX_RT  = /[0-9]|#{GameDetail::Constant::UNKNOWN_VALUE}/
   REX_VT  = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/

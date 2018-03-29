@@ -18,7 +18,6 @@ class GameDetail25th < GameDetail
     penalty retry jury_votes )
 
   REX_GPT = /[0-9]|1[0-8]|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_T   = /#{DELIMITER}|#{DELIMITER_TIME}/
   REX_PN  = /[0-9]|#{GameDetail::Constant::UNKNOWN_VALUE}/
   REX_RT  = /[0-9]|#{GameDetail::Constant::UNKNOWN_VALUE}/
   REX_VT  = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/

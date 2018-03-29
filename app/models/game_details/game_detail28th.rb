@@ -36,8 +36,6 @@ class GameDetail28th < GameDetail
   REX_PN  = /\A[0-9]\z|\A#{UNKNOWN}\z/
   REX_VT  = /\A[0-5]\z|\A#{UNKNOWN}\z/
 
-  REX_T   = /#{DELIMITER}|#{DELIMITER_TIME}/
-
   attr_accessor :my_gaining_point,           :opponent_gaining_point
   attr_accessor :my_number_of_two_pole,      :opponent_number_of_two_pole
   attr_accessor :my_number_of_three_pole,    :opponent_number_of_three_pole

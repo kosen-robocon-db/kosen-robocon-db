@@ -13,7 +13,6 @@ class GameDetail24th < GameDetail
   STEMS = %w( robot_code time_minute time_second ball_touch intercept retry
      jury_votes )
 
-  REX_T  = /#{DELIMITER}|#{DELIMITER_TIME}/
   REX_BT = /[0-9]|#{GameDetail::Constant::UNKNOWN_VALUE}/
   REX_IN = /[0-3]|#{GameDetail::Constant::UNKNOWN_VALUE}/
   REX_RT = /[0-9]|#{GameDetail::Constant::UNKNOWN_VALUE}/
