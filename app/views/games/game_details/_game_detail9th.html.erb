@@ -23,10 +23,10 @@
   <table>
     <tr>
       <td><%= ("&nbsp;"*4).html_safe %></td>
-      <td><%= f.label :special_win_time_minute, "タイム：" %></td>
+      <td><%= f.label :time_minute, "タイム：" %></td>
       <td>
-        <%= f.select :special_win_time_minute, time_numbers %>分
-        <%= f.select :special_win_time_second, time_numbers %>秒
+        <%= f.select :time_minute, time_numbers %>分
+        <%= f.select :time_second, time_numbers %>秒
       </td>
     </tr>
   </table>

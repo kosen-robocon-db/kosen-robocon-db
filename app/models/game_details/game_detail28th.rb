@@ -23,8 +23,8 @@ class GameDetail28th < GameDetail
   # my_robot_code側から見ているので、
   # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
   STEMS = %w( robot_code gaining_point number_of_two_pole number_of_three_pole
-    special_win special_win_time_minute special_win_time_second
-    number_of_loading retry penalty jury_votes )
+    special_win time_minute time_second number_of_loading retry penalty
+    jury_votes )
 
   UNKNOWN = GameDetail::Constant::UNKNOWN_VALUE
 
@@ -36,12 +36,15 @@ class GameDetail28th < GameDetail
   REX_PN  = /\A[0-9]\z|\A#{UNKNOWN}\z/
   REX_VT  = /\A[0-5]\z|\A#{UNKNOWN}\z/
 
+  # Vホールのように条件を満足すれば即勝利となったときの試合決着時間は
+  # special_time_minute/secondとはせず、time_minute/secondとして
+  # 他の試合決着時間を記録する大会の変数名と合わせている。
   attr_accessor :my_gaining_point,           :opponent_gaining_point
   attr_accessor :my_number_of_two_pole,      :opponent_number_of_two_pole
   attr_accessor :my_number_of_three_pole,    :opponent_number_of_three_pole
   attr_accessor :my_special_win,             :opponent_special_win
-  attr_accessor :my_special_win_time_minute, :opponent_special_win_time_minute
-  attr_accessor :my_special_win_time_second, :opponent_special_win_time_second
+  attr_accessor :my_time_minute,             :opponent_time_minute
+  attr_accessor :my_time_second,             :opponent_time_second
   attr_accessor :my_number_of_loading,       :opponent_number_of_loading
   attr_accessor :my_retry,                   :opponent_retry
   attr_accessor :my_penalty,                 :opponent_penalty
@@ -56,10 +59,10 @@ class GameDetail28th < GameDetail
   validates :opponent_number_of_three_pole,    format: { with: REX_3P }
   validates :my_special_win,       inclusion: { in: [ "true", "false", nil ] }
   validates :opponent_special_win, inclusion: { in: [ "true", "false", nil ] }
-  validates :my_special_win_time_minute,       format: { with: REX_MS }
-  validates :my_special_win_time_second,       format: { with: REX_MS }
-  validates :opponent_special_win_time_minute, format: { with: REX_MS }
-  validates :opponent_special_win_time_second, format: { with: REX_MS }
+  validates :my_time_minute,                   format: { with: REX_MS }
+  validates :my_time_second,                   format: { with: REX_MS }
+  validates :opponent_time_minute,             format: { with: REX_MS }
+  validates :opponent_time_second,             format: { with: REX_MS }
   validates :my_number_of_loading,             format: { with: REX_LD }
   validates :opponent_number_of_loading,       format: { with: REX_LD }
   validates :my_retry,                         format: { with: REX_RT }
@@ -79,8 +82,8 @@ class GameDetail28th < GameDetail
       :my_number_of_two_pole,      :opponent_number_of_two_pole,
       :my_number_of_three_pole,    :opponent_number_of_three_pole,
       :my_special_win,             :opponent_special_win,
-      :my_special_win_time_minute, :opponent_special_win_time_minute,
-      :my_special_win_time_second, :opponent_special_win_time_second,
+      :my_time_minute,             :opponent_time_minute,
+      :my_time_second,             :opponent_time_second,
       :my_number_of_loading,       :opponent_number_of_loading,
       :my_retry,                   :opponent_retry,
       :my_penalty,                 :opponent_penalty,
@@ -100,38 +103,18 @@ class GameDetail28th < GameDetail
       hash[:opponent_special_win].blank?
     then
       hash[:opponent_special_win] = "false"
-      hash[:opponent_special_win_time_minute] =
-        "#{GameDetail::Constant::UNKNOWN_VALUE}"
-      hash[:opponent_special_win_time_second] =
-        "#{GameDetail::Constant::UNKNOWN_VALUE}"
+      hash[:opponent_time_minute] = "#{UNKNOWN}"
+      hash[:opponent_time_second] = "#{UNKNOWN}"
     end
     if # compose_pairsで拾えないspecial_winのケースに対応。どちらも無ければ必要なし。
       hash[:my_special_win].blank? and
       hash[:opponent_special_win].present?
     then
       hash[:my_special_win] = "false"
-      hash[:my_special_win_time_minute] =
-        "#{GameDetail::Constant::UNKNOWN_VALUE}"
-      hash[:my_special_win_time_second] =
-        "#{GameDetail::Constant::UNKNOWN_VALUE}"
+      hash[:my_time_minute] = "#{UNKNOWN}"
+      hash[:my_time_second] = "#{UNKNOWN}"
     end
-    if
-      hash[:my_special_win_time_minute].present? and
-      hash[:my_special_win_time_second].present? and
-      hash[:opponent_special_win_time_minute].present? and
-      hash[:opponent_special_win_time_second].present?
-    then
-      h["special_win_time"] = "\
-        #{hash[:my_special_win_time_minute]}\
-        #{DELIMITER_TIME}\
-        #{hash[:my_special_win_time_second]}\
-        #{DELIMITER}\
-        #{hash[:opponent_special_win_time_minute]}\
-        #{DELIMITER_TIME}\
-        #{hash[:opponent_special_win_time_second]}\
-      ".gsub(/(\s| )+/, '')
-      logger.debug(">>>> special_win_time:#{h["special_win_time"].to_yaml}")
-    end
+    h.update(compose_time(hash: hash))
     h.update(compose_pairs(hash: hash, stems: %w(
       gaining_point number_of_two_pole number_of_three_pole special_win
       number_of_loading retry penalty jury_votes
@@ -159,12 +142,10 @@ class GameDetail28th < GameDetail
         self.my_special_win, self.opponent_special_win =
           h["special_win"].to_s.split(DELIMITER).map{ |x| x.to_bool }
       end
-      if h["special_win_time"].present? then
-        self.my_special_win_time_minute,
-          self.my_special_win_time_second,
-            self.opponent_special_win_time_minute,
-              self.opponent_special_win_time_second =
-                h["special_win_time"].to_s.split(REX_T)
+      if h["time"].present? then
+        self.my_time_minute, self.my_time_second,
+          self.opponent_time_minute, self.opponent_time_second =
+            h["time"].to_s.split(REX_T)
       end
       if h["number_of_loading"].present? then
         self.my_number_of_loading, self.opponent_number_of_loading =

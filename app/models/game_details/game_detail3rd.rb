@@ -35,9 +35,8 @@ class GameDetail3rd < GameDetail
   # extra_timeなどのbooleanとnilの三種の値の入力を想定しているフォーム属性変数について
   # trueかfalseかnilかをここで吟味すべきであるが、このproperties生成の後に実行される
   # save/update直前のvalidationによって吟味されるので、有るか無しか(nil)かを吟味する
-  # だけにしている。
+  # だけにしている。他の数字や文字列が入力される属性も同様である。
   def self.compose_properties(hash:)
-    h = super(hash: hash) || {}
     h.update(compose_pairs(hash: hash, stems: STEMS))
     h["extra_time"]  = "true"           if hash[:extra_time].present?
     h["recommended"] = "true"           if hash[:recommended].present?

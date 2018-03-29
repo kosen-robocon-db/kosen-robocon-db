@@ -13,11 +13,14 @@ class GameDetail20th < GameDetail
   REX_RT  = /[0-1]|#{GameDetail::Constant::UNKNOWN_VALUE}/
   REX_VT  = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
 
+  # Vホールのように条件を満足すれば即勝利となったときの試合決着時間は
+  # special_time_minute/secondとはせず、time_minute/secondとして
+  # 他の試合決着時間を記録する大会の変数名と合わせている。
   attr_accessor :my_flag,          :opponent_flag
   attr_accessor :my_penalty,       :opponent_penalty
   attr_accessor :my_union,         :opponent_union
   attr_accessor :my_retry, :opponent_retry
-  attr_accessor :special_win, :special_win_time_minute, :special_win_time_second
+  attr_accessor :special_win, :time_minute, :time_second
   attr_accessor :extra_time
   attr_accessor :jury_votes, :my_jury_votes, :opponent_jury_votes
   attr_accessor :memo
@@ -31,8 +34,8 @@ class GameDetail20th < GameDetail
   validates :my_retry,               format: { with: REX_RT }
   validates :opponent_retry,         format: { with: REX_RT }
   with_options if: :special_win do
-    validates :special_win_time_minute, format: { with: REX_MS }
-    validates :special_win_time_second, format: { with: REX_MS }
+    validates :time_minute, format: { with: REX_MS }
+    validates :time_second, format: { with: REX_MS }
   end
   validates :extra_time,     inclusion: { in: [ "true", "false", nil ] }
   with_options if: :jury_votes do
@@ -48,7 +51,7 @@ class GameDetail20th < GameDetail
       :my_penalty,         :opponent_penalty,
       :my_union,           :opponent_union,
       :my_retry,           :opponent_retry,
-      :special_win, :special_win_time_minute, :special_win_time_second,
+      :special_win, :time_minute, :time_second,
       :extra_time,
       :jury_votes, :my_jury_votes, :opponent_jury_votes,
       :memo
@@ -76,13 +79,13 @@ class GameDetail20th < GameDetail
     h.update(compose_pairs(hash: hash, stems: STEMS))
     if
       hash[:special_win].presence.to_bool and
-      hash[:special_win_time_minute].present? and
-      hash[:special_win_time_second].present?
+      hash[:time_minute].present? and
+      hash[:time_second].present?
     then
       h["special_win"] = "\
-        #{hash[:special_win_time_minute]}\
+        #{hash[:time_minute]}\
         #{DELIMITER_TIME}\
-        #{hash[:special_win_time_second]}\
+        #{hash[:time_second]}\
       ".gsub(/(\s| )+/, '')
     end
     h["extra_time"] = "true"           if hash[:extra_time].present?
@@ -110,7 +113,7 @@ class GameDetail20th < GameDetail
         h["retry"].to_s.split(DELIMITER) if h["retry"].present?
       if h["special_win"].present?
         self.special_win = true
-        self.special_win_time_minute, self.special_win_time_second =
+        self.time_minute, self.time_second =
           h["special_win"].to_s.split(DELIMITER_TIME)
       end
       self.extra_time  = h["extra_time"].presence.to_bool || false

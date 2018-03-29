@@ -75,15 +75,9 @@ class GameDetail30th < GameDetail
     h = super(hash: hash) || {}
     h.update(compose_pairs(hash: hash, stems: %w( babase_baloon robot_baloon
       repair penalty jury_votes )))
-    hash[:time_minute] = "#{UNKNOWN}" if hash[:time_minute].blank?
-    hash[:time_second] = "#{UNKNOWN}" if hash[:time_second].blank?
-    if hash[:time_minute].present? and hash[:time_second].present? then
-      h["time"] = "\
-        #{hash[:time_minute]}\
-        #{DELIMITER_TIME}\
-        #{hash[:time_second]}\
-      ".gsub(/(\s| )+/, '')
-    end
+    hash[:time_minute] = "#{UNKNOWN}" if hash[:time_minute].blank? # 要らないかも
+    hash[:time_second] = "#{UNKNOWN}" if hash[:time_second].blank? # 要らないかも
+    h.update(compose_pairs(hash: hash))
     h.delete("jury_votes") unless hash["jury_votes"].presence.to_bool
     h["memo"] = "#{hash[:memo]}" if hash[:memo].present?
     return h

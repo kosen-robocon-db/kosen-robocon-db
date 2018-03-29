@@ -28,24 +28,13 @@ class GameDetail1st < GameDetail
     STEMS
   end
 
+  # extra_timeなどのbooleanとnilの三種の値の入力を想定しているフォーム属性変数について
+  # trueかfalseかnilかをここで吟味すべきであるが、このproperties生成の後に実行される
+  # save/update直前のvalidationによって吟味されるので、有るか無しか(nil)かを吟味する
+  # だけにしている。他の数字や文字列が入力される属性も同様である。
   def self.compose_properties(hash:)
     h = super(hash: hash) || {}
-    if
-      hash[:my_time_minute].present? and
-      hash[:my_time_second].present? and
-      hash[:opponent_time_minute].present? and
-      hash[:opponent_time_second].present?
-    then
-      h["time"] = "\
-        #{hash[:my_time_minute]}\
-        #{DELIMITER_TIME}\
-        #{hash[:my_time_second]}\
-        #{DELIMITER}\
-        #{hash[:opponent_time_minute]}\
-        #{DELIMITER_TIME}\
-        #{hash[:opponent_time_second]}\
-      ".gsub(/(\s| )+/, '')
-    end
+    h.update(compose_time(hash: hash))
     h["memo"] = "#{hash[:memo]}" if hash[:memo].present?
     return h
   end

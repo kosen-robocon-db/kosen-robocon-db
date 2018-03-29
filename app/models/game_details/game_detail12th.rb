@@ -13,10 +13,13 @@ class GameDetail12th < GameDetail
   REX_TPT =
     /-[1-5]|[0-9]|[1-3][0-9]|4[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
 
+  # Vホールのように条件を満足すれば即勝利となったときの試合決着時間は
+  # special_time_minute/secondとはせず、time_minute/secondとして
+  # 他の試合決着時間を記録する大会の変数名と合わせている。
   attr_accessor :my_gaining_point, :opponent_gaining_point
   attr_accessor :my_deducting_point, :opponent_deducting_point
   attr_accessor :my_total_point, :opponent_total_point
-  attr_accessor :special_win, :special_win_time_minute, :special_win_time_second
+  attr_accessor :special_win, :time_minute, :time_second
   attr_accessor :lower_power_quantity
   attr_accessor :memo
 
@@ -28,8 +31,8 @@ class GameDetail12th < GameDetail
   validates :opponent_total_point,     format: { with: REX_TPT }
   validates :special_win,          inclusion: { in: [ "true", "false", nil ] }
   with_options if: :special_win do
-    validates :special_win_time_minute, format: { with: REX_MS }
-    validates :special_win_time_second, format: { with: REX_MS }
+    validates :time_minute, format: { with: REX_MS }
+    validates :time_second, format: { with: REX_MS }
   end
   validates :lower_power_quantity, inclusion: { in: [ "true", "false", nil ] }
   validates :memo, length: { maximum: MEMO_LEN }
@@ -40,7 +43,7 @@ class GameDetail12th < GameDetail
       :my_gaining_point,   :opponent_gaining_point,
       :my_deducting_point, :opponent_deducting_point,
       :my_total_point,     :opponent_total_point,
-      :special_win, :special_win_time_minute, :special_win_time_second,
+      :special_win, :time_minute, :time_second,
       :lower_power_quantity,
       :memo
     ]
@@ -55,13 +58,13 @@ class GameDetail12th < GameDetail
     h.update(compose_pairs(hash: hash, stems: STEMS))
     if
       hash[:special_win].presence.to_bool and
-      hash[:special_win_time_minute].present? and
-      hash[:special_win_time_second].present?
+      hash[:time_minute].present? and
+      hash[:time_second].present?
     then
       h["special_win"] = "\
-        #{hash[:special_win_time_minute]}\
+        #{hash[:time_minute]}\
         #{DELIMITER_TIME}\
-        #{hash[:special_win_time_second]}\
+        #{hash[:time_second]}\
       ".gsub(/(\s| )+/, '')
     end
     h["lower_power_quantity"] = "true" if hash[:lower_power_quantity].present?
@@ -85,7 +88,7 @@ class GameDetail12th < GameDetail
       end
       if h["special_win"].present?
         self.special_win = true
-        self.special_win_time_minute, self.special_win_time_second =
+        self.time_minute, self.time_second =
           h["special_win"].to_s.split(DELIMITER_TIME)
       end
       self.lower_power_quantity =

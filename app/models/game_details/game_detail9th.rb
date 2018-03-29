@@ -6,16 +6,19 @@ class GameDetail9th < GameDetail
 
   REX_GPT = /[0-9]|#{GameDetail::Constant::UNKNOWN_VALUE}/
 
+  # Vホールのように条件を満足すれば即勝利となったときの試合決着時間は
+  # special_time_minute/secondとはせず、time_minute/secondとして
+  # 他の試合決着時間を記録する大会の変数名と合わせている。
   attr_accessor :my_gaining_point, :opponent_gaining_point
-  attr_accessor :special_win, :special_win_time_minute, :special_win_time_second
+  attr_accessor :special_win, :time_minute, :time_second
   attr_accessor :extra_time
   attr_accessor :memo
 
   validates :my_gaining_point,       format: { with: REX_GPT }
   validates :opponent_gaining_point, format: { with: REX_GPT }
   with_options if: :special_win do
-    validates :special_win_time_minute, format: { with: REX_MS }
-    validates :special_win_time_second, format: { with: REX_MS }
+    validates :time_minute, format: { with: REX_MS }
+    validates :time_second, format: { with: REX_MS }
   end
   validates :extra_time, inclusion: { in: [ "true", "false", nil ] }
   validates :memo, length: { maximum: MEMO_LEN }
@@ -24,7 +27,7 @@ class GameDetail9th < GameDetail
   def self.additional_attr_symbols
     [
       :my_gaining_point, :opponent_gaining_point,
-      :special_win, :special_win_time_minute, :special_win_time_second,
+      :special_win, :time_minute, :time_second,
       :extra_time,
       :memo
     ]
@@ -39,13 +42,13 @@ class GameDetail9th < GameDetail
     h.update(compose_pairs(hash: hash, stems: STEMS))
     if
       hash[:special_win].presence.to_bool and
-      hash[:special_win_time_minute].present? and
-      hash[:special_win_time_second].present?
+      hash[:time_minute].present? and
+      hash[:time_second].present?
     then
       h["special_win"] = "\
-        #{hash[:special_win_time_minute]}\
+        #{hash[:time_minute]}\
         #{DELIMITER_TIME}\
-        #{hash[:special_win_time_second]}\
+        #{hash[:time_second]}\
       ".gsub(/(\s| )+/, '')
     end
     h["extra_time"] = "true"           if hash[:extra_time].present?
@@ -61,7 +64,7 @@ class GameDetail9th < GameDetail
       end
       if h["special_win"].present?
         self.special_win = true
-        self.special_win_time_minute, self.special_win_time_second =
+        self.time_minute, self.time_second =
           h["special_win"].to_s.split(DELIMITER_TIME)
       end
       self.extra_time = h["extra_time"].presence.to_bool || false

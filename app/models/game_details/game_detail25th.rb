@@ -22,6 +22,9 @@ class GameDetail25th < GameDetail
   REX_RT  = /[0-9]|#{GameDetail::Constant::UNKNOWN_VALUE}/
   REX_VT  = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
 
+  # Vホールのように条件を満足すれば即勝利となったときの試合決着時間は
+  # special_time_minute/secondとはせず、time_minute/secondとして
+  # 他の試合決着時間を記録する大会の変数名と合わせている。
   attr_accessor :my_gaining_point, :opponent_gaining_point
   attr_accessor :my_special_win,   :opponent_special_win
   attr_accessor :my_time_minute,       :my_time_second
@@ -85,26 +88,11 @@ class GameDetail25th < GameDetail
       hash[:my_time_minute] = "#{GameDetail::Constant::UNKNOWN_VALUE}"
       hash[:my_time_second] = "#{GameDetail::Constant::UNKNOWN_VALUE}"
     end
-    if
-      hash[:my_time_minute].present? and
-      hash[:my_time_second].present? and
-      hash[:opponent_time_minute].present? and
-      hash[:opponent_time_second].present?
-    then
-      h["time"] = "\
-        #{hash[:my_time_minute]}\
-        #{DELIMITER_TIME}\
-        #{hash[:my_time_second]}\
-        #{DELIMITER}\
-        #{hash[:opponent_time_minute]}\
-        #{DELIMITER_TIME}\
-        #{hash[:opponent_time_second]}\
-      ".gsub(/(\s| )+/, '')
-    end
+    h.update(compose_time(hash: hash))
     h.update(compose_pairs(hash: hash, stems: %w(gaining_point special_win
       penalty retry jury_votes)))
     h.delete("jury_votes") unless hash["jury_votes"].presence.to_bool
-    h["memo"]       = "#{hash[:memo]}" if hash[:memo].present?
+    h["memo"] = "#{hash[:memo]}" if hash[:memo].present?
     return h
   end
 

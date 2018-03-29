@@ -26,9 +26,12 @@ class GameDetail19th < GameDetail
   REX_P  = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
   REX_VT = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
 
+  # Vホールのように条件を満足すれば即勝利となったときの試合決着時間は
+  # special_time_minute/secondとはせず、time_minute/secondとして
+  # 他の試合決着時間を記録する大会の変数名と合わせている。
   attr_accessor :my_retry,             :opponent_retry
   attr_accessor :progress,   :my_progress,   :opponent_progress
-  attr_accessor :special_win, :special_win_time_minute, :special_win_time_second
+  attr_accessor :special_win, :time_minute, :time_second
   attr_accessor :jury_votes, :my_jury_votes, :opponent_jury_votes
   attr_accessor :memo
 
@@ -39,8 +42,8 @@ class GameDetail19th < GameDetail
     validates :opponent_progress,       format: { with: REX_P }
   end
   with_options if: :special_win do
-    validates :special_win_time_minute, format: { with: REX_MS }
-    validates :special_win_time_second, format: { with: REX_MS }
+    validates :time_minute, format: { with: REX_MS }
+    validates :time_second, format: { with: REX_MS }
   end
   with_options if: :jury_votes do
     validates :my_jury_votes,           format: { with: REX_VT }
@@ -53,7 +56,7 @@ class GameDetail19th < GameDetail
     [
       :my_retry, :opponent_retry,
       :progress,   :my_progress,   :opponent_progress,
-      :special_win, :special_win_time_minute, :special_win_time_second,
+      :special_win, :time_minute, :time_second,
       :jury_votes, :my_jury_votes, :opponent_jury_votes,
       :memo
     ]
@@ -78,13 +81,13 @@ class GameDetail19th < GameDetail
     h.delete("progress")   unless hash["progress"].presence.to_bool
     if
       hash[:special_win].presence.to_bool and
-      hash[:special_win_time_minute].present? and
-      hash[:special_win_time_second].present?
+      hash[:time_minute].present? and
+      hash[:time_second].present?
     then
       h["special_win"] = "\
-        #{hash[:special_win_time_minute]}\
+        #{hash[:time_minute]}\
         #{DELIMITER_TIME}\
-        #{hash[:special_win_time_second]}\
+        #{hash[:time_second]}\
       ".gsub(/(\s| )+/, '')
     end
     h.delete("jury_votes") unless hash["jury_votes"].presence.to_bool
@@ -103,7 +106,7 @@ class GameDetail19th < GameDetail
       end
       if h["special_win"].present?
         self.special_win = true
-        self.special_win_time_minute, self.special_win_time_second =
+        self.time_minute, self.time_second =
           h["special_win"].to_s.split(DELIMITER_TIME)
       end
       if h["jury_votes"].present?

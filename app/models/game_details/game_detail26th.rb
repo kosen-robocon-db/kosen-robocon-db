@@ -90,22 +90,7 @@ class GameDetail26th < GameDetail
 
   def self.compose_properties(hash:)
     h = super(hash: hash) || {} # 必要なのか？
-    if # 準決勝以降でも3分と入れて貰うことにする（暫定）
-      hash[:my_time_minute].present? and
-      hash[:my_time_second].present? and
-      hash[:opponent_time_minute].present? and
-      hash[:opponent_time_second].present?
-    then
-      h["time"] = "\
-        #{hash[:my_time_minute]}\
-        #{DELIMITER_TIME}\
-        #{hash[:my_time_second]}\
-        #{DELIMITER}\
-        #{hash[:opponent_time_minute]}\
-        #{DELIMITER_TIME}\
-        #{hash[:opponent_time_second]}\
-      ".gsub(/(\s| )+/, '')
-    end
+    h.update(compose_time(hash: hash)) # 準決勝以降でも3分と入れて貰うことにする
     h.update(compose_pairs(hash: hash, stems: %w(progress gaining_point penalty
       retry jury_votes)))
     h.delete("jury_votes") unless hash["jury_votes"].presence.to_bool

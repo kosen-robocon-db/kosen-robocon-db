@@ -94,6 +94,37 @@ class GameDetail < ApplicationRecord
     return h
   end
 
+  def self.compose_time(hash:)
+    h = {}
+    if
+      hash[:my_time_minute].present? and
+      hash[:my_time_second].present? and
+      hash[:opponent_time_minute].present? and
+      hash[:opponent_time_second].present?
+    then
+      h["time"] = "\
+        #{hash[:my_time_minute]}\
+        #{DELIMITER_TIME}\
+        #{hash[:my_time_second]}\
+        #{DELIMITER}\
+        #{hash[:opponent_time_minute]}\
+        #{DELIMITER_TIME}\
+        #{hash[:opponent_time_second]}\
+      ".gsub(/(\s| )+/, '')
+    end
+    if
+      hash[:time_minute].present? and
+      hash[:time_second].present?
+    then
+      h["time"] = "\
+        #{hash[:time_minute]}\
+        #{DELIMITER_TIME}\
+        #{hash[:time_second]}\
+      ".gsub(/(\s| )+/, '')
+    end
+    return h
+  end
+
   private
 
   # 更新時、left_robot_codeとright_robot_codeの内容（位置ではない）に変化がなければ

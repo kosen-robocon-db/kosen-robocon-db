@@ -66,22 +66,7 @@ class GameDetail21st < GameDetail
 
   def self.compose_properties(hash:)
     h = super(hash: hash) || {} # robot_code
-    if
-      hash[:my_time_minute].present? and
-      hash[:my_time_second].present? and
-      hash[:opponent_time_minute].present? and
-      hash[:opponent_time_second].present?
-    then
-      h["time"] = "\
-        #{hash[:my_time_minute]}\
-        #{DELIMITER_TIME}\
-        #{hash[:my_time_second]}\
-        #{DELIMITER}\
-        #{hash[:opponent_time_minute]}\
-        #{DELIMITER_TIME}\
-        #{hash[:opponent_time_second]}\
-      ".gsub(/(\s| )+/, '')
-    end
+    h.update(compose_time(hash: hash))
     h.update(compose_pairs(hash: hash,
       stems: %w( penalty retry progress jury_votes )))
     h.delete("progress")   unless hash["progress"].presence.to_bool
