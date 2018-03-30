@@ -16,11 +16,11 @@ class GameDetail7th < GameDetail
   attr_accessor :extra_time
   attr_accessor :memo
 
-  validates :my_gaining_point,        format: { with: REX_GPT }
-  validates :opponent_gaining_point,  format: { with: REX_GPT }
+  validates :my_gaining_point,       format: { with: REX_GPT }
+  validates :opponent_gaining_point, format: { with: REX_GPT }
   with_options if: :special_win do
-    validates :time_minute, format: { with: REX_MS }
-    validates :time_second, format: { with: REX_MS }
+    validates :time_minute,          format: { with: REX_MS }
+    validates :time_second,          format: { with: REX_MS }
   end
   validates :extra_time, inclusion: { in: [ "true", "false", nil ] }
   validates :memo, length: { maximum: MEMO_LEN }
@@ -40,8 +40,7 @@ class GameDetail7th < GameDetail
   end
 
   def self.compose_properties(hash:)
-    h = super(hash: hash) || {}
-    h.update(compose_pairs(hash: hash, stems: STEMS))
+    h = compose_pairs(hash: hash, stems: STEMS)
     if
       hash[:special_win].presence.to_bool and
       hash[:time_minute].present? and

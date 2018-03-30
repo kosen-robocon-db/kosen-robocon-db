@@ -89,8 +89,7 @@ class GameDetail < ApplicationRecord
       my_sym, opponent_sym = "my_#{stm}".to_sym, "opponent_#{stm}".to_sym
       if hash[my_sym].present? and hash[opponent_sym].present?
         h["#{stm}"] = "#{hash[my_sym]}#{DELIMITER}#{hash[opponent_sym]}"
-      end
-    end
+    end  
     return h
   end
 

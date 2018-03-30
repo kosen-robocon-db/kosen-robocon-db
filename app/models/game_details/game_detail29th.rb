@@ -33,16 +33,18 @@ class GameDetail29th < GameDetail
 
   UNKNOWN = GameDetail::Constant::UNKNOWN_VALUE
 
-  REX_RT  = /\A[0-9]\z|\A#{UNKNOWN}\z/
-  REX_PN  = /\A[0-5]\z|\A#{UNKNOWN}\z/
-  REX_VT  = /\A[0-5]\z|\A#{UNKNOWN}\z/
+  REX_RT = /\A[0-9]\z|\A#{UNKNOWN}\z/
+  REX_PN = /\A[0-5]\z|\A#{UNKNOWN}\z/
+  REX_VT = /\A[0-5]\z|\A#{UNKNOWN}\z/
 
   # hight -> gaining_point に変更
   attr_accessor :my_gaining_point, :opponent_gaining_point
   attr_accessor :my_retry,         :opponent_retry
   attr_accessor :my_penalty,       :opponent_penalty
-  attr_accessor :progress,   :my_progress,   :opponent_progress
-  attr_accessor :jury_votes, :my_jury_votes, :opponent_jury_votes
+  attr_accessor :progress
+  attr_accessor :my_progress,      :opponent_progress
+  attr_accessor :jury_votes
+  attr_accessor :my_jury_votes,    :opponent_jury_votes
   attr_accessor :memo
 
   validates :my_gaining_point,       numericality: {
@@ -75,11 +77,13 @@ class GameDetail29th < GameDetail
   # DBにはないがpropertyに納めたいフォーム上の属性
   def self.additional_attr_symbols
     [
-      :my_gaining_point, :opponent_gaining_point,
-      :my_retry,         :opponent_retry,
-      :my_penalty,       :opponent_penalty,
-      :progress, { :my_progress => [] }, { :opponent_progress => [] },
-      :jury_votes, :my_jury_votes,         :opponent_jury_votes,
+      :my_gaining_point,        :opponent_gaining_point,
+      :my_retry,                :opponent_retry,
+      :my_penalty,              :opponent_penalty,
+      :progress,
+      { :my_progress => [] }, { :opponent_progress => [] },
+      :jury_votes,
+      :my_jury_votes,           :opponent_jury_votes,
       :memo
     ]
   end
@@ -89,16 +93,16 @@ class GameDetail29th < GameDetail
   end
 
   def self.compose_properties(hash:)
-    h = super(hash: hash) || {}
-    h["progress"] = "\
-      #{self.encode(hash[:my_progress])}\
-      #{DELIMITER}\
-      #{self.encode(hash[:opponent_progress])}\
-    ".gsub(/(\s| )+/, '')
-    h.update(compose_pairs(hash: hash, stems: %w(gaining_point retry penalty
-      jury_votes)))
-    h.delete("progress") unless hash["progress"].present?
-    h.delete("jury_votes") unless hash["jury_votes"].present?
+    h = compose_pairs(hash: hash, stems: %w(robot_code gaining_point retry
+      penalty jury_votes))
+    if hash["progress"].present? # エンコードしなければならないため
+      h["progress"] = "\
+        #{self.encode(hash[:my_progress])}\
+        #{DELIMITER}\
+        #{self.encode(hash[:opponent_progress])}\
+      ".gsub(/(\s| )+/, '')
+    end
+    h.delete("jury_votes") unless hash["jury_votes"].presence.to_bool
     h["memo"] = "#{hash[:memo]}" if hash[:memo].present?
     return h
   end
@@ -107,7 +111,7 @@ class GameDetail29th < GameDetail
     super(robot: robot) do |h|
       if h["gaining_point"].present?
         self.my_gaining_point, self.opponent_gaining_point =
-          h["gaining_point"].to_s.split(REX_SC)[1..-1]
+          h["gaining_point"].to_s.split(DELIMITER)
       end
       if h["retry"].present?
         self.my_retry, self.opponent_retry =

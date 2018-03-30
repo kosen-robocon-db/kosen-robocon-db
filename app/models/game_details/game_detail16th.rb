@@ -15,12 +15,13 @@ class GameDetail16th < GameDetail
   REX_RT  = /[0-1]|#{GameDetail::Constant::UNKNOWN_VALUE}/
   REX_VT  = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
 
-  attr_accessor :my_gaining_point, :opponent_gaining_point
+  attr_accessor :my_gaining_point,   :opponent_gaining_point
   attr_accessor :my_deducting_point, :opponent_deducting_point
-  attr_accessor :my_total_point, :opponent_total_point
-  attr_accessor :my_retry, :opponent_retry
+  attr_accessor :my_total_point,     :opponent_total_point
+  attr_accessor :my_retry,           :opponent_retry
   attr_accessor :inclination
-  attr_accessor :jury_votes, :my_jury_votes, :opponent_jury_votes
+  attr_accessor :jury_votes
+  attr_accessor :my_jury_votes,      :opponent_jury_votes
   attr_accessor :memo
 
   validates :my_gaining_point,         format: { with: REX_GPT }
@@ -46,7 +47,8 @@ class GameDetail16th < GameDetail
       :my_total_point,     :opponent_total_point,
       :my_retry,           :opponent_retry,
       :inclination,
-      :jury_votes, :my_jury_votes, :opponent_jury_votes,
+      :jury_votes,
+      :my_jury_votes,      :opponent_jury_votes,
       :memo
     ]
   end
@@ -56,8 +58,7 @@ class GameDetail16th < GameDetail
   end
 
   def self.compose_properties(hash:)
-    h = super(hash: hash) || {} # robot_code
-    h.update(compose_pairs(hash: hash, stems: STEMS))
+    h = compose_pairs(hash: hash, stems: STEMS)
     h["inclination"] = "true"           if hash[:inclination].present?
     h.delete("jury_votes") unless hash["jury_votes"].presence.to_bool
     h["memo"]        = "#{hash[:memo]}" if hash[:memo].present?

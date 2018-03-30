@@ -12,11 +12,12 @@ class GameDetail17th < GameDetail
   REX_RT  = /[0-1]|#{GameDetail::Constant::UNKNOWN_VALUE}/
   REX_VT  = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
 
-  attr_accessor :my_gaining_point, :opponent_gaining_point     # 距離の代わり
+  attr_accessor :my_gaining_point,   :opponent_gaining_point   # 距離の代わり
   attr_accessor :my_deducting_point, :opponent_deducting_point # 反則数の代わり
-  attr_accessor :my_total_point, :opponent_total_point         # 距離の代わり
-  attr_accessor :my_retry, :opponent_retry
-  attr_accessor :jury_votes, :my_jury_votes, :opponent_jury_votes
+  attr_accessor :my_total_point,     :opponent_total_point     # 距離の代わり
+  attr_accessor :my_retry,           :opponent_retry
+  attr_accessor :jury_votes
+  attr_accessor :my_jury_votes,      :opponent_jury_votes
   attr_accessor :memo
 
   # マイナスの記録はあったのだろうか？
@@ -44,7 +45,8 @@ class GameDetail17th < GameDetail
       :my_deducting_point, :opponent_deducting_point,
       :my_total_point,     :opponent_total_point,
       :my_retry,           :opponent_retry,
-      :jury_votes, :my_jury_votes, :opponent_jury_votes,
+      :jury_votes,
+      :my_jury_votes,      :opponent_jury_votes,
       :memo
     ]
   end
@@ -54,8 +56,7 @@ class GameDetail17th < GameDetail
   end
 
   def self.compose_properties(hash:)
-    h = super(hash: hash) || {} # robot_code
-    h.update(compose_pairs(hash: hash, stems: STEMS))
+    h = compose_pairs(hash: hash, stems: STEMS)
     h.delete("jury_votes") unless hash["jury_votes"].presence.to_bool
     h["memo"] = "#{hash[:memo]}" if hash[:memo].present?
     return h

@@ -35,7 +35,8 @@ class GameDetail30th < GameDetail
   attr_accessor :my_repair,       :opponent_repair
   attr_accessor :my_penalty,      :opponent_penalty
   attr_accessor :time_minute, :time_second
-  attr_accessor :jury_votes, :my_jury_votes, :opponent_jury_votes
+  attr_accessor :jury_votes
+  attr_accessor :my_jury_votes,   :opponent_jury_votes
   attr_accessor :memo
 
   validates :my_base_baloon,        format: { with: REX_BL }
@@ -61,8 +62,10 @@ class GameDetail30th < GameDetail
       :my_robot_baloon, :opponent_robot_baloon,
       :my_repair,       :opponent_repair,
       :my_penalty,      :opponent_penalty,
-      :time_minute, :time_second,
-      :jury_votes, :my_jury_votes, :opponent_jury_votes,
+      :time_minute,
+      :time_second,
+      :jury_votes,
+      :my_jury_votes,   :opponent_jury_votes,
       :memo
     ]
   end
@@ -72,12 +75,10 @@ class GameDetail30th < GameDetail
   end
 
   def self.compose_properties(hash:)
-    h = super(hash: hash) || {}
-    h.update(compose_pairs(hash: hash, stems: %w( babase_baloon robot_baloon
-      repair penalty jury_votes )))
+    h = compose_pairs(hash: hash, stems: STEMS)
     hash[:time_minute] = "#{UNKNOWN}" if hash[:time_minute].blank? # 要らないかも
     hash[:time_second] = "#{UNKNOWN}" if hash[:time_second].blank? # 要らないかも
-    h.update(compose_pairs(hash: hash))
+    h.update(compose_time(hash: hash))
     h.delete("jury_votes") unless hash["jury_votes"].presence.to_bool
     h["memo"] = "#{hash[:memo]}" if hash[:memo].present?
     return h

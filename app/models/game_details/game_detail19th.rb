@@ -29,35 +29,39 @@ class GameDetail19th < GameDetail
   # Vホールのように条件を満足すれば即勝利となったときの試合決着時間は
   # special_time_minute/secondとはせず、time_minute/secondとして
   # 他の試合決着時間を記録する大会の変数名と合わせている。
-  attr_accessor :my_retry,             :opponent_retry
-  attr_accessor :progress,   :my_progress,   :opponent_progress
+  attr_accessor :my_retry,      :opponent_retry
+  attr_accessor :progress
+  attr_accessor :my_progress,   :opponent_progress
   attr_accessor :special_win, :time_minute, :time_second
-  attr_accessor :jury_votes, :my_jury_votes, :opponent_jury_votes
+  attr_accessor :jury_votes
+  attr_accessor :my_jury_votes, :opponent_jury_votes
   attr_accessor :memo
 
-  validates :my_retry,                  format: { with: REX_RT }
-  validates :opponent_retry,            format: { with: REX_RT }
+  validates :my_retry,              format: { with: REX_RT }
+  validates :opponent_retry,        format: { with: REX_RT }
   with_options if: :progress do
-    validates :my_progress,             format: { with: REX_P }
-    validates :opponent_progress,       format: { with: REX_P }
+    validates :my_progress,         format: { with: REX_P }
+    validates :opponent_progress,   format: { with: REX_P }
   end
   with_options if: :special_win do
-    validates :time_minute, format: { with: REX_MS }
-    validates :time_second, format: { with: REX_MS }
+    validates :time_minute,         format: { with: REX_MS }
+    validates :time_second,         format: { with: REX_MS }
   end
   with_options if: :jury_votes do
-    validates :my_jury_votes,           format: { with: REX_VT }
-    validates :opponent_jury_votes,     format: { with: REX_VT }
+    validates :my_jury_votes,       format: { with: REX_VT }
+    validates :opponent_jury_votes, format: { with: REX_VT }
   end
   validates :memo, length: { maximum: MEMO_LEN }
 
   # DBにカラムはないがpropertyに納めたいフォーム上の属性
   def self.additional_attr_symbols
     [
-      :my_retry, :opponent_retry,
-      :progress,   :my_progress,   :opponent_progress,
+      :my_retry,      :opponent_retry,
+      :progress,
+      :my_progress,   :opponent_progress,
       :special_win, :time_minute, :time_second,
-      :jury_votes, :my_jury_votes, :opponent_jury_votes,
+      :jury_votes,
+      :my_jury_votes, :opponent_jury_votes,
       :memo
     ]
   end
@@ -76,8 +80,7 @@ class GameDetail19th < GameDetail
   end
 
   def self.compose_properties(hash:)
-    h = super(hash: hash) || {} # 必要なのか？
-    h.update(compose_pairs(hash: hash, stems: STEMS))
+    h = compose_pairs(hash: hash, stems: STEMS)
     h.delete("progress")   unless hash["progress"].presence.to_bool
     if
       hash[:special_win].presence.to_bool and

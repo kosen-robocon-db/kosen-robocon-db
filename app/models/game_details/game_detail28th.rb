@@ -22,9 +22,8 @@ class GameDetail28th < GameDetail
 
   # my_robot_code側から見ているので、
   # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
-  STEMS = %w( robot_code gaining_point number_of_two_pole number_of_three_pole
-    special_win time_minute time_second number_of_loading retry penalty
-    jury_votes )
+  STEMS = %w( robot_code gaining_point double_pole triple_pole special_win
+    time_minute time_second loading retry penalty jury_votes )
 
   UNKNOWN = GameDetail::Constant::UNKNOWN_VALUE
 
@@ -39,55 +38,57 @@ class GameDetail28th < GameDetail
   # Vホールのように条件を満足すれば即勝利となったときの試合決着時間は
   # special_time_minute/secondとはせず、time_minute/secondとして
   # 他の試合決着時間を記録する大会の変数名と合わせている。
-  attr_accessor :my_gaining_point,           :opponent_gaining_point
-  attr_accessor :my_number_of_two_pole,      :opponent_number_of_two_pole
-  attr_accessor :my_number_of_three_pole,    :opponent_number_of_three_pole
-  attr_accessor :my_special_win,             :opponent_special_win
-  attr_accessor :my_time_minute,             :opponent_time_minute
-  attr_accessor :my_time_second,             :opponent_time_second
-  attr_accessor :my_number_of_loading,       :opponent_number_of_loading
-  attr_accessor :my_retry,                   :opponent_retry
-  attr_accessor :my_penalty,                 :opponent_penalty
-  attr_accessor :jury_votes, :my_jury_votes, :opponent_jury_votes
+  attr_accessor :my_gaining_point, :opponent_gaining_point
+  attr_accessor :my_double_pole,   :opponent_double_pole
+  attr_accessor :my_triple_pole,   :opponent_triple_pole
+  attr_accessor :my_special_win,   :opponent_special_win
+  attr_accessor :my_time_minute,   :opponent_time_minute
+  attr_accessor :my_time_second,   :opponent_time_second
+  attr_accessor :my_loading,       :opponent_loading
+  attr_accessor :my_retry,         :opponent_retry
+  attr_accessor :my_penalty,       :opponent_penalty
+  attr_accessor :jury_votes
+  attr_accessor :my_jury_votes,    :opponent_jury_votes
   attr_accessor :memo
 
-  validates :my_gaining_point,                 format: { with: REX_GPT }
-  validates :opponent_gaining_point,           format: { with: REX_GPT }
-  validates :my_number_of_two_pole,            format: { with: REX_2P }
-  validates :opponent_number_of_two_pole,      format: { with: REX_2P }
-  validates :my_number_of_three_pole,          format: { with: REX_3P }
-  validates :opponent_number_of_three_pole,    format: { with: REX_3P }
+  validates :my_gaining_point,       format: { with: REX_GPT }
+  validates :opponent_gaining_point, format: { with: REX_GPT }
+  validates :my_double_pole,         format: { with: REX_2P }
+  validates :opponent_double_pole,   format: { with: REX_2P }
+  validates :my_triple_pole,         format: { with: REX_3P }
+  validates :opponent_triple_pole,   format: { with: REX_3P }
   validates :my_special_win,       inclusion: { in: [ "true", "false", nil ] }
   validates :opponent_special_win, inclusion: { in: [ "true", "false", nil ] }
-  validates :my_time_minute,                   format: { with: REX_MS }
-  validates :my_time_second,                   format: { with: REX_MS }
-  validates :opponent_time_minute,             format: { with: REX_MS }
-  validates :opponent_time_second,             format: { with: REX_MS }
-  validates :my_number_of_loading,             format: { with: REX_LD }
-  validates :opponent_number_of_loading,       format: { with: REX_LD }
-  validates :my_retry,                         format: { with: REX_RT }
-  validates :opponent_retry,                   format: { with: REX_RT }
-  validates :my_penalty,                       format: { with: REX_PN }
-  validates :opponent_penalty,                 format: { with: REX_PN }
+  validates :my_time_minute,         format: { with: REX_MS }
+  validates :opponent_time_minute,   format: { with: REX_MS }
+  validates :my_time_second,         format: { with: REX_MS }
+  validates :opponent_time_second,   format: { with: REX_MS }
+  validates :my_loading,             format: { with: REX_LD }
+  validates :opponent_loading,       format: { with: REX_LD }
+  validates :my_retry,               format: { with: REX_RT }
+  validates :opponent_retry,         format: { with: REX_RT }
+  validates :my_penalty,             format: { with: REX_PN }
+  validates :opponent_penalty,       format: { with: REX_PN }
   with_options if: :jury_votes do
-    validates :my_jury_votes,                  format: { with: REX_VT }
-    validates :opponent_jury_votes,            format: { with: REX_VT }
+    validates :my_jury_votes,        format: { with: REX_VT }
+    validates :opponent_jury_votes,  format: { with: REX_VT }
   end
   validates :memo, length: { maximum: MEMO_LEN }
 
   # DBにカラムはないがpropertyに納めたいフォーム上の属性
   def self.additional_attr_symbols
     [
-      :my_gaining_point,           :opponent_gaining_point,
-      :my_number_of_two_pole,      :opponent_number_of_two_pole,
-      :my_number_of_three_pole,    :opponent_number_of_three_pole,
-      :my_special_win,             :opponent_special_win,
-      :my_time_minute,             :opponent_time_minute,
-      :my_time_second,             :opponent_time_second,
-      :my_number_of_loading,       :opponent_number_of_loading,
-      :my_retry,                   :opponent_retry,
-      :my_penalty,                 :opponent_penalty,
-      :jury_votes, :my_jury_votes, :opponent_jury_votes,
+      :my_gaining_point, :opponent_gaining_point,
+      :my_double_pole,   :opponent_double_pole,
+      :my_triple_pole,   :opponent_triple_pole,
+      :my_special_win,   :opponent_special_win,
+      :my_time_minute,   :opponent_time_minute,
+      :my_time_second,   :opponent_time_second,
+      :my_loading,       :opponent_loading,
+      :my_retry,         :opponent_retry,
+      :my_penalty,       :opponent_penalty,
+      :jury_votes,
+      :my_jury_votes,    :opponent_jury_votes,
       :memo
     ]
   end
@@ -97,7 +98,6 @@ class GameDetail28th < GameDetail
   end
 
   def self.compose_properties(hash:)
-    h = super(hash: hash) || {} # 必要なのか？
     if # compose_pairsで拾えないspecial_winのケースに対応。どちらも無ければ必要なし。
       hash[:my_special_win].present? and
       hash[:opponent_special_win].blank?
@@ -114,11 +114,9 @@ class GameDetail28th < GameDetail
       hash[:my_time_minute] = "#{UNKNOWN}"
       hash[:my_time_second] = "#{UNKNOWN}"
     end
+    h = compose_pairs(hash: hash, stems: %w( robot_code gaining_point
+      double_pole triple_pole special_win loading retry penalty jury_votes ))
     h.update(compose_time(hash: hash))
-    h.update(compose_pairs(hash: hash, stems: %w(
-      gaining_point number_of_two_pole number_of_three_pole special_win
-      number_of_loading retry penalty jury_votes
-    )))
     h.delete("jury_votes") unless hash["jury_votes"].presence.to_bool
     h["memo"] = "#{hash[:memo]}" if hash[:memo].present?
     return h
@@ -130,13 +128,13 @@ class GameDetail28th < GameDetail
         self.my_gaining_point, self.opponent_gaining_point =
           h["gaining_point"].to_s.split(REX_SC)[1..-1]
       end
-      if h["number_of_two_pole"].present?
-        self.my_number_of_two_pole, self.opponent_number_of_two_pole =
-          h["number_of_two_pole"].to_s.split(DELIMITER)
+      if h["double_pole"].present?
+        self.my_double_pole, self.opponent_double_pole =
+          h["double_pole"].to_s.split(DELIMITER)
       end
-      if h["number_of_three_pole"].present?
-        self.my_number_of_three_pole, self.opponent_number_of_three_pole =
-          h["number_of_three_pole"].to_s.split(DELIMITER)
+      if h["triple_pole"].present?
+        self.my_triple_pole, self.opponent_triple_pole =
+          h["triple_pole"].to_s.split(DELIMITER)
       end
       if h["special_win"].present?
         self.my_special_win, self.opponent_special_win =
@@ -147,9 +145,9 @@ class GameDetail28th < GameDetail
           self.opponent_time_minute, self.opponent_time_second =
             h["time"].to_s.split(REX_T)
       end
-      if h["number_of_loading"].present? then
-        self.my_number_of_loading, self.opponent_number_of_loading =
-          h["number_of_loading"].to_s.split(DELIMITER)
+      if h["loading"].present? then
+        self.my_loading, self.opponent_loading =
+          h["loading"].to_s.split(DELIMITER)
       end
       if h["retry"].present?
         self.my_retry, self.opponent_retry =

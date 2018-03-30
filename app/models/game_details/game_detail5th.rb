@@ -9,6 +9,7 @@ class GameDetail5th < GameDetail
   attr_accessor :memo
 
   # 160点以上があるかもしれない・・・
+  # 不明を入力可能にしたい
   validates :my_gaining_point, numericality: {
     only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 160
   }
@@ -32,8 +33,7 @@ class GameDetail5th < GameDetail
   end
 
   def self.compose_properties(hash:)
-    h = super(hash: hash) || {}
-    h.update(compose_pairs(hash: hash, stems: STEMS))
+    h = compose_pairs(hash: hash, stems: STEMS)
     h["extra_time"] = "true"           if hash[:extra_time].present?
     h["memo"]       = "#{hash[:memo]}" if hash[:memo].present?
     return h

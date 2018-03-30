@@ -17,9 +17,10 @@ class GameDetail14th < GameDetail
   REX_VT  = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
 
   attr_accessor :my_gaining_point, :opponent_gaining_point
-  attr_accessor :my_retry, :opponent_retry
+  attr_accessor :my_retry,         :opponent_retry
   attr_accessor :extra_time
-  attr_accessor :jury_votes, :my_jury_votes, :opponent_jury_votes
+  attr_accessor :jury_votes,
+  attr_accessor :my_jury_votes,    :opponent_jury_votes
   attr_accessor :memo
 
   validates :my_gaining_point,       format: { with: REX_GPT }
@@ -49,11 +50,10 @@ class GameDetail14th < GameDetail
   end
 
   def self.compose_properties(hash:)
-    h = super(hash: hash) || {} # robot_code
-    h.update(compose_pairs(hash: hash, stems: STEMS))
+    h = compose_pairs(hash: hash, stems: STEMS)
     h["extra_time"] = "true" if hash[:extra_time].present?
     h.delete("jury_votes") unless hash["jury_votes"].presence.to_bool
-    h["memo"]       = "#{hash[:memo]}" if hash[:memo].present?
+    h["memo"] = "#{hash[:memo]}" if hash[:memo].present?
     return h
   end
 

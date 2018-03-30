@@ -17,18 +17,19 @@ class GameDetail23rd < GameDetail
   REX_RT = /[0-9]|#{GameDetail::Constant::UNKNOWN_VALUE}/
   REX_VT = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
 
-  attr_accessor :my_progress,          :opponent_progress
-  attr_accessor :my_time_minute,       :my_time_second
-  attr_accessor :opponent_time_minute, :opponent_time_second
-  attr_accessor :my_retry,             :opponent_retry
-  attr_accessor :jury_votes, :my_jury_votes, :opponent_jury_votes
+  attr_accessor :my_progress,    :opponent_progress
+  attr_accessor :my_time_minute, :opponent_time_minute
+  attr_accessor :my_time_second, :opponent_time_second
+  attr_accessor :my_retry,       :opponent_retry
+  attr_accessor :jury_votes
+  attr_accessor :my_jury_votes,  :opponent_jury_votes
   attr_accessor :memo
 
   validates :my_progress,           format: { with: REX_PR }
   validates :opponent_progress,     format: { with: REX_PR }
   validates :my_time_minute,        format: { with: REX_MS }
-  validates :my_time_second,        format: { with: REX_MS }
   validates :opponent_time_minute,  format: { with: REX_MS }
+  validates :my_time_second,        format: { with: REX_MS }
   validates :opponent_time_second,  format: { with: REX_MS }
   validates :my_retry,              format: { with: REX_RT }
   validates :opponent_retry,        format: { with: REX_RT }
@@ -49,11 +50,12 @@ class GameDetail23rd < GameDetail
   # DBにカラムはないがpropertyに納めたいフォーム上の属性
   def self.additional_attr_symbols
     [
-      :my_progress,          :opponent_progress,
-      :my_time_minute,       :my_time_second,
-      :opponent_time_minute, :opponent_time_second,
-      :my_retry,             :opponent_retry,
-      :jury_votes, :my_jury_votes, :opponent_jury_votes,
+      :my_progress,    :opponent_progress,
+      :my_time_minute, :opponent_time_minute,
+      :my_time_second, :opponent_time_second,
+      :my_retry,       :opponent_retry,
+      :jury_votes,
+      :my_jury_votes,  :opponent_jury_votes,
       :memo
     ]
   end
@@ -63,9 +65,9 @@ class GameDetail23rd < GameDetail
   end
 
   def self.compose_properties(hash:)
-    h = super(hash: hash) || {} # 必要なのか？
+    h = compose_pairs(hash: hash, stems: %w( robot_code progress retry
+      jury_votes ))
     h.update(compose_time(hash: hash))
-    h.update(compose_pairs(hash: hash, stems: %w( progress retry jury_votes )))
     h.delete("jury_votes") unless hash["jury_votes"].presence.to_bool
     h["memo"] = "#{hash[:memo]}" if hash[:memo].present?
     return h

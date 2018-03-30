@@ -16,16 +16,16 @@ class GameDetail13th < GameDetail
   attr_accessor :jury_votes, :my_jury_votes, :opponent_jury_votes
   attr_accessor :memo
 
-  validates :my_gaining_point,         format: { with: REX_GPT }
-  validates :opponent_gaining_point,   format: { with: REX_GPT }
+  validates :my_gaining_point,       format: { with: REX_GPT }
+  validates :opponent_gaining_point, format: { with: REX_GPT }
   validates :special_win, inclusion: { in: [ "true", "false", nil ] }
   with_options if: :special_win do
-    validates :time_minute, format: { with: REX_MS }
-    validates :time_second, format: { with: REX_MS }
+    validates :time_minute,          format: { with: REX_MS }
+    validates :time_second,          format: { with: REX_MS }
   end
   with_options if: :jury_votes do
-    validates :my_jury_votes,           format: { with: REX_VT }
-    validates :opponent_jury_votes,     format: { with: REX_VT }
+    validates :my_jury_votes,        format: { with: REX_VT }
+    validates :opponent_jury_votes,  format: { with: REX_VT }
   end
   validates :memo, length: { maximum: MEMO_LEN }
 
@@ -34,7 +34,8 @@ class GameDetail13th < GameDetail
     [
       :my_gaining_point, :opponent_gaining_point,
       :special_win, :time_minute, :time_second,
-      :jury_votes, :my_jury_votes, :opponent_jury_votes,
+      :jury_votes,
+      :my_jury_votes,    :opponent_jury_votes,
       :memo
     ]
   end
@@ -44,8 +45,7 @@ class GameDetail13th < GameDetail
   end
 
   def self.compose_properties(hash:)
-    h = super(hash: hash) || {} # robot_code
-    h.update(compose_pairs(hash: hash, stems: STEMS))
+    h = compose_pairs(hash: hash, stems: STEMS)
     if
       hash[:special_win].presence.to_bool and
       hash[:time_minute].present? and

@@ -7,7 +7,6 @@ class GameDetail24th < GameDetail
   #   タッチダウンパスの時間が同じ場合、またはボールタッチ回数が同じ場合は審査員判定。
   #   地区全国ともに審査員は3名。
 
-
   # my_robot_code側から見ているので、
   # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
   STEMS = %w( robot_code time_minute time_second ball_touch intercept retry
@@ -18,12 +17,13 @@ class GameDetail24th < GameDetail
   REX_RT = /[0-9]|#{GameDetail::Constant::UNKNOWN_VALUE}/
   REX_VT = /[0-3]|#{GameDetail::Constant::UNKNOWN_VALUE}/
 
-  attr_accessor :my_time_minute,       :my_time_second
-  attr_accessor :opponent_time_minute, :opponent_time_second
-  attr_accessor :my_ball_touch,        :opponent_ball_touch
-  attr_accessor :my_intercept,         :opponent_intercept
-  attr_accessor :my_retry,             :opponent_retry
-  attr_accessor :jury_votes, :my_jury_votes, :opponent_jury_votes
+  attr_accessor :my_time_minute, :opponent_time_minute
+  attr_accessor :my_time_second, :opponent_time_second
+  attr_accessor :my_ball_touch,  :opponent_ball_touch
+  attr_accessor :my_intercept,   :opponent_intercept
+  attr_accessor :my_retry,       :opponent_retry
+  attr_accessor :jury_votes,
+  attr_accessor :my_jury_votes,  :opponent_jury_votes
   attr_accessor :memo
 
   validates :my_time_minute,        format: { with: REX_MS }
@@ -45,12 +45,13 @@ class GameDetail24th < GameDetail
   # DBにカラムはないがpropertyに納めたいフォーム上の属性
   def self.additional_attr_symbols
     [
-      :my_time_minute,       :my_time_second,
-      :opponent_time_minute, :opponent_time_second,
-      :my_ball_touch,        :opponent_ball_touch,
-      :my_intercept,         :opponent_intercept,
-      :my_retry,             :opponent_retry,
-      :jury_votes, :my_jury_votes, :opponent_jury_votes,
+      :my_time_minute, :opponent_time_minute,
+      :my_time_second, :opponent_time_second,
+      :my_ball_touch,  :opponent_ball_touch,
+      :my_intercept,   :opponent_intercept,
+      :my_retry,       :opponent_retry,
+      :jury_votes,
+      :my_jury_votes,  :opponent_jury_votes,
       :memo
     ]
   end
@@ -60,10 +61,9 @@ class GameDetail24th < GameDetail
   end
 
   def self.compose_properties(hash:)
-    h = super(hash: hash) || {} # 必要なのか？
+    h = compose_pairs(hash: hash, stems: %w( robot_code ball_touch intercept
+      retry jury_votes ))
     h.update(compose_time(hash: hash))
-    h.update(compose_pairs(hash: hash,
-      stems: %w(ball_touch intercept retry jury_votes)))
     h.delete("jury_votes") unless hash["jury_votes"].presence.to_bool
     h["memo"] = "#{hash[:memo]}" if hash[:memo].present?
     return h

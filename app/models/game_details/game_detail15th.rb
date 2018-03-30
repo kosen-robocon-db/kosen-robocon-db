@@ -22,14 +22,15 @@ class GameDetail15th < GameDetail
   # Vホールのように条件を満足すれば即勝利となったときの試合決着時間は
   # special_time_minute/secondとはせず、time_minute/secondとして
   # 他の試合決着時間を記録する大会の変数名と合わせている。
-  attr_accessor :my_gaining_point, :opponent_gaining_point
+  attr_accessor :my_gaining_point,   :opponent_gaining_point
   attr_accessor :my_deducting_point, :opponent_deducting_point
-  attr_accessor :my_total_point, :opponent_total_point
-  attr_accessor :my_retry, :opponent_retry
+  attr_accessor :my_total_point,     :opponent_total_point
+  attr_accessor :my_retry,           :opponent_retry
   attr_accessor :special_win, :time_minute, :time_second
   attr_accessor :hight
   attr_accessor :extra_time
-  attr_accessor :jury_votes, :my_jury_votes, :opponent_jury_votes
+  attr_accessor :jury_votes,
+  attr_accessor :my_jury_votes,      :opponent_jury_votes
   attr_accessor :memo
 
   validates :my_gaining_point,         format: { with: REX_GPT }
@@ -41,8 +42,8 @@ class GameDetail15th < GameDetail
   validates :my_retry,                 format: { with: REX_RT }
   validates :opponent_retry,           format: { with: REX_RT }
   with_options if: :special_win do
-    validates :time_minute, format: { with: REX_MS }
-    validates :time_second, format: { with: REX_MS }
+    validates :time_minute,            format: { with: REX_MS }
+    validates :time_second,            format: { with: REX_MS }
   end
   validates :hight,       inclusion: { in: [ "true", "false", nil ] }
   validates :extra_time,  inclusion: { in: [ "true", "false", nil ] }
@@ -62,7 +63,8 @@ class GameDetail15th < GameDetail
       :special_win, :time_minute, :time_second,
       :hight,
       :extra_time,
-      :jury_votes, :my_jury_votes, :opponent_jury_votes,
+      :jury_votes,
+      :my_jury_votes,      :opponent_jury_votes,
       :memo
     ]
   end
@@ -72,8 +74,7 @@ class GameDetail15th < GameDetail
   end
 
   def self.compose_properties(hash:)
-    h = super(hash: hash) || {} # robot_code
-    h.update(compose_pairs(hash: hash, stems: STEMS))
+    h = compose_pairs(hash: hash, stems: STEMS)
     if
       hash[:special_win].presence.to_bool and
       hash[:time_minute].present? and

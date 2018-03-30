@@ -27,18 +27,19 @@ class GameDetail25th < GameDetail
   # 他の試合決着時間を記録する大会の変数名と合わせている。
   attr_accessor :my_gaining_point, :opponent_gaining_point
   attr_accessor :my_special_win,   :opponent_special_win
-  attr_accessor :my_time_minute,       :my_time_second
-  attr_accessor :opponent_time_minute, :opponent_time_second
+  attr_accessor :my_time_minute,   :opponent_time_minute
+  attr_accessor :my_time_second,   :opponent_time_second
   attr_accessor :my_penalty,       :opponent_penalty
   attr_accessor :my_retry,         :opponent_retry
-  attr_accessor :jury_votes, :my_jury_votes, :opponent_jury_votes
+  attr_accessor :jury_votes
+  attr_accessor :my_jury_votes,    :opponent_jury_votes
   attr_accessor :memo
 
   validates :my_gaining_point,       format: { with: REX_GPT }
   validates :opponent_gaining_point, format: { with: REX_GPT }
   validates :my_time_minute,         format: { with: REX_MS }
-  validates :my_time_second,         format: { with: REX_MS }
   validates :opponent_time_minute,   format: { with: REX_MS }
+  validates :my_time_second,         format: { with: REX_MS }
   validates :opponent_time_second,   format: { with: REX_MS }
   validates :my_special_win,       inclusion: { in: [ "true", "false", nil ] }
   validates :opponent_special_win, inclusion: { in: [ "true", "false", nil ] }
@@ -55,13 +56,14 @@ class GameDetail25th < GameDetail
   # DBにカラムはないがpropertyに納めたいフォーム上の属性
   def self.additional_attr_symbols
     [
-      :my_gaining_point,   :opponent_gaining_point,
-      :my_time_minute,       :my_time_second,
-      :opponent_time_minute, :opponent_time_second,
-      :my_special_win,     :opponent_special_win,
-      :my_penalty,         :opponent_penalty,
-      :my_retry,           :opponent_retry,
-      :jury_votes, :my_jury_votes, :opponent_jury_votes,
+      :my_gaining_point, :opponent_gaining_point,
+      :my_time_minute,   :opponent_time_minute,
+      :my_time_second,   :opponent_time_second,
+      :my_special_win,   :opponent_special_win,
+      :my_penalty,       :opponent_penalty,
+      :my_retry,         :opponent_retry,
+      :jury_votes,
+      :my_jury_votes,    :opponent_jury_votes,
       :memo
     ]
   end
@@ -71,7 +73,6 @@ class GameDetail25th < GameDetail
   end
 
   def self.compose_properties(hash:)
-    h = super(hash: hash) || {} # 必要なのか？
     if # compose_pairsで拾えないspecial_winのケースに対応。どちらも無ければ必要なし。
       hash[:my_special_win].present? and
       hash[:opponent_special_win].blank?
@@ -88,9 +89,9 @@ class GameDetail25th < GameDetail
       hash[:my_time_minute] = "#{GameDetail::Constant::UNKNOWN_VALUE}"
       hash[:my_time_second] = "#{GameDetail::Constant::UNKNOWN_VALUE}"
     end
+    h = compose_pairs(hash: hash,
+      stems: %w(robot_code gaining_point special_win penalty retry jury_votes))
     h.update(compose_time(hash: hash))
-    h.update(compose_pairs(hash: hash, stems: %w(gaining_point special_win
-      penalty retry jury_votes)))
     h.delete("jury_votes") unless hash["jury_votes"].presence.to_bool
     h["memo"] = "#{hash[:memo]}" if hash[:memo].present?
     return h

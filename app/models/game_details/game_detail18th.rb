@@ -16,17 +16,20 @@ class GameDetail18th < GameDetail
   REX_RT = /[0-1]|#{GameDetail::Constant::UNKNOWN_VALUE}/
   REX_VT = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
 
-  attr_accessor :my_time_minute,       :my_time_second
-  attr_accessor :opponent_time_minute, :opponent_time_second
-  attr_accessor :my_retry,             :opponent_retry
-  attr_accessor :progress,   :my_progress,   :opponent_progress
-  attr_accessor :distance,   :my_distance,   :opponent_distance
-  attr_accessor :jury_votes, :my_jury_votes, :opponent_jury_votes
+  attr_accessor :my_time_minute, :opponent_time_minute
+  attr_accessor :my_time_second, :opponent_time_second
+  attr_accessor :my_retry,       :opponent_retry
+  attr_accessor :progress,
+  attr_accessor :my_progress,    :opponent_progress
+  attr_accessor :distance,
+  attr_accessor :my_distance,    :opponent_distance
+  attr_accessor :jury_votes,
+  attr_accessor :my_jury_votes,  :opponent_jury_votes
   attr_accessor :memo
 
   validates :my_time_minute,           format: { with: REX_MS }
-  validates :my_time_second,           format: { with: REX_MS }
   validates :opponent_time_minute,     format: { with: REX_MS }
+  validates :my_time_second,           format: { with: REX_MS }
   validates :opponent_time_second,     format: { with: REX_MS }
   validates :my_retry,                 format: { with: REX_RT }
   validates :opponent_retry,           format: { with: REX_RT }
@@ -35,8 +38,8 @@ class GameDetail18th < GameDetail
     validates :opponent_progress, presence: true
   end
   with_options if: :distance do
-    validates :my_distance,  numericality: {
-      greater_than_or_equal_to: 0, less_than_or_equal_to: 30
+    validates :my_distance,       numericality: {
+      greater_than_or_equal_to: 0, less_than_or_equal_to: 30 # 30でいいのか？
     }
     validates :opponent_distance, numericality: {
       greater_than_or_equal_to: 0, less_than_or_equal_to: 30
@@ -66,10 +69,9 @@ class GameDetail18th < GameDetail
   end
 
   def self.compose_properties(hash:)
-    h = super(hash: hash) || {} # robot_code
+    h = compose_pairs(hash: hash,
+      stems: %w( robot_code retry progress distance jury_votes )))
     h.update(compose_time(hash: hash))
-    h.update(compose_pairs(hash: hash,
-      stems: %w( retry progress distance jury_votes )))
     h.delete("progress")   unless hash["progress"].presence.to_bool
     h.delete("distance")   unless hash["distance"].presence.to_bool
     h.delete("jury_votes") unless hash["jury_votes"].presence.to_bool
@@ -87,7 +89,7 @@ class GameDetail18th < GameDetail
       if h["retry"].present?
         self.my_retry, self.opponent_retry =
           h["retry"].to_s.split(DELIMITER)
-      end 
+      end
       if h["progress"].present?
         self.progress = true
         self.my_progress, self.opponent_progress =

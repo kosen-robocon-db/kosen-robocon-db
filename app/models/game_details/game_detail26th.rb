@@ -23,26 +23,27 @@ class GameDetail26th < GameDetail
   STEMS = %w( robot_code progress time_minute time_second gaining_point penalty
      retry jury_votes )
 
-  REX_PR  = /[0-6]|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_PN  = /[0-9]|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_RT  = /[0-9]|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_VT  = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
+  REX_PR = /[0-6]|#{GameDetail::Constant::UNKNOWN_VALUE}/
+  REX_PN = /[0-9]|#{GameDetail::Constant::UNKNOWN_VALUE}/
+  REX_RT = /[0-9]|#{GameDetail::Constant::UNKNOWN_VALUE}/
+  REX_VT = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
 
   attr_accessor :my_progress,      :opponent_progress
-  attr_accessor :my_time_minute,       :my_time_second
-  attr_accessor :opponent_time_minute, :opponent_time_second
+  attr_accessor :my_time_minute,   :opponent_time_minute
+  attr_accessor :my_time_second,   :opponent_time_second
   attr_accessor :my_gaining_point, :opponent_gaining_point
   attr_accessor :my_penalty,       :opponent_penalty
   attr_accessor :my_retry,         :opponent_retry
-  attr_accessor :jury_votes, :my_jury_votes, :opponent_jury_votes
+  attr_accessor :jury_votes,
+  attr_accessor :my_jury_votes,    :opponent_jury_votes
   attr_accessor :memo
 
-  validates :my_progress,            format: { with: REX_PR }
-  validates :opponent_progress,      format: { with: REX_PR }
-  validates :my_time_minute,         format: { with: REX_MS }
-  validates :my_time_second,         format: { with: REX_MS }
-  validates :opponent_time_minute,   format: { with: REX_MS }
-  validates :opponent_time_second,   format: { with: REX_MS }
+  validates :my_progress,           format: { with: REX_PR }
+  validates :opponent_progress,     format: { with: REX_PR }
+  validates :my_time_minute,        format: { with: REX_MS }
+  validates :my_time_second,        format: { with: REX_MS }
+  validates :opponent_time_minute,  format: { with: REX_MS }
+  validates :opponent_time_second,  format: { with: REX_MS }
   # 不明の記録を入力できるようにするにはどうしたらよいのか？
   validates :my_gaining_point, numericality: {
     greater_than_or_equal_to: 0, less_than_or_equal_to: 130
@@ -50,13 +51,13 @@ class GameDetail26th < GameDetail
   validates :opponent_gaining_point, numericality: {
     greater_than_or_equal_to: 0, less_than_or_equal_to: 130
   }
-  validates :my_penalty,             format: { with: REX_PN }
-  validates :opponent_penalty,       format: { with: REX_PN }
-  validates :my_retry,               format: { with: REX_RT }
-  validates :opponent_retry,         format: { with: REX_RT }
+  validates :my_penalty,            format: { with: REX_PN }
+  validates :opponent_penalty,      format: { with: REX_PN }
+  validates :my_retry,              format: { with: REX_RT }
+  validates :opponent_retry,        format: { with: REX_RT }
   with_options if: :jury_votes do
-    validates :my_jury_votes,        format: { with: REX_VT }
-    validates :opponent_jury_votes,  format: { with: REX_VT }
+    validates :my_jury_votes,       format: { with: REX_VT }
+    validates :opponent_jury_votes, format: { with: REX_VT }
   end
   validates :memo, length: { maximum: MEMO_LEN }
 
@@ -73,13 +74,14 @@ class GameDetail26th < GameDetail
   # DBにカラムはないがpropertyに納めたいフォーム上の属性
   def self.additional_attr_symbols
     [
-      :my_progress,        :opponent_progress,
-      :my_time_minute,       :my_time_second,
-      :opponent_time_minute, :opponent_time_second,
-      :my_gaining_point,   :opponent_gaining_point,
-      :my_penalty,         :opponent_penalty,
-      :my_retry,           :opponent_retry,
-      :jury_votes, :my_jury_votes, :opponent_jury_votes,
+      :my_progress,      :opponent_progress,
+      :my_time_minute,   :opponent_time_minute,
+      :my_time_second,   :opponent_time_second,
+      :my_gaining_point, :opponent_gaining_point,
+      :my_penalty,       :opponent_penalty,
+      :my_retry,         :opponent_retry,
+      :jury_votes,
+      :my_jury_votes,    :opponent_jury_votes,
       :memo
     ]
   end
@@ -89,10 +91,9 @@ class GameDetail26th < GameDetail
   end
 
   def self.compose_properties(hash:)
-    h = super(hash: hash) || {} # 必要なのか？
-    h.update(compose_time(hash: hash)) # 準決勝以降でも3分と入れて貰うことにする
-    h.update(compose_pairs(hash: hash, stems: %w(progress gaining_point penalty
-      retry jury_votes)))
+    h = compose_pairs(hash: hash,
+      stems: %w(robot_code progress gaining_point penalty retry jury_votes))
+    h.update(compose_time(hash: hash))
     h.delete("jury_votes") unless hash["jury_votes"].presence.to_bool
     h["memo"] = "#{hash[:memo]}" if hash[:memo].present?
     return h

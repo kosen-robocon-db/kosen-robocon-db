@@ -29,8 +29,8 @@ class GameDetail27th < GameDetail
 
   # my_robot_code側から見ているので、
   # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
-  STEMS = %w( robot_code number_of_order gaining_point retry
-    number_of_steamer_fall jury_votes )
+  STEMS = %w( robot_code number_of_order gaining_point retry steamer_fall
+    jury_votes )
 
   REX_ODR = /\A[0-3]\z|#{GameDetail::Constant::UNKNOWN_VALUE}/
   REX_GPT = /\A[1-4]{,1}[0-9]\z|#{GameDetail::Constant::UNKNOWN_VALUE}/
@@ -38,24 +38,25 @@ class GameDetail27th < GameDetail
   REX_SF  = /\A[0-9]\z|#{GameDetail::Constant::UNKNOWN_VALUE}/
   REX_VT  = /\A[0-5]\z|#{GameDetail::Constant::UNKNOWN_VALUE}/
 
-  attr_accessor :my_number_of_order,         :opponent_number_of_order
-  attr_accessor :my_gaining_point,           :opponent_gaining_point
-  attr_accessor :my_retry,                   :opponent_retry
-  attr_accessor :my_number_of_steamer_fall,  :opponent_number_of_steamer_fall
-  attr_accessor :jury_votes, :my_jury_votes, :opponent_jury_votes
+  attr_accessor :my_number_of_order, :opponent_number_of_order
+  attr_accessor :my_gaining_point,   :opponent_gaining_point
+  attr_accessor :my_retry,           :opponent_retry
+  attr_accessor :my_steamer_fall,    :opponent_steamer_fall
+  attr_accessor :jury_votes
+  attr_accessor :my_jury_votes,      :opponent_jury_votes
   attr_accessor :memo
 
-  validates :my_number_of_order,              format: { with: REX_ODR }
-  validates :opponent_number_of_order,        format: { with: REX_ODR }
-  validates :my_gaining_point,                format: { with: REX_GPT }
-  validates :opponent_gaining_point,          format: { with: REX_GPT }
-  validates :my_retry,                        format: { with: REX_RT }
-  validates :opponent_retry,                  format: { with: REX_RT }
-  validates :my_number_of_steamer_fall,       format: { with: REX_SF }
-  validates :opponent_number_of_steamer_fall, format: { with: REX_SF }
+  validates :my_number_of_order,       format: { with: REX_ODR }
+  validates :opponent_number_of_order, format: { with: REX_ODR }
+  validates :my_gaining_point,         format: { with: REX_GPT }
+  validates :opponent_gaining_point,   format: { with: REX_GPT }
+  validates :my_retry,                 format: { with: REX_RT }
+  validates :opponent_retry,           format: { with: REX_RT }
+  validates :my_steamer_fall,          format: { with: REX_SF }
+  validates :opponent_steamer_fall,    format: { with: REX_SF }
   with_options if: :jury_votes do
-    validates :my_jury_votes,                 format: { with: REX_VT }
-    validates :opponent_jury_votes,           format: { with: REX_VT }
+    validates :my_jury_votes,          format: { with: REX_VT }
+    validates :opponent_jury_votes,    format: { with: REX_VT }
   end
   validates :memo, length: { maximum: MEMO_LEN }
 
@@ -65,8 +66,9 @@ class GameDetail27th < GameDetail
       :my_number_of_order, :opponent_number_of_order,
       :my_gaining_point,   :opponent_gaining_point,
       :my_retry,           :opponent_retry,
-      :my_number_of_steamer_fall, :opponent_number_of_steamer_fall,
-      :jury_votes, :my_jury_votes, :opponent_jury_votes,
+      :my_steamer_fall,    :opponent_steamer_fall,
+      :jury_votes,
+      :my_jury_votes,      :opponent_jury_votes,
       :memo
     ]
   end
@@ -76,8 +78,7 @@ class GameDetail27th < GameDetail
   end
 
   def self.compose_properties(hash:)
-    h = super(hash: hash) || {} # 必要なのか？
-    h.update(compose_pairs(hash: hash, stems: STEMS))
+    h = compose_pairs(hash: hash, stems: STEMS)
     h.delete("jury_votes") unless hash["jury_votes"].presence.to_bool
     h["memo"] = "#{hash[:memo]}" if hash[:memo].present?
     return h
@@ -97,9 +98,9 @@ class GameDetail27th < GameDetail
         self.my_retry, self.opponent_retry =
           h["retry"].to_s.split(DELIMITER)
       end
-      if h["number_of_steamer_fall"].present?
-        self.my_number_of_steamer_fall, self.opponent_number_of_steamer_fall =
-          h["number_of_steamer_fall"].to_s.split(DELIMITER)
+      if h["steamer_fall"].present?
+        self.my_steamer_fall, self.opponent_steamer_fall =
+          h["steamer_fall"].to_s.split(DELIMITER)
       end
       if h["jury_votes"].present?
         self.jury_votes = true

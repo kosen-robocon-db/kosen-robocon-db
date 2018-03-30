@@ -27,8 +27,8 @@ class GameDetail10th < GameDetail
   def self.additional_attr_symbols
     [
       :my_gaining_point, :opponent_gaining_point,
-      :my_art_point, :opponent_art_point,
-      :my_total_point, :opponent_total_point,
+      :my_art_point,     :opponent_art_point,
+      :my_total_point,   :opponent_total_point,
       :extra_time,
       :memo
     ]
@@ -41,8 +41,7 @@ class GameDetail10th < GameDetail
   # SRP(Single Responsibility Principle, 単一責任原則)に従っていないが
   # このクラス内で実装する。
   def self.compose_properties(hash:)
-    h = super(hash: hash) || {}
-    h.update(compose_pairs(hash: hash, stems: STEMS))
+    h = compose_pairs(hash: hash, stems: STEMS)
     h["extra_time"] = "true"           if hash[:extra_time].present?
     h["memo"]       = "#{hash[:memo]}" if hash[:memo].present?
     return h

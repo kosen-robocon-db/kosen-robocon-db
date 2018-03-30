@@ -8,17 +8,18 @@ class GameDetail12th < GameDetail
   # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
   STEMS = %w( robot_code gaining_point deducting_point total_point )
 
-  REX_GPT = /[0-9]|[1-3][0-9]|4[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_DPT = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_TPT =
-    /-[1-5]|[0-9]|[1-3][0-9]|4[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
+  UNKNOWN = GameDetail::Constant::UNKNOWN_VALUE
+
+  REX_GPT = /[0-9]|[1-3][0-9]|4[0-5]|#{UNKNOWN}/
+  REX_DPT = /[0-5]|#{UNKNOWN}/
+  REX_TPT = /-[1-5]|[0-9]|[1-3][0-9]|4[0-5]|#{UNKNOWN}/
 
   # Vホールのように条件を満足すれば即勝利となったときの試合決着時間は
   # special_time_minute/secondとはせず、time_minute/secondとして
   # 他の試合決着時間を記録する大会の変数名と合わせている。
-  attr_accessor :my_gaining_point, :opponent_gaining_point
+  attr_accessor :my_gaining_point,   :opponent_gaining_point
   attr_accessor :my_deducting_point, :opponent_deducting_point
-  attr_accessor :my_total_point, :opponent_total_point
+  attr_accessor :my_total_point,     :opponent_total_point
   attr_accessor :special_win, :time_minute, :time_second
   attr_accessor :lower_power_quantity
   attr_accessor :memo
@@ -31,8 +32,8 @@ class GameDetail12th < GameDetail
   validates :opponent_total_point,     format: { with: REX_TPT }
   validates :special_win,          inclusion: { in: [ "true", "false", nil ] }
   with_options if: :special_win do
-    validates :time_minute, format: { with: REX_MS }
-    validates :time_second, format: { with: REX_MS }
+    validates :time_minute,            format: { with: REX_MS }
+    validates :time_second,            format: { with: REX_MS }
   end
   validates :lower_power_quantity, inclusion: { in: [ "true", "false", nil ] }
   validates :memo, length: { maximum: MEMO_LEN }
@@ -54,8 +55,7 @@ class GameDetail12th < GameDetail
   end
 
   def self.compose_properties(hash:)
-    h = super(hash: hash) || {}
-    h.update(compose_pairs(hash: hash, stems: STEMS))
+    h = compose_pairs(hash: hash, stems: STEMS)
     if
       hash[:special_win].presence.to_bool and
       hash[:time_minute].present? and

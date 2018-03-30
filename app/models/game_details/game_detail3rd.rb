@@ -37,7 +37,7 @@ class GameDetail3rd < GameDetail
   # save/update直前のvalidationによって吟味されるので、有るか無しか(nil)かを吟味する
   # だけにしている。他の数字や文字列が入力される属性も同様である。
   def self.compose_properties(hash:)
-    h.update(compose_pairs(hash: hash, stems: STEMS))
+    h = compose_pairs(hash: hash, stems: STEMS)
     h["extra_time"]  = "true"           if hash[:extra_time].present?
     h["recommended"] = "true"           if hash[:recommended].present?
     h["janken"]      = "true"           if hash[:janken].present?

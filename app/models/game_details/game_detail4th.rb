@@ -35,8 +35,7 @@ class GameDetail4th < GameDetail
   end
 
   def self.compose_properties(hash:)
-    h = super(hash: hash) || {}
-    h.update(compose_pairs(hash: hash, stems: STEMS))
+    h = compose_pairs(hash: hash, stems: STEMS)
     h["extra_time"] = "true"           if hash[:extra_time].present?
     h["hight"]      = "true"           if hash[:hight].present?
     h["distance"]   = "true"           if hash[:distance].present?

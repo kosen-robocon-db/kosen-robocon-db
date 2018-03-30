@@ -19,12 +19,12 @@
   </tr>
   <tr>
     <td><%= ("&nbsp;"*4).html_safe %></td>
-    <td>ダブル<%= f.select :my_number_of_two_pole,
+    <td>ダブル<%= f.select :my_double_pole,
       two_pole_numbers %>本</td>
   </tr>
   <tr>
     <td><%= ("&nbsp;"*4).html_safe %></td>
-    <td>トリプル<%= f.select :my_number_of_three_pole,
+    <td>トリプル<%= f.select :my_triple_pole,
       three_pole_numbers %>本</td>
   </tr>
   <tr>
@@ -49,7 +49,7 @@
   <tr>
     <td><%= ("&nbsp;"*4).html_safe %></td>
     <td>装填回数：</td>
-    <td><%= f.select :my_number_of_loading, loading_numbers %></td>
+    <td><%= f.select :my_loading, loading_numbers %></td>
   </tr>
   <tr>
     <td><%= ("&nbsp;"*4).html_safe %></td>
@@ -72,12 +72,12 @@
   </tr>
   <tr>
     <td><%= ("&nbsp;"*4).html_safe %></td>
-    <td>ダブル<%= f.select :opponent_number_of_two_pole,
+    <td>ダブル<%= f.select :opponent_double_pole,
       two_pole_numbers %>本</td>
   </tr>
   <tr>
     <td><%= ("&nbsp;"*4).html_safe %></td>
-    <td>トリプル<%= f.select :opponent_number_of_three_pole,
+    <td>トリプル<%= f.select :opponent_triple_pole,
       three_pole_numbers %>本</td>
   </tr>
   <tr>
@@ -102,7 +102,7 @@
   <tr>
     <td><%= ("&nbsp;"*4).html_safe %></td>
     <td>装填回数：</td>
-    <td><%= f.select :opponent_number_of_loading, loading_numbers %></td>
+    <td><%= f.select :opponent_loading, loading_numbers %></td>
   </tr>
   <tr>
     <td><%= ("&nbsp;"*4).html_safe %></td>

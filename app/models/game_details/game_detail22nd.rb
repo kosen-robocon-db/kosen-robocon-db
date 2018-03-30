@@ -25,18 +25,19 @@ class GameDetail22nd < GameDetail
   REX_VT  = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
 
   attr_accessor :my_challenges,    :opponent_challenges
-  attr_accessor :my_gaining_point, :opponent_gaining_point # 自動計算させる
-  attr_accessor :my_retry, :opponent_retry
-  attr_accessor :jury_votes, :my_jury_votes, :opponent_jury_votes
+  attr_accessor :my_gaining_point, :opponent_gaining_point
+  attr_accessor :my_retry,         :opponent_retry
+  attr_accessor :jury_votes,
+  attr_accessor :my_jury_votes,    :opponent_jury_votes
   attr_accessor :memo
 
-  validates :my_gaining_point,         format: { with: REX_GPT }
-  validates :opponent_gaining_point,   format: { with: REX_GPT }
-  validates :my_retry,                 format: { with: REX_RT }
-  validates :opponent_retry,           format: { with: REX_RT }
+  validates :my_gaining_point,       format: { with: REX_GPT }
+  validates :opponent_gaining_point, format: { with: REX_GPT }
+  validates :my_retry,               format: { with: REX_RT }
+  validates :opponent_retry,         format: { with: REX_RT }
   with_options if: :jury_votes do
-    validates :my_jury_votes,          format: { with: REX_VT }
-    validates :opponent_jury_votes,    format: { with: REX_VT }
+    validates :my_jury_votes,        format: { with: REX_VT }
+    validates :opponent_jury_votes,  format: { with: REX_VT }
   end
   validates :memo, length: { maximum: MEMO_LEN }
 
@@ -57,9 +58,10 @@ class GameDetail22nd < GameDetail
   def self.additional_attr_symbols
     [
       { :my_challenges => [] }, { :opponent_challenges => [] },
-      :my_gaining_point, :opponent_gaining_point,
-      :my_retry,         :opponent_retry,
-      :jury_votes, :my_jury_votes, :opponent_jury_votes,
+      :my_gaining_point,          :opponent_gaining_point,
+      :my_retry,                  :opponent_retry,
+      :jury_votes,
+      :my_jury_votes,             :opponent_jury_votes,
       :memo
     ]
   end
@@ -69,10 +71,9 @@ class GameDetail22nd < GameDetail
   end
 
   def self.compose_properties(hash:)
-    h = super(hash: hash) || {} # copose_pairsがあるから要らない気がする
     hash[:my_challenges]       = self.encode(hash[:my_challenges])
     hash[:opponent_challenges] = self.encode(hash[:opponent_challenges])
-    h.update(compose_pairs(hash: hash, stems: STEMS))
+    h = compose_pairs(hash: hash, stems: STEMS)
     h.delete("jury_votes") unless hash["jury_votes"].presence.to_bool
     h["memo"] = "#{hash[:memo]}" if hash[:memo].present?
     return h

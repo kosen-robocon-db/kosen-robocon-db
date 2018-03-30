@@ -28,7 +28,7 @@
   </tr>
   <tr>
     <td><%= ("&nbsp;"*4).html_safe %></td>
-    <td>蒸籠落下回数：<%= f.select :my_number_of_steamer_fall,
+    <td>蒸籠落下回数：<%= f.select :my_steamer_fall,
       steamer_fall_numbers %></td>
   </tr>
   <%##########################################################################%>
@@ -54,7 +54,7 @@
     </tr>
     <tr>
       <td><%= ("&nbsp;"*4).html_safe %></td>
-      <td>蒸籠落下回数：<%= f.select :opponent_number_of_steamer_fall,
+      <td>蒸籠落下回数：<%= f.select :opponent_steamer_fall,
         steamer_fall_numbers %></td>
     </tr>
 </table>

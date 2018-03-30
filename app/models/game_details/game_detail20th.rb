@@ -8,52 +8,54 @@ class GameDetail20th < GameDetail
   # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
   STEMS = %w( robot_code flag penalty union retry jury_votes )
 
-  REX_F =   /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/ # 旗の数
-  REX_P   = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/ # 反則の数
-  REX_RT  = /[0-1]|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_VT  = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
+  REX_F  = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/ # 旗の数
+  REX_P  = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/ # 反則の数
+  REX_RT = /[0-1]|#{GameDetail::Constant::UNKNOWN_VALUE}/
+  REX_VT = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
 
   # Vホールのように条件を満足すれば即勝利となったときの試合決着時間は
   # special_time_minute/secondとはせず、time_minute/secondとして
   # 他の試合決着時間を記録する大会の変数名と合わせている。
-  attr_accessor :my_flag,          :opponent_flag
-  attr_accessor :my_penalty,       :opponent_penalty
-  attr_accessor :my_union,         :opponent_union
-  attr_accessor :my_retry, :opponent_retry
+  attr_accessor :my_flag,       :opponent_flag
+  attr_accessor :my_penalty,    :opponent_penalty
+  attr_accessor :my_union,      :opponent_union
+  attr_accessor :my_retry,      :opponent_retry
   attr_accessor :special_win, :time_minute, :time_second
   attr_accessor :extra_time
-  attr_accessor :jury_votes, :my_jury_votes, :opponent_jury_votes
+  attr_accessor :jury_votes,
+  attr_accessor :my_jury_votes, :opponent_jury_votes
   attr_accessor :memo
 
-  validates :my_flag,                format: { with: REX_F }
-  validates :opponent_flag,          format: { with: REX_F }
-  validates :my_penalty,             format: { with: REX_P }
-  validates :opponent_penalty,       format: { with: REX_P }
+  validates :my_flag,               format: { with: REX_F }
+  validates :opponent_flag,         format: { with: REX_F }
+  validates :my_penalty,            format: { with: REX_P }
+  validates :opponent_penalty,      format: { with: REX_P }
   validates :my_union,       inclusion: { in: [ "true", "false", nil ] }
   validates :opponent_union, inclusion: { in: [ "true", "false", nil ] }
-  validates :my_retry,               format: { with: REX_RT }
-  validates :opponent_retry,         format: { with: REX_RT }
+  validates :my_retry,              format: { with: REX_RT }
+  validates :opponent_retry,        format: { with: REX_RT }
   with_options if: :special_win do
-    validates :time_minute, format: { with: REX_MS }
-    validates :time_second, format: { with: REX_MS }
+    validates :time_minute,         format: { with: REX_MS }
+    validates :time_second,         format: { with: REX_MS }
   end
   validates :extra_time,     inclusion: { in: [ "true", "false", nil ] }
   with_options if: :jury_votes do
-    validates :my_jury_votes,          format: { with: REX_VT }
-    validates :opponent_jury_votes,    format: { with: REX_VT }
+    validates :my_jury_votes,       format: { with: REX_VT }
+    validates :opponent_jury_votes, format: { with: REX_VT }
   end
   validates :memo, length: { maximum: MEMO_LEN }
 
   # DBにカラムはないがpropertyに納めたいフォーム上の属性
   def self.additional_attr_symbols
     [
-      :my_flag,            :opponent_flag,
-      :my_penalty,         :opponent_penalty,
-      :my_union,           :opponent_union,
-      :my_retry,           :opponent_retry,
+      :my_flag,       :opponent_flag,
+      :my_penalty,    :opponent_penalty,
+      :my_union,      :opponent_union,
+      :my_retry,      :opponent_retry,
       :special_win, :time_minute, :time_second,
       :extra_time,
-      :jury_votes, :my_jury_votes, :opponent_jury_votes,
+      :jury_votes,
+      :my_jury_votes, :opponent_jury_votes,
       :memo
     ]
   end
@@ -63,7 +65,6 @@ class GameDetail20th < GameDetail
   end
 
   def self.compose_properties(hash:)
-    h = super(hash: hash) || {} # robot_code
     if # compose_pairsで拾えないunionのケースに対応
       hash[:my_union].present? and
       hash[:opponent_union].blank?
@@ -76,7 +77,7 @@ class GameDetail20th < GameDetail
     then
       hash[:my_union] = "false"
     end
-    h.update(compose_pairs(hash: hash, stems: STEMS))
+    h = compose_pairs(hash: hash, stems: STEMS)
     if
       hash[:special_win].presence.to_bool and
       hash[:time_minute].present? and
@@ -104,7 +105,6 @@ class GameDetail20th < GameDetail
         self.my_penalty, self.opponent_penalty =
           h["penalty"].to_s.split(DELIMITER)[1..-1]
       end
-      logger.debug(">>>> union:#{h["union"].to_yaml}")
       if h["union"].present?
         self.my_union, self.opponent_union =
           h["union"].to_s.split(DELIMITER).map{ |x| x.to_bool }

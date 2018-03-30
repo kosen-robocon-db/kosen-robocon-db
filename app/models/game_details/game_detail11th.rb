@@ -8,9 +8,9 @@ class GameDetail11th < GameDetail
   REX_DPT = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
   REX_TPT = /-[1-5]|[0-9]|[1-3][0-9]|40|#{GameDetail::Constant::UNKNOWN_VALUE}/
 
-  attr_accessor :my_gaining_point, :opponent_gaining_point
+  attr_accessor :my_gaining_point,   :opponent_gaining_point
   attr_accessor :my_deducting_point, :opponent_deducting_point
-  attr_accessor :my_total_point, :opponent_total_point
+  attr_accessor :my_total_point,     :opponent_total_point
   attr_accessor :recommended
   attr_accessor :memo
 
@@ -39,8 +39,7 @@ class GameDetail11th < GameDetail
   end
 
   def self.compose_properties(hash:)
-    h = super(hash: hash) || {}
-    h.update(compose_pairs(hash: hash, stems: STEMS))
+    h = compose_pairs(hash: hash, stems: STEMS)
     h["recommended"] = "true"           if hash[:recommended].present?
     h["memo"]        = "#{hash[:memo]}" if hash[:memo].present?
     return h
