@@ -136,4 +136,39 @@ class GameDetail < ApplicationRecord
     @swapped = false
   end
 
+  # 以下は第30回までで第22回と第29回でしか利用していない。
+
+  # 与えられた配列arrayの先頭から要素を一つずつ調べている。
+  # 調べている要素がゼロから始まらない十進数文字列であれば
+  # 整数値に変換後1を減じた数を2の指数としてそのべき乗を求める。
+  # それぞれの要素の2のべき乗を全て足したものを返す。
+  # self.decode(["3","0","1"])
+  # => 5
+  # このメソッドがクラスメソッドであるのは、
+  # オブジェクト生成前に呼び出されるからである。
+  def self.encode(array=[])
+    a = 0
+    if array.present? and array.instance_of?(Array) # instance_ofだけでいいはず？
+      array.each { |v| a += 2 ** ( v.to_i - 1 ) if v =~ /\A[1-9][0-9]*\z/ }
+    end
+    a
+  end
+
+  # 与えられた十進数文字列を二進数文字列に変換後に先頭から一文字ずつ調べている。
+  # 調べている文字が'1'であれば二進数文字列変換時の長さから現在調べている文字の
+  # インデックスを引いたものを配列に格納し、調べ終わったらその配列を返す。
+  # a=GameDetail29th.new
+  # a=decode("7")
+  # => ["3","2","1"]
+  def decode(r='0')
+    a = Array.new
+    if r.present?
+      s = r.to_i.to_s(2)
+      s.split(//).each_with_index do |v, i|
+        a.push((s.length - i).to_s) if v =~ /\A1\z/
+      end
+    end
+    a
+  end
+
 end

@@ -135,25 +135,4 @@ class GameDetail29th < GameDetail
     end
   end
 
-  private
-
-  def self.encode(array=[])
-    a = 0
-    if array.present? and array.instance_of?(Array)
-      array.each { |v| a += 2 ** ( v.to_i - 1 ) if v =~ /\A[1-9][0-9]*\z/ }
-    end
-    a
-  end
-
-  def decode(r='0')
-    a = Array.new
-    if r.present?
-      s = r.to_i.to_s(2)
-      s.split(//).each_with_index do |v, i|
-        a.push((s.length - i).to_s) if v =~ /\A1\z/
-      end
-    end
-    a
-  end
-
 end
