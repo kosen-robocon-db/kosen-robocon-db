@@ -6,6 +6,17 @@ ja:
         DNS: 試合開始前棄権
         DNF: 試合途中棄権
         DSQ: 失格
+    game_detail3rd:
+      criterium:
+        win: 勝利
+        recommended: 審査員推薦
+        janken: じゃんけん
+    game_detail4th:
+      criterium:
+        number: 個数
+        hight: 高さ
+        distance: 距離
+        janken: じゃんけん
     game_detail19th:
       progresses:
         start_zone: スタートゾーン

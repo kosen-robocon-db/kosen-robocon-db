@@ -15,15 +15,13 @@
 <%= f.label :extra_time, "延長(30秒)：" %>
 <%= f.check_box :extra_time, { checked: f.object.extra_time }, true, false %>
 <br />
-<%#
-  審査員推薦、じゃんけん決着、どれでもなし（デフォルト）、
-  この三つからラジオボタンでどれかを選ばせるべきだが、後ほどその改善を施す予定
-%>
-<%= f.label :recommended, "審査委員推薦" %>
-<%= f.check_box :recommended, { checked: f.object.recommended }, true, false %>
-&nbsp;&nbsp;
-<%= f.label :janken, "じゃんけん決着：" %>
-<%= f.check_box :janken, { checked: f.object.janken }, true, false %>
+<%= f.label :judgement, "勝敗判定：" %>
+<% GameDetail3rd.criteria.each do |key, value| %>
+  <% chk = f.object.judgement.to_i == value ? true : false %>
+  <%= f.radio_button :judgement, GameDetail3rd.criteria[key], {checked: chk} %>
+  <%= GameDetail3rd.criteria_i18n[key] %>
+  <%= ("&nbsp;"*2).html_safe %>
+<% end %>
 <br />
 <%= f.label :memo, "メモ：" %>
 <%= f.text_field :memo %><br />

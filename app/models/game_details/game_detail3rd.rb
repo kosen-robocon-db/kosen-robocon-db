@@ -1,5 +1,8 @@
 class GameDetail3rd < GameDetail
 
+  # 予選では勝敗に関わらず審査員推薦によって本戦出場が決まることがあった。
+  # 本戦では引き分けの場合にジャンケンで勝敗を決めた。
+
   # my_robot_code側から見ているので、
   # ロボットコード異なる場合は交換したい値を持つ属性の語幹を書いておく
   STEMS = %w( robot_code gaining_point )
@@ -8,14 +11,19 @@ class GameDetail3rd < GameDetail
 
   attr_accessor :my_gaining_point, :opponent_gaining_point
   attr_accessor :extra_time
-  attr_accessor :recommended, :janken
+  attr_accessor :judgement # judgement by a criterium
   attr_accessor :memo
+
+  enum criterium: {
+    win:         0, # 勝利
+    recommended: 1, # 審査員推薦
+    janken:      2  # じゃんけん
+  }
 
   validates :my_gaining_point,       format: { with: REX_GPT }
   validates :opponent_gaining_point, format: { with: REX_GPT }
-  validates :extra_time,  inclusion: { in: [ "true", "false", nil ] }
-  validates :recommended, inclusion: { in: [ "true", "false", nil ] }
-  validates :janken,      inclusion: { in: [ "true", "false", nil ] }
+  validates :extra_time, inclusion: { in: [ "true", "false", nil ] }
+  validates :judgement,  inclusion: { in: criteria.each.map { |k,v| v.to_s } }
   validates :memo, length: { maximum: MEMO_LEN }
 
   # DBにカラムはないがpropertyに納めたいフォーム上の属性
@@ -23,11 +31,12 @@ class GameDetail3rd < GameDetail
     [
       :my_gaining_point, :opponent_gaining_point,
       :extra_time,
-      :recommended, :janken,
+      :judgement,
       :memo
     ]
   end
 
+  # 親クラスから子クラスのSTEM定数を参照するためのメソッド
   def stems
     STEMS
   end
@@ -38,10 +47,9 @@ class GameDetail3rd < GameDetail
   # だけにしている。他の数字や文字列が入力される属性も同様である。
   def self.compose_properties(hash:)
     h = compose_pairs(hash: hash, stems: STEMS)
-    h["extra_time"]  = "true"           if hash[:extra_time].present?
-    h["recommended"] = "true"           if hash[:recommended].present?
-    h["janken"]      = "true"           if hash[:janken].present?
-    h["memo"]        = "#{hash[:memo]}" if hash[:memo].present?
+    h["extra_time"] = "true"                if hash[:extra_time].present?
+    h["judgement"]  = "#{hash[:judgement]}" if hash[:judgement].present?
+    h["memo"]       = "#{hash[:memo]}"      if hash[:memo].present?
     return h
   end
 
@@ -49,12 +57,11 @@ class GameDetail3rd < GameDetail
     super(robot: robot) do |h|
       if h["gaining_point"].present?
         self.my_gaining_point, self.opponent_gaining_point =
-          h["gaining_point"].to_s.split(REX_SC)[1..-1]
+          h["gaining_point"].to_s.split(DELIMITER)
       end
-      self.extra_time  = h["extra_time"].presence.to_bool  || false
-      self.recommended = h["recommended"].presence.to_bool || false
-      self.janken      = h["janken"].presence.to_bool      || false
-      self.memo        = h["memo"].presence                || ''
+      self.extra_time = h["extra_time"].presence.to_bool || false
+      self.judgement  = h["judgement"].presence          || criteria[:win]
+      self.memo       = h["memo"].presence               || ''
     end
   end
 

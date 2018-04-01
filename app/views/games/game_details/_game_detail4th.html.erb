@@ -15,18 +15,13 @@
 <%= f.label :extra_time, "延長(30秒)：" %>
 <%= f.check_box :extra_time, { checked: f.object.extra_time }, true, false %>
 <br />
-<%#
-  高さ、距離、じゃんけん決着、どれでもなし（デフォルト）、
-  この四つからラジオボタンでどれかを選ばせるべきだが、後ほどその改善を施す予定
-%>
-<%= f.label :hight, "高さ" %>
-<%= f.check_box :hight, { checked: f.object.hight }, true, false %>
-&nbsp;&nbsp;
-<%= f.label :distance, "距離" %>
-<%= f.check_box :distance, { checked: f.object.distance }, true, false %>
-&nbsp;&nbsp;
-<%= f.label :janken, "じゃんけん決着：" %>
-<%= f.check_box :janken, { checked: f.object.janken }, true, false %>
+<%= f.label :judgement, "勝敗判定：" %>
+<% GameDetail4th.criteria.each do |key, value| %>
+  <% chk = f.object.judgement.to_i == value ? true : false %>
+  <%= f.radio_button :judgement, GameDetail4th.criteria[key], {checked: chk} %>
+  <%= GameDetail4th.criteria_i18n[key] %>
+  <%= ("&nbsp;"*2).html_safe %>
+<% end %>
 <br />
 <%= f.label :memo, "メモ：" %>
 <%= f.text_field :memo %><br />
