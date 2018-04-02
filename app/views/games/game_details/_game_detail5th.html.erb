@@ -1,12 +1,26 @@
 <%= f.hidden_field :id %>
+<%
+  gaining_point_numbers = option_numbers end_number: 160
+%>
 <table>
+  <%# 得点入力のUIは将来スライダーに変更する予定 %>
   <tr>
     <td><%= f.label :my_gaining_point, "#{@robot.name}の点数：" %></td>
-    <td><%= f.text_field :my_gaining_point %></td>
+  </tr>
+  <tr>
+    <td>
+      <%= ("&nbsp;"*4).html_safe %>
+      <%= f.select :my_gaining_point, gaining_point_numbers %>
+    </td>
   </tr>
   <tr>
     <td><%= f.label :opponent_gaining_point, "対戦相手の点数：" %></td>
-    <td><%= f.text_field :opponent_gaining_point %></td>
+  </tr>
+  <tr>
+    <td>
+      <%= ("&nbsp;"*4).html_safe %>
+      <%= f.select :opponent_gaining_point, gaining_point_numbers %>
+    </td>
   </tr>
 </table>
 <%= f.label :extra_time, "延長(30秒)：" %>

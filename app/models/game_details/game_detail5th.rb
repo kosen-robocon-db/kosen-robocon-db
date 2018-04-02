@@ -4,18 +4,24 @@ class GameDetail5th < GameDetail
   # ロボットコード異なる場合は交換したい値を持つ属性の語幹を書いておく
   STEMS = %w( robot_code gaining_point )
 
+  UNKNOWN = GameDetail::Constant::UNKNOWN_VALUE
+  REX_GPT = /\A\d\z|\A[1-9]\d\z|\A1[0-5]\d\z|\A160\z|\A#{UNKNOWN}\z/
+
   attr_accessor :my_gaining_point, :opponent_gaining_point
   attr_accessor :extra_time
   attr_accessor :memo
 
   # 160点以上があるかもしれない・・・
-  # 不明を入力可能にしたい
-  validates :my_gaining_point, numericality: {
-    only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 160
-  }
-  validates :opponent_gaining_point, numericality: {
-    only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 160
-  }
+  # validates :my_gaining_point, numericality: {
+  #   only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 160
+  # }
+  # validates :opponent_gaining_point, numericality: {
+  #   only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 160
+  # }
+  # 暫定的にselectで得点を入力させ、検証はformat:で行う。将来はスライダーに変更。
+  validates :my_gaining_point,       format: { with: REX_GPT }
+  validates :opponent_gaining_point, format: { with: REX_GPT }
+
   validates :extra_time, inclusion: { in: [ "true", "false", nil ] }
   validates :memo, length: { maximum: MEMO_LEN }
 
@@ -28,10 +34,15 @@ class GameDetail5th < GameDetail
     ]
   end
 
+  # 親クラスから子クラスのSTEM定数を参照するためのメソッド
   def stems
     STEMS
   end
 
+  # extra_timeなどのbooleanとnilの三種の値の入力を想定しているフォーム属性変数について
+  # trueかfalseかnilかをここで吟味すべきであるが、このproperties生成の後に実行される
+  # save/update直前のvalidationによって吟味されるので、有るか無しか(nil)かを吟味する
+  # だけにしている。他の数字や文字列が入力される属性も同様である。
   def self.compose_properties(hash:)
     h = compose_pairs(hash: hash, stems: STEMS)
     h["extra_time"] = "true"           if hash[:extra_time].present?
