@@ -2,14 +2,20 @@
 <table>
   <tr>
     <td><%= f.label :my_time, "#{@robot.name}のタイム：" %></td>
+  </tr>
+  <tr>
     <td>
+      <%= ("&nbsp;"*4).html_safe %>
       <%= f.select :my_time_minute, time_numbers %>分
       <%= f.select :my_time_second, time_numbers %>秒
     </td>
   </tr>
   <tr>
     <td><%= f.label :opponent_time, "対戦相手のタイム：" %></td>
+  </tr>
+  <tr>
     <td>
+      <%= ("&nbsp;"*4).html_safe %>
       <%= f.select :opponent_time_minute, time_numbers %>分
       <%= f.select :opponent_time_second, time_numbers %>秒
     </td>
