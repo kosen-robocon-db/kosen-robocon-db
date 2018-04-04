@@ -1,0 +1,37 @@
+<%
+  vote_numbers = option_numbers digit: 1, end_number: juries_number
+%>
+<%= f.label :jury_votes, "審査員判定：" %>
+<%= f.check_box :jury_votes, {:checked => f.object.jury_votes}, true, false %>
+<br />
+<% if f.object.jury_votes %>
+<div class="jury_votes___nested_field_for_replace_with_index__">
+<% else %>
+<div class="jury_votes___nested_field_for_replace_with_index__ hidden">
+<% end %>
+  <table>
+    <tr>
+      <td>
+        <%= ("&nbsp;"*4).html_safe %><%= "#{@robot.name}への票数：" %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <%= ("&nbsp;"*8).html_safe %>
+        <%= f.select :my_jury_votes, vote_numbers %>
+      </td>
+    </tr>
+    <%#######################################################################%>
+    <tr>
+      <td>
+        <%= ("&nbsp;"*4).html_safe %>対戦相手への票数：
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <%= ("&nbsp;"*8).html_safe %>
+        <%= f.select :opponent_jury_votes, vote_numbers %>
+      </td>
+    </tr>
+  </table>
+</div>

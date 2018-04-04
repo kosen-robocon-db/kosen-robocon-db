@@ -4,20 +4,13 @@ class GameDetail5th < GameDetail
   # ロボットコード異なる場合は交換したい値を持つ属性の語幹を書いておく
   STEMS = %w( robot_code gaining_point )
 
-  UNKNOWN = GameDetail::Constant::UNKNOWN_VALUE
-  REX_GPT = /\A\d\z|\A[1-9]\d\z|\A1[0-5]\d\z|\A160\z|\A#{UNKNOWN}\z/
+  REX_GPT = /\A([0-9]|[1-9][0-9]|1[0-5][0-9]|160|#{UNKNOWN})\z/
 
   attr_accessor :my_gaining_point, :opponent_gaining_point
   attr_accessor :extra_time
   attr_accessor :memo
 
   # 160点以上があるかもしれない・・・
-  # validates :my_gaining_point, numericality: {
-  #   only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 160
-  # }
-  # validates :opponent_gaining_point, numericality: {
-  #   only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 160
-  # }
   # 暫定的にselectで得点を入力させ、検証はformat:で行う。将来はスライダーに変更。
   validates :my_gaining_point,       format: { with: REX_GPT }
   validates :opponent_gaining_point, format: { with: REX_GPT }
@@ -56,8 +49,8 @@ class GameDetail5th < GameDetail
         self.my_gaining_point, self.opponent_gaining_point =
           h["gaining_point"].to_s.split(REX_SC)[1..-1]
       end
-      self.extra_time = h["extra_time"].presence.to_bool || false
-      self.memo       = h["memo"].presence               || ''
+      self.extra_time = h["extra_time"].presence.to_bool
+      self.memo       = h["memo"].presence || ''
     end
   end
 

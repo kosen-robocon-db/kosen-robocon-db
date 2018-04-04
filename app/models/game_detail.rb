@@ -20,9 +20,9 @@ class GameDetail < ApplicationRecord
   DELIMITER      = "-"
   DELIMITER_TIME = ":"
   UNKNOWN        = "#{Constant::UNKNOWN_VALUE}"
-  REX_MS         = /([0-5][0-9]|#{UNKNOWN})/
-  REX_SC         = /(#{UNKNOWN}|-\d*|\d*)-(#{UNKNOWN}|-\d*|\d*)/
-  REX_T          = /#{DELIMITER}|#{DELIMITER_TIME}/
+  REX_MS         = /\A[0-5][0-9]\z|\A#{UNKNOWN}\z/
+  REX_SC         = /\A(#{UNKNOWN}|-\d*|\d*)-(#{UNKNOWN}|-\d*|\d*)\z/
+  REX_T          = /\A#{DELIMITER}\z|\A#{DELIMITER_TIME}\z/
   MEMO_LEN       = 256
 
   serialize :properties, JSON

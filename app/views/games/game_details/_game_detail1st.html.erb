@@ -1,21 +1,24 @@
 <%= f.hidden_field :id %>
 <table>
   <tr>
-    <td><%= f.label :my_time, "#{@robot.name}のタイム：" %></td>
+    <td><%= label_tag "#{@robot.name}：" %></td>
   </tr>
   <tr>
     <td>
       <%= ("&nbsp;"*4).html_safe %>
+      タイム：
       <%= f.select :my_time_minute, time_numbers %>分
       <%= f.select :my_time_second, time_numbers %>秒
     </td>
   </tr>
+  <%#########################################################################%>
   <tr>
-    <td><%= f.label :opponent_time, "対戦相手のタイム：" %></td>
+    <td><%= label_tag :opponent_time, "対戦相手：" %></td>
   </tr>
   <tr>
     <td>
       <%= ("&nbsp;"*4).html_safe %>
+      タイム：
       <%= f.select :opponent_time_minute, time_numbers %>分
       <%= f.select :opponent_time_second, time_numbers %>秒
     </td>

@@ -13,7 +13,7 @@ class GameDetail4th < GameDetail
   # ロボットコード異なる場合は交換したい値を持つ属性の語幹を書いておく
   STEMS = %w( robot_code gaining_point )
 
-  REX_GPT = /([0-9]|[1-3][0-9]|40|#{GameDetail::Constant::UNKNOWN_VALUE})/
+  REX_GPT = /\A([0-9]|[1-3][0-9]|40|#{UNKNOWN})\z/
 
   attr_accessor :my_gaining_point, :opponent_gaining_point
   attr_accessor :extra_time
@@ -66,9 +66,9 @@ class GameDetail4th < GameDetail
         self.my_gaining_point, self.opponent_gaining_point =
           h["gaining_point"].to_s.split(DELIMITER)
       end
-      self.extra_time = h["extra_time"].presence.to_bool || false
-      self.judgement  = h["judgement"].presence          || criteria[:win]
-      self.memo       = h["memo"].presence               || ''
+      self.extra_time = h["extra_time"].presence.to_bool
+      self.judgement  = h["judgement"].presence || criteria[:win]
+      self.memo       = h["memo"].presence      || ''
     end
   end
 

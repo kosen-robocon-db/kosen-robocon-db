@@ -1,12 +1,14 @@
 class GameDetail11th < GameDetail
+  # 勝敗が審判できない場合、審査員が芸術的観点で判断して推薦した方を勝ちとした。
+  #（上位進出と同義）
 
   # my_robot_code側から見ているので、
   # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
   STEMS = %w( robot_code gaining_point deducting_point total_point )
 
-  REX_GPT = /[0-9]|[1-3][0-9]|40|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_DPT = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_TPT = /-[1-5]|[0-9]|[1-3][0-9]|40|#{GameDetail::Constant::UNKNOWN_VALUE}/
+  REX_GPT = /\A([0-9]|[1-3][0-9]|40|#{UNKNOWN})\z/
+  REX_DPT = /\A([0-5]|#{UNKNOWN})\z/
+  REX_TPT = /\A(-[1-5]|[0-9]|[1-3][0-9]|40|#{UNKNOWN})\z/
 
   attr_accessor :my_gaining_point,   :opponent_gaining_point
   attr_accessor :my_deducting_point, :opponent_deducting_point
@@ -34,10 +36,15 @@ class GameDetail11th < GameDetail
     ]
   end
 
+  # 親クラスから子クラスのSTEM定数を参照するためのメソッド
   def stems
     STEMS
   end
 
+  # extra_timeなどのbooleanとnilの三種の値の入力を想定しているフォーム属性変数について
+  # trueかfalseかnilかをここで吟味すべきであるが、このproperties生成の後に実行される
+  # save/update直前のvalidationによって吟味されるので、有るか無しか(nil)かを吟味する
+  # だけにしている。他の数字や文字列が入力される属性も同様である。
   def self.compose_properties(hash:)
     h = compose_pairs(hash: hash, stems: STEMS)
     h["recommended"] = "true"           if hash[:recommended].present?
@@ -49,18 +56,18 @@ class GameDetail11th < GameDetail
     super(robot: robot) do |h|
       if h["gaining_point"].present?
         self.my_gaining_point, self.opponent_gaining_point =
-          h["gaining_point"].to_s.split(REX_SC)[1..-1]
+          h["gaining_point"].to_s.split(DELIMITER)
       end
       if h["deducting_point"].present?
         self.my_deducting_point, self.opponent_deducting_point =
-          h["deducting_point"].to_s.split(REX_SC)[1..-1]
+          h["deducting_point"].to_s.split(DELIMITER)
       end
       if h["total_point"].present?
         self.my_total_point, self.opponent_total_point =
           h["total_point"].to_s.split(REX_SC)[1..-1]
       end
-      self.recommended = h["recommended"].presence.to_bool || false
-      self.memo        = h["memo"].presence                || ''
+      self.recommended = h["recommended"].presence.to_bool
+      self.memo        = h["memo"].presence || ''
     end
   end
 

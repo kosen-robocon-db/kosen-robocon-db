@@ -5,21 +5,22 @@
 <table>
   <%# 得点入力のUIは将来スライダーに変更する予定 %>
   <tr>
-    <td><%= f.label :my_gaining_point, "#{@robot.name}の点数：" %></td>
+    <td><%= label_tag "#{@robot.name}：" %></td>
   </tr>
   <tr>
     <td>
       <%= ("&nbsp;"*4).html_safe %>
-      <%= f.select :my_gaining_point, gaining_point_numbers %>
+      得点<%= f.select :my_gaining_point, gaining_point_numbers %>点
     </td>
   </tr>
+  <%#########################################################################%>
   <tr>
-    <td><%= f.label :opponent_gaining_point, "対戦相手の点数：" %></td>
+    <td><%= label_tag "対戦相手：" %></td>
   </tr>
   <tr>
     <td>
       <%= ("&nbsp;"*4).html_safe %>
-      <%= f.select :opponent_gaining_point, gaining_point_numbers %>
+      得点<%= f.select :opponent_gaining_point, gaining_point_numbers %>点
     </td>
   </tr>
 </table>
