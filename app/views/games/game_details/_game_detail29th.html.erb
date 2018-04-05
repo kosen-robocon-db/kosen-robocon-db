@@ -1,14 +1,8 @@
 <%= f.hidden_field :id %>
 <%
-  retry_numbers    = option_numbers digit: 1, end_number: 9
-  penalty_numbers  = option_numbers digit: 1, end_number: 9
-  progress_options = Array.new([["--", GameDetail::Constant::UNKNOWN_VALUE]])
-  GameDetail29th.progresses.each do |key, value|
-    progress_options.concat(Array.new([[
-        GameDetail29th.progresses_i18n[key], value
-    ]]))
-  end
-  vote_numbers     = option_numbers digit: 1, end_number: 5
+  retry_numbers   = option_numbers digit: 1, end_number: 9
+  penalty_numbers = option_numbers digit: 1, end_number: 9
+  vote_numbers    = option_numbers digit: 1, end_number: 5
 %>
 <table>
   <tr>
@@ -44,79 +38,10 @@
     </td>
   </tr>
 </table>
-<%= f.label :progress, "課題進捗度：" %>
-<%= f.check_box :progress, { :checked => f.object.progress.to_bool },
-  true, false %>
-<br />
-<% if f.object.progress %>
-<div class="progress___nested_field_for_replace_with_index__">
-<% else %>
-<div class="progress___nested_field_for_replace_with_index__ hidden">
-<% end %>
-  <table>
-    <tr>
-      <td><%= ("&nbsp;"*4).html_safe %></td>
-      <td><%= f.label :my_progress, "#{@robot.name}の課題達成度：" %></td>
-      <td>
-      <%# concat で出力するとprogressesのハッシュが出力されるバグがある %>
-      <%
-        checked = f.object.my_progress.presence || []
-        GameDetail29th.progresses.each do |key, value|
-      %>
-      <%= ("&nbsp;"*4).html_safe %>
-      <%= f.check_box :my_progress,
-            { multiple: true, checked: checked.include?(value.to_s) }, value %>
-      <%= GameDetail29th.progresses_i18n[key] %><br />
-      <%
-        end
-      %>
-      </td>
-    </tr>
-    <tr>
-      <td><%= ("&nbsp;"*4).html_safe %></td>
-    </tr>
-    <tr>
-      <td><%= ("&nbsp;"*4).html_safe %></td>
-      <td><%= f.label :opponent_progress, "対戦相手の課題達成度：" %></td>
-      <td>
-      <%# concat で出力するとprogressesのハッシュが出力されるバグがある %>
-      <%
-        checked = f.object.opponent_progress.presence || []
-        GameDetail29th.progresses.each do |key, value|
-      %>
-      <%= ("&nbsp;"*4).html_safe %>
-      <%= f.check_box :opponent_progress,
-            { multiple: true, checked: checked.include?(value.to_s) }, value %>
-      <%= GameDetail29th.progresses_i18n[key] %><br />
-      <%
-        end
-      %>
-      </td>
-    </tr>
-  </table>
-</div>
-<%= f.label :jury_votes, "審査員判定：" %>
-<%= f.check_box :jury_votes, { :checked => f.object.jury_votes.to_bool },
-  true, false %>
-<br />
-<% if f.object.jury_votes %>
-<div class="jury_votes___nested_field_for_replace_with_index__">
-<% else %>
-<div class="jury_votes___nested_field_for_replace_with_index__ hidden">
-<% end %>
-  <table>
-    <tr>
-      <td><%= ("&nbsp;"*4).html_safe %></td>
-      <td><%= f.label :my_jury_votes, "#{@robot.name}への票数：" %></td>
-      <td><%= f.select :my_jury_votes, vote_numbers %></td>
-    </tr>
-    <tr>
-      <td><%= ("&nbsp;"*4).html_safe %></td>
-      <td><%= f.label :opponent_jury_votes, "対戦相手への票数：" %></td>
-      <td><%= f.select :opponent_jury_votes, vote_numbers %></td>
-    </tr>
-  </table>
-</div>
+<%= render "games/game_details/common_parts/progress", f: f,
+  klass: GameDetail29th %>
+  <%= render "games/game_details/common_parts/jury_votes", f: f,
+    juries_number: 5 %><%# 審査員判定 %>
 <%= f.label :memo, "メモ：" %>
 <%= f.text_field :memo %><br />
 <br />

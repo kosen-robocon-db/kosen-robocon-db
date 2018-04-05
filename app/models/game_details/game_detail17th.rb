@@ -13,9 +13,9 @@ class GameDetail17th < GameDetail
   STEMS = %w( robot_code gaining_point deducting_point total_point retry
     jury_votes )
 
-  REX_GPT = /\A(([1-9]\d{,2}|0)(\.5+)?|)\z/ # 何も入力しないを許す。
+  REX_GPT = /\A(([1-9]\d{,2}|0)(\.(0|5))?|)\z/ # 何も入力しないを許す。
   REX_DPT = /\A([0-9]|#{UNKNOWN})\z/
-  REX_TPT = /\A(([1-9]\d{,2}|0)(\.5+)?|)\z/ # 何も入力しないを許す。負なしと仮定。
+  REX_TPT = /\A(([1-9]\d{,2}|0)(\.(0|5))?|)\z/ # 何も入力しないを許す。無負と仮定。
   REX_RT  = /\A([0-1]|#{UNKNOWN})\z/
   REX_VT  = /\A([0-5]|#{UNKNOWN})\z/
 
@@ -59,6 +59,10 @@ class GameDetail17th < GameDetail
     STEMS
   end
 
+  # extra_timeなどのbooleanとnilの三種の値の入力を想定しているフォーム属性変数について
+  # trueかfalseかnilかをここで吟味すべきであるが、このproperties生成の後に実行される
+  # save/update直前のvalidationによって吟味されるので、有るか無しか(nil)かを吟味する
+  # だけにしている。他の数字や文字列が入力される属性も同様である。
   def self.compose_properties(hash:)
     h = super(hash: hash) || {}
     # compose_pairsで拾えないgaining_point(入力なし)に対応

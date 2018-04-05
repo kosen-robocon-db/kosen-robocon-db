@@ -25,7 +25,6 @@
 </table>
 <%= render "games/game_details/common_parts/special_win", f: f,
   special_win_name: "Vホール" %>
-</div>
 <%= f.label :extra_time, "延長(30秒)：" %>
 <%= f.check_box :extra_time, { checked: f.object.extra_time }, true, false %>
 <br />

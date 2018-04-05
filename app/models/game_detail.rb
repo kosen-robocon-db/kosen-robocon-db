@@ -13,17 +13,18 @@ class GameDetail < ApplicationRecord
   # *_pointではなくtimeの大会もあるし・・・
 
   module Constant
-    UNKNOWN_VALUE = "__"
+    UNKNOWN_VALUE     = "__"
   end
 
-  STEMS          = %w( robot_code )
-  DELIMITER      = "-"
-  DELIMITER_TIME = ":"
-  UNKNOWN        = "#{Constant::UNKNOWN_VALUE}"
-  REX_MS         = /\A[0-5][0-9]\z|\A#{UNKNOWN}\z/
-  REX_SC         = /\A(#{UNKNOWN}|-\d*|\d*)-(#{UNKNOWN}|-\d*|\d*)\z/
-  REX_T          = /\A#{DELIMITER}\z|\A#{DELIMITER_TIME}\z/
-  MEMO_LEN       = 256
+  STEMS               = %w( robot_code )
+  DELIMITER           = "-"
+  DELIMITER_TIME      = ":"
+  DELIMITER_TIME_PAIR = /#{DELIMITER}|#{DELIMITER_TIME}/
+  UNKNOWN             = "#{Constant::UNKNOWN_VALUE}"
+  REX_MS              = /\A[0-5][0-9]|#{UNKNOWN}\z/
+  REX_SC              = /\A(#{UNKNOWN}|-\d*|\d*)-(#{UNKNOWN}|-\d*|\d*)\z/
+
+  MEMO_LEN            = 256
 
   serialize :properties, JSON
   after_initialize :reset_swap_state

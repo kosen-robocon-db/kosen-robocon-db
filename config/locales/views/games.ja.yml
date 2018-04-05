@@ -17,14 +17,31 @@ ja:
         hight: 高さ
         distance: 距離
         janken: じゃんけん
+    game_detail18th:
+      progress:
+        start_zone: スタートゾーン
+        ladder_dive_zone: 梯子潜り
+        balance_beam_zone: 平均台渡り
+        hardle_cross_zone: ハードル越え
+        button_passing_zone: バトン渡し
+        wall_clibming_zone: 壁登り
+        button_goal: バトンゴール
     game_detail19th:
-      progresses:
+      progress:
         start_zone: スタートゾーン
         moat_zone: お堀越え
         seesaw_zone: シーソー
         slalom_zone: スラローム
         rope_zone: 縄跳び
         goal_zone: ふるさとゴール
+    game_detail21st:
+      progress:
+        start_zone: スタートゾーン
+        going_round: 大回転（パイロン）
+        crossing_a_mountain: 山越え（ハードル）
+        transforming: 変身（パフォーマンス）
+        bipedal_walking: ニ足歩行
+        goal: ゴール
     game_detail22nd:
       challenges:
         present_taking: プレゼントをとる（5点）

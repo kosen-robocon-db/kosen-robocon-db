@@ -30,7 +30,7 @@ class GameDetail1st < GameDetail
   end
 
   def self.compose_properties(hash:)
-    h = super(hash: hash) || {} # ロボットコードが無い時点で例外を出すべきだが・・・
+    h = super(hash: hash) || {}
     h.update(compose_time(hash: hash))
     h["memo"] = "#{hash[:memo]}" if hash[:memo].present?
     return h
@@ -41,7 +41,7 @@ class GameDetail1st < GameDetail
       if h["time"].present? then
         self.my_time_minute, self.my_time_second,
           self.opponent_time_minute, self.opponent_time_second =
-            h["time"].to_s.split(REX_T)
+            h["time"].to_s.split(DELIMITER_TIME_PAIR)
       end
       self.memo = h["memo"].presence || ''
     end

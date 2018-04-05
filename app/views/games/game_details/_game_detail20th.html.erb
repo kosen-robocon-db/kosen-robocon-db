@@ -1,93 +1,61 @@
 <%= f.hidden_field :id %>
 <%
-  flag_numbers    = option_numbers           end_number: 5
-  penalty_numbers = option_numbers           end_number: 5
-  retry_numbers   = option_numbers digit: 1, end_number: 1
-  vote_numbers    = option_numbers digit: 1, end_number: 5
+  flag_numbers      = option_numbers           end_number: 5
+  foul_numbers      = option_numbers           end_number: 5
+  retry_numbers     = option_numbers digit: 1, end_number: 1
+  interrupt_numbers = option_numbers digit: 1, end_number: 9
 %>
 <table>
+  <tr><td><%= label_tag "#{@robot.name}：" %></td></tr>
   <tr>
-    <td><%= f.label :my_flag, "#{@robot.name}の旗の数：" %></td>
+    <td><%= ("&nbsp;"*4).html_safe %>旗：</td>
     <td><%= f.select :my_flag, flag_numbers %>本</td>
-    <td>&nbsp;</td>
-    <td>反則回数<%= f.select :my_penalty, penalty_numbers %>回</td>
   </tr>
   <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td>合体<%= f.check_box :my_union,
+    <td><%= ("&nbsp;"*4).html_safe %>反則：</td>
+    <td><%= f.select :my_foul, foul_numbers %>回</td>
+  </tr>
+  <tr>
+    <td><%= ("&nbsp;"*4).html_safe %>合体：</td>
+    <td><%= f.check_box :my_union,
       { checked: f.object.my_union }, true, false %></td>
   </tr>
   <tr>
-    <td><%= f.label :opponent_flag, "対戦相手の旗の数：" %></td>
+    <td><%= ("&nbsp;"*4).html_safe %>リトライ：</td>
+    <td><%= f.select :my_retry, retry_numbers %>回</td>
+  </tr>
+  <%#########################################################################%>
+  <tr><td><%= label_tag "対戦相手：" %></td></tr>
+  <tr>
+    <td><%= ("&nbsp;"*4).html_safe %>旗：</td>
     <td><%= f.select :opponent_flag, flag_numbers %>本</td>
-    <td>&nbsp;</td>
-    <td>反則回数<%= f.select :opponent_penalty, penalty_numbers %>回</td>
   </tr>
   <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td>合体<%= f.check_box :opponent_union,
+    <td><%= ("&nbsp;"*4).html_safe %>反則：</td>
+    <td><%= f.select :opponent_foul, foul_numbers %>回</td>
+  </tr>
+  <tr>
+    <td><%= ("&nbsp;"*4).html_safe %>合体：</td>
+    <td><%= f.check_box :opponent_union,
       { checked: f.object.opponent_union }, true, false %></td>
   </tr>
-</table>
-<table>
   <tr>
-    <td><%= f.label :my_retry, "#{@robot.name}のリトライ：" %></td>
-    <td><%= f.select :my_retry, retry_numbers %>回</td>
-    </td>
-  </tr>
-  <tr>
-    <td><%= f.label :opponent_retry, "対戦相手のリトライ：" %></td>
+    <td><%= ("&nbsp;"*4).html_safe %>リトライ：</td>
     <td><%= f.select :opponent_retry, retry_numbers %>回</td>
-    </td>
   </tr>
 </table>
-<%= f.label :special_win, "大勝利：" %>
-<%= f.check_box :special_win, { checked: f.object.special_win }, true, false %>
 <br />
-<% if f.object.special_win %>
-<div class="special_win___nested_field_for_replace_with_index__">
-<% else %>
-<div class="special_win___nested_field_for_replace_with_index__ hidden">
-<% end %>
-  <table>
-    <tr>
-      <td><%= ("&nbsp;"*4).html_safe %></td>
-      <td><%= f.label :time_minute, "タイム：" %></td>
-      <td>
-        <%= f.select :time_minute, time_numbers %>分
-        <%= f.select :time_second, time_numbers %>秒
-      </td>
-    </tr>
-  </table>
-</div>
+<%= f.label :interrupt, "試合中断：" %>
+<%= f.select :interrupt, interrupt_numbers %>回
+<br />
+<%= render "games/game_details/common_parts/special_win", f: f,
+  special_win_name: "大勝利" %>
 <%= f.label :extra_time, "延長(60秒)：" %>
 <%= f.check_box :extra_time, { checked: f.object.extra_time }, true, false %>
 <br />
-<%= f.label :jury_votes, "審査員判定：" %>
-<%= f.check_box :jury_votes, {:checked => f.object.jury_votes}, true, false %>
+<%= render "games/game_details/common_parts/jury_votes", f: f,
+  juries_number: 5 %><%# 審査員判定 %>
 <br />
-<% if f.object.jury_votes %>
-<div class="jury_votes___nested_field_for_replace_with_index__">
-<% else %>
-<div class="jury_votes___nested_field_for_replace_with_index__ hidden">
-<% end %>
-  <table>
-    <tr>
-      <td><%= ("&nbsp;"*4).html_safe %></td>
-      <td><%= f.label :my_jury_votes, "#{@robot.name}への票数：" %></td>
-      <td><%= f.select :my_jury_votes, vote_numbers %></td>
-    </tr>
-    <tr>
-      <td><%= ("&nbsp;"*4).html_safe %></td>
-      <td><%= f.label :opponent_jury_votes, "対戦相手への票数：" %></td>
-      <td><%= f.select :opponent_jury_votes, vote_numbers %></td>
-    </tr>
-  </table>
-</div>
 <%= f.label :memo, "メモ：" %>
 <%= f.text_field :memo %><br />
 <br />

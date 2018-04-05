@@ -20,16 +20,27 @@ class GameDetail19th < GameDetail
 
   # my_robot_code側から見ているので、
   # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
-  STEMS = %w( robot_code retry progress jury_votes )
+  STEMS = %w( robot_code retry foul progress jury_votes )
 
-  REX_RT = /[0-1]|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_P  = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_VT = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
+  REX_RT = /\A([0-1]|#{UNKNOWN})\z/
+  REX_P  = /\A([0-5]|#{UNKNOWN})\z/
+  REX_F  = /\A([0-3]|#{UNKNOWN})\z/
+  REX_VT = /\A([0-5]|#{UNKNOWN})\z/
+
+  enum progress: {
+    start_zone:  0, # スタートゾーン
+    moat_zone:   1, # お堀越え（お堀の底に触れるとファウル）
+    seesaw_zone: 2, # シーソー（）
+    slalom_zone: 3, # スラローム（？）
+    rope_zone:   4, # 縄跳び（飛べなかったらやり直し？ゾーンからはみ出したら？）
+    goal_zone:   5  # ふるさとゴール
+  }
 
   # Vホールのように条件を満足すれば即勝利となったときの試合決着時間は
   # special_time_minute/secondとはせず、time_minute/secondとして
   # 他の試合決着時間を記録する大会の変数名と合わせている。
   attr_accessor :my_retry,      :opponent_retry
+  attr_accessor :my_foul,       :opponent_foul
   attr_accessor :progress
   attr_accessor :my_progress,   :opponent_progress
   attr_accessor :special_win, :time_minute, :time_second
@@ -39,6 +50,8 @@ class GameDetail19th < GameDetail
 
   validates :my_retry,              format: { with: REX_RT }
   validates :opponent_retry,        format: { with: REX_RT }
+  validates :my_foul,               format: { with: REX_F }
+  validates :opponent_foul,         format: { with: REX_F }
   with_options if: :progress do
     validates :my_progress,         format: { with: REX_P }
     validates :opponent_progress,   format: { with: REX_P }
@@ -57,6 +70,7 @@ class GameDetail19th < GameDetail
   def self.additional_attr_symbols
     [
       :my_retry,      :opponent_retry,
+      :my_foul,       :opponent_foul,
       :progress,
       :my_progress,   :opponent_progress,
       :special_win, :time_minute, :time_second,
@@ -66,32 +80,21 @@ class GameDetail19th < GameDetail
     ]
   end
 
-  enum progresses: {
-    start_zone:  0, # スタートゾーン
-    moat_zone:   1, # お堀越え（お堀の底に触れるとファウル）
-    seesaw_zone: 2, # シーソー（）
-    slalom_zone: 3, # スラローム（？）
-    rope_zone:   4, # 縄跳び（飛べなかったらやり直し？ゾーンからはみ出したら？）
-    goal_zone:   5  # ふるさとゴール
-  }
-
+  # 親クラスから子クラスのSTEM定数を参照するためのメソッド
   def stems
     STEMS
   end
 
+  # extra_timeなどのbooleanとnilの三種の値の入力を想定しているフォーム属性変数について
+  # trueかfalseかnilかをここで吟味すべきであるが、このproperties生成の後に実行される
+  # save/update直前のvalidationによって吟味されるので、有るか無しか(nil)かを吟味する
+  # だけにしている。他の数字や文字列が入力される属性も同様である。
   def self.compose_properties(hash:)
     h = compose_pairs(hash: hash, stems: STEMS)
     h.delete("progress")   unless hash["progress"].presence.to_bool
-    if
-      hash[:special_win].presence.to_bool and
-      hash[:time_minute].present? and
-      hash[:time_second].present?
-    then
-      h["special_win"] = "\
-        #{hash[:time_minute]}\
-        #{DELIMITER_TIME}\
-        #{hash[:time_second]}\
-      ".gsub(/(\s| )+/, '')
+    if hash[:special_win].presence.to_bool
+      h["special_win"] = "true"
+      h.update(compose_time(hash: hash)) # h["time"]
     end
     h.delete("jury_votes") unless hash["jury_votes"].presence.to_bool
     h["memo"] = "#{hash[:memo]}" if hash[:memo].present?
@@ -102,15 +105,17 @@ class GameDetail19th < GameDetail
     super(robot: robot) do |h|
       self.my_retry, self.opponent_retry =
         h["retry"].to_s.split(DELIMITER) if h["retry"].present?
+      self.my_foul, self.opponent_foul =
+        h["foul"].to_s.split(DELIMITER) if h["foul"].present?
       if h["progress"].present?
         self.progress = true
         self.my_progress, self.opponent_progress =
           h["progress"].to_s.split(DELIMITER)
       end
-      if h["special_win"].present?
+      if h["special_win"].present? and h["time"].present?
         self.special_win = true
         self.time_minute, self.time_second =
-          h["special_win"].to_s.split(DELIMITER_TIME)
+          h["time"].to_s.split(DELIMITER_TIME)
       end
       if h["jury_votes"].present?
         self.jury_votes = true

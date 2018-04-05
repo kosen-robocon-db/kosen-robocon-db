@@ -4,26 +4,40 @@ class GameDetail21st < GameDetail
   # リトライ
   #   宣言すると、競技を行っていた一つ前のゾーンから競技再開
   # 課題達成度(prgress)
-  #   0:不明, 1:スタート地点, 2:多足歩行ゾーン, 3:パイロン回り完了,
-  #   4:ハードル（山）越え中、5:変身ゾーン, 6:変身パフォーマンス完了,
-  #   7:2足歩行ゾーン（スラローム）, 8:ゴール
+  #   0:スタートゾーン
+  #   1:大回転（パイロン）
+  #   2:山越え（ハードル）
+  #   3:変身（パフォーマンス）
+  #   4:ニ足歩行
+  #   5:ゴール
   # 勝敗
   #   先にゴールした方が勝ち。
   #   両チームゴールできなかった場合は課題が進んでいる方の勝ち。
   #   両チームがこなした課題が同じ場合は審査員判定。（地区3名、全国？名）
+  #   全国大会で予選があり、負けてもそのまま試合を続行してゴール時間を計測。
 
   # my_robot_code側から見ているので、
   # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
-  STEMS = %w( robot_code time_minute time_second penalty retry progress
+  STEMS = %w( robot_code time_minute time_second foul retry progress
     jury_votes )
 
-  REX_P  = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_RT = /[0-9]|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_VT = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
+  REX_F  = /\A([0-5]|#{UNKNOWN})\z/
+  REX_RT = /\A([0-9]|#{UNKNOWN})\z/
+  REX_P  = /\A([0-5]|#{UNKNOWN})\z/
+  REX_VT = /\A([0-5]|#{UNKNOWN})\z/
+
+  enum progress: {
+    start_zone:          0, # スタートゾーン
+    going_round:         1, # 大回転（パイロン）
+    crossing_a_mountain: 2, # 山越え（ハードル）
+    transforming:        3, # 変身（パフォーマンス）
+    bipedal_walking:     4, # ニ足歩行
+    goal:                5  # ゴール
+  }
 
   attr_accessor :my_time_minute, :opponent_time_minute
   attr_accessor :my_time_second, :opponent_time_second
-  attr_accessor :my_penalty,     :opponent_penalty
+  attr_accessor :my_foul,        :opponent_foul
   attr_accessor :my_retry,       :opponent_retry
   attr_accessor :progress
   attr_accessor :my_progress,    :opponent_progress
@@ -35,8 +49,8 @@ class GameDetail21st < GameDetail
   validates :opponent_time_minute,  format: { with: REX_MS }
   validates :my_time_second,        format: { with: REX_MS }
   validates :opponent_time_second,  format: { with: REX_MS }
-  validates :my_penalty,            format: { with: REX_P }
-  validates :opponent_penalty,      format: { with: REX_P }
+  validates :my_foul,               format: { with: REX_F }
+  validates :opponent_foul,         format: { with: REX_F }
   validates :my_retry,              format: { with: REX_RT }
   validates :opponent_retry,        format: { with: REX_RT }
   with_options if: :progress do
@@ -54,7 +68,7 @@ class GameDetail21st < GameDetail
     [
       :my_time_minute, :opponent_time_minute,
       :my_time_second, :opponent_time_second,
-      :my_penalty,     :opponent_penalty,
+      :my_foul,        :opponent_foul,
       :my_retry,       :opponent_retry,
       :progress,
       :my_progress,    :opponent_progress,
@@ -64,14 +78,20 @@ class GameDetail21st < GameDetail
     ]
   end
 
+  # DBにカラムはないがpropertyに納めたいフォーム上の属性
   def stems
     STEMS
   end
 
+  # extra_timeなどのbooleanとnilの三種の値の入力を想定しているフォーム属性変数について
+  # trueかfalseかnilかをここで吟味すべきであるが、このproperties生成の後に実行される
+  # save/update直前のvalidationによって吟味されるので、有るか無しか(nil)かを吟味する
+  # だけにしている。他の数字や文字列が入力される属性も同様である。
   def self.compose_properties(hash:)
-    h = compose_pairs(hash: hash, stems: %w( robot_code penalty retry progress
-      jury_votes )
+    h = super(hash: hash) || {} # robot_code
     h.update(compose_time(hash: hash))
+    h.update(compose_pairs(hash: hash,
+      stems: %w( foul retry progress jury_votes )))
     h.delete("progress")   unless hash["progress"].presence.to_bool
     h.delete("jury_votes") unless hash["jury_votes"].presence.to_bool
     h["memo"] = "#{hash[:memo]}" if hash[:memo].present?
@@ -80,14 +100,14 @@ class GameDetail21st < GameDetail
 
   def decompose_properties(robot:)
     super(robot: robot) do |h|
-      if h["time"].present? then
+      if h["time"].present?
         self.my_time_minute, self.my_time_second,
           self.opponent_time_minute, self.opponent_time_second =
-            h["time"].to_s.split(REX_T)
+            h["time"].to_s.split(DELIMITER_TIME_PAIR)
       end
-      if h["penalty"].present?
-        self.my_penalty, self.opponent_penalty =
-          h["penalty"].to_s.split(DELIMITER)
+      if h["foul"].present?
+        self.my_foul, self.opponent_foul =
+          h["foul"].to_s.split(DELIMITER)
       end
       if h["retry"].present?
         self.my_retry, self.opponent_retry =
