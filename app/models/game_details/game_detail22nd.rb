@@ -20,9 +20,22 @@ class GameDetail22nd < GameDetail
   # ロボットコードが異なる場合は交換したい左右の値の語幹を書いておく
   STEMS = %w( robot_code challenges gaining_point retry jury_votes )
 
-  REX_GPT = /\A(\d{,1}(0|5))\z|\A100\z|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_RT  = /[0-9]|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_VT  = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
+  REX_GPT = /\A([1-9]{,1}(0|5)|100|#{UNKNOWN})\z/
+  REX_RT  = /\A([0-9]|#{UNKNOWN})\z/
+  REX_VT  = /\A([0-5]|#{UNKNOWN})\z/
+
+  enum challenge: {
+    present_taking:         1, # プレゼントをとる　　　（ 5点）
+    present_giving:         2, # プレゼントを渡す　　　（ 5点）
+    pair_dancing:           3, # ペアダンス　　　　　　（10点）
+    pole_turning:           4, # ポールターン　　　　　（10点）
+    synchronous_spining:    5, # シンクロスピン　　　　（10点）
+    lifting:                6, # リフト　　　　　　　　（10点）
+    jumping_while_rolling:  7, # ローリングジャンプ回転（20点）
+    landing_after_jumping:  8, # ローリングジャンプ着地（10点）
+    star_staging:           9, # スターステージ　　　　（10点）
+    star_coupling:         10  # スターカップル　　　　（10点）
+  }
 
   attr_accessor :my_challenges,    :opponent_challenges
   attr_accessor :my_gaining_point, :opponent_gaining_point
@@ -41,19 +54,6 @@ class GameDetail22nd < GameDetail
   end
   validates :memo, length: { maximum: MEMO_LEN }
 
-  enum challenges: {
-    present_taking:         1, # プレゼントをとる　　　（ 5点）
-    present_giving:         2, # プレゼントを渡す　　　（ 5点）
-    pair_dancing:           3, # ペアダンス　　　　　　（10点）
-    pole_turning:           4, # ポールターン　　　　　（10点）
-    synchronous_spining:    5, # シンクロスピン　　　　（10点）
-    lifting:                6, # リフト　　　　　　　　（10点）
-    jumping_while_rolling:  7, # ローリングジャンプ回転（20点）
-    landing_after_jumping:  8, # ローリングジャンプ着地（10点）
-    star_staging:           9, # スターステージ　　　　（10点）
-    star_coupling:         10  # スターカップル　　　　（10点）
-  }
-
   # DBにカラムはないがpropertyに納めたいフォーム上の属性
   def self.additional_attr_symbols
     [
@@ -66,10 +66,15 @@ class GameDetail22nd < GameDetail
     ]
   end
 
+  # 親クラスから子クラスのSTEM定数を参照するためのメソッド
   def stems
     STEMS
   end
 
+  # extra_timeなどのbooleanとnilの三種の値の入力を想定しているフォーム属性変数について
+  # trueかfalseかnilかをここで吟味すべきであるが、このproperties生成の後に実行される
+  # save/update直前のvalidationによって吟味されるので、有るか無しか(nil)かを吟味する
+  # だけにしている。他の数字や文字列が入力される属性も同様である。
   def self.compose_properties(hash:)
     hash[:my_challenges]       = self.encode(hash[:my_challenges])
     hash[:opponent_challenges] = self.encode(hash[:opponent_challenges])
@@ -87,10 +92,11 @@ class GameDetail22nd < GameDetail
       end
       if h["gaining_point"].present?
         self.my_gaining_point, self.opponent_gaining_point =
-          h["gaining_point"].to_s.split(REX_SC)[1..-1]
+          h["gaining_point"].to_s.split(DELIMITER)
       end
-      self.my_retry, self.opponent_retry =
-        h["retry"].to_s.split(DELIMITER) if h["retry"].present?
+      if h["retry"].present?
+        self.my_retry, self.opponent_retry = h["retry"].to_s.split(DELIMITER)
+      end
       if h["jury_votes"].present?
         self.jury_votes = true
         self.my_jury_votes, self.opponent_jury_votes =

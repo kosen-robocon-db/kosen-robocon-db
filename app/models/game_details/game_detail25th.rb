@@ -7,7 +7,7 @@ class GameDetail25th < GameDetail
   #   何回まで？
   # 審査員判定
   #   地区3名、全国？名
-  # 反則
+  # 反則(foul)
   #   反則があれば・・・どうなるの？反則で後ろに下がったチームがあったが
   # 準決勝からレインボーゴールが増えて配置が変る
   # 1回戦は3分間またはパーフェクトするまで試合を続ける。
@@ -15,12 +15,12 @@ class GameDetail25th < GameDetail
   # my_robot_code側から見ているので、
   # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
   STEMS = %w( robot_code gaining_point time_minute time_second special_win
-    penalty retry jury_votes )
+    foul retry jury_votes )
 
-  REX_GPT = /[0-9]|1[0-8]|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_PN  = /[0-9]|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_RT  = /[0-9]|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_VT  = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
+  REX_GPT = /\A([0-9]|1[0-8]|#{UNKNOWN})\z/
+  REX_F   = /\A([0-9]|#{UNKNOWN})\z/
+  REX_RT  = /\A([0-9]|#{UNKNOWN})\z/
+  REX_VT  = /\A([0-5]|#{UNKNOWN})\z/
 
   # Vホールのように条件を満足すれば即勝利となったときの試合決着時間は
   # special_time_minute/secondとはせず、time_minute/secondとして
@@ -29,7 +29,7 @@ class GameDetail25th < GameDetail
   attr_accessor :my_special_win,   :opponent_special_win
   attr_accessor :my_time_minute,   :opponent_time_minute
   attr_accessor :my_time_second,   :opponent_time_second
-  attr_accessor :my_penalty,       :opponent_penalty
+  attr_accessor :my_foul,          :opponent_foul
   attr_accessor :my_retry,         :opponent_retry
   attr_accessor :jury_votes
   attr_accessor :my_jury_votes,    :opponent_jury_votes
@@ -43,8 +43,8 @@ class GameDetail25th < GameDetail
   validates :opponent_time_second,   format: { with: REX_MS }
   validates :my_special_win,       inclusion: { in: [ "true", "false", nil ] }
   validates :opponent_special_win, inclusion: { in: [ "true", "false", nil ] }
-  validates :my_penalty,             format: { with: REX_PN }
-  validates :opponent_penalty,       format: { with: REX_PN }
+  validates :my_foul,                format: { with: REX_F }
+  validates :opponent_foul,          format: { with: REX_F }
   validates :my_retry,               format: { with: REX_RT }
   validates :opponent_retry,         format: { with: REX_RT }
   with_options if: :jury_votes do
@@ -60,7 +60,7 @@ class GameDetail25th < GameDetail
       :my_time_minute,   :opponent_time_minute,
       :my_time_second,   :opponent_time_second,
       :my_special_win,   :opponent_special_win,
-      :my_penalty,       :opponent_penalty,
+      :my_foul,          :opponent_foul,
       :my_retry,         :opponent_retry,
       :jury_votes,
       :my_jury_votes,    :opponent_jury_votes,
@@ -68,29 +68,34 @@ class GameDetail25th < GameDetail
     ]
   end
 
+  # 親クラスから子クラスのSTEM定数を参照するためのメソッド
   def stems
     STEMS
   end
 
+  # extra_timeなどのbooleanとnilの三種の値の入力を想定しているフォーム属性変数について
+  # trueかfalseかnilかをここで吟味すべきであるが、このproperties生成の後に実行される
+  # save/update直前のvalidationによって吟味されるので、有るか無しか(nil)かを吟味する
+  # だけにしている。他の数字や文字列が入力される属性も同様である。
   def self.compose_properties(hash:)
     if # compose_pairsで拾えないspecial_winのケースに対応。どちらも無ければ必要なし。
       hash[:my_special_win].present? and
       hash[:opponent_special_win].blank?
     then
       hash[:opponent_special_win] = "false"
-      hash[:opponent_time_minute] = "#{GameDetail::Constant::UNKNOWN_VALUE}"
-      hash[:opponent_time_second] = "#{GameDetail::Constant::UNKNOWN_VALUE}"
+      hash[:opponent_time_minute] = "#{UNKNOWN}"
+      hash[:opponent_time_second] = "#{UNKNOWN}"
     end
     if # compose_pairsで拾えないspecial_winのケースに対応。どちらも無ければ必要なし。
       hash[:my_special_win].blank? and
       hash[:opponent_special_win].present?
     then
       hash[:my_special_win] = "false"
-      hash[:my_time_minute] = "#{GameDetail::Constant::UNKNOWN_VALUE}"
-      hash[:my_time_second] = "#{GameDetail::Constant::UNKNOWN_VALUE}"
+      hash[:my_time_minute] = "#{UNKNOWN}"
+      hash[:my_time_second] = "#{UNKNOWN}"
     end
     h = compose_pairs(hash: hash,
-      stems: %w(robot_code gaining_point special_win penalty retry jury_votes))
+      stems: %w(robot_code gaining_point special_win foul retry jury_votes))
     h.update(compose_time(hash: hash))
     h.delete("jury_votes") unless hash["jury_votes"].presence.to_bool
     h["memo"] = "#{hash[:memo]}" if hash[:memo].present?
@@ -101,20 +106,20 @@ class GameDetail25th < GameDetail
     super(robot: robot) do |h|
       if h["gaining_point"].present?
         self.my_gaining_point, self.opponent_gaining_point =
-          h["gaining_point"].to_s.split(REX_SC)[1..-1]
+          h["gaining_point"].to_s.split(DELIMITER)
       end
       if h["time"].present? then
         self.my_time_minute, self.my_time_second,
           self.opponent_time_minute, self.opponent_time_second =
-            h["time"].to_s.split(REX_T)
+            h["time"].to_s.split(DELIMITER_TIME_PAIR)
       end
       if h["special_win"].present?
         self.my_special_win, self.opponent_special_win =
           h["special_win"].to_s.split(DELIMITER).map{ |x| x.to_bool }
       end
-      if h["penalty"].present?
-        self.my_penalty, self.opponent_penalty =
-          h["penalty"].to_s.split(DELIMITER)
+      if h["foul"].present?
+        self.my_foul, self.opponent_foul =
+          h["foul"].to_s.split(DELIMITER)
       end
       if h["retry"].present?
         self.my_retry, self.opponent_retry =

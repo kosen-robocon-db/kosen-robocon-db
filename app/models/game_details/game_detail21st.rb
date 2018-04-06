@@ -78,7 +78,7 @@ class GameDetail21st < GameDetail
     ]
   end
 
-  # DBにカラムはないがpropertyに納めたいフォーム上の属性
+  # 親クラスから子クラスのSTEM定数を参照するためのメソッド
   def stems
     STEMS
   end

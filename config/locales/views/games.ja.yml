@@ -43,7 +43,7 @@ ja:
         bipedal_walking: ニ足歩行
         goal: ゴール
     game_detail22nd:
-      challenges:
+      challenge:
         present_taking: プレゼントをとる（5点）
         present_giving: プレゼントを渡す（5点）
         pair_dancing: ペアダンス（10点）
@@ -55,23 +55,23 @@ ja:
         star_staging: スターステージ（10点）
         star_coupling: スターカップル（10点）
     game_detail23rd:
-      progresses:
+      progress:
         start_zone: スタートゾーン
         walking_zone: 二足歩行ゾーン
         connecting_zone: 連結ゾーン
         inserting_zone: 鍵穴ゾーン
         goal_zone: ゴール
     game_detail26th:
-      progresses:
+      progress:
         start: スタートゾーン
-        jump_rope_1st: 第1ロボット二回縄跳び
-        jump_rope_2nd: 第2ロボット二回縄跳び
-        jump_rope_3rd: 第3ロボット二回縄跳び
+        first_jump_rope: 第1ロボット二回縄跳び
+        second_jump_rope: 第2ロボット二回縄跳び
+        third_jump_rope: 第3ロボット二回縄跳び
         turn_around: 折り返し
         human_robot_jump_rope: 人間・ロボットの縄跳び
         consecutive_jump_rope: 連続縄跳びジャンプ
     game_detail29th:
-      progresses:
+      progress:
         lighthouse_building: 灯台建築
         departure: 出港
         island_landing: 島上陸

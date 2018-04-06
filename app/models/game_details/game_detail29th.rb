@@ -29,43 +29,16 @@ class GameDetail29th < GameDetail
 
   # my_robot_code側から見ているので、
   # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
-  STEMS = %w( robot_code gaining_point retry penalty progress jury_votes )
+  STEMS = %w( robot_code gaining_point retry foul progress jury_votes )
 
   UNKNOWN = GameDetail::Constant::UNKNOWN_VALUE
 
-  REX_RT = /\A[0-9]\z|\A#{UNKNOWN}\z/
-  REX_PN = /\A[0-5]\z|\A#{UNKNOWN}\z/
-  REX_VT = /\A[0-5]\z|\A#{UNKNOWN}\z/
+  REX_GPT = /\A([1-9][0-9]{,2}|0|#{UNKNOWN})\z/
+  REX_RT  = /\A([0-9]|#{UNKNOWN})\z/
+  REX_F   = /\A([0-5]|#{UNKNOWN})\z/
+  REX_VT  = /\A([0-5]|#{UNKNOWN})\z/
 
-  # hight -> gaining_point に変更
-  attr_accessor :my_gaining_point, :opponent_gaining_point
-  attr_accessor :my_retry,         :opponent_retry
-  attr_accessor :my_penalty,       :opponent_penalty
-  attr_accessor :progress
-  attr_accessor :my_progress,      :opponent_progress
-  attr_accessor :jury_votes
-  attr_accessor :my_jury_votes,    :opponent_jury_votes
-  attr_accessor :memo
-
-  validates :my_gaining_point,       numericality: {
-    only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 1000
-  }
-  validates :opponent_gaining_point, numericality: {
-    only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 1000
-  }
-  validates :my_retry,              format: { with: REX_RT }
-  validates :opponent_retry,        format: { with: REX_RT }
-  validates :my_penalty,            format: { with: REX_PN }
-  validates :opponent_penalty,      format: { with: REX_PN }
-  validates :progress,   inclusion: { in: [ "true", "false", nil ] }
-  validates :jury_votes, inclusion: { in: [ "true", "false", nil ] }
-  with_options if: :jury_votes do
-    validates :my_jury_votes,       format: { with: REX_VT }
-    validates :opponent_jury_votes, format: { with: REX_VT }
-  end
-  validates :memo, length: { maximum: MEMO_LEN }
-
-  enum progresses: {
+  enum progress: {
     lighthouse_building: 1, # 灯台建築
     departure:           2, # 出港
     island_landing:      3, # 島上陸
@@ -74,12 +47,36 @@ class GameDetail29th < GameDetail
     fort_symbol_setting: 6  # 砦建築（シンボル乗せて完成）
   }
 
+  # hight -> gaining_point に変更
+  attr_accessor :my_gaining_point, :opponent_gaining_point
+  attr_accessor :my_retry,         :opponent_retry
+  attr_accessor :my_foul,          :opponent_foul
+  attr_accessor :progress
+  attr_accessor :my_progress,      :opponent_progress
+  attr_accessor :jury_votes
+  attr_accessor :my_jury_votes,    :opponent_jury_votes
+  attr_accessor :memo
+
+  validates :my_gaining_point,       format: { with: REX_GPT }
+  validates :opponent_gaining_point, format: { with: REX_GPT }
+  validates :my_retry,               format: { with: REX_RT }
+  validates :opponent_retry,         format: { with: REX_RT }
+  validates :my_foul,                format: { with: REX_F }
+  validates :opponent_foul,          format: { with: REX_F }
+  validates :progress,   inclusion: { in: [ "true", "false", nil ] }
+  validates :jury_votes, inclusion: { in: [ "true", "false", nil ] }
+  with_options if: :jury_votes do
+    validates :my_jury_votes,        format: { with: REX_VT }
+    validates :opponent_jury_votes,  format: { with: REX_VT }
+  end
+  validates :memo, length: { maximum: MEMO_LEN }
+
   # DBにはないがpropertyに納めたいフォーム上の属性
   def self.additional_attr_symbols
     [
       :my_gaining_point,        :opponent_gaining_point,
       :my_retry,                :opponent_retry,
-      :my_penalty,              :opponent_penalty,
+      :my_foul,                 :opponent_foul,
       :progress,
       { :my_progress => [] }, { :opponent_progress => [] },
       :jury_votes,
@@ -88,13 +85,18 @@ class GameDetail29th < GameDetail
     ]
   end
 
+  # 親クラスから子クラスのSTEM定数を参照するためのメソッド
   def stems
     STEMS
   end
 
+  # extra_timeなどのbooleanとnilの三種の値の入力を想定しているフォーム属性変数について
+  # trueかfalseかnilかをここで吟味すべきであるが、このproperties生成の後に実行される
+  # save/update直前のvalidationによって吟味されるので、有るか無しか(nil)かを吟味する
+  # だけにしている。他の数字や文字列が入力される属性も同様である。
   def self.compose_properties(hash:)
     h = compose_pairs(hash: hash, stems: %w(robot_code gaining_point retry
-      penalty jury_votes))
+      foul))
     if hash["progress"].present? # エンコードしなければならないため
       h["progress"] = "\
         #{self.encode(hash[:my_progress])}\
@@ -102,6 +104,7 @@ class GameDetail29th < GameDetail
         #{self.encode(hash[:opponent_progress])}\
       ".gsub(/(\s| )+/, '')
     end
+    h.update(compose_pairs(hash: hash, stems: %w( jury_votes )))
     h.delete("jury_votes") unless hash["jury_votes"].presence.to_bool
     h["memo"] = "#{hash[:memo]}" if hash[:memo].present?
     return h
@@ -117,9 +120,9 @@ class GameDetail29th < GameDetail
         self.my_retry, self.opponent_retry =
           h["retry"].to_s.split(DELIMITER)
       end
-      if h["penalty"].present?
-        self.my_penalty, self.opponent_penalty =
-          h["penalty"].to_s.split(DELIMITER)
+      if h["foul"].present?
+        self.my_foul, self.opponent_foul =
+          h["foul"].to_s.split(DELIMITER)
       end
       if h["progress"].present?
         self.progress = true

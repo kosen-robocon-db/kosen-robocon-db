@@ -2,12 +2,6 @@
 <%
   foul_numbers  = option_numbers           end_number: 5
   retry_numbers = option_numbers digit: 1, end_number: 9
-  progress_options = Array.new([["--", GameDetail::UNKNOWN]])
-  GameDetail21st.progresses.each do |key, value|
-    progress_options.concat(Array.new([[
-      GameDetail21st.progresses_i18n[key], value
-    ]]))
-  end
 %>
 <table>
   <tr><td><%= label_tag "#{@robot.name}：" %></td></tr>

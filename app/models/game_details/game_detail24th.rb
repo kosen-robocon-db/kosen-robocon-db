@@ -12,20 +12,28 @@ class GameDetail24th < GameDetail
   STEMS = %w( robot_code time_minute time_second ball_touch intercept retry
      jury_votes )
 
-  REX_BT = /[0-9]|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_IN = /[0-3]|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_RT = /[0-9]|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_VT = /[0-3]|#{GameDetail::Constant::UNKNOWN_VALUE}/
+  REX_BT = /\A([0-9]|#{UNKNOWN})\z/
+  REX_IN = /\A([0-3]|#{UNKNOWN})\z/
+  REX_RT = /\A([0-9]|#{UNKNOWN})\z/
+  REX_VT = /\A([0-3]|#{UNKNOWN})\z/
 
+  # enum play_order: {
+  #   my:       1,
+  #   opponent: 2
+  # }
+
+  # attr_accessor :play_first
   attr_accessor :my_time_minute, :opponent_time_minute
   attr_accessor :my_time_second, :opponent_time_second
   attr_accessor :my_ball_touch,  :opponent_ball_touch
   attr_accessor :my_intercept,   :opponent_intercept
   attr_accessor :my_retry,       :opponent_retry
-  attr_accessor :jury_votes,
+  attr_accessor :jury_votes
   attr_accessor :my_jury_votes,  :opponent_jury_votes
   attr_accessor :memo
 
+  # validates :play_first,
+  #   inclusion: { in: GameDetail24th.play_orders.values.map{ |i| i.to_s } }
   validates :my_time_minute,        format: { with: REX_MS }
   validates :my_time_second,        format: { with: REX_MS }
   validates :opponent_time_minute,  format: { with: REX_MS }
@@ -45,6 +53,7 @@ class GameDetail24th < GameDetail
   # DBにカラムはないがpropertyに納めたいフォーム上の属性
   def self.additional_attr_symbols
     [
+      # :play_first,
       :my_time_minute, :opponent_time_minute,
       :my_time_second, :opponent_time_second,
       :my_ball_touch,  :opponent_ball_touch,
@@ -56,14 +65,24 @@ class GameDetail24th < GameDetail
     ]
   end
 
+  # 親クラスから子クラスのSTEM定数を参照するためのメソッド
   def stems
     STEMS
   end
 
+  # extra_timeなどのbooleanとnilの三種の値の入力を想定しているフォーム属性変数について
+  # trueかfalseかnilかをここで吟味すべきであるが、このproperties生成の後に実行される
+  # save/update直前のvalidationによって吟味されるので、有るか無しか(nil)かを吟味する
+  # だけにしている。他の数字や文字列が入力される属性も同様である。
   def self.compose_properties(hash:)
-    h = compose_pairs(hash: hash, stems: %w( robot_code ball_touch intercept
-      retry jury_votes ))
+    h = super(hash: hash) || {} # robot_code
+    # case hash["play_first"].to_i
+    # when play_orders[:my]       then h["play_first"] = "1st-2nd"
+    # when play_orders[:opponent] then h["play_first"] = "2nd-1st"
+    # end
     h.update(compose_time(hash: hash))
+    h.update(compose_pairs(hash: hash, stems: %w( ball_touch intercept retry
+      jury_votes )))
     h.delete("jury_votes") unless hash["jury_votes"].presence.to_bool
     h["memo"] = "#{hash[:memo]}" if hash[:memo].present?
     return h
@@ -71,10 +90,10 @@ class GameDetail24th < GameDetail
 
   def decompose_properties(robot:)
     super(robot: robot) do |h|
-      if h["time"].present? then
+      if h["time"].present?
         self.my_time_minute, self.my_time_second,
           self.opponent_time_minute, self.opponent_time_second =
-            h["time"].to_s.split(REX_T)
+            h["time"].to_s.split(DELIMITER_TIME_PAIR)
       end
       if h["ball_touch"].present?
         self.my_ball_touch, self.opponent_ball_touch =
@@ -95,6 +114,21 @@ class GameDetail24th < GameDetail
       end
       self.memo = h["memo"].presence || ''
     end
+
+    # # 将来的には、AJAXで*_play_firstの状態を共用し、
+    # # 上記の属性のように一緒に処理できるようにしたいが、現状はこうして対処。
+    # if h["play_first"].present?
+    #   ord = h["play_first"].to_s.split(DELIMITER)
+    #   if    ord[0] == "1st" and not @swapped
+    #     self.play_first = play_order[:my].to_s
+    #   elsif ord[0] == "2nd" and not @swapped
+    #     self.play_first = play_order[:opponent].to_s
+    #   elsif ord[0] == "1st" and     @swapped
+    #     self.play_first = play_order[:opponent].to_s
+    #   elsif ord[0] == "2nd" and     @swapped
+    #     self.play_first = play_order[:my].to_s
+    #   end
+    # end
   end
 
 end

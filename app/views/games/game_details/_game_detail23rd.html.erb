@@ -1,75 +1,41 @@
 <%= f.hidden_field :id %>
 <%
-  progress_options = Array.new([["--", GameDetail::Constant::UNKNOWN_VALUE]])
-  GameDetail23rd.progresses.each do |key, value|
-    progress_options.concat(Array.new([[
-        GameDetail23rd.progresses_i18n[key], value
-    ]]))
-  end
-  retry_numbers   = option_numbers digit: 1, end_number: 9
-  vote_numbers    = option_numbers digit: 1, end_number: 5
+  retry_numbers = option_numbers digit: 1, end_number: 9
 %>
-
-<table>
+<%= label_tag "#{@robot.name}：" %>
+<table style="margin-left: 10px;">
   <tr>
-    <td><%= f.label :my_progress, "#{@robot.name}の課題達成度：" %></td>
-    <td><%= f.select :my_progress, progress_options %></td>
-  </tr>
-  <tr>
-    <td><%= f.label :opponent_progress, "対戦相手の課題達成度：" %></td>
-    <td><%= f.select :opponent_progress, progress_options %></td>
-  </tr>
-</table>
-
-<table>
-  <tr>
-    <td><%= f.label :my_time, "#{@robot.name}のタイム：" %></td>
+    <td>タイム：</td>
     <td>
       <%= f.select :my_time_minute, time_numbers %>分
       <%= f.select :my_time_second, time_numbers %>秒
     </td>
   </tr>
   <tr>
-    <td><%= f.label :opponent_time, "対戦相手のタイム：" %></td>
+    <td>リトライ：</td>
+    <td><%= f.select :my_retry, retry_numbers %>回</td>
+  </tr>
+</table>
+  <%#########################################################################%>
+<%= label_tag "対戦相手：" %>
+<table style="margin-left: 10px;">
+  <tr>
+    <td>タイム：</td>
     <td>
       <%= f.select :opponent_time_minute, time_numbers %>分
       <%= f.select :opponent_time_second, time_numbers %>秒
     </td>
   </tr>
-</table>
-<table>
   <tr>
-    <td><%= f.label :my_retry, "#{@robot.name}のリトライ：" %></td>
-    <td><%= f.select :my_retry, retry_numbers %>回</td>
-    </td>
-  </tr>
-  <tr>
-    <td><%= f.label :opponent_retry, "対戦相手のリトライ：" %></td>
+    <td>リトライ：</td>
     <td><%= f.select :opponent_retry, retry_numbers %>回</td>
-    </td>
   </tr>
 </table>
-<%= f.label :jury_votes, "審査員判定：" %>
-<%= f.check_box :jury_votes, {:checked => f.object.jury_votes}, true, false %>
+<%= render "games/game_details/common_parts/progress", f: f,
+  klass: GameDetail23rd %>
+<%= render "games/game_details/common_parts/jury_votes", f: f,
+  juries_number: 5 %><%# 審査員判定 %>
 <br />
-<% if f.object.jury_votes %>
-<div class="jury_votes___nested_field_for_replace_with_index__">
-<% else %>
-<div class="jury_votes___nested_field_for_replace_with_index__ hidden">
-<% end %>
-  <table>
-    <tr>
-      <td><%= ("&nbsp;"*4).html_safe %></td>
-      <td><%= f.label :my_jury_votes, "#{@robot.name}への票数：" %></td>
-      <td><%= f.select :my_jury_votes, vote_numbers %></td>
-    </tr>
-    <tr>
-      <td><%= ("&nbsp;"*4).html_safe %></td>
-      <td><%= f.label :opponent_jury_votes, "対戦相手への票数：" %></td>
-      <td><%= f.select :opponent_jury_votes, vote_numbers %></td>
-    </tr>
-  </table>
-</div>
 <%= f.label :memo, "メモ：" %>
 <%= f.text_field :memo %><br />
 <br />

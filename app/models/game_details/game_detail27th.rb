@@ -12,7 +12,7 @@ class GameDetail27th < GameDetail
   #   仮にそうであれば途中の障害の進捗度を克服できることは当たり前なので
   #   態々入力する必要はないと判断する。
   #   ただ、地区大会によっては両チームとも得点できず進んだ位置で審査員判断されたと
-  #   目される試合がある。
+  #   目される試合がある。それはメモに記すべき。
   # 勝敗
   #   蒸籠を運んだ枚数が多い方が勝ち
   #   蒸籠の枚数が同数の場合は審査員判定（地区3名、全国5名）
@@ -29,16 +29,15 @@ class GameDetail27th < GameDetail
 
   # my_robot_code側から見ているので、
   # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
-  STEMS = %w( robot_code number_of_order gaining_point retry steamer_fall
-    jury_votes )
+  STEMS = %w( robot_code delivered gaining_point retry steamer_fall jury_votes )
 
-  REX_ODR = /\A[0-3]\z|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_GPT = /\A[1-4]{,1}[0-9]\z|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_RT  = /\A[0-9]\z|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_SF  = /\A[0-9]\z|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_VT  = /\A[0-5]\z|#{GameDetail::Constant::UNKNOWN_VALUE}/
+  REX_DLV = /\A([0-3]|#{UNKNOWN})\z/
+  REX_GPT = /\A([1-4]{,1}[0-9]|#{UNKNOWN})\z/
+  REX_RT  = /\A([0-9]|#{UNKNOWN})\z/
+  REX_SF  = /\A([0-9]|#{UNKNOWN})\z/
+  REX_VT  = /\A([0-5]|#{UNKNOWN})\z/
 
-  attr_accessor :my_number_of_order, :opponent_number_of_order
+  attr_accessor :my_delivered, :opponent_delivered
   attr_accessor :my_gaining_point,   :opponent_gaining_point
   attr_accessor :my_retry,           :opponent_retry
   attr_accessor :my_steamer_fall,    :opponent_steamer_fall
@@ -46,8 +45,8 @@ class GameDetail27th < GameDetail
   attr_accessor :my_jury_votes,      :opponent_jury_votes
   attr_accessor :memo
 
-  validates :my_number_of_order,       format: { with: REX_ODR }
-  validates :opponent_number_of_order, format: { with: REX_ODR }
+  validates :my_delivered,       format: { with: REX_DLV }
+  validates :opponent_delivered, format: { with: REX_DLV }
   validates :my_gaining_point,         format: { with: REX_GPT }
   validates :opponent_gaining_point,   format: { with: REX_GPT }
   validates :my_retry,                 format: { with: REX_RT }
@@ -63,20 +62,25 @@ class GameDetail27th < GameDetail
   # DBにカラムはないがpropertyに納めたいフォーム上の属性
   def self.additional_attr_symbols
     [
-      :my_number_of_order, :opponent_number_of_order,
-      :my_gaining_point,   :opponent_gaining_point,
-      :my_retry,           :opponent_retry,
-      :my_steamer_fall,    :opponent_steamer_fall,
+      :my_delivered,     :opponent_delivered,
+      :my_gaining_point, :opponent_gaining_point,
+      :my_retry,         :opponent_retry,
+      :my_steamer_fall,  :opponent_steamer_fall,
       :jury_votes,
-      :my_jury_votes,      :opponent_jury_votes,
+      :my_jury_votes,    :opponent_jury_votes,
       :memo
     ]
   end
 
+  # 親クラスから子クラスのSTEM定数を参照するためのメソッド
   def stems
     STEMS
   end
 
+  # extra_timeなどのbooleanとnilの三種の値の入力を想定しているフォーム属性変数について
+  # trueかfalseかnilかをここで吟味すべきであるが、このproperties生成の後に実行される
+  # save/update直前のvalidationによって吟味されるので、有るか無しか(nil)かを吟味する
+  # だけにしている。他の数字や文字列が入力される属性も同様である。
   def self.compose_properties(hash:)
     h = compose_pairs(hash: hash, stems: STEMS)
     h.delete("jury_votes") unless hash["jury_votes"].presence.to_bool
@@ -86,13 +90,13 @@ class GameDetail27th < GameDetail
 
   def decompose_properties(robot:)
     super(robot: robot) do |h|
-      if h["number_of_order"].present?
-        self.my_number_of_order, self.opponent_number_of_order =
-          h["number_of_order"].to_s.split(DELIMITER)
+      if h["delivered"].present?
+        self.my_delivered, self.opponent_delivered =
+          h["delivered"].to_s.split(DELIMITER)
       end
       if h["gaining_point"].present?
         self.my_gaining_point, self.opponent_gaining_point =
-          h["gaining_point"].to_s.split(REX_SC)[1..-1]
+          h["gaining_point"].to_s.split(DELIMITER)
       end
       if h["retry"].present?
         self.my_retry, self.opponent_retry =

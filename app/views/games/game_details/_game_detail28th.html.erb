@@ -1,141 +1,105 @@
 <%= f.hidden_field :id %>
 <%
   gaining_point_numbers = option_numbers           end_number: 29
-  two_pole_numbers      = option_numbers digit: 1, end_number:  9
-  three_pole_numbers    = option_numbers digit: 1, end_number:  9
+  double_pole_numbers   = option_numbers digit: 1, end_number:  9
+  triple_pole_numbers   = option_numbers digit: 1, end_number:  9
   loading_numbers       = option_numbers digit: 1, end_number:  9
   retry_numbers         = option_numbers digit: 1, end_number:  9
-  penalty_numbers       = option_numbers digit: 1, end_number:  9
-  vote_numbers          = option_numbers digit: 1, end_number:  5
+  foul_numbers          = option_numbers digit: 1, end_number:  9
 %>
-<table>
+<%= label_tag "#{@robot.name}：" %>
+<table style="margin-left: 10px;">
   <tr>
-    <td colspan="4"><%= f.label :my_gaining_point, "#{@robot.name}：" %></td>
+    <td>得点：</td>
+    <td><%= f.select :my_gaining_point, gaining_point_numbers %>点</td>
   </tr>
   <tr>
-    <td><%= ("&nbsp;"*4).html_safe %></td>
-    <td>得点<%= f.select :my_gaining_point,
-      gaining_point_numbers %>点</td>
+    <td>ダブル・ポール：</td>
+    <td><%= f.select :my_double_pole, double_pole_numbers %>本</td>
   </tr>
   <tr>
-    <td><%= ("&nbsp;"*4).html_safe %></td>
-    <td>ダブル<%= f.select :my_double_pole,
-      two_pole_numbers %>本</td>
+    <td>トリプル・ポール：</td>
+    <td><%= f.select :my_triple_pole, triple_pole_numbers %>本</td>
   </tr>
   <tr>
-    <td><%= ("&nbsp;"*4).html_safe %></td>
-    <td>トリプル<%= f.select :my_triple_pole,
-      three_pole_numbers %>本</td>
-  </tr>
-  <tr>
-    <td><%= ("&nbsp;"*4).html_safe %></td>
     <td>Vゴール：</td>
     <td><%= f.check_box :my_special_win,
       {:checked => f.object.my_special_win}, true, false %></td>
+  </tr>
+  <% if f.object.my_special_win %>
+  <tr class=
+    "my_special_win___nested_field_for_replace_with_index__">
+  <% else %>
+  <tr class=
+    "my_special_win___nested_field_for_replace_with_index__ hidden">
+  <% end %>
+    <td>タイム：</td>
     <td>
-      <% if f.object.my_special_win %>
-      <div class=
-        "my_special_win___nested_field_for_replace_with_index__">
-      <% else %>
-      <div class=
-        "my_special_win___nested_field_for_replace_with_index__ hidden">
-      <% end %>
-        タイム：
-        <%= f.select :my_time_minute, time_numbers %>分
-        <%= f.select :my_time_second, time_numbers %>秒
-      </div>
+      <%= f.select :my_time_minute, time_numbers %>分
+      <%= f.select :my_time_second, time_numbers %>秒
     </td>
   </tr>
   <tr>
-    <td><%= ("&nbsp;"*4).html_safe %></td>
-    <td>装填回数：</td>
-    <td><%= f.select :my_loading, loading_numbers %></td>
+    <td>装填：</td>
+    <td><%= f.select :my_loading, loading_numbers %>回</td>
   </tr>
   <tr>
-    <td><%= ("&nbsp;"*4).html_safe %></td>
     <td>リペア：</td>
-    <td><%= f.select :my_retry, retry_numbers %></td>
+    <td><%= f.select :my_retry, retry_numbers %>回</td>
   </tr>
   <tr>
-    <td><%= ("&nbsp;"*4).html_safe %></td>
     <td>反則：</td>
-    <td><%= f.select :my_penalty, penalty_numbers %></td>
+    <td><%= f.select :my_foul, foul_numbers %>回</td>
   </tr>
-  <%##########################################################################%>
+<table>
+<%###########################################################################%>
+<%= label_tag "対戦相手：" %>
+<table style="margin-left: 10px;">
   <tr>
-    <td colspan="4"><%= f.label :opponent_gaining_point, "対戦相手：" %></td>
-  </tr>
-  <tr>
-    <td><%= ("&nbsp;"*4).html_safe %></td>
-    <td>得点<%= f.select :opponent_gaining_point,
-      gaining_point_numbers %>点</td>
-  </tr>
-  <tr>
-    <td><%= ("&nbsp;"*4).html_safe %></td>
-    <td>ダブル<%= f.select :opponent_double_pole,
-      two_pole_numbers %>本</td>
+    <td>得点：</td>
+    <td><%= f.select :opponent_gaining_point, gaining_point_numbers %>点</td>
   </tr>
   <tr>
-    <td><%= ("&nbsp;"*4).html_safe %></td>
-    <td>トリプル<%= f.select :opponent_triple_pole,
-      three_pole_numbers %>本</td>
+    <td>ダブル・ポール：</td>
+    <td><%= f.select :opponent_double_pole, double_pole_numbers %>本</td>
   </tr>
   <tr>
-    <td><%= ("&nbsp;"*4).html_safe %></td>
+    <td>トリプル・ポール：</td>
+    <td><%= f.select :opponent_triple_pole, triple_pole_numbers %>本</td>
+  </tr>
+  <tr>
     <td>Vゴール：</td>
     <td><%= f.check_box :opponent_special_win,
       {:checked => f.object.opponent_special_win}, true, false %></td>
+  </tr>
+  <% if f.object.opponent_special_win %>
+  <tr class=
+    "opponent_special_win___nested_field_for_replace_with_index__">
+  <% else %>
+  <tr class=
+    "opponent_special_win___nested_field_for_replace_with_index__ hidden">
+  <% end %>
+    <td>タイム：</td>
     <td>
-      <% if f.object.opponent_special_win %>
-      <div class=
-        "opponent_special_win___nested_field_for_replace_with_index__">
-      <% else %>
-      <div class=
-        "opponent_special_win___nested_field_for_replace_with_index__ hidden">
-      <% end %>
-        タイム：
-        <%= f.select :opponent_time_minute, time_numbers %>分
-        <%= f.select :opponent_time_second, time_numbers %>秒
-      </div>
+      <%= f.select :opponent_time_minute, time_numbers %>分
+      <%= f.select :opponent_time_second, time_numbers %>秒
     </td>
   </tr>
   <tr>
-    <td><%= ("&nbsp;"*4).html_safe %></td>
-    <td>装填回数：</td>
-    <td><%= f.select :opponent_loading, loading_numbers %></td>
+    <td>装填：</td>
+    <td><%= f.select :opponent_loading, loading_numbers %>回</td>
   </tr>
   <tr>
-    <td><%= ("&nbsp;"*4).html_safe %></td>
     <td>リペア：</td>
-    <td><%= f.select :opponent_retry, retry_numbers %></td>
+    <td><%= f.select :opponent_retry, retry_numbers %>回</td>
   </tr>
   <tr>
-    <td><%= ("&nbsp;"*4).html_safe %></td>
     <td>反則：</td>
-    <td><%= f.select :opponent_penalty, penalty_numbers %></td>
+    <td><%= f.select :opponent_foul, foul_numbers %>回</td>
   </tr>
 </table>
-<%= f.label :jury_votes, "審査員判定：" %>
-<%= f.check_box :jury_votes, {:checked => f.object.jury_votes}, true, false %>
-<br />
-<% if f.object.jury_votes %>
-<div class="jury_votes___nested_field_for_replace_with_index__">
-<% else %>
-<div class="jury_votes___nested_field_for_replace_with_index__ hidden">
-<% end %>
-  <table>
-    <tr>
-      <td><%= ("&nbsp;"*4).html_safe %></td>
-      <td><%= f.label :my_jury_votes, "#{@robot.name}への票数：" %></td>
-      <td><%= f.select :my_jury_votes, vote_numbers %></td>
-    </tr>
-    <tr>
-      <td><%= ("&nbsp;"*4).html_safe %></td>
-      <td><%= f.label :opponent_jury_votes, "対戦相手への票数：" %></td>
-      <td><%= f.select :opponent_jury_votes, vote_numbers %></td>
-    </tr>
-  </table>
-</div>
+<%= render "games/game_details/common_parts/jury_votes", f: f,
+  juries_number: 5 %><%# 審査員判定 %>
 <%= f.label :memo, "メモ：" %>
 <%= f.text_field :memo %><br />
 <br />

@@ -13,9 +13,17 @@ class GameDetail23rd < GameDetail
   # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
   STEMS = %w( robot_code progress time_minute time_second retry jury_votes )
 
-  REX_PR = /[0-4]|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_RT = /[0-9]|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_VT = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
+  REX_PR = /\A([0-4]|#{UNKNOWN_VALUE})\z/
+  REX_RT = /\A([0-9]|#{UNKNOWN_VALUE})\z/
+  REX_VT = /\A([0-5]|#{UNKNOWN_VALUE})\z/
+
+  enum progress: {
+    start_zone:      0, # スタートゾーン
+    walking_zone:    1, # 二足歩行ゾーン
+    connecting_zone: 2, # 連結ゾーン
+    inserting_zone:  3, # 鍵穴ゾーン
+    goal_zone:       4  # ゴールゾーン
+  }
 
   attr_accessor :my_progress,    :opponent_progress
   attr_accessor :my_time_minute, :opponent_time_minute
@@ -39,14 +47,6 @@ class GameDetail23rd < GameDetail
   end
   validates :memo, length: { maximum: MEMO_LEN }
 
-  enum progresses: {
-    start_zone:      0, # スタートゾーン
-    walking_zone:    1, # 二足歩行ゾーン
-    connecting_zone: 2, # 連結ゾーン
-    inserting_zone:  3, # 鍵穴ゾーン
-    goal_zone:       4  # ゴールゾーン
-  }
-
   # DBにカラムはないがpropertyに納めたいフォーム上の属性
   def self.additional_attr_symbols
     [
@@ -60,10 +60,15 @@ class GameDetail23rd < GameDetail
     ]
   end
 
+  # 親クラスから子クラスのSTEM定数を参照するためのメソッド
   def stems
     STEMS
   end
 
+  # extra_timeなどのbooleanとnilの三種の値の入力を想定しているフォーム属性変数について
+  # trueかfalseかnilかをここで吟味すべきであるが、このproperties生成の後に実行される
+  # save/update直前のvalidationによって吟味されるので、有るか無しか(nil)かを吟味する
+  # だけにしている。他の数字や文字列が入力される属性も同様である。
   def self.compose_properties(hash:)
     h = compose_pairs(hash: hash, stems: %w( robot_code progress retry
       jury_votes ))
@@ -83,7 +88,7 @@ class GameDetail23rd < GameDetail
       if h["time"].present? then
         self.my_time_minute, self.my_time_second,
           self.opponent_time_minute, self.opponent_time_second =
-            h["time"].to_s.split(REX_T)
+            h["time"].to_s.split(DELIMITER_TIME_PAIR)
       end
       if h["retry"].present?
         self.my_retry, self.opponent_retry =

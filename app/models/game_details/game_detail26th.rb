@@ -20,56 +20,52 @@ class GameDetail26th < GameDetail
 
   # my_robot_code側から見ているので、
   # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
-  STEMS = %w( robot_code progress time_minute time_second gaining_point penalty
+  STEMS = %w( robot_code progress time_minute time_second gaining_point foul
      retry jury_votes )
 
-  REX_PR = /[0-6]|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_PN = /[0-9]|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_RT = /[0-9]|#{GameDetail::Constant::UNKNOWN_VALUE}/
-  REX_VT = /[0-5]|#{GameDetail::Constant::UNKNOWN_VALUE}/
+  REX_PR  = /\A([0-6]|#{UNKNOWN})\z/
+  REX_GPT = /\A(1[0-2][0-9]|[1-9][0-9]{,1}|0|#{UNKNOWN})\z/
+  REX_F   = /\A([0-9]|#{UNKNOWN})\z/
+  REX_RT  = /\A([0-9]|#{UNKNOWN})\z/
+  REX_VT  = /\A([0-5]|#{UNKNOWN})\z/
+
+  enum progress: {
+    start:                 0, # スタート
+    first_jump_rope:       1, # 第1ロボット二回縄跳び
+    second_jump_rope:      2, # 第2ロボット二回縄跳び
+    third_jump_rope:       3, # 第3ロボット二回縄跳び
+    turn_around:           4, # 折り返し
+    human_robot_jump_rope: 5, # 人間・ロボットの縄跳び
+    consecutive_jump_rope: 6  # 連続縄跳びジャンプ
+  }
 
   attr_accessor :my_progress,      :opponent_progress
   attr_accessor :my_time_minute,   :opponent_time_minute
   attr_accessor :my_time_second,   :opponent_time_second
   attr_accessor :my_gaining_point, :opponent_gaining_point
-  attr_accessor :my_penalty,       :opponent_penalty
+  attr_accessor :my_foul,          :opponent_foul
   attr_accessor :my_retry,         :opponent_retry
-  attr_accessor :jury_votes,
+  attr_accessor :jury_votes
   attr_accessor :my_jury_votes,    :opponent_jury_votes
   attr_accessor :memo
 
-  validates :my_progress,           format: { with: REX_PR }
-  validates :opponent_progress,     format: { with: REX_PR }
-  validates :my_time_minute,        format: { with: REX_MS }
-  validates :my_time_second,        format: { with: REX_MS }
-  validates :opponent_time_minute,  format: { with: REX_MS }
-  validates :opponent_time_second,  format: { with: REX_MS }
-  # 不明の記録を入力できるようにするにはどうしたらよいのか？
-  validates :my_gaining_point, numericality: {
-    greater_than_or_equal_to: 0, less_than_or_equal_to: 130
-  }
-  validates :opponent_gaining_point, numericality: {
-    greater_than_or_equal_to: 0, less_than_or_equal_to: 130
-  }
-  validates :my_penalty,            format: { with: REX_PN }
-  validates :opponent_penalty,      format: { with: REX_PN }
-  validates :my_retry,              format: { with: REX_RT }
-  validates :opponent_retry,        format: { with: REX_RT }
+  validates :my_progress,            format: { with: REX_PR }
+  validates :opponent_progress,      format: { with: REX_PR }
+  validates :my_time_minute,         format: { with: REX_MS }
+  validates :my_time_second,         format: { with: REX_MS }
+  validates :opponent_time_minute,   format: { with: REX_MS }
+  validates :opponent_time_second,   format: { with: REX_MS }
+  validates :my_gaining_point,       format: { with: REX_GPT }
+  validates :opponent_gaining_point, format: { with: REX_GPT }
+  validates :my_foul,                format: { with: REX_F }
+  validates :opponent_foul,          format: { with: REX_F }
+  validates :my_retry,               format: { with: REX_RT }
+  validates :opponent_retry,         format: { with: REX_RT }
   with_options if: :jury_votes do
-    validates :my_jury_votes,       format: { with: REX_VT }
-    validates :opponent_jury_votes, format: { with: REX_VT }
+    validates :my_jury_votes,        format: { with: REX_VT }
+    validates :opponent_jury_votes,  format: { with: REX_VT }
   end
   validates :memo, length: { maximum: MEMO_LEN }
-
-  enum progresses: {
-    start:                 0, # スタート
-    jump_rope_1st:         1, # 第1ロボット二回縄跳び
-    jump_rope_2nd:         2, # 第2ロボット二回縄跳び
-    jump_rope_3rd:         3, # 第3ロボット二回縄跳び
-    turn_around:           4, # 折り返し
-    human_robot_jump_rope: 5, # 人間・ロボットの縄跳び
-    consecutive_jump_rope: 6  # 連続縄跳びジャンプ
-  }
 
   # DBにカラムはないがpropertyに納めたいフォーム上の属性
   def self.additional_attr_symbols
@@ -78,7 +74,7 @@ class GameDetail26th < GameDetail
       :my_time_minute,   :opponent_time_minute,
       :my_time_second,   :opponent_time_second,
       :my_gaining_point, :opponent_gaining_point,
-      :my_penalty,       :opponent_penalty,
+      :my_foul,          :opponent_foul,
       :my_retry,         :opponent_retry,
       :jury_votes,
       :my_jury_votes,    :opponent_jury_votes,
@@ -86,14 +82,21 @@ class GameDetail26th < GameDetail
     ]
   end
 
+  # 親クラスから子クラスのSTEM定数を参照するためのメソッド
   def stems
     STEMS
   end
 
+  # extra_timeなどのbooleanとnilの三種の値の入力を想定しているフォーム属性変数について
+  # trueかfalseかnilかをここで吟味すべきであるが、このproperties生成の後に実行される
+  # save/update直前のvalidationによって吟味されるので、有るか無しか(nil)かを吟味する
+  # だけにしている。他の数字や文字列が入力される属性も同様である。
   def self.compose_properties(hash:)
-    h = compose_pairs(hash: hash,
-      stems: %w(robot_code progress gaining_point penalty retry jury_votes))
+    h = super(hash: hash) || {} # robot_code
+    h.update(compose_time(hash: hash, stems: %w( progress )))
     h.update(compose_time(hash: hash))
+    h.update(compose_pairs(hash: hash,
+      stems: %w( gaining_point foul retry jury_votes )))
     h.delete("jury_votes") unless hash["jury_votes"].presence.to_bool
     h["memo"] = "#{hash[:memo]}" if hash[:memo].present?
     return h
@@ -103,20 +106,20 @@ class GameDetail26th < GameDetail
     super(robot: robot) do |h|
       if h["progress"].present?
         self.my_progress, self.opponent_progress =
-          h["progress"].to_s.split(REX_SC)[1..-1]
+          h["progress"].to_s.split(DELIMITER)
       end
       if h["time"].present? then
         self.my_time_minute, self.my_time_second,
           self.opponent_time_minute, self.opponent_time_second =
-            h["time"].to_s.split(REX_T)
+            h["time"].to_s.split(DELIMITER_TIME_PAIR)
       end
       if h["gaining_point"].present?
         self.my_gaining_point, self.opponent_gaining_point =
-          h["gaining_point"].to_s.split(REX_SC)[1..-1]
+          h["gaining_point"].to_s.split(DELIMITER)
       end
-      if h["penalty"].present?
-        self.my_penalty, self.opponent_penalty =
-          h["penalty"].to_s.split(DELIMITER)
+      if h["foul"].present?
+        self.my_foul, self.opponent_foul =
+          h["foul"].to_s.split(DELIMITER)
       end
       if h["retry"].present?
         self.my_retry, self.opponent_retry =

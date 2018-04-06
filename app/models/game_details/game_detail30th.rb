@@ -14,6 +14,7 @@ class GameDetail30th < GameDetail
   #   反則5回で失格
   #   審判の判断によっては反則の回数に因らず失格となることもある
 
+  # 何に使っているのか？
   module Constant
     BALOON_MIN = 0
     BALOON_MAX = 10
@@ -21,19 +22,19 @@ class GameDetail30th < GameDetail
 
   # my_robot_code側から見ているので、
   # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
-  STEMS = %w( robot_code base_baloon robot_baloon repair penalty jury_votes )
+  STEMS = %w( robot_code base_baloon robot_baloon repair foul jury_votes )
 
   UNKNOWN = GameDetail::Constant::UNKNOWN_VALUE
 
-  REX_BL = /\A([0-9]\z|\A10\z|\A#{UNKNOWN})\z/
-  REX_RP = /\A[0-9]\z|\A#{UNKNOWN}\z/
-  REX_PN = /\A[0-5]\z|\A#{UNKNOWN}\z/
-  REX_VT = /\A[0-5]\z|\A#{UNKNOWN}\z/
+  REX_BL = /\A([0-9]|10|#{UNKNOWN})\z/
+  REX_RP = /\A([0-9]|#{UNKNOWN})\z/
+  REX_F  = /\A([0-5]|#{UNKNOWN})\z/
+  REX_VT = /\A([0-5]|#{UNKNOWN})\z/
 
   attr_accessor :my_robot_baloon, :opponent_robot_baloon
   attr_accessor :my_base_baloon,  :opponent_base_baloon
   attr_accessor :my_repair,       :opponent_repair
-  attr_accessor :my_penalty,      :opponent_penalty
+  attr_accessor :my_foul,         :opponent_foul
   attr_accessor :time_minute, :time_second
   attr_accessor :jury_votes
   attr_accessor :my_jury_votes,   :opponent_jury_votes
@@ -45,8 +46,8 @@ class GameDetail30th < GameDetail
   validates :opponent_robot_baloon, format: { with: REX_BL }
   validates :my_repair,             format: { with: REX_RP }
   validates :opponent_repair,       format: { with: REX_RP }
-  validates :my_penalty,            format: { with: REX_PN }
-  validates :opponent_penalty,      format: { with: REX_PN }
+  validates :my_foul,               format: { with: REX_F }
+  validates :opponent_foul,         format: { with: REX_F }
   validates :time_minute,           format: { with: REX_MS }
   validates :time_second,           format: { with: REX_MS }
   with_options if: :jury_votes do
@@ -61,19 +62,23 @@ class GameDetail30th < GameDetail
       :my_base_baloon,  :opponent_base_baloon,
       :my_robot_baloon, :opponent_robot_baloon,
       :my_repair,       :opponent_repair,
-      :my_penalty,      :opponent_penalty,
-      :time_minute,
-      :time_second,
+      :my_foul,         :opponent_foul,
+      :time_minute, :time_second,
       :jury_votes,
       :my_jury_votes,   :opponent_jury_votes,
       :memo
     ]
   end
 
+  # 親クラスから子クラスのSTEM定数を参照するためのメソッド
   def stems
     STEMS
   end
 
+  # extra_timeなどのbooleanとnilの三種の値の入力を想定しているフォーム属性変数について
+  # trueかfalseかnilかをここで吟味すべきであるが、このproperties生成の後に実行される
+  # save/update直前のvalidationによって吟味されるので、有るか無しか(nil)かを吟味する
+  # だけにしている。他の数字や文字列が入力される属性も同様である。
   def self.compose_properties(hash:)
     h = compose_pairs(hash: hash, stems: STEMS)
     hash[:time_minute] = "#{UNKNOWN}" if hash[:time_minute].blank? # 要らないかも
@@ -98,9 +103,9 @@ class GameDetail30th < GameDetail
         self.my_repair, self.opponent_repair =
           h["repair"].to_s.split(DELIMITER)
       end
-      if h["penalty"].present?
-        self.my_penalty, self.opponent_penalty =
-          h["penalty"].to_s.split(DELIMITER)
+      if h["foul"].present?
+        self.my_foul, self.opponent_foul =
+          h["foul"].to_s.split(DELIMITER)
       end
       if h["time"].present?
         self.time_minute, self.time_second =

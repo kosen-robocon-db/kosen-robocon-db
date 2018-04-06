@@ -1,47 +1,47 @@
 <%= f.hidden_field :id %>
 <%
-  retry_numbers   = option_numbers digit: 1, end_number: 9
-  penalty_numbers = option_numbers digit: 1, end_number: 9
-  vote_numbers    = option_numbers digit: 1, end_number: 5
+  retry_numbers = option_numbers digit: 1, end_number: 9
+  foul_numbers  = option_numbers digit: 1, end_number: 9
 %>
-<table>
+<%= label_tag "#{@robot.name}：" %>
+<table style="margin-left: 10px;">
   <tr>
-    <td><%= f.label :my_gaining_point, "#{@robot.name}が積み上げた高さ：" %></td>
+    <td>積み上げた高さ：" %></td>
     <td><%= f.text_field :my_gaining_point %>cm</td>
   </tr>
   <tr>
-    <td><%= f.label :opponent_gaining_point, "対戦相手が積み上げた高さ：" %></td>
+    <td>リトライ：</td>
+    <td><%= f.select :my_retry, retry_numbers %>回</td>
+    </td>
+  </tr>
+  <tr>
+    <td>反則：</td>
+    <td><%= f.select :my_foul, foul_numbers %>回</td>
+    </td>
+  </tr>
+</table>
+<%###########################################################################%>
+<%= label_tag "対戦相手：" %>
+<table style="margin-left: 10px;">
+  <tr>
+    <td>積み上げた高さ：" %></td>
     <td><%= f.text_field :opponent_gaining_point %>cm</td>
   </tr>
-</table>
-<table>
   <tr>
-    <td><%= f.label :my_retry, "#{@robot.name}のリトライ回数：" %></td>
-    <td><%= f.select :my_retry, retry_numbers %></td>
+    <td>リトライ：</td>
+    <td><%= f.select :opponent_retry, retry_numbers %>回</td>
     </td>
   </tr>
   <tr>
-    <td><%= f.label :opponent_retry, "対戦相手のリトライ回数：" %></td>
-    <td><%= f.select :opponent_retry, retry_numbers %></td>
-    </td>
-  </tr>
-</table>
-<table>
-  <tr>
-    <td><%= f.label :my_penalty, "#{@robot.name}の反則回数：" %></td>
-    <td><%= f.select :my_penalty, penalty_numbers %></td>
-    </td>
-  </tr>
-  <tr>
-    <td><%= f.label :opponent_penalty, "対戦相手の反則回数：" %></td>
-    <td><%= f.select :opponent_penalty, penalty_numbers %></td>
+    <td>反則：</td>
+    <td><%= f.select :opponent_foul, foul_numbers %>回</td>
     </td>
   </tr>
 </table>
 <%= render "games/game_details/common_parts/progress", f: f,
   klass: GameDetail29th %>
-  <%= render "games/game_details/common_parts/jury_votes", f: f,
-    juries_number: 5 %><%# 審査員判定 %>
+<%= render "games/game_details/common_parts/jury_votes", f: f,
+  juries_number: 5 %><%# 審査員判定 %>
 <%= f.label :memo, "メモ：" %>
 <%= f.text_field :memo %><br />
 <br />
