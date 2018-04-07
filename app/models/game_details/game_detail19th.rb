@@ -112,7 +112,7 @@ class GameDetail19th < GameDetail
         self.my_progress, self.opponent_progress =
           h["progress"].to_s.split(DELIMITER)
       end
-      if h["special_win"].present? and h["time"].present?
+      if h["special_win"].present?
         self.special_win = true
         self.time_minute, self.time_second =
           h["time"].to_s.split(DELIMITER_TIME)

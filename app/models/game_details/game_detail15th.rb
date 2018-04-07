@@ -107,7 +107,7 @@ class GameDetail15th < GameDetail
       end
       self.my_retry, self.opponent_retry =
         h["retry"].to_s.split(DELIMITER) if h["retry"].present?
-      if h["special_win"].present? and h["time"].present?
+      if h["special_win"].present?
         self.special_win = true
         self.time_minute, self.time_second =
           h["time"].to_s.split(DELIMITER_TIME)

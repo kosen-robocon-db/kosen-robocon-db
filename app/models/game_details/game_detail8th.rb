@@ -98,7 +98,7 @@ class GameDetail8th < GameDetail
         self.my_basket_drible, self.opponent_basket_drible =
           h["basket_drible"].to_s.split(DELIMITER).map{ |x| x.to_bool }
       end
-      if h["special_win"].present? and h["time"].present?
+      if h["special_win"].present?
         self.special_win = true
         self.time_minute, self.time_second =
           h["time"].to_s.split(DELIMITER_TIME)
