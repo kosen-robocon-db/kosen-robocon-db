@@ -40,7 +40,7 @@ class GameDetail22nd < GameDetail
   attr_accessor :my_challenges,    :opponent_challenges
   attr_accessor :my_gaining_point, :opponent_gaining_point
   attr_accessor :my_retry,         :opponent_retry
-  attr_accessor :jury_votes,
+  attr_accessor :jury_votes
   attr_accessor :my_jury_votes,    :opponent_jury_votes
   attr_accessor :memo
 
