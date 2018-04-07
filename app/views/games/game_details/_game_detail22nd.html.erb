@@ -6,7 +6,7 @@
 <table>
   <tr><td><%= label_tag "#{@robot.name}：" %></td></tr>
   <tr><td>
-    <%= ("&nbsp;"*4).html_safe %>達成課題：
+    <%= ("&nbsp;"*4).html_safe %>達成課題：<br />
     <%
       checked = f.object.my_challenges.presence || []
       GameDetail22nd.challenges.each do |key, value|
@@ -20,7 +20,7 @@
     %>
   </td></tr>
   <tr><td>
-    <%= ("&nbsp;"*4).html_safe %>合計
+    <%= ("&nbsp;"*4).html_safe %>合計：
     <%= f.select :my_gaining_point, gaining_point_numbers %>点
   </td></tr>
   <tr><td>
@@ -30,7 +30,7 @@
   <%#########################################################################%>
   <tr><td><%= label_tag "対戦相手：" %></td></tr>
   <tr><td>
-    <%= ("&nbsp;"*4).html_safe %>達成課題：
+    <%= ("&nbsp;"*4).html_safe %>達成課題：<br />
     <%
       checked = f.object.opponent_challenges.presence || []
       GameDetail22nd.challenges.each do |key, value|
@@ -44,7 +44,7 @@
     %>
   </td></tr>
   <tr><td>
-    <%= ("&nbsp;"*4).html_safe %>合計
+    <%= ("&nbsp;"*4).html_safe %>合計：
     <%= f.select :opponent_gaining_point, gaining_point_numbers %>点
   </td></tr>
   <tr><td>
