@@ -9,8 +9,8 @@ class GameDetail24th < GameDetail
 
   # my_robot_code側から見ているので、
   # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
-  STEMS = %w( robot_code time_minute time_second ball_touch intercept retry
-     jury_votes )
+  STEMS = %w( robot_code play_first time_minute time_second ball_touch
+    intercept retry jury_votes )
 
   REX_BT = /\A([0-9]|#{UNKNOWN})\z/
   REX_IN = /\A([0-3]|#{UNKNOWN})\z/
@@ -18,11 +18,11 @@ class GameDetail24th < GameDetail
   REX_VT = /\A([0-3]|#{UNKNOWN})\z/
 
   # enum play_order: {
-  #   my:       1,
-  #   opponent: 2
+  #   first:  1,
+  #   second: 2
   # }
 
-  # attr_accessor :play_first
+  attr_accessor :my_play_first,  :opponent_play_first
   attr_accessor :my_time_minute, :opponent_time_minute
   attr_accessor :my_time_second, :opponent_time_second
   attr_accessor :my_ball_touch,  :opponent_ball_touch
@@ -32,8 +32,11 @@ class GameDetail24th < GameDetail
   attr_accessor :my_jury_votes,  :opponent_jury_votes
   attr_accessor :memo
 
-  # validates :play_first,
-  #   inclusion: { in: GameDetail24th.play_orders.values.map{ |i| i.to_s } }
+
+  validates :my_play_first,       inclusion: { in: [ "true", "false", nil ] }
+  #  inclusion: { in: GameDetail24th.play_orders.values.map{ |i| i.to_s } }
+  validates :opponent_play_first, inclusion: { in: [ "true", "false", nil ] }
+  #  inclusion: { in: GameDetail24th.play_orders.values.map{ |i| i.to_s } }
   validates :my_time_minute,        format: { with: REX_MS }
   validates :my_time_second,        format: { with: REX_MS }
   validates :opponent_time_minute,  format: { with: REX_MS }
@@ -53,7 +56,7 @@ class GameDetail24th < GameDetail
   # DBにカラムはないがpropertyに納めたいフォーム上の属性
   def self.additional_attr_symbols
     [
-      # :play_first,
+      :my_play_first,  :opponent_play_first,
       :my_time_minute, :opponent_time_minute,
       :my_time_second, :opponent_time_second,
       :my_ball_touch,  :opponent_ball_touch,
@@ -76,10 +79,10 @@ class GameDetail24th < GameDetail
   # だけにしている。他の数字や文字列が入力される属性も同様である。
   def self.compose_properties(hash:)
     h = super(hash: hash) || {} # robot_code
-    # case hash["play_first"].to_i
-    # when play_orders[:my]       then h["play_first"] = "1st-2nd"
-    # when play_orders[:opponent] then h["play_first"] = "2nd-1st"
-    # end
+    # compose_pairsで拾えないplay_firstのケースに対応
+    hash[:my_play_first]       = "false" if hash[:my_play_first].blank?
+    hash[:opponent_play_first] = "false" if hash[:opponent_play_first].blank?
+    h.update(compose_pairs(hash: hash, stems: %w( play_first )))
     h.update(compose_time(hash: hash))
     h.update(compose_pairs(hash: hash, stems: %w( ball_touch intercept retry
       jury_votes )))
@@ -90,6 +93,12 @@ class GameDetail24th < GameDetail
 
   def decompose_properties(robot:)
     super(robot: robot) do |h|
+      if h["play_first"].present?
+        self.my_play_first, self.opponent_play_first =
+          h["play_first"].to_s.split(DELIMITER).map{|x| x.to_bool}
+      else
+        self.my_play_first, self.opponent_play_first = true, false
+      end
       if h["time"].present?
         self.my_time_minute, self.my_time_second,
           self.opponent_time_minute, self.opponent_time_second =

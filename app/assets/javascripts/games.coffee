@@ -133,6 +133,24 @@ $ ->
           $('#game_round').append(option)
         i += 1
 
+  # 第24回大会で先行のチェックボックスを自他排他制御
+  $(document).on 'change', (event, param) ->
+    regex = ///^game_game_detail24ths_attributes_\d_(my|opponent)_play_first$///
+    if regex.test(event.target.id)
+      number = event.target.id.match(/_\d+_/)[0].replace(/_/g, '')
+      distinction = event.target.id.match(
+        /_(my|opponent)_/)[0].replace(/_/g, ''
+      )
+      switch distinction
+        when "my"
+          opposite = "opponent"
+        when "opponent"
+          opposite = "my"
+        else
+          opposite = "my"
+      $('#game_game_detail24ths_attributes_' + number + '_' + opposite +
+        '_play_first').prop('checked', !event.target.checked)
+
   # when game_detail added
   $('form').on 'fields_added.nested_form_fields', (event, param) ->
     replay_labels()
