@@ -20,7 +20,7 @@
       <tbody>
         <% @campuses.each do |campus| %>
           <tr>
-            <td><%= link_to campus.name, campus_path(campus.code) %></td>
+            <td><%= link_to campus.abbreviation, campus_path(campus.code) %></td>
             <td><%= campus.region.name %></td>
           </tr>
         <% end %>

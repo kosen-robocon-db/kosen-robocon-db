@@ -11,13 +11,15 @@
         </tr>
       </thead>
       <tbody>
-      <% !advancement_histories.blank? && advancement_histories.each do |history| %>
+      <% advancement_histories.present? &&
+        advancement_histories.each do |history| %>
         <tr>
           <td align="right"><%= history.contest.nth %></td>
           <td><%= history.contest.name %></td>
           <td><%= history.advancement.case_name %></td>
           <td>
-            <%= link_to history.robot.name, robot_path(history.robot.code) %>
+            <%= link_to history.robot.name.truncate(10),
+              robot_path(history.robot.code) %>
           </td>
         </tr>
       <% end %>
