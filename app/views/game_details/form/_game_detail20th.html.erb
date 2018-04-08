@@ -48,12 +48,12 @@
 <%= f.label :interrupt, "試合中断：" %>
 <%= f.select :interrupt, interrupt_numbers %>回
 <br />
-<%= render "games/game_details/common_parts/special_win", f: f,
+<%= render "game_details/form/common_parts/special_win", f: f,
   special_win_name: "大勝利" %>
 <%= f.label :extra_time, "延長(60秒)：" %>
 <%= f.check_box :extra_time, { checked: f.object.extra_time }, true, false %>
 <br />
-<%= render "games/game_details/common_parts/jury_votes", f: f,
+<%= render "game_details/form/common_parts/jury_votes", f: f,
   juries_number: 5 %><%# 審査員判定 %>
 <br />
 <%= f.label :memo, "メモ：" %>

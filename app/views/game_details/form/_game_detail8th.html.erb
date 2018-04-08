@@ -1,9 +1,8 @@
 <%= f.hidden_field :id %>
 <%
-  gaining_point_numbers   = option_numbers                   end_number: 3
-  deducting_point_numbers = option_numbers                   end_number: 3
-  total_point_numbers     = option_numbers begin_number: -3, end_number: 3
-  retry_numbers           = option_numbers digit: 1,         end_number: 1
+  gaining_point_numbers   = option_numbers                   end_number: 50
+  deducting_point_numbers = option_numbers                   end_number:  5
+  total_point_numbers     = option_numbers begin_number: -5, end_number: 50
 %>
 <table>
   <tr>
@@ -16,13 +15,14 @@
       <%= ("&nbsp;"*2).html_safe %>
       減点：<%= f.select :my_deducting_point, deducting_point_numbers %>点
       <%= ("&nbsp;"*2).html_safe %>
-      合計：<%= f.select :my_total_point, total_point_numbers%>点
+      合計：<%= f.select :my_total_point, total_point_numbers %>点
     </td>
   </tr>
   <tr>
     <td>
       <%= ("&nbsp;"*4).html_safe %>
-      リトライ：<%= f.select :my_retry, retry_numbers %>回
+      バスケット・ドリブル：<%= f.check_box :my_basket_drible,
+        { checked: f.object.my_basket_drible }, true, false %>
     </td>
   </tr>
   <%#########################################################################%>
@@ -42,20 +42,15 @@
   <tr>
     <td>
       <%= ("&nbsp;"*4).html_safe %>
-      リトライ：<%= f.select :opponent_retry, retry_numbers %>回
+      バスケット・ドリブル：<%= f.check_box :opponent_basket_drible,
+        { checked: f.object.opponent_basket_drible }, true, false %>
     </td>
   </tr>
 </table>
-<%= f.label :hight, "同点で高さで決着：" %>
-<%= f.check_box :hight, { checked: f.object.hight }, true, false %>
-<br />
+<%= render "game_details/form/common_parts/special_win", f: f,
+  special_win_name: "Vゴール" %>
 <%= f.label :extra_time, "延長(60秒)：" %>
 <%= f.check_box :extra_time, { checked: f.object.extra_time }, true, false %>
-<br />
-<%= render "games/game_details/common_parts/special_win", f: f,
-  special_win_name: "トルネード" %>
-<%= render "games/game_details/common_parts/jury_votes", f: f,
-  juries_number: 5 %><%# 審査員判定 %>
 <br />
 <%= f.label :memo, "メモ：" %>
 <%= f.text_field :memo %><br />

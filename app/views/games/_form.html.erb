@@ -17,7 +17,7 @@
         where.not(code: [@robot.code]).
           includes(:campus).order("robots.code").map{ |i| [
             i.campus.abbreviation.to_s.ljust(5, "　") +
-              i.name.truncate(SHORTENING_LEN), 
+              i.name.truncate(SHORTENING_LEN),
             i.code
           ] }
         # 下記はGameモデルで自動的に追加されるべき
@@ -64,7 +64,9 @@
       <%= f.nested_fields_for @gd_sym, wrapper_tag: :div do |detail| %>
         <div class="enclosure">
           <div class="replay"></div>
-          <%= render "games/game_details/game_detail" +
+          <%#= render "games/game_details/game_detail" +
+            @game.contest_nth.ordinalize, f: detail %>
+          <%= render "game_details/form/game_detail" +
             @game.contest_nth.ordinalize, f: detail %>
         </div>
       <% end %>

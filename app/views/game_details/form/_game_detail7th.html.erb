@@ -1,6 +1,6 @@
 <%= f.hidden_field :id %>
 <%
-  gaining_point_numbers = option_numbers end_number: 10
+  gaining_point_numbers = option_numbers end_number: 40
 %>
 <table>
   <tr>
@@ -12,6 +12,7 @@
       得点：<%= f.select :my_gaining_point, gaining_point_numbers %>点
     </td>
   </tr>
+  <%#########################################################################%>
   <tr>
     <td><%= label_tag "対戦相手：" %></td>
   </tr>
@@ -22,10 +23,10 @@
     </td>
   </tr>
 </table>
-<%= render "games/game_details/common_parts/special_win", f: f,
-  special_win_name: "パーフェクト・パフォーマンス" %>
-<%= render "games/game_details/common_parts/jury_votes", f: f,
-  juries_number: 5 %><%# 審査員判定 %>
+<%= render "game_details/form/common_parts/special_win", f: f,
+  special_win_name: "Vホール" %>
+<%= f.label :extra_time, "延長(30秒)：" %>
+<%= f.check_box :extra_time, { checked: f.object.extra_time }, true, false %>
 <br />
 <%= f.label :memo, "メモ：" %>
 <%= f.text_field :memo %><br />

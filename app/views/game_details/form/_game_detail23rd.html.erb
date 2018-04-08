@@ -1,12 +1,11 @@
 <%= f.hidden_field :id %>
 <%
   progress_options = Array.new([["--", GameDetail::UNKNOWN]])
-  GameDetail26th.progresses.each do |key, value|
+  GameDetail23rd.progresses.each do |key, value|
     progress_options.concat(Array.new([[
-        GameDetail26th.progresses_i18n[key], value
+      GameDetail23rd.progresses_i18n[key], value
     ]]))
   end
-  foul_numbers  = option_numbers digit: 1, end_number: 9
   retry_numbers = option_numbers digit: 1, end_number: 9
 %>
 <%= label_tag "#{@robot.name}：" %>
@@ -23,21 +22,11 @@
     </td>
   </tr>
   <tr>
-    <td>連続縄跳び（準決勝以降）：</td>
-    <td>
-      <%= f.text_field :my_gaining_point, { size: 3, maxlength: 3 }%>回
-    </td>
-  </tr>
-  <tr>
-    <td>反則：</td>
-    <td><%= f.select :my_foul, foul_numbers %>回</td>
-  </tr>
-  <tr>
     <td>リトライ：</td>
     <td><%= f.select :my_retry, retry_numbers %>回</td>
   </tr>
 </table>
-<%###########################################################################%>
+  <%#########################################################################%>
 <%= label_tag "対戦相手：" %>
 <table style="margin-left: 10px;">
   <tr>
@@ -52,21 +41,11 @@
     </td>
   </tr>
   <tr>
-    <td>連続縄跳び（準決勝以降）：</td>
-    <td>
-      <%= f.text_field :opponent_gaining_point, { size: 3, maxlength: 3 }%>回
-    </td>
-  </tr>
-  <tr>
-    <td>反則：</td>
-    <td><%= f.select :opponent_foul, foul_numbers %>回</td>
-  </tr>
-  <tr>
     <td>リトライ：</td>
     <td><%= f.select :opponent_retry, retry_numbers %>回</td>
   </tr>
 </table>
-<%= render "games/game_details/common_parts/jury_votes", f: f,
+<%= render "game_details/form/common_parts/jury_votes", f: f,
   juries_number: 5 %><%# 審査員判定 %>
 <br />
 <%= f.label :memo, "メモ：" %>

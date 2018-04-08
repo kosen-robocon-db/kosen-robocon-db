@@ -52,7 +52,7 @@
     </td>
   </tr>
 </table>
-<%= render "games/game_details/common_parts/progress", f: f,
+<%= render "game_details/form/common_parts/progress", f: f,
   klass: GameDetail18th %>
 <%= f.label :distance, "到達距離：" %>
 <%= f.check_box :distance, {:checked => f.object.distance}, true, false %>
@@ -80,7 +80,7 @@
     </td></tr>
   </table>
 </div>
-<%= render "games/game_details/common_parts/jury_votes", f: f,
+<%= render "game_details/form/common_parts/jury_votes", f: f,
   juries_number: 5 %><%# 審査員判定 %>
 <br />
 <%= f.label :memo, "メモ：" %>

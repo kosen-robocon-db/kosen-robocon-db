@@ -1,7 +1,6 @@
 <%= f.hidden_field :id %>
 <%
-  gaining_point_numbers = option_numbers           end_number: 79
-  retry_numbers         = option_numbers digit: 1, end_number:  1
+  gaining_point_numbers = option_numbers end_number: 9
 %>
 <table>
   <tr>
@@ -11,12 +10,6 @@
     <td>
       <%= ("&nbsp;"*4).html_safe %>
       得点：<%= f.select :my_gaining_point, gaining_point_numbers %>点
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <%= ("&nbsp;"*4).html_safe %>
-      リトライ：<%= f.select :my_retry, retry_numbers %>回
     </td>
   </tr>
   <%#########################################################################%>
@@ -29,18 +22,11 @@
       得点：<%= f.select :opponent_gaining_point, gaining_point_numbers %>点
     </td>
   </tr>
-  <tr>
-    <td>
-      <%= ("&nbsp;"*4).html_safe %>
-      リトライ：<%= f.select :opponent_retry, retry_numbers %>回
-    </td>
-  </tr>
 </table>
+<%= render "game_details/form/common_parts/special_win", f: f,
+  special_win_name: "ハットトリック" %>
 <%= f.label :extra_time, "延長(60秒)：" %>
 <%= f.check_box :extra_time, { checked: f.object.extra_time }, true, false %>
-<br />
-<%= render "games/game_details/common_parts/jury_votes", f: f,
-  juries_number: 5 %><%# 審査員判定 %>
 <br />
 <%= f.label :memo, "メモ：" %>
 <%= f.text_field :memo %><br />

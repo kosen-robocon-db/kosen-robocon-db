@@ -39,7 +39,7 @@ EOS
 <%= f.select :time_minute, time_numbers %>分
 <%= f.select :time_second, time_numbers %>秒
 <br />
-<%= render "games/game_details/common_parts/jury_votes", f: f,
+<%= render "game_details/form/common_parts/jury_votes", f: f,
   juries_number: 5 %><%# 審査員判定 %>
 <br />
 <%= f.label :memo, "メモ：" %>
