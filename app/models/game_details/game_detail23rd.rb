@@ -13,9 +13,9 @@ class GameDetail23rd < GameDetail
   # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
   STEMS = %w( robot_code progress time_minute time_second retry jury_votes )
 
-  REX_PR = /\A([0-4]|#{UNKNOWN_VALUE})\z/
-  REX_RT = /\A([0-9]|#{UNKNOWN_VALUE})\z/
-  REX_VT = /\A([0-5]|#{UNKNOWN_VALUE})\z/
+  REX_PR = /\A([0-4]|#{UNKNOWN})\z/
+  REX_RT = /\A([0-9]|#{UNKNOWN})\z/
+  REX_VT = /\A([0-5]|#{UNKNOWN})\z/
 
   enum progress: {
     start_zone:      0, # スタートゾーン
