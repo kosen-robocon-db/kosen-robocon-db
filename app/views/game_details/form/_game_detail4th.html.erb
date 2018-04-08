@@ -1,0 +1,43 @@
+<%= f.hidden_field :id %>
+<%
+  gaining_point_numbers = option_numbers end_number: 40
+%>
+<table>
+  <%# 得点入力のUIは将来スライダーに変更する予定 %>
+  <tr>
+    <td><%= label_tag "#{@robot.name}：" %></td>
+  </tr>
+  <tr>
+    <td>
+      <%= ("&nbsp;"*4).html_safe %>
+      得点：<%= f.select :my_gaining_point, gaining_point_numbers %>点
+    </td>
+  </tr>
+  <%#########################################################################%>
+  <tr>
+    <td><%= label_tag "対戦相手：" %></td>
+  </tr>
+  <tr>
+    <td>
+      <%= ("&nbsp;"*4).html_safe %>
+      得点：<%= f.select :opponent_gaining_point, gaining_point_numbers %>点
+    </td>
+  </tr>
+</table>
+<%= f.label :extra_time, "延長(30秒)：" %>
+<%= f.check_box :extra_time, { checked: f.object.extra_time }, true, false %>
+<br />
+<%= f.label :judgement, "勝敗判定：" %>
+<% GameDetail4th.criteria.each do |key, value| %>
+  <% chk = f.object.judgement.to_i == value ? true : false %>
+  <%= f.radio_button :judgement, GameDetail4th.criteria[key], {checked: chk} %>
+  <%= GameDetail4th.criteria_i18n[key] %>
+  <%= ("&nbsp;"*2).html_safe %>
+<% end %>
+<br />
+<%= f.label :memo, "メモ：" %>
+<%= f.text_field :memo %><br />
+<br />
+<%= f.hidden_field :_destroy %>
+<%= f.remove_nested_fields_link '削除', class: 'btn btn-danger',
+  role: 'button' %><br />

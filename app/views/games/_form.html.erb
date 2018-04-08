@@ -16,7 +16,9 @@
       robots_array = Robot.where(contest_nth: @game.contest_nth).
         where.not(code: [@robot.code]).
           includes(:campus).order("robots.code").map{ |i| [
-            i.campus.abbreviation.to_s.ljust(5, "　") + i.name, i.code
+            i.campus.abbreviation.to_s.ljust(5, "　") +
+              i.name.truncate(SHORTENING_LEN),
+            i.code
           ] }
         # 下記はGameモデルで自動的に追加されるべき
       robots_array.push([
@@ -52,8 +54,8 @@
     <br /><br />
     <%
       # 許可する大会回を一括でapplicaton.rbなどまたはDBで管理するべき
-      case @robot.contest_nth
-      when 1..20, 29, 30 then
+      # case @robot.contest_nth
+      # when 1..20, 29, 30 then
     %>
     <div class="enclosure">
       <%= f.label @gd_sym, "試合詳細" %><br />
@@ -62,7 +64,9 @@
       <%= f.nested_fields_for @gd_sym, wrapper_tag: :div do |detail| %>
         <div class="enclosure">
           <div class="replay"></div>
-          <%= render "games/game_details/game_detail" +
+          <%#= render "games/game_details/game_detail" +
+            @game.contest_nth.ordinalize, f: detail %>
+          <%= render "game_details/form/game_detail" +
             @game.contest_nth.ordinalize, f: detail %>
         </div>
       <% end %>
@@ -70,7 +74,7 @@
         role: 'button' %>
     </div><br />
     <br />
-    <% end %>
+    <% # end %>
     <%= f.submit button_label, class: "btn btn-primary",
       data: { disable_with: '処理中・・・' } %><br /><br />
   <% end %>

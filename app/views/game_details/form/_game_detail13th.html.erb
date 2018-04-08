@@ -1,0 +1,35 @@
+<%= f.hidden_field :id %>
+<%
+  gaining_point_numbers = option_numbers end_number: 10
+%>
+<table>
+  <tr>
+    <td><%= label_tag "#{@robot.name}：" %></td>
+  </tr>
+  <tr>
+    <td>
+      <%= ("&nbsp;"*4).html_safe %>
+      得点：<%= f.select :my_gaining_point, gaining_point_numbers %>点
+    </td>
+  </tr>
+  <tr>
+    <td><%= label_tag "対戦相手：" %></td>
+  </tr>
+  <tr>
+    <td>
+      <%= ("&nbsp;"*4).html_safe %>
+      得点：<%= f.select :opponent_gaining_point, gaining_point_numbers %>点
+    </td>
+  </tr>
+</table>
+<%= render "game_details/form/common_parts/special_win", f: f,
+  special_win_name: "パーフェクト・パフォーマンス" %>
+<%= render "game_details/form/common_parts/jury_votes", f: f,
+  juries_number: 5 %><%# 審査員判定 %>
+<br />
+<%= f.label :memo, "メモ：" %>
+<%= f.text_field :memo %><br />
+<br />
+<%= f.hidden_field :_destroy %>
+<%= f.remove_nested_fields_link '削除', class: 'btn btn-danger',
+  role: 'button' %><br />

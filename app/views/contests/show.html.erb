@@ -67,9 +67,11 @@
       <tbody>
         <% @robots.each do |robot| %>
           <tr>
-            <td><%= link_to robot.campus.abbreviation, campus_path(robot.campus.code) %></td>
-            <td><%= link_to robot.name, robot_path(robot.code) %></td>
-            <td><%= robot.kana %></td>
+            <td><%= link_to robot.campus.abbreviation,
+              campus_path(robot.campus.code) %></td>
+            <td><%= link_to robot.name.truncate(SHORTENING_LEN),
+              robot_path(robot.code) %></td>
+            <td><%= robot.kana.truncate(SHORTENING_LEN) %></td>
             <td><%= robot.team %></td>
           </tr>
         <% end %>

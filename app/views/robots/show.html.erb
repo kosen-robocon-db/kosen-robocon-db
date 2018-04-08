@@ -106,15 +106,15 @@
           <tr>
             <td><%= game.region.name %></td>
             <td>
-              <%#=
+              <%=
                 link_to game_name(
                   nth: @robot.contest_nth,
                   region: game.region_code,
                   round: game.round,
                   game: game.game),
-                  robot_game_path(robot_code: @robot.code, code: game.code)
+                  game_path(code: game.code)
               %>
-              <%=
+              <%#=
                 game_name(
                   nth: @robot.contest_nth,
                   region: game.region_code,
@@ -131,11 +131,12 @@
               %>
             </td>
             <td><%= opponent.team %></td>
-            <td><%= link_to opponent.name, robot_path(opponent.code) %></td>
+            <td><%= link_to opponent.name.truncate(SHORTENING_LEN),
+              robot_path(opponent.code) %></td>
             <% else %>
             <td></td>
             <td></td>
-            <td><%= opponent.name %></td>
+            <td><%= opponent.name.truncate(SHORTENING_LEN) %></td>
             <% end %>
             <td>
               <% # 出来ればモデルと共用のヘルパーメソッド化すべき

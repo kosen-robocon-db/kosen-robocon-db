@@ -52,7 +52,27 @@ $ ->
   # GameDetailAttributesクラスのオブジェクト生成用データ
   # モデルでスイッチ表示する属性情報を持たせようと思ったがここで持たせることにした
   switching_attributes = {
-    29: [ 'jury_votes', 'progress' ]
+     7: [ 'special_win' ]
+     8: [ 'special_win' ]
+     9: [ 'special_win' ]
+    12: [ 'special_win' ]
+    13: [ 'special_win', 'jury_votes' ]
+    14: [ 'jury_votes' ]
+    15: [ 'special_win', 'jury_votes' ]
+    16: [ 'jury_votes' ]
+    17: [ 'jury_votes' ]
+    18: [ 'progress', 'distance', 'jury_votes' ]
+    19: [ 'progress', 'special_win', 'jury_votes' ]
+    20: [ 'special_win', 'jury_votes' ]
+    21: [ 'progress', 'jury_votes' ]
+    22: [ 'jury_votes' ]
+    23: [ 'jury_votes' ]
+    24: [ 'jury_votes' ]
+    25: [ 'my_special_win', 'opponent_special_win', 'jury_votes' ]
+    26: [ 'jury_votes' ]
+    27: [ 'jury_votes' ]
+    28: [ 'my_special_win', 'opponent_special_win', 'jury_votes' ]
+    29: [ 'progress', 'jury_votes' ]
     30: [ 'jury_votes' ]
   }
 
@@ -112,6 +132,24 @@ $ ->
         else
           $('#game_round').append(option)
         i += 1
+
+  # 第24回大会で先行のチェックボックスを自他排他制御
+  $(document).on 'change', (event, param) ->
+    regex = ///^game_game_detail24ths_attributes_\d_(my|opponent)_play_first$///
+    if regex.test(event.target.id)
+      number = event.target.id.match(/_\d+_/)[0].replace(/_/g, '')
+      distinction = event.target.id.match(
+        /_(my|opponent)_/)[0].replace(/_/g, ''
+      )
+      switch distinction
+        when "my"
+          opposite = "opponent"
+        when "opponent"
+          opposite = "my"
+        else
+          opposite = "my"
+      $('#game_game_detail24ths_attributes_' + number + '_' + opposite +
+        '_play_first').prop('checked', !event.target.checked)
 
   # when game_detail added
   $('form').on 'fields_added.nested_form_fields', (event, param) ->

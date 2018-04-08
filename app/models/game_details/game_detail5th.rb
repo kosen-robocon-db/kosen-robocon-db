@@ -1,56 +1,56 @@
 class GameDetail5th < GameDetail
 
   # my_robot_code側から見ているので、
-  # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
-  ROOTS = %w( robot_code point )
+  # ロボットコード異なる場合は交換したい値を持つ属性の語幹を書いておく
+  STEMS = %w( robot_code gaining_point )
 
-  attr_accessor :my_point, :opponent_point
+  REX_GPT = /\A([0-9]|[1-9][0-9]|1[0-5][0-9]|160|#{UNKNOWN})\z/
+
+  attr_accessor :my_gaining_point, :opponent_gaining_point
   attr_accessor :extra_time
   attr_accessor :memo
 
   # 160点以上があるかもしれない・・・
-  validates :my_point, numericality: {
-    only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 160
-  }
-  validates :opponent_point, numericality: {
-    only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 160
-  }
-  validates :memo, length: { maximum: 255 }
+  # 暫定的にselectで得点を入力させ、検証はformat:で行う。将来はスライダーに変更。
+  validates :my_gaining_point,       format: { with: REX_GPT }
+  validates :opponent_gaining_point, format: { with: REX_GPT }
 
-  # DBにはないがpropertyに納めたいフォーム上の属性
+  validates :extra_time, inclusion: { in: [ "true", "false", nil ] }
+  validates :memo, length: { maximum: MEMO_LEN }
+
+  # DBにカラムはないがpropertyに納めたいフォーム上の属性
   def self.additional_attr_symbols
     [
-      :my_point, :opponent_point,
+      :my_gaining_point, :opponent_gaining_point,
       :extra_time,
       :memo
     ]
   end
 
-  def roots
-    ROOTS
+  # 親クラスから子クラスのSTEM定数を参照するためのメソッド
+  def stems
+    STEMS
   end
 
-  # SRP(Single Responsibility Principle, 単一責任原則)に従っていないが
-  # このクラス内で実装する。
+  # extra_timeなどのbooleanとnilの三種の値の入力を想定しているフォーム属性変数について
+  # trueかfalseかnilかをここで吟味すべきであるが、このproperties生成の後に実行される
+  # save/update直前のvalidationによって吟味されるので、有るか無しか(nil)かを吟味する
+  # だけにしている。他の数字や文字列が入力される属性も同様である。
   def self.compose_properties(hash:)
-    h = super(hash: hash) || {}
-    ROOTS.each do |pr|
-      my_sym, opponent_sym = "my_#{pr}".to_sym, "opponent_#{pr}".to_sym
-      if hash[my_sym].present? and hash[opponent_sym].present?
-        h["#{pr}"] = "#{hash[my_sym]}#{DELIMITER}#{hash[opponent_sym]}"
-      end
-    end
-    h["extra_time"] = "true" if hash[:extra_time].present?
-    h["memo"] = "#{hash[:memo]}" if hash[:memo].present?
+    h = compose_pairs(hash: hash, stems: STEMS)
+    h["extra_time"] = "true"           if hash[:extra_time].present?
+    h["memo"]       = "#{hash[:memo]}" if hash[:memo].present?
     return h
   end
 
   def decompose_properties(robot:)
     super(robot: robot) do |h|
-      self.my_point, self.opponent_point =
-        h["point"].to_s.split(REX_SC)[1..-1] if h["point"].present?
-      self.extra_time = h["extra_time"].present? ? true : false
-      self.memo = h["memo"].presence || ''
+      if h["gaining_point"].present?
+        self.my_gaining_point, self.opponent_gaining_point =
+          h["gaining_point"].to_s.split(REX_SC)[1..-1]
+      end
+      self.extra_time = h["extra_time"].presence.to_bool
+      self.memo       = h["memo"].presence || ''
     end
   end
 

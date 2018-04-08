@@ -1,0 +1,50 @@
+<%= f.hidden_field :id %>
+<%
+  baloon_numbers  = option_numbers           end_number: 10
+  repair_numbers  = option_numbers digit: 1, end_number:  9
+  foul_numbers    = option_numbers digit: 1, end_number:  9
+%>
+<%
+  %w( my opponent ).each do |i|
+    case i
+    when "my"       then partial = '<?= label_tag "#{@robot.name}：" ?>'
+    when "opponent" then partial = '<?= label_tag "対戦相手：" ?>'
+    end
+    table = <<EOS
+<table style="margin-left: 10px;">
+  <tr>
+    <td>本陣に残った風船の数：</td>
+    <td><?= f.select :#{i}_base_baloon, baloon_numbers ?>個</td>
+  </tr>
+  <tr>
+    <td>ロボットに残った風船の数：</td>
+    <td><?= f.select :#{i}_robot_baloon, baloon_numbers ?>個</td>
+  </tr>
+  <tr>
+    <td>リペア：</td>
+    <td><?= f.select :#{i}_repair, repair_numbers ?>回</td>
+  </tr>
+  <tr>
+    <td>反則：</td>
+    <td><?= f.select :#{i}_foul, foul_numbers ?>回</td>
+  </tr>
+</table>
+EOS
+    partial << "\n"
+    partial << table
+    concat ERB.new(partial.gsub!(/\?/, "%")).result(binding).html_safe
+  end
+%>
+<%= f.label :time_minute, "試合時間：" %>
+<%= f.select :time_minute, time_numbers %>分
+<%= f.select :time_second, time_numbers %>秒
+<br />
+<%= render "game_details/form/common_parts/jury_votes", f: f,
+  juries_number: 5 %><%# 審査員判定 %>
+<br />
+<%= f.label :memo, "メモ：" %>
+<%= f.text_field :memo %><br />
+<br />
+<%= f.hidden_field :_destroy %>
+<%= f.remove_nested_fields_link '削除', class: 'btn btn-danger',
+  role: 'button' %><br />

@@ -1,0 +1,33 @@
+<%= f.hidden_field :id %>
+<table>
+  <tr>
+    <td><%= label_tag "#{@robot.name}：" %></td>
+  </tr>
+  <tr>
+    <td>
+      <%= ("&nbsp;"*4).html_safe %>
+      タイム：
+      <%= f.select :my_time_minute, time_numbers %>分
+      <%= f.select :my_time_second, time_numbers %>秒
+    </td>
+  </tr>
+  <%#########################################################################%>
+  <tr>
+    <td><%= label_tag :opponent_time, "対戦相手：" %></td>
+  </tr>
+  <tr>
+    <td>
+      <%= ("&nbsp;"*4).html_safe %>
+      タイム：
+      <%= f.select :opponent_time_minute, time_numbers %>分
+      <%= f.select :opponent_time_second, time_numbers %>秒
+    </td>
+  </tr>
+</table>
+<br />
+<%= f.label :memo, "メモ：" %>
+<%= f.text_field :memo %><br />
+<br />
+<%= f.hidden_field :_destroy %>
+<%= f.remove_nested_fields_link '削除', class: 'btn btn-danger',
+  role: 'button' %><br />

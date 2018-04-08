@@ -4,16 +4,20 @@ class GamesController < ApplicationController
     only: [ :new, :create, :edit, :update, :destroy ]
   before_action :admin_user, only: :index
 
+  def show
+
+  end
+
   def new
     @robot = Robot.find_by(code:
       Rails.application.routes.recognize_path(request.path_info)[:robot_code])
     @gd_sym = game_details_sub_class_sym(contest_nth: @robot.contest_nth)
     Game.confirm_or_associate(game_details_sub_class_sym: @gd_sym)
     @game = Game.new(robot_code: @robot.code, contest_nth: @robot.contest_nth)
-    case @robot.contest_nth
-    when 1..20,29,30 then
+    # case @robot.contest_nth
+    # when 1..20,29,30 then
       @game.send(@gd_sym).new # GameDetail サブクラスのインスタンス生成
-    end
+    # end
     gon.contest_nth = @robot.contest_nth
     @regions = Region.where(code: [ 0, @robot.campus.region_code ])
     @round_names = RoundName.where(contest_nth: @robot.contest_nth,
@@ -126,6 +130,7 @@ class GamesController < ApplicationController
         attrs_hash[gdas][i][:properties] =
           klass.compose_properties(hash: attrs_hash[gdas][i]).to_json
             # フォームパラメーターから GameDetail サブクラスの properties を合成
+            # before...でできないのかな？
         attrs_hash[gdas][i][:number] = j
         j += 1
       }

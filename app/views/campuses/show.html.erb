@@ -42,9 +42,11 @@
       <tbody>
         <% @robots.each do |robot| %>
           <tr>
-            <td align="right"><%= link_to robot.contest.nth, contest_path(robot.contest.nth), title: robot.contest.name %></td>
-            <td><%= link_to robot.name, robot_path(robot.code) %></td>
-            <td><%= robot.kana %></td>
+            <td align="right"><%= link_to robot.contest.nth,
+              contest_path(robot.contest.nth), title: robot.contest.name %></td>
+            <td><%= link_to robot.name.truncate(SHORTENING_LEN),
+              robot_path(robot.code) %></td>
+            <td><%= robot.kana.truncate(SHORTENING_LEN) %></td>
             <td><%= robot.team %></td>
             <td>
               <% if not robot.advancement_history.blank? %>
@@ -59,7 +61,8 @@
             </td>
             <td><% if not robot.robot_condition.blank? %>
               <%#= "現存" %>
-              <%= robot.robot_condition.fully_operational ? "動態保存" : "静態保存" %>
+              <%= robot.robot_condition.fully_operational ?
+                "動態保存" : "静態保存" %>
               <% end %></td>
           </tr>
         <% end %>

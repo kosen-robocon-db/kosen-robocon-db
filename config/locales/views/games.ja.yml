@@ -6,3 +6,75 @@ ja:
         DNS: 試合開始前棄権
         DNF: 試合途中棄権
         DSQ: 失格
+    game_detail3rd:
+      criterium:
+        win: 勝利
+        recommended: 審査員推薦
+        janken: じゃんけん
+    game_detail4th:
+      criterium:
+        number: 個数
+        hight: 高さ
+        distance: 距離
+        janken: じゃんけん
+    game_detail18th:
+      progress:
+        start_zone: スタートゾーン
+        ladder_dive_zone: 梯子潜り
+        balance_beam_zone: 平均台渡り
+        hardle_cross_zone: ハードル越え
+        button_passing_zone: バトン渡し
+        wall_clibming_zone: 壁登り
+        button_goal: バトンゴール
+    game_detail19th:
+      progress:
+        start_zone: スタートゾーン
+        moat_zone: お堀越え
+        seesaw_zone: シーソー
+        slalom_zone: スラローム
+        rope_zone: 縄跳び
+        goal_zone: ふるさとゴール
+    game_detail21st:
+      progress:
+        start_zone: スタートゾーン
+        going_round: 大回転（パイロン）
+        crossing_a_mountain: 山越え（ハードル）
+        transforming: 変身（パフォーマンス）
+        bipedal_walking: ニ足歩行
+        goal: ゴール
+    game_detail22nd:
+      challenge:
+        present_taking: プレゼントをとる（5点）
+        present_giving: プレゼントを渡す（5点）
+        pair_dancing: ペアダンス（10点）
+        pole_turning: ポールターン（10点）
+        synchronous_spining: シンクロスピン（10点）
+        lifting: リフト（10点）
+        jumping_while_rolling: ローリングジャンプ回転（20点）
+        landing_after_jumping: ローリングジャンプ着地（10点）
+        star_staging: スターステージ（10点）
+        star_coupling: スターカップル（10点）
+    game_detail23rd:
+      progress:
+        start_zone: スタートゾーン
+        walking_zone: 二足歩行ゾーン
+        connecting_zone: 連結ゾーン
+        inserting_zone: 鍵穴ゾーン
+        goal_zone: ゴール
+    game_detail26th:
+      progress:
+        start: スタートゾーン
+        first_jump_rope: 第1ロボット二回縄跳び
+        second_jump_rope: 第2ロボット二回縄跳び
+        third_jump_rope: 第3ロボット二回縄跳び
+        turn_around: 折り返し
+        human_robot_jump_rope: 人間・ロボットの縄跳び
+        consecutive_jump_rope: 連続縄跳びジャンプ
+    game_detail29th:
+      progress:
+        lighthouse_building: 灯台建築
+        departure: 出港
+        island_landing: 島上陸
+        continent_landing: 新大陸上陸
+        fort_block_building: 砦建築（ブロック積）
+        fort_symbol_setting: 砦建築（シンボルセット）

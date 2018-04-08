@@ -1,62 +1,73 @@
 class GameDetail7th < GameDetail
 
+  # 再々延長ルールはあったが適用される試合はなかったはず
+
   # my_robot_code側から見ているので、
   # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
-  ROOTS = %w( robot_code point )
+  STEMS = %w( robot_code gaining_point )
 
-  REX_PT  = /[0-9]|[1-3][0-9]|40|#{GameDetail::Constant::UNKNOWN_VALUE}/
+  REX_GPT = /\A([0-9]|[1-3][0-9]|40|#{UNKNOWN})\z/
 
-  attr_accessor :my_point, :opponent_point
-  attr_accessor :v_hole
-  attr_accessor :extra_time # 再々延長ルールはあったが適用される試合はなかったはず
+  # Vホールのように条件を満足すれば即勝利となったときの試合決着時間は
+  # special_time_minute/secondとはせず、time_minute/secondとして
+  # 他の試合決着時間を記録する大会の変数名と合わせている。
+  attr_accessor :my_gaining_point, :opponent_gaining_point
+  attr_accessor :special_win, :time_minute, :time_second
+  attr_accessor :extra_time
   attr_accessor :memo
 
-  # validates に numericality: {} を指定したいところだが(分かり易いが)、
-  # format: {} のほうが手間がかからないようなので、採用した。
-  # 減点があったかどうか不明だが、得点だけを実装しておいた。
-  validates :my_point, format: { with: REX_PT }
-  validates :opponent_point, format: { with: REX_PT }
-  validates :memo, length: { maximum: 255 }
+  validates :my_gaining_point,       format: { with: REX_GPT }
+  validates :opponent_gaining_point, format: { with: REX_GPT }
+  with_options if: :special_win do
+    validates :time_minute,          format: { with: REX_MS }
+    validates :time_second,          format: { with: REX_MS }
+  end
+  validates :extra_time, inclusion: { in: [ "true", "false", nil ] }
+  validates :memo, length: { maximum: MEMO_LEN }
 
-  # DBにはないがpropertyに納めたいフォーム上の属性
+  # DBにカラムはないがpropertyに納めたいフォーム上の属性
   def self.additional_attr_symbols
     [
-      :my_point, :opponent_point,
-      :v_hole,
+      :my_gaining_point, :opponent_gaining_point,
+      :special_win, :time_minute, :time_second,
       :extra_time,
       :memo
     ]
   end
 
-  def roots
-    ROOTS
+  # 親クラスから子クラスのSTEM定数を参照するためのメソッド
+  def stems
+    STEMS
   end
 
-  # SRP(Single Responsibility Principle, 単一責任原則)に従っていないが
-  # このクラス内で実装する。
+  # extra_timeなどのbooleanとnilの三種の値の入力を想定しているフォーム属性変数について
+  # trueかfalseかnilかをここで吟味すべきであるが、このproperties生成の後に実行される
+  # save/update直前のvalidationによって吟味されるので、有るか無しか(nil)かを吟味する
+  # だけにしている。他の数字や文字列が入力される属性も同様である。
   def self.compose_properties(hash:)
-    h = super(hash: hash) || {}
-    ROOTS.each do |pr|
-      my_sym, opponent_sym = "my_#{pr}".to_sym, "opponent_#{pr}".to_sym
-      if hash[my_sym].present? and hash[opponent_sym].present?
-        h["#{pr}"] = "#{hash[my_sym]}#{DELIMITER}#{hash[opponent_sym]}"
-      end
+    h = compose_pairs(hash: hash, stems: STEMS)
+    if hash[:special_win].presence.to_bool
+      h["special_win"] = "true"
+      h.update(compose_time(hash: hash)) # h["time"]
     end
-    h["v_hole"] = "true" if hash[:v_hole].present?
-    h["extra_time"] = "true" if hash[:extra_time].present?
-    h["memo"] = "#{hash[:memo]}" if hash[:memo].present?
+    h["extra_time"] = "true"           if hash[:extra_time].present?
+    h["memo"]       = "#{hash[:memo]}" if hash[:memo].present?
     return h
   end
 
   def decompose_properties(robot:)
     super(robot: robot) do |h|
-      if h["point"].present?
-        self.my_point, self.opponent_point =
-          h["point"].to_s.split(REX_SC)[1..-1]
+      if h["gaining_point"].present?
+        self.my_gaining_point, self.opponent_gaining_point =
+          h["gaining_point"].to_s.split(DELIMITER)
       end
-      self.v_hole = h["v_hole"].present? ? true : false
-      self.extra_time = h["extra_time"].present? ? true : false
-      self.memo = h["memo"].presence || ''
+      if h["special_win"].present?
+        self.special_win = true
+        self.time_minute, self.time_second =
+          h["time"].to_s.split(DELIMITER_TIME)
+      end
+      self.extra_time = h["extra_time"].presence.to_bool
+      self.memo       = h["memo"].presence || ''
     end
   end
 

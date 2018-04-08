@@ -1,0 +1,60 @@
+<%= f.hidden_field :id %>
+<%
+  gaining_point_numbers   = option_numbers                   end_number: 50
+  deducting_point_numbers = option_numbers                   end_number:  5
+  total_point_numbers     = option_numbers begin_number: -5, end_number: 50
+%>
+<table>
+  <tr>
+    <td><%= label_tag "#{@robot.name}：" %></td>
+  </tr>
+  <tr>
+    <td>
+      <%= ("&nbsp;"*4).html_safe %>
+      得点：<%= f.select :my_gaining_point, gaining_point_numbers %>点
+      <%= ("&nbsp;"*2).html_safe %>
+      減点：<%= f.select :my_deducting_point, deducting_point_numbers %>点
+      <%= ("&nbsp;"*2).html_safe %>
+      合計：<%= f.select :my_total_point, total_point_numbers %>点
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <%= ("&nbsp;"*4).html_safe %>
+      バスケット・ドリブル：<%= f.check_box :my_basket_drible,
+        { checked: f.object.my_basket_drible }, true, false %>
+    </td>
+  </tr>
+  <%#########################################################################%>
+  <tr>
+    <td><%= label_tag "対戦相手：" %></td>
+  </tr>
+  <tr>
+    <td>
+      <%= ("&nbsp;"*4).html_safe %>
+      得点：<%= f.select :opponent_gaining_point, gaining_point_numbers %>点
+      <%= ("&nbsp;"*2).html_safe %>
+      減点：<%= f.select :opponent_deducting_point, deducting_point_numbers %>点
+      <%= ("&nbsp;"*2).html_safe %>
+      合計：<%= f.select :opponent_total_point, total_point_numbers %>点
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <%= ("&nbsp;"*4).html_safe %>
+      バスケット・ドリブル：<%= f.check_box :opponent_basket_drible,
+        { checked: f.object.opponent_basket_drible }, true, false %>
+    </td>
+  </tr>
+</table>
+<%= render "game_details/form/common_parts/special_win", f: f,
+  special_win_name: "Vゴール" %>
+<%= f.label :extra_time, "延長(60秒)：" %>
+<%= f.check_box :extra_time, { checked: f.object.extra_time }, true, false %>
+<br />
+<%= f.label :memo, "メモ：" %>
+<%= f.text_field :memo %><br />
+<br />
+<%= f.hidden_field :_destroy %>
+<%= f.remove_nested_fields_link '削除', class: 'btn btn-danger',
+  role: 'button' %><br />

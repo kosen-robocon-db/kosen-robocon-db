@@ -1,0 +1,55 @@
+<%= f.hidden_field :id %>
+<%
+  delivered_numbers     = option_numbers digit: 1, end_number:  3
+  gaining_point_numbers = option_numbers           end_number: 49
+  retry_numbers         = option_numbers digit: 1, end_number:  9
+  steamer_fall_numbers  = option_numbers digit: 1, end_number:  9
+%>
+<%= label_tag "#{@robot.name}：" %>
+<table style="margin-left: 10px;">
+  <tr>
+    <td>注文完了数：</td>
+    <td><%= f.select :my_delivered, delivered_numbers %></td>
+  </tr>
+  <tr>
+    <td>得点（運んだ蒸籠の数）：</td>
+    <td><%= f.select :my_gaining_point, gaining_point_numbers %>点</td>
+  </tr>
+  <tr>
+    <td>リトライ回数：</td>
+    <td><%= f.select :my_retry, retry_numbers %></td>
+  </tr>
+  <tr>
+    <td>蒸籠落下回数：</td>
+    <td><%= f.select :my_steamer_fall, steamer_fall_numbers %></td>
+  </tr>
+</table>
+<%###########################################################################%>
+<%= label_tag "対戦相手：" %>
+<table style="margin-left: 10px;">
+  <tr>
+    <td>注文完了数：</td>
+    <td><%= f.select :opponent_delivered, delivered_numbers %></td>
+  </tr>
+  <tr>
+    <td>得点（運んだ蒸籠の数）：</td>
+    <td><%= f.select :opponent_gaining_point, gaining_point_numbers %>点</td>
+  </tr>
+  <tr>
+    <td>リトライ回数：</td>
+    <td><%= f.select :opponent_retry, retry_numbers %></td>
+  </tr>
+  <tr>
+    <td>蒸籠落下回数：</td>
+    <td><%= f.select :opponent_steamer_fall, steamer_fall_numbers %></td>
+  </tr>
+</table>
+<%= render "game_details/form/common_parts/jury_votes", f: f,
+  juries_number: 5 %><%# 審査員判定 %>
+<br />
+<%= f.label :memo, "メモ：" %>
+<%= f.text_field :memo %><br />
+<br />
+<%= f.hidden_field :_destroy %>
+<%= f.remove_nested_fields_link '削除', class: 'btn btn-danger',
+  role: 'button' %><br />
