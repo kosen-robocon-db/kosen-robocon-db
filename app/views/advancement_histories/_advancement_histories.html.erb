@@ -18,7 +18,7 @@
           <td><%= history.contest.name %></td>
           <td><%= history.advancement.case_name %></td>
           <td>
-            <%= link_to history.robot.name.truncate(10),
+            <%= link_to history.robot.name.truncate(SHORTENING_LEN),
               robot_path(history.robot.code) %>
           </td>
         </tr>

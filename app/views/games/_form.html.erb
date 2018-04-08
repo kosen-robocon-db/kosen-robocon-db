@@ -16,7 +16,9 @@
       robots_array = Robot.where(contest_nth: @game.contest_nth).
         where.not(code: [@robot.code]).
           includes(:campus).order("robots.code").map{ |i| [
-            i.campus.abbreviation.to_s.ljust(5, "　") + i.name, i.code
+            i.campus.abbreviation.to_s.ljust(5, "　") +
+              i.name.truncate(SHORTENING_LEN), 
+            i.code
           ] }
         # 下記はGameモデルで自動的に追加されるべき
       robots_array.push([

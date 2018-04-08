@@ -29,7 +29,8 @@
           </td>
           <td><%= result.robot.team          %></td>
           <td>
-            <%= link_to result.robot.name, robot_path(result.robot.code) %>
+            <%= link_to result.robot.name.truncate(SHORTENING_LEN),
+              robot_path(result.robot.code) %>
           </td>
         </tr>
         <% end %>
@@ -43,7 +44,8 @@
           </td>
           <td><%= prize.robot.team          %></td>
           <td>
-            <%= link_to prize.robot.name, robot_path(prize.robot.code) %>
+            <%= link_to prize.robot.name.truncate(SHORTENING_LEN),
+              robot_path(prize.robot.code) %>
           </td>
         </tr>
         <% end %>
@@ -60,7 +62,8 @@
                 campus_path(history.campus.code) %></td>
               <td><%= history.robot.team %></td>
               <td>
-                <%= link_to history.robot.name, robot_path(history.robot.code) %>
+                <%= link_to history.robot.name.truncate(SHORTENING_LEN),
+                  robot_path(history.robot.code) %>
               </td>
             </tr>
           <% end %>

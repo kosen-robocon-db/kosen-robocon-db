@@ -42,7 +42,8 @@
                   data: {confirm: "削除しますか？"} %>
             <% when "campuses" then %>
               <td>
-              <%= link_to history.robot.name, robot_path(history.robot.code) %>
+              <%= link_to history.robot.name.truncate(SHORTENING_LEN),
+                robot_path(history.robot.code) %>
             <% end %>
           </td>
         </tr>
