@@ -63,11 +63,21 @@
 <div class="distance___nested_field_for_replace_with_index__ hidden">
 <% end %>
   <table>
-    <tr><td><%= ("&nbsp;"*4).html_safe %><%= "#{@robot.name}：" %></td></tr>
-    <tr><td><%= f.text_field :my_distance, { maxlength: 6 } %>m</td></tr>
+    <tr><td>
+      <%= ("&nbsp;"*4).html_safe %><%= "#{@robot.name}：" %>
+    </td></tr>
+    <tr><td>
+      <%= ("&nbsp;"*8).html_safe %>
+      <%= f.text_field :my_distance, { maxlength: 6 } %>m
+    </td></tr>
     <%#######################################################################%>
-    <tr><td><%= ("&nbsp;"*4).html_safe %>対戦相手：</td></tr>
-    <tr><td><%= f.text_field :opponent_distance, { maxlength: 6 } %>m</td></tr>
+    <tr><td>
+      <%= ("&nbsp;"*4).html_safe %>対戦相手：
+    </td></tr>
+    <tr><td>
+      <%= ("&nbsp;"*8).html_safe %>
+      <%= f.text_field :opponent_distance, { maxlength: 6 } %>m
+    </td></tr>
   </table>
 </div>
 <%= render "games/game_details/common_parts/jury_votes", f: f,

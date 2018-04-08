@@ -6,8 +6,9 @@
 <%= label_tag "#{@robot.name}：" %>
 <table style="margin-left: 10px;">
   <tr>
-    <td>積み上げた高さ：" %></td>
-    <td><%= f.text_field :my_gaining_point %>cm</td>
+    <td>積み上げた高さ：</td>
+    <td><%= f.text_field :my_gaining_point,
+      { size: 3, maxlength: 3 } %>cm</td>
   </tr>
   <tr>
     <td>リトライ：</td>
@@ -24,8 +25,9 @@
 <%= label_tag "対戦相手：" %>
 <table style="margin-left: 10px;">
   <tr>
-    <td>積み上げた高さ：" %></td>
-    <td><%= f.text_field :opponent_gaining_point %>cm</td>
+    <td>積み上げた高さ：</td>
+    <td><%= f.text_field :opponent_gaining_point,
+      { size: 3, maxlength: 3 } %>cm</td>
   </tr>
   <tr>
     <td>リトライ：</td>

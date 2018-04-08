@@ -10,12 +10,12 @@
   <tr>
     <td>
       <%= ("&nbsp;"*4).html_safe %>
-      距離<%= f.text_field :my_gaining_point, { maxlength: 5 } %>cm
+      距離：<%= f.text_field :my_gaining_point, { maxlength: 5 } %>cm
       <%= ("&nbsp;"*2).html_safe %>
-      反則<%= f.select :my_deducting_point,
+      反則：<%= f.select :my_deducting_point,
         deducting_point_numbers %>回 x 50cm
       <%= ("&nbsp;"*2).html_safe %>
-      合計<%= f.text_field :my_total_point, { maxlength: 5 } %>cm
+      合計：<%= f.text_field :my_total_point, { maxlength: 5 } %>cm
     </td>
   </tr>
   <tr>
@@ -31,12 +31,12 @@
   <tr>
     <td>
       <%= ("&nbsp;"*4).html_safe %>
-      距離<%= f.text_field :opponent_gaining_point, { maxlength: 5 } %>cm
+      距離：<%= f.text_field :opponent_gaining_point, { maxlength: 5 } %>cm
       <%= ("&nbsp;"*2).html_safe %>
-      反則<%= f.select :opponent_deducting_point,
+      反則：<%= f.select :opponent_deducting_point,
         deducting_point_numbers %>回 x 50cm
       <%= ("&nbsp;"*2).html_safe %>
-      合計<%= f.text_field :opponent_total_point, { maxlength: 5 } %>cm
+      合計：<%= f.text_field :opponent_total_point, { maxlength: 5 } %>cm
     </td>
   </tr>
   <tr>
