@@ -120,7 +120,8 @@ class GameDetail28th < GameDetail
     h = compose_pairs(hash: hash, stems: %w( robot_code gaining_point
       double_pole triple_pole special_win ))
     h.update(compose_time(hash: hash))
-    h.update(compose_pairs(hash:, stems: %w( loading retry foul jury_votes )))
+    h.update(compose_pairs(hash: hash,
+      stems: %w( loading retry foul jury_votes )))
     h.delete("jury_votes") unless hash["jury_votes"].presence.to_bool
     h["memo"] = "#{hash[:memo]}" if hash[:memo].present?
     return h
