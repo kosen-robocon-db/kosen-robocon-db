@@ -4,6 +4,10 @@ class GamesController < ApplicationController
     only: [ :new, :create, :edit, :update, :destroy ]
   before_action :admin_user, only: :index
 
+  def show
+
+  end
+
   def new
     @robot = Robot.find_by(code:
       Rails.application.routes.recognize_path(request.path_info)[:robot_code])
