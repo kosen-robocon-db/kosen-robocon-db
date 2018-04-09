@@ -5,7 +5,14 @@ class GamesController < ApplicationController
   before_action :admin_user, only: :index
 
   def show
-
+    @game = Game.find_by(code: params[:code])
+    @contest = Contest.find_by(nth: @game.contest_nth)
+    @winner_robot = Robot.find_by(code: @game.winner_robot_code)
+    # if @game.winner_robot_code == @game.left_robot_code
+    #   @loser_robot = Robot.find_by(code: @game.right_robot_code)
+    # else
+    #   @loser_robot = Rorot.find_by(code: @game.left_robot_code)
+    # end
   end
 
   def new

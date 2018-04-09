@@ -1,7 +1,16 @@
-<% provide(:title, @title_for_tab) %>
+<h1>只今実装中</h1>
+<% provide(:title, @title_for_tab) %><%# これ必要なのかな？ %>
+<%= render "shared/title", title: @title %><%# これ必要なのかな？ %>
+<%= label_tag "第#{@game.contest_nth}回大会" %><br />
+<%= label_tag @contest.name %><br />
+<%=
+  label_tag game_name(
+    nth: @game.contest_nth,
+    region: @game.region_code,
+    round: @game.round,
+    game: @game.game
+  )
+%><br /><%# もうちょっと短くならないか？ %>
 
-<%= render "shared/title", title: @title %>
 
-<%#= render "games/game_details/game_detail" + @game.contest.nth.ordinalize %>
-
-只今実装中
+<%#= render "game_details/show/game_detail" + @game.contest.nth.ordinalize %>
