@@ -3,16 +3,16 @@ module RobotsHelper
   def game_name(hash:)
     round_name =
       RoundName.find_by(
-        contest_nth: game["contest_nth"],
-        region_code: game["region_code"],
-        round: game["round"]
+        contest_nth: hash["contest_nth"],
+        region_code: hash["region_code"],
+        round: hash["round"]
       ) ||
       RoundName.new(
         name: "未定義"
       )
     a = "#{round_name.name}"
     if round_name.name != "決勝" then
-      a += " 第#{game["game"]}試合"
+      a += " 第#{hash["game"]}試合"
     end
     a
   end
