@@ -26,18 +26,22 @@
         Game::Constant::NO_OPPONENT.code
       ])
     %>
-    <%= f.select :opponent_robot_code, robots_array %><br />
-    <%= f.label :victory, "勝敗" %>:
-    <%= f.radio_button :victory, Game::Constant::WIN, {:checked=>true} %>勝ち
-    &nbsp;&nbsp;
-    <%= f.radio_button :victory, Game::Constant::LOSE %>負け
-    &nbsp;&nbsp;
-    <%= f.radio_button :victory, Game::Constant::SOLO %>予選単独競技（勝ち負けなし）
-    &nbsp;&nbsp;
-    <%= f.radio_button :victory, Game::Constant::BYE %>不戦勝
-    &nbsp;&nbsp;
-    <%= f.radio_button :victory, Game::Constant::BOTH_DSQ %>両者失格
+    <%= f.select :opponent_robot_code, robots_array %>
     <br />
+
+    <%= f.label :victory, "勝敗" %>:
+    <%
+      result = @game.victory.presence || Game.results[:win].to_s
+      Game.results.each do |key, value|
+        checked = result.to_i == value ? true : false
+        concat f.radio_button :victory, value, {checked: checked}
+        concat Game.results_i18n[key]
+        concat ("&nbsp;"*2).html_safe
+      end
+    %>
+    <br />
+
+    <%# 事由が重なることがあるんだろうか？なければラジオボタンにすべき %>
     <%= f.label :reasons_for_victory, "勝敗事由"%>：
     <%
       checked = @game.reasons_for_victory.presence || []
@@ -46,9 +50,7 @@
           { multiple: true, checked: checked.include?(value.to_s) },
           value # , nil
         concat Game.reasons_i18n[key]
-    %>
-    &nbsp;&nbsp;
-    <%
+        concat ("&nbsp;"*2).html_safe
       end
     %>
     <br /><br />

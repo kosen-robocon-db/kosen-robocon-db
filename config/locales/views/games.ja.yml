@@ -1,8 +1,14 @@
 ja:
   enums:
     game:
-      reasons:
-        draw: 引き分け（審査員判定・推薦で勝ち負け）
+      result:
+        win: 勝ち
+        lose: 負け
+        solo: 単独競技
+        bye: 不戦勝
+        both_dsq: 両者失格
+      reason:
+        draw: 引き分け（審査員判定・推薦）
         DNS: 試合開始前棄権
         DNF: 試合途中棄権
         DSQ: 失格

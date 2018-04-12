@@ -1,8 +1,9 @@
 <h1>只今実装中</h1>
 <% provide(:title, @title_for_tab) %><%# これ必要なのかな？ %>
 <%= render "shared/title", title: @title %><%# これ必要なのかな？ %>
-<%= label_tag "第#{@game.contest_nth}回大会" %><br />
-<%= label_tag @contest.name %><br />
+<%= label_tag "#{@game.contest.year}年 第#{@game.contest.nth}回" %>
+<%= label_tag @game.contest.name %><br />
+<%= label_tag "#{@game.region.name}大会" %>
 <%= label_tag game_name(hash: @game) %><br />
 
-<%#= render "game_details/show/game_detail" + @game.contest.nth.ordinalize %>
+<%= render "game_details/show/game_detail" + @game.contest.nth.ordinalize %>
