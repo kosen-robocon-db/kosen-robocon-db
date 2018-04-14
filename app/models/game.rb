@@ -44,11 +44,14 @@ class Game < ApplicationRecord
 
   before_validation :compose_attributes
 
-  belongs_to :contest, foreign_key: :contest_nth,       primary_key: :nth
-  belongs_to :region,  foreign_key: :region_code,       primary_key: :code
-  belongs_to :robot,   foreign_key: :left_robot_code,   primary_key: :code
-  belongs_to :robot,   foreign_key: :right_robot_code,  primary_key: :code
-  belongs_to :robot,   foreign_key: :winner_robot_code, primary_key: :code
+  belongs_to :contest,      foreign_key: :contest_nth,       primary_key: :nth
+  belongs_to :region,       foreign_key: :region_code,       primary_key: :code
+  belongs_to :left_robot,   foreign_key: :left_robot_code,   primary_key: :code,
+    class_name: 'Robot'
+  belongs_to :right_robot,  foreign_key: :right_robot_code,  primary_key: :code,
+    class_name: 'Robot'
+  belongs_to :winner_robot, foreign_key: :winner_robot_code, primary_key: :code,
+    class_name: 'Robot'
 
   validates :code,              presence: true, uniqueness: true
   validates :contest_nth,       presence: true
@@ -136,6 +139,9 @@ class Game < ApplicationRecord
         end
       end
     end
+    # #show で victory を返り値として利用している。
+    # 返り値を明示する必要があればコメントアウトする。
+    # return self.victory
   end
 
   def self.csv_headers

@@ -1,0 +1,37 @@
+<%
+  # @game.game_detail1sts.each do |detail| とも書けるが、
+  # コードスニペットとしての汎用性を考えると、
+  # 次のシンボル変数を利用する方法の方がよい。
+  @game.send(@gd_sym).each do |detail|
+%>
+<div class="enclosure">
+  <div>
+    <%= label_tag "再"+"々"*(detail.number - 2)+"試合" if detail.number >= 2 %>
+  </div>
+  <%#
+    以下の my_time_minute などの properties に JSON 形式で格納される情報は、
+    このビューでは基本的に変数として存在しているものとし、
+    またオブジェクトとして nil だったとしても問題がないものとし、
+    present? メソッドなどで確認することはしないものとする。（暫定）
+  %>
+  <%#########################################################################%>
+  <%= label_tag "#{@game.left_robot.name}：" %><br />
+  <div style="margin-left: 10px;">
+    タイム：
+    <%= "#{detail.my_time_minute}分".gsub(/_/, '-') %>
+    <%= "#{detail.my_time_second}秒".gsub(/_/, '-') %>
+  </div>
+  <%#------------------------------------------------------------------------%>
+  <%= label_tag "#{@game.right_robot.name}：" %>
+  <div style="margin-left: 10px;">
+    タイム：
+    <%= "#{detail.opponent_time_minute}分".gsub(/_/, '-') %>
+    <%= "#{detail.opponent_time_second}秒".gsub(/_/, '-') %>
+  </div>
+  <%#########################################################################%>
+  <br />
+  <%= label_tag "メモ：" %><%= "#{detail.memo}" %>
+</div>
+<%
+  end
+%>

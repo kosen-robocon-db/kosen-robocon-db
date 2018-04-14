@@ -5,14 +5,15 @@ class GamesController < ApplicationController
   before_action :admin_user, only: :index
 
   def show
+    # 試合コードは"1300901"のような1で始まり、2-3桁目が大会回数となっているが、
+    # 疑いもなく、エラー処理もRailsデフォルト任せにしておく。（暫定）
+    @gd_sym = game_details_sub_class_sym(contest_nth: params[:code][1, 2].to_i)
+    Game.confirm_or_associate(game_details_sub_class_sym: @gd_sym)
     @game = Game.find_by(code: params[:code])
-    @contest = Contest.find_by(nth: @game.contest_nth)
-    @winner_robot = Robot.find_by(code: @game.winner_robot_code)
-    # if @game.winner_robot_code == @game.left_robot_code
-    #   @loser_robot = Robot.find_by(code: @game.right_robot_code)
-    # else
-    #   @loser_robot = Rorot.find_by(code: @game.left_robot_code)
-    # end
+    @game.subjective_view_by(robot_code: @game.left_robot_code)
+    @game.send(@gd_sym).each do |i|
+      i.decompose_properties(robot: @game.left_robot)
+    end
   end
 
   def new
