@@ -9,82 +9,69 @@
   retry_numbers = option_numbers digit: 1, end_number: 1
   foul_numbers  = option_numbers digit: 1, end_number: 3
 %>
-<table>
-  <tr><td><%= label_tag "#{@robot.name}：" %></td></tr>
-  <tr>
-    <td>
-      <%= ("&nbsp;"*4).html_safe %>タイム：
-      <%= f.select :my_time_minute, time_numbers %>分
-      <%= f.select :my_time_second, time_numbers %>秒
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <%= ("&nbsp;"*4).html_safe %>リトライ：
-      <%= f.select :my_retry, retry_numbers %>回
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <%= ("&nbsp;"*4).html_safe %>ファウル：
-      <%= f.select :my_foul, foul_numbers %>回
-    </td>
-  </tr>
-  <%#########################################################################%>
-  <tr><td><%= label_tag "対戦相手：" %></td></tr>
-  <tr>
-    <td>
-      <%= ("&nbsp;"*4).html_safe %>タイム：
-      <%= f.select :opponent_time_minute, time_numbers %>分
-      <%= f.select :opponent_time_second, time_numbers %>秒
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <%= ("&nbsp;"*4).html_safe %>リトライ：
-      <%= f.select :opponent_retry, retry_numbers %>回
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <%= ("&nbsp;"*4).html_safe %>ファウル：
-      <%= f.select :opponent_foul, foul_numbers %>回
-    </td>
-  </tr>
-</table>
+<%###########################################################################%>
+<%= label_tag "タイムとリトライなど：" %>
+<div style="margin-left: 10px;">
+  <%= label_tag "#{@robot.name}：" %>
+  <div style="margin-left: 10px;">
+    タイム：
+    <%= f.select :my_time_minute, time_numbers %>分
+    <%= f.select :my_time_second, time_numbers %>秒
+    <br />
+    リトライ：<%= f.select :my_retry, retry_numbers %>回
+    <br />
+    ファウル：<%= f.select :my_foul, foul_numbers %>回
+  </div>
+  <%#------------------------------------------------------------------------%>
+  <%= label_tag "対戦相手：" %>
+  <div style="margin-left: 10px;">
+    タイム：
+    <%= f.select :opponent_time_minute, time_numbers %>分
+    <%= f.select :opponent_time_second, time_numbers %>秒
+    <br />
+    リトライ：<%= f.select :opponent_retry, retry_numbers %>回
+    <br />
+    ファウル：<%= f.select :opponent_foul, foul_numbers %>回
+  </div>
+</div>
+<%###########################################################################%>
+<br />
 <%= render "game_details/form/common_parts/progress", f: f,
   klass: GameDetail18th %>
-<%= f.label :distance, "到達距離：" %>
-<%= f.check_box :distance, {:checked => f.object.distance}, true, false %>
+<%#==========================================================================%>
 <br />
+<%= f.label :distance, "到達距離判定：" %>
+<%= f.check_box :distance, {:checked => f.object.distance}, true, false %>
 <% if f.object.distance %>
 <div class="distance___nested_field_for_replace_with_index__">
 <% else %>
 <div class="distance___nested_field_for_replace_with_index__ hidden">
 <% end %>
-  <table>
-    <tr><td>
-      <%= ("&nbsp;"*4).html_safe %><%= "#{@robot.name}：" %>
-    </td></tr>
-    <tr><td>
-      <%= ("&nbsp;"*8).html_safe %>
+  <div style="margin-left: 10px;">
+    <%= "#{@robot.name}：" %>
+    <div style="margin-left: 10px;">
       <%= f.text_field :my_distance, { maxlength: 6 } %>m
-    </td></tr>
-    <%#######################################################################%>
-    <tr><td>
-      <%= ("&nbsp;"*4).html_safe %>対戦相手：
-    </td></tr>
-    <tr><td>
-      <%= ("&nbsp;"*8).html_safe %>
+    </div>
+  </div>
+  <%#------------------------------------------------------------------------%>
+  <div style="margin-left: 10px;">
+    対戦相手：
+    <div style="margin-left: 10px;">
       <%= f.text_field :opponent_distance, { maxlength: 6 } %>m
-    </td></tr>
-  </table>
+    </div>
+  </div>
 </div>
+<%#==========================================================================%>
+<br />
 <%= render "game_details/form/common_parts/jury_votes", f: f,
   juries_number: 5 %><%# 審査員判定 %>
+<%###########################################################################%>
 <br />
 <%= f.label :memo, "メモ：" %>
-<%= f.text_field :memo %><br />
+<div style="margin-left: 10px;">
+  <%= f.text_field :memo %>
+</div>
+<%#==========================================================================%>
 <br />
 <%= f.hidden_field :_destroy %>
 <%= f.remove_nested_fields_link '削除', class: 'btn btn-danger',

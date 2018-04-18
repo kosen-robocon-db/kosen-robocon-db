@@ -1,30 +1,26 @@
 <%= f.hidden_field :id %>
 <%###########################################################################%>
-<%= label_tag "#{@robot.name}：" %>
-<table style="margin-left: 10px;">
-  <tr>
-    <td>
-      タイム：
-      <%= f.select :my_time_minute, time_numbers %>分
-      <%= f.select :my_time_second, time_numbers %>秒
-    </td>
-  </tr>
-</table>
-<%###########################################################################%>
-<%= label_tag "対戦相手：" %>
-<table style="margin-left: 10px;">
-  <tr>
-    <td>
-      タイム：
-      <%= f.select :opponent_time_minute, time_numbers %>分
-      <%= f.select :opponent_time_second, time_numbers %>秒
-    </td>
-  </tr>
-</table>
+<%= label_tag "タイム：" %>
+<div style="margin-left: 10px;">
+  <%= label_tag "#{@robot.name}：" %>
+  <div style="margin-left: 10px;">
+    <%= f.select :my_time_minute, time_numbers %>分
+    <%= f.select :my_time_second, time_numbers %>秒
+  </div>
+  <%#------------------------------------------------------------------------%>
+  <%= label_tag "対戦相手：" %>
+  <div style="margin-left: 10px;">
+    <%= f.select :opponent_time_minute, time_numbers %>分
+    <%= f.select :opponent_time_second, time_numbers %>秒
+  </div>
+</div>
 <%###########################################################################%>
 <br />
 <%= f.label :memo, "メモ：" %>
-<%= f.text_field :memo %><br />
+<div style="margin-left: 10px;">
+  <%= f.text_field :memo %>
+</div>
+<%#==========================================================================%>
 <br />
 <%= f.hidden_field :_destroy %>
 <%= f.remove_nested_fields_link '削除', class: 'btn btn-danger',

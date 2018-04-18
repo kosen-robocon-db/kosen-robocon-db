@@ -3,35 +3,20 @@
 %>
 <%= f.label :jury_votes, "審査員判定：" %>
 <%= f.check_box :jury_votes, {:checked => f.object.jury_votes}, true, false %>
-<br />
 <% if f.object.jury_votes %>
 <div class="jury_votes___nested_field_for_replace_with_index__">
 <% else %>
 <div class="jury_votes___nested_field_for_replace_with_index__ hidden">
 <% end %>
-  <table>
-    <tr>
-      <td>
-        <%= ("&nbsp;"*4).html_safe %><%= "#{@robot.name}への票数：" %>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <%= ("&nbsp;"*8).html_safe %>
-        <%= f.select :my_jury_votes, vote_numbers %>
-      </td>
-    </tr>
-    <%#######################################################################%>
-    <tr>
-      <td>
-        <%= ("&nbsp;"*4).html_safe %>対戦相手への票数：
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <%= ("&nbsp;"*8).html_safe %>
-        <%= f.select :opponent_jury_votes, vote_numbers %>
-      </td>
-    </tr>
-  </table>
+  <div style="margin-left: 10px;">
+    <%= "#{@robot.name}：" %>
+    <div style="margin-left: 10px;">
+      <%= f.select :my_jury_votes, vote_numbers %>票
+    </div>
+    <%#----------------------------------------------------------------------%>
+    対戦相手：
+    <div style="margin-left: 10px;">
+      <%= f.select :opponent_jury_votes, vote_numbers %>票
+    </div>
+  </div>
 </div>

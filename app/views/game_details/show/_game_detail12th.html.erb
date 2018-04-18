@@ -1,0 +1,41 @@
+<%#
+  以下の my_time_minute などの properties に JSON 形式で格納される情報は、
+  このビューでは基本的に変数として存在しているものとし、
+  またオブジェクトとして nil だったとしても問題がないものとし、
+  present? メソッドなどで確認することはしないものとする。（暫定）
+%>
+<%###########################################################################%>
+<%= label_tag "得点：" %>
+<div style="margin-left: 10px;">
+  <%= label_tag "#{@game.left_robot.name}：" %>
+  <div style="margin-left: 10px;">
+    得点：<%= "#{d.my_gaining_point}点".gsub(/_/, '-') %>
+    <br />
+    減点：<%= "#{d.my_deducting_point}点".gsub(/_/, '-') %>
+    <br />
+    合計：<%= "#{d.my_total_point}点".gsub(/_/, '-') %>
+  </div>
+  <%#========================================================================%>
+  <%= label_tag "#{@game.right_robot.name}：" %>
+  <div style="margin-left: 10px;">
+    得点：<%= "#{d.opponent_gaining_point}点".gsub(/_/, '-') %>
+    <br />
+    減点：<%= "#{d.opponent_deducting_point}点".gsub(/_/, '-') %>
+    <br />
+    合計：<%= "#{d.opponent_total_point}点".gsub(/_/, '-') %>
+  </div>
+</div>
+<%###########################################################################%>
+<br />
+<%= render "game_details/show/common_parts/special_win", d: d,
+  special_win_name: "Vスポット" %>
+<%#==========================================================================%>
+<br />
+<%= labe_tag "審査員判定（省電力比較）：" %>
+<% concat d.lower_power_quantity.to_bool ? "有り" : "無し" %>
+<%###########################################################################%>
+<br />
+<%= label_tag "メモ：" %><br />
+<div style="margin-left: 10px;">
+  <%= "#{d.memo}" %>
+</div>

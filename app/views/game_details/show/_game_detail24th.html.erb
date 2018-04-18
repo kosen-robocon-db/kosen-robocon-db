@@ -1,0 +1,48 @@
+<%#
+  以下の my_time_minute などの properties に JSON 形式で格納される情報は、
+  このビューでは基本的に変数として存在しているものとし、
+  またオブジェクトとして nil だったとしても問題がないものとし、
+  present? メソッドなどで確認することはしないものとする。（暫定）
+%>
+<%###########################################################################%>
+<%= label_tag "タイムとリトライなど：" %>
+<div style="margin-left: 10px;">
+  <%= label_tag "#{@game.left_robot.name}：" %>
+  <div style="margin-left: 10px;">
+    <%= d.my_play_first.to_bool ? "先攻" : "後攻" %>
+    <br />
+    タッチダウン・タイム：
+    <%= "#{d.my_time_minute}".gsub(/_/, '-') %>分
+    <%= "#{d.my_time_second}".gsub(/_/, '-') %>秒
+    <br />
+    ボールタッチ：<%= "#{d.my_ball_touch}".gsub(/_/, '-') %>回
+    <br />
+    インターセプト：<%= "#{d.my_intercept}".gsub(/_/, '-') %>回
+    <br />
+    リトライ：<%= "#{d.my_retry}".gsub(/_/, '_') %>回
+  </div>
+  <%#------------------------------------------------------------------------%>
+  <%= label_tag "#{@game.right_robot.name}：" %>
+  <div style="margin-left: 10px;">
+    <%= d.opponent_play_first.to_bool ? "先攻" : "後攻" %>
+    <br />
+    タッチダウン・タイム：
+    <%= "#{d.opponent_time_minute}".gsub(/_/, '-') %>分
+    <%= "#{d.opponent_time_second}".gsub(/_/, '-') %>秒
+    <br />
+    ボールタッチ：<%= "#{d.opponent_ball_touch}".gsub(/_/, '-') %>回
+    <br />
+    インターセプト：<%= "#{d.opponent_intercept}".gsub(/_/, '-') %>回
+    <br />
+    リトライ：<%= "#{d.opponent_retry}".gsub(/_/, '_') %>回
+  </div>
+</div>
+<%###########################################################################%>
+<br />
+<%= render "game_details/show/common_parts/jury_votes", d: d %><%# 審査員判定 %>
+<%###########################################################################%>
+<br />
+<%= label_tag "メモ：" %><br />
+<div style="margin-left: 10px;">
+  <%= "#{d.memo}" %>
+</div>

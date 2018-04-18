@@ -1,0 +1,11 @@
+<%= label_tag special_win_name + "：" %>
+<% concat d.special_win.to_bool ? "有り" : "無し" %>
+<% if d.special_win %>
+  <div style="margin-left: 10px;">
+    タイム：
+    <div style="margin-left: 10px;">
+      <%= "#{d.time_minute}分".gsub(/_/, '-') %>
+      <%= "#{d.time_second}秒".gsub(/_/, '-') %>
+    </div>
+  </div>
+<% end %>

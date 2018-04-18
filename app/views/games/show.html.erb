@@ -52,7 +52,16 @@
 
 <div class="enclosure">
   <%= label_tag "試合詳細" %><br />
-  <%= render "game_details/show/game_detail" + @game.contest.nth.ordinalize %>
+  <%
+    @game.send(@gd_sym).each do |detail|
+      concat '<div class="enclosure">'.html_safe
+      concat '  <div class="replay"></div>'.html_safe
+      concat render \
+        "game_details/show/game_detail" + @game.contest_nth.ordinalize,
+        d: detail
+      concat '</div>'.html_safe
+    end
+  %>
 </div>
 
 <%

@@ -1,19 +1,10 @@
 <%= f.label :special_win, special_win_name + "：" %>
 <%= f.check_box :special_win, { checked: f.object.special_win }, true, false %>
-<br />
 <% if f.object.special_win %>
-<div class="special_win___nested_field_for_replace_with_index__">
-<% else %>
-<div class="special_win___nested_field_for_replace_with_index__ hidden">
-<% end %>
-  <table>
-    <tr>
-      <td><%= ("&nbsp;"*4).html_safe %></td>
-      <td>タイム：</td>
-      <td>
-        <%= f.select :time_minute, time_numbers %>分
-        <%= f.select :time_second, time_numbers %>秒
-      </td>
-    </tr>
-  </table>
+<div style="margin-left: 10px;">
+  タイム：
+  <div style="margin-left: 10px;">
+    <%= f.select :time_minute, time_numbers %>分
+    <%= f.select :time_second, time_numbers %>秒
+  </div>
 </div>
