@@ -1,10 +1,12 @@
 $ ->
   controller = $('body').data('controller')
   action     = $('body').data('action')
-  return if controller != "Games" || ( action != "new" && action != "edit" )
-    # Gamesコントローラーのnewまたはecitアクション以外は次からを実行させない
-    # ページ遷移時に必要なスクリプトファイルだけ読み込ませればよいが
-    # 読み込ませなくすればよいが今回はこの形式を採用
+  return if controller != "Games" ||
+    ( action != "new" && action != "edit" && action != "show" )
+    # Gamesコントローラーのnewまたはeditアクション以外は次からを実行させない。
+    # ページ遷移時に必要なスクリプトファイルだけ読み込ませればよいが、
+    # 今回はこの形式を採用。
+    # 再試合・再々試合などの表示のためにshowを追加した。
 
   ##############################################################################
 
