@@ -1,0 +1,48 @@
+<%#
+  以下の my_time_minute などの properties に JSON 形式で格納される情報は、
+  このビューでは基本的に変数として存在しているものとし、
+  またオブジェクトとして nil だったとしても問題がないものとし、
+  present? メソッドなどで確認することはしないものとする。（暫定）
+%>
+<%###########################################################################%>
+<%= label_tag "タイムとリトライなど：" %>
+<div style="margin-left: 10px;">
+  <%= label_tag "#{@game.left_robot.name}：" %>
+  <div style="margin-left: 10px;">
+    完了課題：<%= "#{GameDetail26th.progresses_i18n[d.my_progress]}" %>
+    <br />
+    タイム：
+    <%= "#{d.my_time_minute}".gsub(/_/, '-') %>分
+    <%= "#{d.my_time_second}".gsub(/_/, '-') %>秒
+    <br />
+    連続縄跳び（準決勝以降）：<%= "#{d.my_gaining_point}".gsub(/_/, '') %>回
+    <br />
+    リトライ：<%= "#{d.my_retry}".gsub(/_/, '-') %>回
+    <br />
+    反則：<%= "#{d.my_foul}".gsub(/_/, '-') %>回
+  </div>
+  <%#------------------------------------------------------------------------%>
+  <%= label_tag "#{@game.right_robot.name}：" %>
+  <div style="margin-left: 10px;">
+    完了課題：<%= "#{GameDetail26th.progresses_i18n[d.opponent_progress]}" %>
+    <br />
+    タイム：
+    <%= "#{d.opponent_time_minute}".gsub(/_/, '-') %>分
+    <%= "#{d.opponent_time_second}".gsub(/_/, '-') %>秒
+    <br />
+    連続縄跳び（準決勝以降）：<%= "#{d.opponent_gaining_point}".gsub(/_/, '') %>回
+    <br />
+    リトライ：<%= "#{d.opponent_retry}".gsub(/_/, '-') %>回
+    <br />
+    反則：<%= "#{d.opponent_foul}".gsub(/_/, '-') %>回
+  </div>
+</div>
+<%###########################################################################%>
+<br />
+<%= render "game_details/show/common_parts/jury_votes", d: d %><%# 審査員判定 %>
+<%###########################################################################%>
+<br />
+<%= label_tag "メモ：" %><br />
+<div style="margin-left: 10px;">
+  <%= "#{d.memo}" %>
+</div>

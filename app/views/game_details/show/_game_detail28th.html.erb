@@ -1,0 +1,66 @@
+<%#
+  以下の opponent_time_minute などの properties に JSON 形式で格納される情報は、
+  このビューでは基本的に変数として存在しているものとし、
+  またオブジェクトとして nil だったとしても問題がないものとし、
+  present? メソッドなどで確認することはしないものとする。（暫定）
+%>
+<%###########################################################################%>
+<%= label_tag "得点とリトライなど：" %>
+<div style="margin-left: 10px;">
+  <%= label_tag "#{@game.left_robot.name}：" %>
+  <div style="margin-left: 10px;">
+    得点：<%= "#{d.my_gaining_point}".gsub(/_/, '-') %>点
+    <br />
+    ダブル・ポール：<%= "#{d.my_double_pole}".gsub(/_/, '-') %>本
+    <br />
+    トリプル・ポール：<%= "#{d.my_triple_pole}".gsub(/_/, '-') %>本
+    <br />
+    Vゴール：<%= d.my_special_win.to_bool ? "有り" : "無し" %>
+    <% if d.object.my_special_win %>
+      <div style="margin-left: 10px;">
+        タイム：
+        <%= "#{d.my_time_minute}".gsub(/_/, '-') %>分
+        <%= "#{d.my_time_second}".gsub(/_/, '-') %>秒
+      </div>
+    <% end %>
+    <br />
+    装填：<%= "#{d.my_loading}".gsub(/_/, '-') %>回
+    <br />
+    リペア：<%= "#{d.my_retry}".gsub(/_/, '-') %>回
+    <br />
+    反則：<%= "#{d.my_foul}".gsub(/_/, '-') %>回
+  </div>
+  <%#------------------------------------------------------------------------%>
+  <%= label_tag "#{@game.right_robot.name}：" %>
+  <div style="margin-left: 10px;">
+    得点：<%= "#{d.opponent_gaining_point}".gsub(/_/, '-') %>点
+    <br />
+    ダブル・ポール：<%= "#{d.opponent_double_pole}".gsub(/_/, '-') %>本
+    <br />
+    トリプル・ポール：<%= "#{d.opponent_triple_pole}".gsub(/_/, '-') %>本
+    <br />
+    Vゴール：<%= d.opponent_special_win.to_bool ? "有り" : "無し" %>
+    <% if d.object.opponent_special_win %>
+      <div style="margin-left: 10px;">
+        タイム：
+        <%= "#{d.opponent_time_minute}".gsub(/_/, '-') %>分
+        <%= "#{d.opponent_time_second}".gsub(/_/, '-') %>秒
+      </div>
+    <% end %>
+    <br />
+    装填：<%= "#{d.opponent_loading}".gsub(/_/, '-') %>回
+    <br />
+    リペア：<%= "#{d.opponent_retry}".gsub(/_/, '-') %>回
+    <br />
+    反則：<%= "#{d.opponent_foul}".gsub(/_/, '-') %>回
+  </div>
+</div>
+<%###########################################################################%>
+<br />
+<%= render "game_details/show/common_parts/jury_votes", d: d %><%# 審査員判定 %>
+<%###########################################################################%>
+<br />
+<%= label_tag "メモ：" %><br />
+<div style="margin-left: 10px;">
+  <%= "#{d.memo}" %>
+</div>

@@ -15,9 +15,9 @@
     <%= "#{d.my_time_minute}".gsub(/_/, '-') %>分
     <%= "#{d.my_time_second}".gsub(/_/, '-') %>秒
     <br />
-    リトライ：<%= "#{d.my_retry}".gsub(/_/, '_') %>回
+    リトライ：<%= "#{d.my_retry}".gsub(/_/, '-') %>回
     <br />
-    ファウル：<%= "#{d.my_foul}".gsub(/_/, '_') %>回
+    ファウル：<%= "#{d.my_foul}".gsub(/_/, '-') %>回
   </div>
   <%#------------------------------------------------------------------------%>
   <%= label_tag "#{@game.right_robot.name}：" %>
@@ -28,9 +28,9 @@
     <%= "#{d.opponent_time_minute}".gsub(/_/, '-') %>分
     <%= "#{d.opponent_time_second}".gsub(/_/, '-') %>秒
     <br />
-    リトライ：<%= "#{d.opponent_retry}".gsub(/_/, '_') %>回
+    リトライ：<%= "#{d.opponent_retry}".gsub(/_/, '-') %>回
     <br />
-    ファウル：<%= "#{d.opponent_foul}".gsub(/_/, '_') %>回
+    ファウル：<%= "#{d.opponent_foul}".gsub(/_/, '-') %>回
   </div>
 </div>
 <%###########################################################################%>

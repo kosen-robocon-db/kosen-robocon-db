@@ -9,16 +9,16 @@
 <div style="margin-left: 10px;">
   <%= label_tag "#{@game.left_robot.name}：" %>
   <div style="margin-left: 10px;">
-    リトライ：<%= "#{d.my_retry}".gsub(/_/, '_') %>回
+    リトライ：<%= "#{d.my_retry}".gsub(/_/, '-') %>回
     <br />
-    反則：<%= "#{d.my_foul}".gsub(/_/, '_') %>回
+    反則：<%= "#{d.my_foul}".gsub(/_/, '-') %>回
   </div>
   <%#------------------------------------------------------------------------%>
   <%= label_tag "#{@game.right_robot.name}：" %>
   <div style="margin-left: 10px;">
-    リトライ：<%= "#{d.opponent_retry}"..gsub(/_/, '_') %>回
+    リトライ：<%= "#{d.opponent_retry}"..gsub(/_/, '-') %>回
     <br />
-    反則：<%= "#{d.opponent_foul}".gsub(/_/, '_') %>回
+    反則：<%= "#{d.opponent_foul}".gsub(/_/, '-') %>回
   </div>
 </div>
 <%###########################################################################%>

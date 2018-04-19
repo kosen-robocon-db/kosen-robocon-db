@@ -1,0 +1,49 @@
+<%#
+  以下の opponent_time_minute などの properties に JSON 形式で格納される情報は、
+  このビューでは基本的に変数として存在しているものとし、
+  またオブジェクトとして nil だったとしても問題がないものとし、
+  present? メソッドなどで確認することはしないものとする。（暫定）
+%>
+<%###########################################################################%>
+<%= label_tag "高さとリトライなど：" %>
+<div style="margin-left: 10px;">
+  <%= label_tag "#{@game.left_robot.name}：" %>
+  <div style="margin-left: 10px;">
+    本陣に残った風船：
+    <%= "#{d.my_base_baloon}".gsub(/_/, '-') %>個
+    <br />
+    ロボットに残った風船：
+    <%= "#{d.my_robot_baloon}".gsub(/_/, '-') %>個
+    <br />
+    リペア：<%= "#{d.my_repair}".gsub(/_/, '-') %>回
+    <br />
+    反則：<%= "#{d.my_foul}".gsub(/_/, '-') %>回
+  </div>
+  <%#------------------------------------------------------------------------%>
+  <%= label_tag "#{@game.right_robot.name}：" %>
+  <div style="margin-left: 10px;">
+    本陣に残った風船：
+    <%= "#{d.opponent_base_baloon}".gsub(/_/, '-') %>個
+    <br />
+    ロボットに残った風船：
+    <%= "#{d.opponent_robot_baloon}".gsub(/_/, '-') %>個
+    <br />
+    リペア：<%= "#{d.opponent_repair}".gsub(/_/, '-') %>回
+    <br />
+    反則：<%= "#{d.opponent_foul}".gsub(/_/, '-') %>回
+  </div>
+</div>
+<%###########################################################################%>
+<br />
+<%= label_tag "試合時間：" %>
+<%= "#{d.time_minute}".gsub(/_/, '-') %>分
+<%= "#{d.time_second}".gsub(/_/, '-') %>秒
+<%#==========================================================================%>
+<br />
+<%= render "game_details/show/common_parts/jury_votes", d: d %><%# 審査員判定 %>
+<%###########################################################################%>
+<br />
+<%= label_tag "メモ：" %><br />
+<div style="margin-left: 10px;">
+  <%= "#{d.memo}" %>
+</div>

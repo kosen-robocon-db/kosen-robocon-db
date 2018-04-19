@@ -4,87 +4,51 @@
   repair_numbers  = option_numbers digit: 1, end_number:  9
   foul_numbers    = option_numbers digit: 1, end_number:  9
 %>
-<%#
-  # ?を%に置換するのは参考演算子や接尾辞に?をつけるメソッドに影響があるので
-  # この方式はもっと洗練されてから採用するべき。
-  # またはSlimまたはHamlを採用するべき。
-  %w( my opponent ).each do |i|
-    case i
-    when "my"       then partial = '<?= label_tag "#{@robot.name}：" ?>'
-    when "opponent" then partial = '<?= label_tag "対戦相手：" ?>'
-    end
-    table = <<EOS
-<table style="margin-left: 10px;">
-  <tr>
-    <td>本陣に残った風船の数：</td>
-    <td><?= f.select :#{i}_base_baloon, baloon_numbers ?>個</td>
-  </tr>
-  <tr>
-    <td>ロボットに残った風船の数：</td>
-    <td><?= f.select :#{i}_robot_baloon, baloon_numbers ?>個</td>
-  </tr>
-  <tr>
-    <td>リペア：</td>
-    <td><?= f.select :#{i}_repair, repair_numbers ?>回</td>
-  </tr>
-  <tr>
-    <td>反則：</td>
-    <td><?= f.select :#{i}_foul, foul_numbers ?>回</td>
-  </tr>
-</table>
-EOS
-    partial << "\n"
-    partial << table
-    concat ERB.new(partial.gsub!(/\?/, "%")).result(binding).html_safe
-  end
-%>
-<%= label_tag "#{@robot.name}：" %>
-<table style="margin-left: 10px;">
-  <tr>
-    <td>本陣に残った風船の数：</td>
-    <td><%= f.select :my_base_baloon, baloon_numbers %>個</td>
-  </tr>
-  <tr>
-    <td>ロボットに残った風船の数：</td>
-    <td><%= f.select :my_robot_baloon, baloon_numbers %>個</td>
-  </tr>
-  <tr>
-    <td>リペア：</td>
-    <td><%= f.select :my_repair, repair_numbers %>回</td>
-  </tr>
-  <tr>
-    <td>反則：</td>
-    <td><%= f.select :my_foul, foul_numbers %>回</td>
-  </tr>
-</table>
-<%= label_tag "対戦相手：" %>
-<table style="margin-left: 10px;">
-  <tr>
-    <td>本陣に残った風船の数：</td>
-    <td><%= f.select :opponent_base_baloon, baloon_numbers %>個</td>
-  </tr>
-  <tr>
-    <td>ロボットに残った風船の数：</td>
-    <td><%= f.select :opponent_robot_baloon, baloon_numbers %>個</td>
-  </tr>
-  <tr>
-    <td>リペア：</td>
-    <td><%= f.select :opponent_repair, repair_numbers %>回</td>
-  </tr>
-  <tr>
-    <td>反則：</td>
-    <td><%= f.select :opponent_foul, foul_numbers %>回</td>
-  </tr>
-</table>
+<%###########################################################################%>
+<%= label_tag "得点とリトライなど：" %>
+<div style="margin-left: 10px;">
+  <%= label_tag "#{@robot.name}：" %>
+  <div style="margin-left: 10px;">
+    本陣に残った風船：
+    <%= f.select :my_base_baloon, baloon_numbers %>個
+    <br />
+    ロボットに残った風船：
+    <%= f.select :my_robot_baloon, baloon_numbers %>個
+    <br />
+    リペア：<%= f.select :my_repair, repair_numbers %>回
+    <br />
+    反則：<%= f.select :my_foul, foul_numbers %>回
+  </div>
+  <%#------------------------------------------------------------------------%>
+  <%= label_tag "対戦相手：" %>
+  <div style="margin-left: 10px;">
+    本陣に残った風船：
+    <%= f.select :opponent_base_baloon, baloon_numbers %>個
+    <br />
+    ロボットに残った風船：
+    <%= f.select :opponent_robot_baloon, baloon_numbers %>個
+    <br />
+    リペア：<%= f.select :opponent_repair, repair_numbers %>回
+    <br />
+    反則：<%= f.select :opponent_foul, foul_numbers %>回
+  </div>
+</div>
+<%###########################################################################%>
+<br />
 <%= f.label :time_minute, "試合時間：" %>
 <%= f.select :time_minute, time_numbers %>分
 <%= f.select :time_second, time_numbers %>秒
+<%#==========================================================================%>
 <br />
 <%= render "game_details/form/common_parts/jury_votes", f: f,
   juries_number: 5 %><%# 審査員判定 %>
+<%###########################################################################%>
 <br />
 <%= f.label :memo, "メモ：" %>
-<%= f.text_field :memo %><br />
+<div style="margin-left: 10px;">
+  <%= f.text_field :memo %>
+</div>
+<%#==========================================================================%>
 <br />
 <%= f.hidden_field :_destroy %>
 <%= f.remove_nested_fields_link '削除', class: 'btn btn-danger',
