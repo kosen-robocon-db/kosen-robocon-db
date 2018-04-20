@@ -2,12 +2,12 @@
 <% concat d.jury_votes.to_bool ? "有り" : "無し" %>
 <% if d.jury_votes.to_bool %>
   <div style="margin-left: 10px;">
-    <%= "#{@game.left_robot.name}：" %>
+    <%= label_tag "#{@game.left_robot.name}：" %>
     <div style="margin-left: 10px;">
       <%= "#{d.my_jury_votes}票".gsub(/_/, '-') %>
     </div>
     <%#----------------------------------------------------------------------%>
-    <%= "#{@game.right_robot.name}：" %>
+    <%= label_tag "#{@game.right_robot.name}：" %>
     <div style="margin-left: 10px;">
       <%= "#{d.opponent_jury_votes}票".gsub(/_/, '-') %>
     </div>

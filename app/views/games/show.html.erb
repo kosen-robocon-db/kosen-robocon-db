@@ -1,10 +1,12 @@
-<h1>只今実装中</h1>
-<% provide(:title, @title_for_tab) %><%# これ必要なのかな？ %>
-<%= render "shared/title", title: @title %><%# これ必要なのかな？ %>
-<%= label_tag "#{@game.contest.year}年 第#{@game.contest.nth}回" %>
-<%= label_tag @game.contest.name %><br />
-<%= label_tag "#{@game.region.name}大会" %>
-<%= label_tag game_name(hash: @game) %><br />
+<%
+  provide(:title, "\
+    #{@game.contest.year}年,\
+    第#{@game.contest.nth}回,\
+    #{@game.region.name}大会,\
+    #{game_name(hash: @game)}\
+  ".gsub(/ /, '').gsub(/,/, ' '))
+%>
+<%= render "shared/title", title: (yield :title) %>
 <%
   # 試合が新規登録／更新されるときは必ずleft_robot_codeが登録されるので
   # left_robot_codeを調べるだけでよい。
@@ -13,45 +15,77 @@
   # 登録され、その時対戦相手をなしにしてもこの処理に影響はない。
   case @game.subjective_view_by(robot_code: @game.left_robot.code)
   when Game.results[:win].to_s
-    concat label_tag "#{@game.left_robot.name} 勝ち"
-    concat "<br />".html_safe
-    concat label_tag "#{@game.right_robot.name} 負け"
-    concat "<br />".html_safe
+    concat label_tag "#{@game.left_robot.campus.abbreviation}"
+    concat label_tag "#{@game.left_robot.team}"
+    concat label_tag "#{@game.left_robot.name}："
+    concat "<div style=\"margin-left: 10px;\">".html_safe
+    concat    "勝ち"
+    concat "</div>".html_safe
+    concat label_tag "#{@game.right_robot.campus.abbreviation}"
+    concat label_tag "#{@game.right_robot.team}"
+    concat label_tag "#{@game.right_robot.name}："
+    concat "<div style=\"margin-left: 10px;\">".html_safe
+    concat    "負け"
+    concat "</div>".html_safe
   when Game.results[:lose].to_s
-    concat label_tag "#{@game.left_robot.name} 負け"
-    concat "<br />".html_safe
-    concat label_tag "#{@game.right_robot.name} 勝ち"
-    concat "<br />".html_safe
+    concat label_tag "#{@game.left_robot.campus.abbreviation}"
+    concat label_tag "#{@game.left_robot.team}"
+    concat label_tag "#{@game.left_robot.name}："
+    concat "<div style=\"margin-left: 10px;\">".html_safe
+    concat    "負け"
+    concat "</div>".html_safe
+    concat label_tag "#{@game.right_robot.campus.abbreviation}"
+    concat label_tag "#{@game.right_robot.team}"
+    concat label_tag "#{@game.right_robot.name}："
+    concat "<div style=\"margin-left: 10px;\">".html_safe
+    concat    "勝ち"
+    concat "</div>".html_safe
   when Game.results[:solo].to_s
-    concat label_tag "#{@game.left_robot.name} 単独競技"
-    concat "<br />".html_safe
+    concat label_tag "#{@game.left_robot.campus.abbreviation}"
+    concat label_tag "#{@game.left_robot.team}"
+    concat label_tag "#{@game.left_robot.name}："
+    concat "<div style=\"margin-left: 10px;\">".html_safe
+    concat    "単独競技"
+    concat "</div>".html_safe
   when Game.results[:bye].to_s
-    concat label_tag "#{@game.left_robot.name} 不戦勝"
-    concat "<br />".html_safe
+    concat label_tag "#{@game.left_robot.campus.abbreviation}"
+    concat label_tag "#{@game.left_robot.team}"
+    concat label_tag "#{@game.left_robot.name}："
+    concat "<div style=\"margin-left: 10px;\">".html_safe
+    concat    "不戦勝"
+    concat "</div>".html_safe
   when Game.results[:both_dsq].to_s
-    concat "両者失格<br />".html_safe
-    concat label_tag "#{@game.left_robot.name}"
-    concat "<br />".html_safe
-    concat label_tag "#{@game.right_robot.name}"
-    concat "<br />".html_safe
+    concat "両者失格："
+    concat "<div style=\"margin-left: 10px;\">".html_safe
+    concat    label_tag "#{@game.left_robot.campus.abbreviation}"
+    concat    label_tag "#{@game.left_robot.team}"
+    concat    label_tag "#{@game.left_robot.name}"
+    concat    "<br />".html_safe
+    concat    label_tag "#{@game.right_robot.campus.abbreviation}"
+    concat    label_tag "#{@game.right_robot.team}"
+    concat    label_tag "#{@game.right_robot.name}"
+    concat "</div>".html_safe
   else
   end
 %>
 
 <%
-  concat label_tag "勝敗事由"
-  concat "<br />".html_safe
   checked = @game.reasons_for_victory.presence || []
-  Game.reasons.each do |key, value|
-    if checked.include?(value.to_s)
-      concat label_tag Game.reasons_i18n[key]
-      concat "<br />".html_safe
+  if not checked.empty?
+    concat label_tag "勝敗事由："
+    concat "<div style=\"margin-left: 10px;\">".html_safe
+    Game.reasons.each do |key, value|
+      if checked.include?(value.to_s)
+        concat Game.reasons_i18n[key]
+        concat "<br />".html_safe
+      end
     end
+    concat "</div>".html_safe
   end
 %>
 
 <div class="enclosure">
-  <%= label_tag "試合詳細" %><br />
+  <%= label_tag "試合詳細：" %><br />
   <%
     @game.send(@gd_sym).each do |detail|
       concat '<div class="enclosure">'.html_safe
