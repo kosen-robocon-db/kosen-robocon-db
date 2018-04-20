@@ -6,9 +6,9 @@
 %>
 <%###########################################################################%>
 <%= label_tag "得点とリトライなど：" %>
-<div style="margin-left: 10px;">
-  <%= label_tag "#{@robot.name}：" %>
-  <div style="margin-left: 10px;">
+<div class="indent">
+  <%= "#{@robot.name}：" %>
+  <div class="indent">
     本陣の風船：<%= f.select :my_base_baloon, baloon_numbers %>個
     <br />
     ロボットの風船：<%= f.select :my_robot_baloon, baloon_numbers %>個
@@ -18,8 +18,8 @@
     反則：<%= f.select :my_foul, foul_numbers %>回
   </div>
   <%#------------------------------------------------------------------------%>
-  <%= label_tag "対戦相手：" %>
-  <div style="margin-left: 10px;">
+  <%= "対戦相手：" %>
+  <div class="indent">
     本陣の風船：<%= f.select :opponent_base_baloon, baloon_numbers %>個
     <br />
     ロボットの風船：<%= f.select :opponent_robot_baloon, baloon_numbers %>個
@@ -41,7 +41,7 @@
 <%###########################################################################%>
 <br />
 <%= f.label :memo, "メモ：" %>
-<div style="margin-left: 10px;">
+<div class="indent">
   <%= f.text_field :memo %>
 </div>
 <%#==========================================================================%>

@@ -6,9 +6,9 @@
 %>
 <%###########################################################################%>
 <%= label_tag "得点：" %>
-<div style="margin-left: 10px;">
-  <%= label_tag "#{@robot.name}：" %>
-  <div style="margin-left: 10px;">
+<div class="indent">
+  <%= "#{@robot.name}：" %>
+  <div class="indent">
     得点：<%= f.select :my_gaining_point, gaining_point_numbers %>点
     <br />
     減点：<%= f.select :my_deducting_point, deducting_point_numbers %>点
@@ -16,8 +16,8 @@
     合計：<%= f.select :my_total_point, total_point_numbers %>点
   </div>
   <%#------------------------------------------------------------------------%>
-  <%= label_tag "対戦相手：" %>
-  <div style="margin-left: 10px;">
+  <%= "対戦相手：" %>
+  <div class="indent">
     得点：<%= f.select :opponent_gaining_point, gaining_point_numbers %>点
     <br />
     減点：<%= f.select :opponent_deducting_point, deducting_point_numbers %>点
@@ -37,7 +37,7 @@
 <%###########################################################################%>
 <br />
 <%= f.label :memo, "メモ：" %>
-<div style="margin-left: 10px;">
+<div class="indent">
   <%= f.text_field :memo %>
 </div>
 <%#==========================================================================%>

@@ -1,13 +1,22 @@
 <%
-  provide(:title, "\
-    #{@game.contest.year}年,\
-    第#{@game.contest.nth}回,\
-    #{@game.region.name}大会,\
-    #{game_name(hash: @game)}\
-  ".gsub(/ /, '').gsub(/,/, ' '))
+  provide(:title,
+    "#{@game.contest.year}年" +
+    "第#{@game.contest.nth}回" +
+    "#{@game.region.name}大会" +
+    "#{game_name(hash: @game)}"
+  )
 %>
 <%= render "shared/title", title: (yield :title) %>
 <%
+  left_robot_name =
+    "#{@game.left_robot.campus.abbreviation} " +
+    "#{@game.left_robot.team} " +
+    "#{@game.left_robot.name}"
+  right_robot_name =
+    "#{@game.right_robot.campus.abbreviation} " +
+    "#{@game.right_robot.team} " +
+    "#{@game.right_robot.name}"
+
   # 試合が新規登録／更新されるときは必ずleft_robot_codeが登録されるので
   # left_robot_codeを調べるだけでよい。
   # 新規登録で対戦したロボットのうち対戦相手だったロボット側から更新した場合、
@@ -15,58 +24,28 @@
   # 登録され、その時対戦相手をなしにしてもこの処理に影響はない。
   case @game.subjective_view_by(robot_code: @game.left_robot.code)
   when Game.results[:win].to_s
-    concat label_tag "#{@game.left_robot.campus.abbreviation}"
-    concat label_tag "#{@game.left_robot.team}"
-    concat label_tag "#{@game.left_robot.name}："
-    concat "<div style=\"margin-left: 10px;\">".html_safe
-    concat    "勝ち"
-    concat "</div>".html_safe
-    concat label_tag "#{@game.right_robot.campus.abbreviation}"
-    concat label_tag "#{@game.right_robot.team}"
-    concat label_tag "#{@game.right_robot.name}："
-    concat "<div style=\"margin-left: 10px;\">".html_safe
-    concat    "負け"
-    concat "</div>".html_safe
+    left_title, right_title = "勝ち：", "負け："
   when Game.results[:lose].to_s
-    concat label_tag "#{@game.left_robot.campus.abbreviation}"
-    concat label_tag "#{@game.left_robot.team}"
-    concat label_tag "#{@game.left_robot.name}："
-    concat "<div style=\"margin-left: 10px;\">".html_safe
-    concat    "負け"
-    concat "</div>".html_safe
-    concat label_tag "#{@game.right_robot.campus.abbreviation}"
-    concat label_tag "#{@game.right_robot.team}"
-    concat label_tag "#{@game.right_robot.name}："
-    concat "<div style=\"margin-left: 10px;\">".html_safe
-    concat    "勝ち"
-    concat "</div>".html_safe
+    left_title, right_title = "負け：", "勝ち："
   when Game.results[:solo].to_s
-    concat label_tag "#{@game.left_robot.campus.abbreviation}"
-    concat label_tag "#{@game.left_robot.team}"
-    concat label_tag "#{@game.left_robot.name}："
-    concat "<div style=\"margin-left: 10px;\">".html_safe
-    concat    "単独競技"
-    concat "</div>".html_safe
+    left_title, right_title = "単独競技：", ""
   when Game.results[:bye].to_s
-    concat label_tag "#{@game.left_robot.campus.abbreviation}"
-    concat label_tag "#{@game.left_robot.team}"
-    concat label_tag "#{@game.left_robot.name}："
-    concat "<div style=\"margin-left: 10px;\">".html_safe
-    concat    "不戦勝"
-    concat "</div>".html_safe
+    left_title, right_title = "不戦勝：", ""
   when Game.results[:both_dsq].to_s
-    concat "両者失格："
-    concat "<div style=\"margin-left: 10px;\">".html_safe
-    concat    label_tag "#{@game.left_robot.campus.abbreviation}"
-    concat    label_tag "#{@game.left_robot.team}"
-    concat    label_tag "#{@game.left_robot.name}"
-    concat    "<br />".html_safe
-    concat    label_tag "#{@game.right_robot.campus.abbreviation}"
-    concat    label_tag "#{@game.right_robot.team}"
-    concat    label_tag "#{@game.right_robot.name}"
-    concat "</div>".html_safe
+    left_title, right_title = "両者失格：", ""
   else
   end
+
+  # label_tagを利用すると何故かアルファベットの大文字(A/B)が小文字になってしまう
+  concat label_tag left_title
+  # concat '<div class="indent">'.html_safe
+  concat '<div class="indent">'.html_safe
+  concat    left_robot_name
+  concat "</div>".html_safe
+  concat label_tag right_title if right_title.present?
+  concat '<div class="indent">'.html_safe
+  concat    right_robot_name
+  concat "</div>".html_safe
 %>
 
 <%

@@ -6,14 +6,14 @@
 %>
 <%###########################################################################%>
 <%= label_tag "タイムとリトライなど：" %>
-<div style="margin-left: 10px;">
-  <%= label_tag "#{@game.left_robot.name}：" %>
-  <div style="margin-left: 10px;">
+<div class="indent">
+  <%= "#{@game.left_robot.name}：" %>
+  <div class="indent">
     得点：<%= "#{d.my_gaining_point}".gsub(/_/, '-') %>点
     <br />
     パーフェクト：<%= d.my_special_win.to_bool ? "達成" : "無し" %>
     <% if d.my_special_win.to_bool %>
-      <div style="margin-left: 10px;">
+      <div class="indent">
         タイム：
         <%= "#{d.my_time_minute}".gsub(/_/, '-') %>分
         <%= "#{d.my_time_second}".gsub(/_/, '-') %>秒
@@ -26,13 +26,13 @@
     反則：<%= "#{d.my_foul}".gsub(/_/, '-') %>回
   </div>
   <%#------------------------------------------------------------------------%>
-  <%= label_tag "#{@game.right_robot.name}：" %>
-  <div style="margin-left: 10px;">
+  <%= "#{@game.right_robot.name}：" %>
+  <div class="indent">
     得点：<%= "#{d.opponent_gaining_point}".gsub(/_/, '-') %>点
     <br />
     パーフェクト：<%= d.opponent_special_win.to_bool ? "達成" : "無し" %>
     <% if d.opponent_special_win.to_bool %>
-      <div style="margin-left: 10px;">
+      <div class="indent">
         タイム：
         <%= "#{d.opponent_time_minute}".gsub(/_/, '-') %>分
         <%= "#{d.opponent_time_second}".gsub(/_/, '-') %>秒
@@ -51,6 +51,6 @@
 <%###########################################################################%>
 <br />
 <%= label_tag "メモ：" %><br />
-<div style="margin-left: 10px;">
+<div class="indent">
   <%= "#{d.memo}" %>
 </div>

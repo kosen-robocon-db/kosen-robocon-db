@@ -6,9 +6,9 @@
 %>
 <%###########################################################################%>
 <%= label_tag "タイムとリトライなど：" %>
-<div style="margin-left: 10px;">
-  <%= label_tag "#{@robot.name}：" %>
-  <div style="margin-left: 10px;">
+<div class="indent">
+  <%= "#{@robot.name}：" %>
+  <div class="indent">
     先攻：
     <%= f.check_box :my_play_first,
       { :checked => f.object.my_play_first }, true, false %>
@@ -24,8 +24,8 @@
     リトライ：<%= f.select :my_retry, retry_numbers %>回
   </div>
   <%#------------------------------------------------------------------------%>
-  <%= label_tag "対戦相手：" %>
-  <div style="margin-left: 10px;">
+  <%= "対戦相手：" %>
+  <div class="indent">
     先攻：
     <%= f.check_box :opponent_play_first,
       { :checked => f.object.opponent_play_first }, true, false %>
@@ -48,7 +48,7 @@
 <%###########################################################################%>
 <br />
 <%= f.label :memo, "メモ：" %>
-<div style="margin-left: 10px;">
+<div class="indent">
   <%= f.text_field :memo %>
 </div>
 <%#==========================================================================%>

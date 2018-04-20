@@ -5,11 +5,11 @@
 %>
 <%###########################################################################%>
 <%= label_tag "得点とリトライなど：" %>
-<div style="margin-left: 10px;">
-  <%= label_tag "#{@robot.name}：" %>
-  <div style="margin-left: 10px;">
+<div class="indent">
+  <%= "#{@robot.name}：" %>
+  <div class="indent">
     完了課題：
-    <div style="margin-left: 10px;">
+    <div class="indent">
       <%
         checked = f.object.my_challenges.presence || []
         GameDetail22nd.challenges.each do |key, value|
@@ -25,10 +25,10 @@
     リトライ：<%= f.select :my_retry, retry_numbers %>回
   </div>
   <%#------------------------------------------------------------------------%>
-  <%= label_tag "対戦相手：" %>
-  <div style="margin-left: 10px;">
+  <%= "対戦相手：" %>
+  <div class="indent">
     完了課題：
-    <div style="margin-left: 10px;">
+    <div class="indent">
       <%
         checked = f.object.my_challenges.presence || []
         GameDetail22nd.challenges.each do |key, value|
@@ -51,7 +51,7 @@
 <%###########################################################################%>
 <br />
 <%= f.label :memo, "メモ：" %>
-<div style="margin-left: 10px;">
+<div class="indent">
   <%= f.text_field :memo %>
 </div>
 <%#==========================================================================%>

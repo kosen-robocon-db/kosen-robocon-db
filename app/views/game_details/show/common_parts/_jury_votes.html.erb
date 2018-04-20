@@ -1,14 +1,14 @@
 <%= label_tag "審査員判定：" %>
 <% concat d.jury_votes.to_bool ? "有り" : "無し" %>
 <% if d.jury_votes.to_bool %>
-  <div style="margin-left: 10px;">
-    <%= label_tag "#{@game.left_robot.name}：" %>
-    <div style="margin-left: 10px;">
+  <div class="indent">
+    <%= "#{@game.left_robot.name}：" %>
+    <div class="indent">
       <%= "#{d.my_jury_votes}票".gsub(/_/, '-') %>
     </div>
     <%#----------------------------------------------------------------------%>
-    <%= label_tag "#{@game.right_robot.name}：" %>
-    <div style="margin-left: 10px;">
+    <%= "#{@game.right_robot.name}：" %>
+    <div class="indent">
       <%= "#{d.opponent_jury_votes}票".gsub(/_/, '-') %>
     </div>
   </div>

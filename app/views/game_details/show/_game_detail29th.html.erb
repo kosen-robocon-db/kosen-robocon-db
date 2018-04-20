@@ -6,9 +6,9 @@
 %>
 <%###########################################################################%>
 <%= label_tag "高さとリトライなど：" %>
-<div style="margin-left: 10px;">
-  <%= label_tag "#{@game.left_robot.name}：" %>
-  <div style="margin-left: 10px;">
+<div class="indent">
+  <%= "#{@game.left_robot.name}：" %>
+  <div class="indent">
     積み上げた高さ：<%= "#{d.my_gaining_point}".gsub(/_/, '-') %>cm
     <%#======================================================================%>
     <br />
@@ -17,8 +17,8 @@
     反則：<%= "#{d.my_foul}".gsub(/_/, '-') %>回
   </div>
   <%#------------------------------------------------------------------------%>
-  <%= label_tag "#{@game.right_robot.name}：" %>
-  <div style="margin-left: 10px;">
+  <%= "#{@game.right_robot.name}：" %>
+  <div class="indent">
     積み上げた高さ：<%= "#{d.opponent_gaining_point}".gsub(/_/, '-') %>cm
     <%#======================================================================%>
     <br />
@@ -37,6 +37,6 @@
 <%###########################################################################%>
 <br />
 <%= label_tag "メモ：" %><br />
-<div style="margin-left: 10px;">
+<div class="indent">
   <%= "#{d.memo}" %>
 </div>

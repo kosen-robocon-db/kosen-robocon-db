@@ -5,9 +5,9 @@
 %>
 <%###########################################################################%>
 <%= label_tag "距離とリトライ：" %>
-<div style="margin-left: 10px;">
-  <%= label_tag "#{@robot.name}：" %>
-  <div style="margin-left: 10px;">
+<div class="indent">
+  <%= "#{@robot.name}：" %>
+  <div class="indent">
     距離：<%= f.select :my_gaining_point, gaining_point_numbers %>cm
     <br />
     反則：<%= f.select :my_deducting_point,
@@ -18,8 +18,8 @@
     リトライ：<%= f.select :my_retry, retry_numbers %>回
   </div>
   <%#------------------------------------------------------------------------%>
-  <%= label_tag "対戦相手：" %>
-  <div style="margin-left: 10px;">
+  <%= "対戦相手：" %>
+  <div class="indent">
     距離：<%= f.select :opponent_gaining_point, gaining_point_numbers %>cm
     <br />
     反則：<%= f.select :opponent_deducting_point,
@@ -37,7 +37,7 @@
 <%###########################################################################%>
 <br />
 <%= f.label :memo, "メモ：" %>
-<div style="margin-left: 10px;">
+<div class="indent">
   <%= f.text_field :memo %>
 </div>
 <%#==========================================================================%>

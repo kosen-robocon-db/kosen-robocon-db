@@ -6,9 +6,9 @@
 %>
 <%###########################################################################%>
 <%= label_tag "タイムとリトライなど：" %>
-<div style="margin-left: 10px;">
-  <%= label_tag "#{@game.left_robot.name}：" %>
-  <div style="margin-left: 10px;">
+<div class="indent">
+  <%= "#{@game.left_robot.name}：" %>
+  <div class="indent">
     完了課題：<%= "#{GameDetail23rd.progresses_i18n[d.my_progress]}"%>
     <br />
     タイム：
@@ -21,8 +21,8 @@
     ファウル：<%= "#{d.my_foul}".gsub(/_/, '-') %>回
   </div>
   <%#------------------------------------------------------------------------%>
-  <%= label_tag "#{@game.right_robot.name}：" %>
-  <div style="margin-left: 10px;">
+  <%= "#{@game.right_robot.name}：" %>
+  <div class="indent">
     完了課題：<%= "#{GameDetail23rd.progresses_i18n[d.opponent_progress]}"%>
     <br />
     タイム：
@@ -41,6 +41,6 @@
 <%###########################################################################%>
 <br />
 <%= label_tag "メモ：" %><br />
-<div style="margin-left: 10px;">
+<div class="indent">
   <%= "#{d.memo}" %>
 </div>

@@ -6,9 +6,9 @@
 %>
 <%###########################################################################%>
 <%= label_tag "タイムとリトライなど：" %>
-<div style="margin-left: 10px;">
-  <%= label_tag "#{@game.left_robot.name}：" %>
-  <div style="margin-left: 10px;">
+<div class="indent">
+  <%= "#{@game.left_robot.name}：" %>
+  <div class="indent">
     タイム：
     <%= "#{d.my_time_minute}".gsub(/_/, '-') %>分
     <%= "#{d.my_time_second}".gsub(/_/, '-') %>秒
@@ -19,8 +19,8 @@
     ファウル：<%= "#{d.my_foul}".gsub(/_/, '-') %>回
   </div>
   <%#------------------------------------------------------------------------%>
-  <%= label_tag "#{@game.right_robot.name}：" %>
-  <div style="margin-left: 10px;">
+  <%= "#{@game.right_robot.name}：" %>
+  <div class="indent">
     タイム：
     <%= "#{d.opponent_time_minute}".gsub(/_/, '-') %>分
     <%= "#{d.opponent_time_second}".gsub(/_/, '-') %>秒
@@ -39,14 +39,14 @@ klass: GameDetail18th %><%# 完了課題 %>
 <%= label_tag "到達距離判定：" %>
 <% concat d.distance.to_bool ? "有り" : "無し" %>
 <% if d.object.distance.to_bool %>
-  <div style="margin-left: 10px;">
+  <div class="indent">
     <%= "#{@robot.name}：" %>
-    <div style="margin-left: 10px;">
+    <div class="indent">
       到達距離：<%= f.text_field :my_distance, { maxlength: 6 } %>m
     </div>
       <%#--------------------------------------------------------------------%>
     対戦相手：
-    <div style="margin-left: 10px;">
+    <div class="indent">
       到達距離：<%= f.text_field :opponent_distance, { maxlength: 6 } %>m
     </div>
   </div>
@@ -57,6 +57,6 @@ klass: GameDetail18th %><%# 完了課題 %>
 <%###########################################################################%>
 <br />
 <%= label_tag "メモ：" %><br />
-<div style="margin-left: 10px;">
+<div class="indent">
   <%= "#{d.memo}" %>
 </div>

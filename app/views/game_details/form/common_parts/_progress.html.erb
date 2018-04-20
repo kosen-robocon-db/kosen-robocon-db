@@ -13,14 +13,14 @@
 <% else %>
   <div class="progress___nested_field_for_replace_with_index__ hidden">
 <% end %>
-    <div style="margin-left: 10px;">
-      <%= label_tag "#{@robot.name}：" %>
-      <div style="margin-left: 10px;">
+    <div class="indent">
+      <%= "#{@robot.name}：" %>
+      <div class="indent">
         <%= f.select :my_progress, progress_options %>
       </div>
       <%#--------------------------------------------------------------------%>
-      <%= label_tag "対戦相手：" %>
-      <div style="margin-left: 10px;">
+      <%= "対戦相手：" %>
+      <div class="indent">
         <%= f.select :opponent_progress, progress_options %>
       </div>
     </div>

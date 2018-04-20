@@ -1,15 +1,15 @@
 <%= f.hidden_field :id %>
 <%###########################################################################%>
 <%= label_tag "タイム：" %>
-<div style="margin-left: 10px;">
-  <%= label_tag "#{@robot.name}：" %>
-  <div style="margin-left: 10px;">
+<div class="indent">
+  <%= "#{@robot.name}：" %>
+  <div class="indent">
     <%= f.select :my_time_minute, time_numbers %>分
     <%= f.select :my_time_second, time_numbers %>秒
   </div>
   <%#------------------------------------------------------------------------%>
-  <%= label_tag "対戦相手：" %>
-  <div style="margin-left: 10px;">
+  <%= "対戦相手：" %>
+  <div class="indent">
     <%= f.select :opponent_time_minute, time_numbers %>分
     <%= f.select :opponent_time_second, time_numbers %>秒
   </div>
@@ -17,7 +17,7 @@
 <%###########################################################################%>
 <br />
 <%= f.label :memo, "メモ：" %>
-<div style="margin-left: 10px;">
+<div class="indent">
   <%= f.text_field :memo %>
 </div>
 <%#==========================================================================%>

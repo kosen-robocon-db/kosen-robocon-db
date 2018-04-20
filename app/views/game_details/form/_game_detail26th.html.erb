@@ -11,9 +11,9 @@
 %>
 <%###########################################################################%>
 <%= label_tag "タイムとリトライなど：" %>
-<div style="margin-left: 10px;">
-  <%= label_tag "#{@robot.name}：" %>
-  <div style="margin-left: 10px;">
+<div class="indent">
+  <%= "#{@robot.name}：" %>
+  <div class="indent">
     完了課題：<%= f.select :my_progress, progress_options %>
     <br />
     タイム：
@@ -28,8 +28,8 @@
     反則：<%= f.select :my_foul, foul_numbers %>回
   </div>
   <%#------------------------------------------------------------------------%>
-  <%= label_tag "対戦相手：" %>
-  <div style="margin-left: 10px;">
+  <%= "対戦相手：" %>
+  <div class="indent">
     完了課題：<%= f.select :opponent_progress, progress_options %>
     <br />
     タイム：
@@ -51,7 +51,7 @@
 <%###########################################################################%>
 <br />
 <%= f.label :memo, "メモ：" %>
-<div style="margin-left: 10px;">
+<div class="indent">
   <%= f.text_field :memo %>
 </div>
 <%#==========================================================================%>
