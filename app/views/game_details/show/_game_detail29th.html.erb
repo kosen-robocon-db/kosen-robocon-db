@@ -10,6 +10,7 @@
   <%= label_tag "#{@game.left_robot.name}：" %>
   <div style="margin-left: 10px;">
     積み上げた高さ：<%= "#{d.my_gaining_point}".gsub(/_/, '-') %>cm
+    <%#======================================================================%>
     <br />
     リトライ：<%= "#{d.my_retry}".gsub(/_/, '-') %>回
     <br />
@@ -19,6 +20,7 @@
   <%= label_tag "#{@game.right_robot.name}：" %>
   <div style="margin-left: 10px;">
     積み上げた高さ：<%= "#{d.opponent_gaining_point}".gsub(/_/, '-') %>cm
+    <%#======================================================================%>
     <br />
     リトライ：<%= "#{d.opponent_retry}".gsub(/_/, '-') %>回
     <br />

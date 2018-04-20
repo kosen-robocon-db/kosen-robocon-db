@@ -8,20 +8,20 @@
 %>
 <%= f.label :progress, "完了課題：" %>
 <%= f.check_box :progress, {:checked => f.object.progress}, true, false %>
-<% if f.object.progress %>
-<div class="progress___nested_field_for_replace_with_index__">
+<% if f.object.progress.to_bool %>
+  <div class="progress___nested_field_for_replace_with_index__">
 <% else %>
-<div class="progress___nested_field_for_replace_with_index__ hidden">
+  <div class="progress___nested_field_for_replace_with_index__ hidden">
 <% end %>
-  <div style="margin-left: 10px;">
-    <%= "#{@robot.name}：" %>
     <div style="margin-left: 10px;">
-      <%= f.select :my_progress, progress_options %>
-    </div>
-    <%#----------------------------------------------------------------------%>
-    対戦相手：
-    <div style="margin-left: 10px;">
-      <%= f.select :opponent_progress, progress_options %>
+      <%= "#{@robot.name}：" %>
+      <div style="margin-left: 10px;">
+        <%= f.select :my_progress, progress_options %>
+      </div>
+      <%#--------------------------------------------------------------------%>
+      対戦相手：
+      <div style="margin-left: 10px;">
+        <%= f.select :opponent_progress, progress_options %>
+      </div>
     </div>
   </div>
-</div>

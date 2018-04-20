@@ -14,13 +14,9 @@
   <div style="margin-left: 10px;">
     得点：<%= f.select :my_gaining_point, gaining_point_numbers %>点
     <br />
-    ダブル・ポール：<%= f.select :my_double_pole, double_pole_numbers %>本
-    <br />
-    トリプル・ポール：<%= f.select :my_triple_pole, triple_pole_numbers %>本
-    <br />
     Vゴール：<%= f.check_box :my_special_win,
       {:checked => f.object.my_special_win}, true, false %>
-    <% if f.object.my_special_win %>
+    <% if f.object.my_special_win.to_bool %>
       <div class=\
         "my_special_win___nested_field_for_replace_with_index__">
     <% else %>
@@ -34,6 +30,10 @@
         </div>
       </div>
     <br />
+    ダブル・ポール：<%= f.select :my_double_pole, double_pole_numbers %>本
+    <br />
+    トリプル・ポール：<%= f.select :my_triple_pole, triple_pole_numbers %>本
+    <br />
     装填：<%= f.select :my_loading, loading_numbers %>回
     <br />
     リペア：<%= f.select :my_retry, retry_numbers %>回
@@ -45,13 +45,9 @@
   <div style="margin-left: 10px;">
     得点：<%= f.select :opponent_gaining_point, gaining_point_numbers %>点
     <br />
-    ダブル・ポール：<%= f.select :opponent_double_pole, double_pole_numbers %>本
-    <br />
-    トリプル・ポール：<%= f.select :opponent_triple_pole, triple_pole_numbers %>本
-    <br />
     Vゴール：<%= f.check_box :opponent_special_win,
       {:checked => f.object.opponent_special_win}, true, false %>
-    <% if f.object.opponent_special_win %>
+    <% if f.object.opponent_special_win.to_bool %>
       <div class=\
         "opponent_special_win___nested_field_for_replace_with_index__">
     <% else %>
@@ -64,6 +60,10 @@
           <%= f.select :opponent_time_second, time_numbers %>秒
         </div>
       </div>
+    <br />
+    ダブル・ポール：<%= f.select :opponent_double_pole, double_pole_numbers %>本
+    <br />
+    トリプル・ポール：<%= f.select :opponent_triple_pole, triple_pole_numbers %>本
     <br />
     装填：<%= f.select :opponent_loading, loading_numbers %>回
     <br />

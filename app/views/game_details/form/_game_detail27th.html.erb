@@ -10,10 +10,10 @@
 <div style="margin-left: 10px;">
   <%= label_tag "#{@robot.name}：" %>
   <div style="margin-left: 10px;">
-    配達完了：<%= f.select :my_delivered, delivered_numbers %>回
-    <br />
     得点：
     <%= f.select :my_gaining_point, gaining_point_numbers %>点
+    <br />
+    配達完了：<%= f.select :my_delivered, delivered_numbers %>回
     <br />
     リトライ：<%= f.select :my_retry, retry_numbers %>回
     <br />
@@ -22,10 +22,10 @@
   <%#------------------------------------------------------------------------%>
   <%= label_tag "対戦相手：" %>
   <div style="margin-left: 10px;">
-    配達完了：<%= f.select :opponent_delivered, delivered_numbers %>回
-    <br />
     得点：
     <%= f.select :opponent_gaining_point, gaining_point_numbers %>点
+    <br />
+    配達完了：<%= f.select :opponent_delivered, delivered_numbers %>回
     <br />
     リトライ：<%= f.select :opponent_retry, retry_numbers %>回
     <br />

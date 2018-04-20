@@ -13,7 +13,7 @@
     <br />
     パーフェクト：<%= f.check_box :my_special_win,
       {:checked => f.object.my_special_win}, true, false %>
-    <% if f.object.my_special_win %>
+    <% if f.object.my_special_win.to_bool %>
       <div class="\
         my_special_win___nested_field_for_replace_with_index__">
     <% else %>
@@ -24,10 +24,6 @@
         <%= f.select :opponent_time_minute, time_numbers %>分
         <%= f.select :opponent_time_second, time_numbers %>秒
       </div>
-    <br />
-    タイム：
-    <%= f.select :my_time_minute, time_numbers %>分
-    <%= f.select :my_time_second, time_numbers %>秒
     <br />
     リトライ：<%= f.select :my_retry, retry_numbers %>回
     <br />
@@ -40,21 +36,17 @@
     <br />
     パーフェクト：<%= f.check_box :opponent_special_win,
       {:checked => f.object.opponent_special_win}, true, false %>
-    <% if f.object.opponent_special_win %>
-      <div class="\
-        opponent_special_win___nested_field_for_replace_with_index__">
+    <% if f.object.opponent_special_win.to_bool %>
+      <div class=\
+        "opponent_special_win___nested_field_for_replace_with_index__">
     <% else %>
-      <div class="\
-        opponent_special_win___nested_field_for_replace_with_index__ hidden">
+      <div class=\
+        "opponent_special_win___nested_field_for_replace_with_index__ hidden">
     <% end %>
         タイム：
         <%= f.select :opponent_time_minute, time_numbers %>分
         <%= f.select :opponent_time_second, time_numbers %>秒
       </div>
-    <br />
-    タイム：
-    <%= f.select :opponent_time_minute, time_numbers %>分
-    <%= f.select :opponent_time_second, time_numbers %>秒
     <br />
     リトライ：<%= f.select :opponent_retry, retry_numbers %>回
     <br />

@@ -11,18 +11,19 @@
   <div style="margin-left: 10px;">
     得点：<%= "#{d.my_gaining_point}".gsub(/_/, '-') %>点
     <br />
-    ダブル・ポール：<%= "#{d.my_double_pole}".gsub(/_/, '-') %>本
-    <br />
-    トリプル・ポール：<%= "#{d.my_triple_pole}".gsub(/_/, '-') %>本
-    <br />
     Vゴール：<%= d.my_special_win.to_bool ? "有り" : "無し" %>
-    <% if d.object.my_special_win %>
+    <% if d.object.my_special_win.to_bool %>
       <div style="margin-left: 10px;">
         タイム：
         <%= "#{d.my_time_minute}".gsub(/_/, '-') %>分
         <%= "#{d.my_time_second}".gsub(/_/, '-') %>秒
       </div>
     <% end %>
+    <%#======================================================================%>
+    <br />
+    ダブル・ポール：<%= "#{d.my_double_pole}".gsub(/_/, '-') %>本
+    <br />
+    トリプル・ポール：<%= "#{d.my_triple_pole}".gsub(/_/, '-') %>本
     <br />
     装填：<%= "#{d.my_loading}".gsub(/_/, '-') %>回
     <br />
@@ -35,18 +36,19 @@
   <div style="margin-left: 10px;">
     得点：<%= "#{d.opponent_gaining_point}".gsub(/_/, '-') %>点
     <br />
-    ダブル・ポール：<%= "#{d.opponent_double_pole}".gsub(/_/, '-') %>本
-    <br />
-    トリプル・ポール：<%= "#{d.opponent_triple_pole}".gsub(/_/, '-') %>本
-    <br />
     Vゴール：<%= d.opponent_special_win.to_bool ? "有り" : "無し" %>
-    <% if d.object.opponent_special_win %>
+    <% if d.object.opponent_special_win.to_bool %>
       <div style="margin-left: 10px;">
         タイム：
         <%= "#{d.opponent_time_minute}".gsub(/_/, '-') %>分
         <%= "#{d.opponent_time_second}".gsub(/_/, '-') %>秒
       </div>
     <% end %>
+    <%#======================================================================%>
+    <br />
+    ダブル・ポール：<%= "#{d.opponent_double_pole}".gsub(/_/, '-') %>本
+    <br />
+    トリプル・ポール：<%= "#{d.opponent_triple_pole}".gsub(/_/, '-') %>本
     <br />
     装填：<%= "#{d.opponent_loading}".gsub(/_/, '-') %>回
     <br />

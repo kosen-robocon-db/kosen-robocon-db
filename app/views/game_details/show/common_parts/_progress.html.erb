@@ -1,13 +1,13 @@
-<%= labe_tag "到達課題：" %>
+<%= labe_tag "完了課題：" %>
 <% concat d.progress.to_bool ? "記録有り" : "記録無し" %>
-<% if d.object.progress %>
+<% if d.object.progress.to_bool %>
   <div style="margin-left: 10px;">
-    <%= "#{@robot.name}：" %>
+    <%= "#{@game.left_robot.name}：" %>
     <div style="margin-left: 10px;">
       <%= "#{klass.progresses_i18n[d.my_progress]}" %>
     </div>
     <%#----------------------------------------------------------------------%>
-    <%= "対戦相手：" %>
+    <%= "#{@game.right_robot.name}：" %>
     <div style="margin-left: 10px;">
       <%= "#{klass.progresses_i18n[d.opponent_progress]}" %>
     </div>

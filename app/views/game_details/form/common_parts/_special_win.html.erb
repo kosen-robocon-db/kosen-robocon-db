@@ -1,10 +1,8 @@
 <%= f.label :special_win, special_win_name + "：" %>
 <%= f.check_box :special_win, { checked: f.object.special_win }, true, false %>
-<% if f.object.special_win %>
+<% if f.object.special_win.to_bool %>
 <div style="margin-left: 10px;">
   タイム：
-  <div style="margin-left: 10px;">
-    <%= f.select :time_minute, time_numbers %>分
-    <%= f.select :time_second, time_numbers %>秒
-  </div>
+  <%= f.select :time_minute, time_numbers %>分
+  <%= f.select :time_second, time_numbers %>秒
 </div>

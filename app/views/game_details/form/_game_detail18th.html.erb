@@ -42,24 +42,24 @@
 <br />
 <%= f.label :distance, "到達距離判定：" %>
 <%= f.check_box :distance, {:checked => f.object.distance}, true, false %>
-<% if f.object.distance %>
-<div class="distance___nested_field_for_replace_with_index__">
+<% if f.object.distance.to_bool %>
+  <div class="distance___nested_field_for_replace_with_index__">
 <% else %>
-<div class="distance___nested_field_for_replace_with_index__ hidden">
+  <div class="distance___nested_field_for_replace_with_index__ hidden">
 <% end %>
-  <div style="margin-left: 10px;">
-    <%= "#{@robot.name}：" %>
     <div style="margin-left: 10px;">
-      <%= f.text_field :my_distance, { maxlength: 6 } %>m
+      <%= "#{@robot.name}：" %>
+      <div style="margin-left: 10px;">
+        <%= f.text_field :my_distance, { maxlength: 6 } %>m
+      </div>
     </div>
-  </div>
-  <%#------------------------------------------------------------------------%>
-  <div style="margin-left: 10px;">
-    対戦相手：
+    <%#----------------------------------------------------------------------%>
     <div style="margin-left: 10px;">
-      <%= f.text_field :opponent_distance, { maxlength: 6 } %>m
+      対戦相手：
+      <div style="margin-left: 10px;">
+        <%= f.text_field :opponent_distance, { maxlength: 6 } %>m
+      </div>
     </div>
-  </div>
 </div>
 <%#==========================================================================%>
 <br />

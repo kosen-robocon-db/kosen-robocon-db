@@ -9,11 +9,9 @@
 <div style="margin-left: 10px;">
   <%= label_tag "#{@robot.name}：" %>
   <div style="margin-left: 10px;">
-    本陣に残った風船：
-    <%= f.select :my_base_baloon, baloon_numbers %>個
+    本陣の風船：<%= f.select :my_base_baloon, baloon_numbers %>個
     <br />
-    ロボットに残った風船：
-    <%= f.select :my_robot_baloon, baloon_numbers %>個
+    ロボットの風船：<%= f.select :my_robot_baloon, baloon_numbers %>個
     <br />
     リペア：<%= f.select :my_repair, repair_numbers %>回
     <br />
@@ -22,11 +20,9 @@
   <%#------------------------------------------------------------------------%>
   <%= label_tag "対戦相手：" %>
   <div style="margin-left: 10px;">
-    本陣に残った風船：
-    <%= f.select :opponent_base_baloon, baloon_numbers %>個
+    本陣の風船：<%= f.select :opponent_base_baloon, baloon_numbers %>個
     <br />
-    ロボットに残った風船：
-    <%= f.select :opponent_robot_baloon, baloon_numbers %>個
+    ロボットの風船：<%= f.select :opponent_robot_baloon, baloon_numbers %>個
     <br />
     リペア：<%= f.select :opponent_repair, repair_numbers %>回
     <br />

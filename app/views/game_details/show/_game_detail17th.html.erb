@@ -14,6 +14,7 @@
     反則：<%= "#{d.my_deducting_point}".gsub(/_/, '-') %>回 x 50cm
     <br />
     合計：<%= "#{d.my_total_point}".gsub(/_/, '-') %>cm
+    <%#======================================================================%>
     <br />
     リトライ：<%= "#{d.my_retry}" %>回
   </div>
@@ -25,6 +26,7 @@
     反則：<%= "#{d.opponent_deducting_point}".gsub(/_/, '-') %>回 x 50cm
     <br />
     合計：<%= "#{d.opponent_total_point}".gsub(/_/, '-') %>cm
+    <%#======================================================================%>
     <br />
     リトライ：<%= f.select :opponent_retry, retry_numbers %>回
   </div>

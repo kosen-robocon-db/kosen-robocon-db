@@ -3,7 +3,7 @@
 %>
 <%= f.label :jury_votes, "審査員判定：" %>
 <%= f.check_box :jury_votes, {:checked => f.object.jury_votes}, true, false %>
-<% if f.object.jury_votes %>
+<% if f.object.jury_votes.to_bool %>
 <div class="jury_votes___nested_field_for_replace_with_index__">
 <% else %>
 <div class="jury_votes___nested_field_for_replace_with_index__ hidden">

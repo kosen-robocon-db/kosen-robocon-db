@@ -12,12 +12,14 @@
     得点：<%= "#{d.my_gaining_point}".gsub(/_/, '-') %>点
     <br />
     パーフェクト：<%= d.my_special_win.to_bool ? "達成" : "無し" %>
-    <% if d.my_special_win %>
-      <br />
-      タイム：
-      <%= "#{d.my_time_minute}".gsub(/_/, '-') %>分
-      <%= "#{d.my_time_second}".gsub(/_/, '-') %>秒
+    <% if d.my_special_win.to_bool %>
+      <div style="margin-left: 10px;">
+        タイム：
+        <%= "#{d.my_time_minute}".gsub(/_/, '-') %>分
+        <%= "#{d.my_time_second}".gsub(/_/, '-') %>秒
+      </div>
     <% end %>
+    <%#======================================================================%>
     <br />
     リトライ：<%= "#{d.my_retry}".gsub(/_/, '-') %>回
     <br />
@@ -29,16 +31,14 @@
     得点：<%= "#{d.opponent_gaining_point}".gsub(/_/, '-') %>点
     <br />
     パーフェクト：<%= d.opponent_special_win.to_bool ? "達成" : "無し" %>
-    <% if d.opponent_special_win %>
-      <br />
-      タイム：
-      <%= "#{d.opponent_time_minute}".gsub(/_/, '-') %>分
-      <%= "#{d.opponent_time_second}".gsub(/_/, '-') %>秒
+    <% if d.opponent_special_win.to_bool %>
+      <div style="margin-left: 10px;">
+        タイム：
+        <%= "#{d.opponent_time_minute}".gsub(/_/, '-') %>分
+        <%= "#{d.opponent_time_second}".gsub(/_/, '-') %>秒
+      </div>
     <% end %>
-    <br />
-    タイム：
-    <%= "#{d.opponent_time_minute}".gsub(/_/, '-') %>分
-    <%= "#{d.opponent_time_second}".gsub(/_/, '-') %>秒
+    <%#======================================================================%>
     <br />
     リトライ：<%= "#{d.opponent_retry}".gsub(/_/, '-') %>回
     <br />

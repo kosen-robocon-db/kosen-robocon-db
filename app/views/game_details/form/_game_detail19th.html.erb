@@ -6,13 +6,14 @@
 <%###########################################################################%>
 <%= label_tag "リトライなど：" %>
 <div style="margin-left: 10px;">
-  <%= "#{@robot.name}：" %>
+  <%= label_tag "#{@robot.name}：" %>
   <div style="margin-left: 10px;">
     リトライ：<%= f.select :my_retry, retry_numbers %>回
     <br />
     反則：<%= f.select :my_foul, foul_numbers %>回
   </div>
   <%#------------------------------------------------------------------------%>
+  <%= label_tag "対戦相手：" %>
   <div style="margin-left: 10px;">
     リトライ：<%= f.select :opponent_retry, retry_numbers %>回
     <br />
