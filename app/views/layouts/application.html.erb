@@ -27,6 +27,11 @@
       <%= yield %>
       <div class="row">
         <div class="col-lg-12">
+          <p><%= link_to fa_icon("chevron-left", text: "戻る"), :back %></p>
+        </div>
+      </div>  
+      <div class="row">
+        <div class="col-lg-12">
           <p><%= link_to fa_icon("home", text: "HOME"), root_path unless params[:action] == "home" %></p>
         </div>
       </div>

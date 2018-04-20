@@ -5,5 +5,3 @@
 <h4><%= @robot.name %></h4><br />
 
 <%= render "form", action: :update, button_label: "更新" %>
-
-<%= link_to fa_icon("arrow-left", text:"戻る"), robot_path(@robot.code) %>
