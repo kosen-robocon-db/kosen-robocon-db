@@ -93,7 +93,7 @@ class GameDetail26th < GameDetail
   # だけにしている。他の数字や文字列が入力される属性も同様である。
   def self.compose_properties(hash:)
     h = super(hash: hash) || {} # robot_code
-    h.update(compose_time(hash: hash, stems: %w( progress )))
+    h.update(compose_pairs(hash: hash, stems: %w( progress )))
     h.update(compose_time(hash: hash))
     h.update(compose_pairs(hash: hash,
       stems: %w( gaining_point foul retry jury_votes )))
