@@ -1,5 +1,5 @@
 class GameDetail26th < GameDetail
-  # 完了課題／課題進捗(progress)
+  # 完了課題(progress)
   #   0: スタート（ゾーン）
   #   1: 第1ロボット二回縄跳び（ゾーン）
   #   2: 第2ロボット二回縄跳び（ゾーン）

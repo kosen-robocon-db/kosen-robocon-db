@@ -9,30 +9,34 @@
 <div class="indent">
   <%= "#{@game.left_robot.name}：" %>
   <div class="indent">
-    本陣の風船：
+    <%= label_tag "本陣の風船：" %>
     <%= "#{d.my_base_baloon}".gsub(/_/, '-') %>個
     <br />
-    ロボットの風船：
+    <%= label_tag "ロボットの風船：" %>
     <%= "#{d.my_robot_baloon}".gsub(/_/, '-') %>個
     <%#======================================================================%>
     <br />
-    リペア：<%= "#{d.my_repair}".gsub(/_/, '-') %>回
+    <%= label_tag "リペア：" %>
+    <%= "#{d.my_retry}".gsub(/_/, '-') %>回
     <br />
-    反則：<%= "#{d.my_foul}".gsub(/_/, '-') %>回
+    <%= label_tag "反則：" %>
+    <%= "#{d.my_foul}".gsub(/_/, '-') %>回
   </div>
   <%#------------------------------------------------------------------------%>
   <%= "#{@game.right_robot.name}：" %>
   <div class="indent">
-    本陣の風船：
+    <%= label_tag "本陣の風船：" %>
     <%= "#{d.opponent_base_baloon}".gsub(/_/, '-') %>個
     <br />
-    ロボットの風船：
+    <%= label_tag "ロボットの風船：" %>
     <%= "#{d.opponent_robot_baloon}".gsub(/_/, '-') %>個
     <%#======================================================================%>
     <br />
-    リペア：<%= "#{d.opponent_repair}".gsub(/_/, '-') %>回
+    <%= label_tag "リペア：" %>
+    <%= "#{d.opponent_retry}".gsub(/_/, '-') %>回
     <br />
-    反則：<%= "#{d.opponent_foul}".gsub(/_/, '-') %>回
+    <%= label_tag "反則：" %>
+    <%= "#{d.opponent_foul}".gsub(/_/, '-') %>回
   </div>
 </div>
 <%###########################################################################%>

@@ -2,7 +2,7 @@
 <%= f.check_box :special_win, { checked: f.object.special_win }, true, false %>
 <% if f.object.special_win.to_bool %>
   <div class="indent">
-    タイム：
+    <%= label_tag "タイム：" %>
     <%= f.select :time_minute, time_numbers %>分
     <%= f.select :time_second, time_numbers %>秒
   </div>

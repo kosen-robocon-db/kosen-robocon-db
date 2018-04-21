@@ -9,7 +9,7 @@
 <div class="indent">
   <%= "#{@game.left_robot.name}：" %>
   <div class="indent">
-    達成課題：
+    <%= label_tag "完了課題：" %>
     <div class="indent">
       <%
         checked = d.my_challenges.presence || []
@@ -25,15 +25,17 @@
         end
       %>
     </div>
-    合計：<%= "#{d.my_total_point}".gsub(/_/, '-') %>点
+    <%= label_tag "合計：" %>
+    <%= "#{d.my_total_point}".gsub(/_/, '-') %>点
     <%#======================================================================%>
     <br />
-    リトライ：<%= "#{d.my_retry}".gsub(/_/, '-') %>回
+    <%= label_tag "リトライ：" %>
+    <%= "#{d.my_retry}".gsub(/_/, '-') %>回
   </div>
   <%#------------------------------------------------------------------------%>
   <%= "#{@game.right_robot.name}：" %>
   <div class="indent">
-    達成課題：
+    <%= label_tag "完了課題：" %>
     <div class="indent">
       <%
         checked = d.opponent_challenges.presence || []
@@ -49,10 +51,12 @@
         end
       %>
     </div>
-    合計：<%= "#{d.opponent_total_point}".gsub(/_/, '-') %>点
+    <%= label_tag "合計：" %>
+    <%= "#{d.opponent_total_point}".gsub(/_/, '-') %>点
     <%#======================================================================%>
     <br />
-    リトライ：<%= "#{d.opponent_retry}".gsub(/_/, '-') %>回
+    <%= label_tag "リトライ：" %>
+    <%= "#{d.opponent_retry}".gsub(/_/, '-') %>回
   </div>
 </div>
 <%###########################################################################%>

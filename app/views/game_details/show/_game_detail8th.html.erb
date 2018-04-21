@@ -9,26 +9,42 @@
 <div class="indent">
   <%= "#{@game.left_robot.name}：" %>
   <div class="indent">
-    得点：<%= "#{d.my_gaining_point}".gsub(/_/, '-') %>点
+    <%= label_tag "得点：" %>
+    <%= "#{d.my_gaining_point}".gsub(/_/, '-') %>点
     <br />
-    減点：<%= "#{d.my_deducting_point}".gsub(/_/, '-') %>点
+    <%= label_tag "減点：" %>
+    <%= "#{d.my_deducting_point}".gsub(/_/, '-') %>点
     <br />
-    合計：<%= "#{d.my_total_point}".gsub(/_/, '-') %>点
+    <%= label_tag "合計：" %>
+    <%= "#{d.my_total_point}".gsub(/_/, '-') %>点
     <%#======================================================================%>
     <br />
-    <%= "バスケット・ドリブル：成功" if d.my_basket_drible.to_bool %>
+    <%
+      if d.my_basket_drible.to_bool
+        concat label_tag "バスケット・ドリブル："
+        concat "成功"
+      end
+    %>
   </div>
   <%#------------------------------------------------------------------------%>
   <%= "#{@game.right_robot.name}：" %>
   <div class="indent">
-    得点：<%= "#{d.opponent_gaining_point}".gsub(/_/, '-') %>点
+    <%= label_tag "得点：" %>
+    <%= "#{d.opponent_gaining_point}".gsub(/_/, '-') %>点
     <br />
-    減点：<%= "#{d.opponent_deducting_point}".gsub(/_/, '-') %>点
+    <%= label_tag "減点：" %>
+    <%= "#{d.opponent_deducting_point}".gsub(/_/, '-') %>点
     <br />
-    合計：<%= "#{d.opponent_total_point}".gsub(/_/, '-') %>点
+    <%= label_tag "合計：" %>
+    <%= "#{d.opponent_total_point}".gsub(/_/, '-') %>点
     <%#======================================================================%>
     <br />
-    <%= "バスケット・ドリブル：成功" if d.opponent_basket_drible.to_bool %>
+    <%
+      if d.opponent_basket_drible.to_bool
+        concat label_tag "バスケット・ドリブル："
+        concat "成功"
+      end
+    %>
   </div>
 </div>
 <%###########################################################################%>

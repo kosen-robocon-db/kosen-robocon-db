@@ -9,22 +9,28 @@
 <div class="indent">
   <%= "#{@game.left_robot.name}：" %>
   <div class="indent">
-    積み上げた高さ：<%= "#{d.my_gaining_point}".gsub(/_/, '-') %>cm
+    <%= label_tag "積み上げた高さ：" %>
+    <%= "#{d.my_gaining_point}".gsub(/_/, '-') %>cm
     <%#======================================================================%>
     <br />
-    リトライ：<%= "#{d.my_retry}".gsub(/_/, '-') %>回
+    <%= label_tag "リペア：" %>
+    <%= "#{d.my_retry}".gsub(/_/, '-') %>回
     <br />
-    反則：<%= "#{d.my_foul}".gsub(/_/, '-') %>回
+    <%= label_tag "反則：" %>
+    <%= "#{d.my_foul}".gsub(/_/, '-') %>回
   </div>
   <%#------------------------------------------------------------------------%>
   <%= "#{@game.right_robot.name}：" %>
   <div class="indent">
-    積み上げた高さ：<%= "#{d.opponent_gaining_point}".gsub(/_/, '-') %>cm
+    <%= label_tag "積み上げた高さ：" %>
+    <%= "#{d.opponent_gaining_point}".gsub(/_/, '-') %>cm
     <%#======================================================================%>
     <br />
-    リトライ：<%= "#{d.opponent_retry}".gsub(/_/, '-') %>回
+    <%= label_tag "リペア：" %>
+    <%= "#{d.opponent_retry}".gsub(/_/, '-') %>回
     <br />
-    反則：<%= "#{d.opponent_foul}".gsub(/_/, '-') %>回
+    <%= label_tag "反則：" %>
+    <%= "#{d.opponent_foul}".gsub(/_/, '-') %>回
   </div>
 </div>
 <%###########################################################################%>

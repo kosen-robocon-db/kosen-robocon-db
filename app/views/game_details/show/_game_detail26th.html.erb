@@ -9,34 +9,42 @@
 <div class="indent">
   <%= "#{@game.left_robot.name}：" %>
   <div class="indent">
-    完了課題：<%= "#{GameDetail26th.progresses_i18n[d.my_progress]}" %>
+    <%= label_tag "完了課題：" %>
+    <%= "#{GameDetail26th.progresses_i18n[d.my_progress]}" %>
     <br />
-    タイム：
+    <%= label_tag "タイム：" %>
     <%= "#{d.my_time_minute}".gsub(/_/, '-') %>分
     <%= "#{d.my_time_second}".gsub(/_/, '-') %>秒
     <br />
-    連続縄跳び（準決勝以降）：<%= "#{d.my_gaining_point}".gsub(/_/, '') %>回
+    <%= label_tag "連続縄跳び（準決勝以降）：" %>
+    <%= "#{d.my_gaining_point}".gsub(/_/, '') %>回
     <%#======================================================================%>
     <br />
-    リトライ：<%= "#{d.my_retry}".gsub(/_/, '-') %>回
+    <%= label_tag "リトライ：" %>
+    <%= "#{d.my_retry}".gsub(/_/, '-') %>回
     <br />
-    反則：<%= "#{d.my_foul}".gsub(/_/, '-') %>回
+    <%= label_tag "反則：" %>
+    <%= "#{d.my_foul}".gsub(/_/, '-') %>回
   </div>
   <%#------------------------------------------------------------------------%>
   <%= "#{@game.right_robot.name}：" %>
   <div class="indent">
-    完了課題：<%= "#{GameDetail26th.progresses_i18n[d.opponent_progress]}" %>
+    <%= label_tag "完了課題：" %>
+    <%= "#{GameDetail26th.progresses_i18n[d.opponent_progress]}" %>
     <br />
-    タイム：
+    <%= label_tag "タイム：" %>
     <%= "#{d.opponent_time_minute}".gsub(/_/, '-') %>分
     <%= "#{d.opponent_time_second}".gsub(/_/, '-') %>秒
     <br />
-    連続縄跳び（準決勝以降）：<%= "#{d.opponent_gaining_point}".gsub(/_/, '') %>回
+    <%= label_tag "連続縄跳び（準決勝以降）：" %>
+    <%= "#{d.opponent_gaining_point}".gsub(/_/, '') %>回
     <%#======================================================================%>
     <br />
-    リトライ：<%= "#{d.opponent_retry}".gsub(/_/, '-') %>回
+    <%= label_tag "リトライ：" %>
+    <%= "#{d.opponent_retry}".gsub(/_/, '-') %>回
     <br />
-    反則：<%= "#{d.opponent_foul}".gsub(/_/, '-') %>回
+    <%= label_tag "反則：" %>
+    <%= "#{d.opponent_foul}".gsub(/_/, '-') %>回
   </div>
 </div>
 <%###########################################################################%>

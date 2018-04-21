@@ -2,7 +2,7 @@
 <% concat d.special_win.to_bool ? "有り" : "無し" %>
 <% if d.special_win %>
   <div class="indent">
-    タイム：
+    <%= label_tag "タイム：" %>
     <%= "#{d.time_minute}".gsub(/_/, '-') %>分
     <%= "#{d.time_second}".gsub(/_/, '-') %>秒
   </div>

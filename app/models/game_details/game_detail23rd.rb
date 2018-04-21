@@ -1,7 +1,7 @@
 class GameDetail23rd < GameDetail
 
   # 先にゴールした方が勝ち（予選なし）
-  # 課題進捗(progress)
+  # 完了課題(progress)
   #  0: スタートゾーン
   #  1: 二足歩行ゾーン
   #  2: 連結ゾーン
