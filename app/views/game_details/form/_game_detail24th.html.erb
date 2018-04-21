@@ -9,36 +9,44 @@
 <div class="indent">
   <%= "#{@robot.name}：" %>
   <div class="indent">
-    先攻：
+    <%= f.label :my_play_first, "先攻：" %>
     <%= f.check_box :my_play_first,
       { :checked => f.object.my_play_first }, true, false %>
     <br />
-    タッチダウン・タイム：
+    <%= label_tag "タッチダウン・タイム：" %>
     <%= f.select :my_time_minute, time_numbers %>分
     <%= f.select :my_time_second, time_numbers %>秒
     <br />
-    ボールタッチ：<%= f.select :my_ball_touch, ball_touch_numbers %>回
+    <%= f.label :my_ball_touch, "ボールタッチ：" %>
+    <%= f.select :my_ball_touch, ball_touch_numbers %>回
+    <%#======================================================================%>
     <br />
-    インターセプト：<%= f.select :my_intercept, intercept_numbers %>回
+    <%= f.label :my_intercept, "インターセプト：" %>
+    <%= f.select :my_intercept, intercept_numbers %>回
     <br />
-    リトライ：<%= f.select :my_retry, retry_numbers %>回
+    <%= f.label :my_retry, "リトライ：" %>
+    <%= f.select :my_retry, retry_numbers %>回
   </div>
   <%#------------------------------------------------------------------------%>
   <%= "対戦相手：" %>
   <div class="indent">
-    先攻：
+    <%= f.label :opponent_play_first, "先攻：" %>
     <%= f.check_box :opponent_play_first,
       { :checked => f.object.opponent_play_first }, true, false %>
     <br />
-    タッチダウン・タイム：
+    <%= label_tag "タッチダウン・タイム：" %>
     <%= f.select :opponent_time_minute, time_numbers %>分
     <%= f.select :opponent_time_second, time_numbers %>秒
     <br />
-    ボールタッチ：<%= f.select :opponent_ball_touch, ball_touch_numbers %>回
+    <%= f.label :opponent_ball_touch, "ボールタッチ：" %>
+    <%= f.select :opponent_ball_touch, ball_touch_numbers %>回
+    <%#======================================================================%>
     <br />
-    インターセプト：<%= f.select :opponent_intercept, intercept_numbers %>回
+    <%= f.label :opponent_intercept, "インターセプト：" %>
+    <%= f.select :opponent_intercept, intercept_numbers %>回
     <br />
-    リトライ：<%= f.select :opponent_retry, retry_numbers %>回
+    <%= f.label :opponent_retry, "リトライ：" %>
+    <%= f.select :opponent_retry, retry_numbers %>回
   </div>
 </div>
 <%###########################################################################%>

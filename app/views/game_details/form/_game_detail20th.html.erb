@@ -10,21 +10,29 @@
 <div class="indent">
   <%= "#{@robot.name}：" %>
   <div class="indent">
-    旗：<%= f.select :my_flag, flag_numbers %>本
+    <%= f.label :my_flag, "旗：" %>
+    <%= f.select :my_flag, flag_numbers %>本
+    <%#======================================================================%>
     <br />
-    反則：<%= f.select :my_foul, foul_numbers %>回
+    <%= f.label :my_foul, "反則：" %>
+    <%= f.select :my_foul, foul_numbers %>回
     <br />
-    合体：<%= f.check_box :my_union, { checked: f.object.my_union },
+    <%= f.label :my_union, "合体：" %>
+    <%= f.check_box :my_union, { checked: f.object.my_union },
       true, false %>
   </div>
   <%#------------------------------------------------------------------------%>
   <%= "対戦相手：" %>
   <div class="indent">
-    旗：<%= f.select :opponent_flag, flag_numbers %>本
+    <%= f.label :opponent_flag, "旗：" %>
+    <%= f.select :opponent_flag, flag_numbers %>本
+    <%#======================================================================%>
     <br />
-    反則：<%= f.select :opponent_foul, foul_numbers %>回
+    <%= f.label :opponent_foul, "反則：" %>
+    <%= f.select :opponent_foul, foul_numbers %>回
     <br />
-    合体：<%= f.check_box :opponent_union, { checked: f.object.oppomy_union },
+    <%= f.label :opponent_union, "合体：" %>
+    <%= f.check_box :opponent_union, { checked: f.object.opponent_union },
       true, false %>
   </div>
 </div>

@@ -8,13 +8,13 @@
 
       <%= render 'shared/error_messages', obj: @robot %>
 
-      <%= f.label "ロボット名" %>
+      <%= f.label :name, "ロボット名" %>
       <%= f.text_field :name, class: 'form-control' %><br>
 
-      <%= f.label "ヨミガナ" %>
+      <%= f.label :kana, "ヨミガナ" %>
       <%= f.text_field :kana, class: 'form-control' %><br>
 
-      <%= f.label "チーム" %><br>
+      <%= f.label :team, "チーム" %><br>
       <%= select :robot, :team, Robot.team_choices, class: 'form-control' %><br><br>
 
       <%= f.submit "更新", class: "btn btn-primary",

@@ -8,7 +8,7 @@
 <div class="indent">
   <%= "#{@robot.name}：" %>
   <div class="indent">
-    完了課題：
+    <%= f.label :my_challenges, "完了課題：" %>
     <div class="indent">
       <%
         checked = f.object.my_challenges.presence || []
@@ -20,14 +20,18 @@
         end
       %>
     </div>
-    合計：<%= f.select :my_gaining_point, gaining_point_numbers %>点
+    <%# total_pointにしないのは得点の項目がこれだけであるから %>
+    <%= f.label :my_gaining_point, "合計：" %>
+    <%= f.select :my_gaining_point, gaining_point_numbers %>点
+    <%#======================================================================%>
     <br />
-    リトライ：<%= f.select :my_retry, retry_numbers %>回
+    <%= f.label :my_retry, "リトライ：" %>
+    <%= f.select :my_retry, retry_numbers %>回
   </div>
   <%#------------------------------------------------------------------------%>
   <%= "対戦相手：" %>
   <div class="indent">
-    完了課題：
+    <%= f.label :opponent_challenges, "完了課題：" %>
     <div class="indent">
       <%
         checked = f.object.my_challenges.presence || []
@@ -39,9 +43,13 @@
         end
       %>
     </div>
-    合計：<%= f.select :opponent_gaining_point, gaining_point_numbers %>点
+    <%# total_pointにしないのは得点の項目がこれだけであるから %>
+    <%= f.label :opponent_gaining_point, "合計：" %>
+    <%= f.select :opponent_gaining_point, gaining_point_numbers %>点
+    <%#======================================================================%>
     <br />
-    リトライ：<%= f.select :opponent_retry, retry_numbers %>回
+    <%= f.label :opponent_retry, "リトライ：" %>
+    <%= f.select :opponent_retry, retry_numbers %>回
   </div>
 </div>
 <%###########################################################################%>

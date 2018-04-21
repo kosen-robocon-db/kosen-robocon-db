@@ -95,6 +95,10 @@ class GameDetail26th < GameDetail
     h = super(hash: hash) || {} # robot_code
     h.update(compose_pairs(hash: hash, stems: %w( progress )))
     h.update(compose_time(hash: hash))
+    hash[:my_gaining_point] =
+      "#{UNKNOWN}" if hash[:my_gaining_point].blank?
+    hash[:opponent_gaining_point] =
+      "#{UNKNOWN}" if hash[:opponent_gaining_point].blank?
     h.update(compose_pairs(hash: hash,
       stems: %w( gaining_point foul retry jury_votes )))
     h.delete("jury_votes") unless hash["jury_votes"].presence.to_bool
@@ -115,7 +119,7 @@ class GameDetail26th < GameDetail
       end
       if h["gaining_point"].present?
         self.my_gaining_point, self.opponent_gaining_point =
-          h["gaining_point"].to_s.split(DELIMITER)
+          h["gaining_point"].to_s.split(DELIMITER).map{|x| x.gsub(/_/, '')}
       end
       if h["foul"].present?
         self.my_foul, self.opponent_foul =

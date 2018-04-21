@@ -10,26 +10,34 @@
 <div class="indent">
   <%= "#{@robot.name}：" %>
   <div class="indent">
-    得点：
+    <%= f.label :my_gaining_point, "得点：" %>
     <%= f.select :my_gaining_point, gaining_point_numbers %>点
+    <%#======================================================================%>
     <br />
-    配達完了：<%= f.select :my_delivered, delivered_numbers %>回
+    <%= f.label :my_delivered, "配達完了：" %>
+    <%= f.select :my_delivered, delivered_numbers %>回
     <br />
-    リトライ：<%= f.select :my_retry, retry_numbers %>回
+    <%= f.label :my_retry, "リトライ：" %>
+    <%= f.select :my_retry, retry_numbers %>回
     <br />
-    蒸籠落下：<%= f.select :my_steamer_fall, steamer_fall_numbers %>回
+    <%= f.label :my_steamer_fall, "蒸籠落下：" %>
+    <%= f.select :my_steamer_fall, steamer_fall_numbers %>回
   </div>
   <%#------------------------------------------------------------------------%>
   <%= "対戦相手：" %>
   <div class="indent">
-    得点：
+    <%= f.label :opponent_gaining_point, "得点：" %>
     <%= f.select :opponent_gaining_point, gaining_point_numbers %>点
+    <%#======================================================================%>
     <br />
-    配達完了：<%= f.select :opponent_delivered, delivered_numbers %>回
+    <%= f.label :opponent_delivered, "配達完了：" %>
+    <%= f.select :opponent_delivered, delivered_numbers %>回
     <br />
-    リトライ：<%= f.select :opponent_retry, retry_numbers %>回
+    <%= f.label :opponent_retry, "リトライ：" %>
+    <%= f.select :opponent_retry, retry_numbers %>回
     <br />
-    蒸籠落下：<%= f.select :opponent_steamer_fall, steamer_fall_numbers %>回
+    <%= f.label :opponent_steamer_fall, "蒸籠落下：" %>
+    <%= f.select :opponent_steamer_fall, steamer_fall_numbers %>回
   </div>
 </div>
 <%###########################################################################%>

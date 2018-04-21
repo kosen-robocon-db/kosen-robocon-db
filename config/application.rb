@@ -21,6 +21,12 @@ module RoboconDb
 
     config.time_zone = 'Tokyo'
 
+    # デフォルトのエラー表示ではレイアウトが崩れてしまうため
+    # 次の独自のエラー時のプロシージャ―を設定する
+    config.action_view.field_error_proc = Proc.new do |html_tag, instance|
+       "<span class='field_with_errors'>#{html_tag}</span>".html_safe
+    end
+
     config.generators do |g|
       g.test_framework :rspec,
                        fixtures: true, # モデル作成時にfixtureの作成を有効化

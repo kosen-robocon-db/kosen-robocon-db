@@ -7,11 +7,13 @@
 <div class="indent">
   <%= "#{@robot.name}：" %>
   <div class="indent">
+    <%= f.label :my_gaining_point, "得点：" %>
     <%= f.select :my_gaining_point, gaining_point_numbers %>点
   </div>
   <%#------------------------------------------------------------------------%>
   <%= "対戦相手：" %>
   <div class="indent">
+    <%= f.label :opponent_gaining_point, "得点：" %>
     <%= f.select :opponent_gaining_point, gaining_point_numbers %>点
   </div>
 </div>

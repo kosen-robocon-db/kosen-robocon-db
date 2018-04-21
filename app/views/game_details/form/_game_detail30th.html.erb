@@ -9,24 +9,36 @@
 <div class="indent">
   <%= "#{@robot.name}：" %>
   <div class="indent">
-    本陣の風船：<%= f.select :my_base_baloon, baloon_numbers %>個
+    <%= f.label :my_base_baloon, "本陣の風船：" %>
+    <%= f.select :my_base_baloon, baloon_numbers %>個
     <br />
-    ロボットの風船：<%= f.select :my_robot_baloon, baloon_numbers %>個
+    <%= f.label :my_robot_baloon, "ロボットの風船：" %>
+    <%= f.select :my_robot_baloon, baloon_numbers %>個
+    <%#======================================================================%>
     <br />
-    リペア：<%= f.select :my_repair, repair_numbers %>回
+    <%# リペアはリトライを流用する %>
+    <%= f.label :my_retry, "リペア：" %>
+    <%= f.select :my_retry, retry_numbers %>回
     <br />
-    反則：<%= f.select :my_foul, foul_numbers %>回
+    <%= f.label :my_foul, "反則：" %>
+    <%= f.select :my_foul, foul_numbers %>回
   </div>
   <%#------------------------------------------------------------------------%>
   <%= "対戦相手：" %>
   <div class="indent">
-    本陣の風船：<%= f.select :opponent_base_baloon, baloon_numbers %>個
+    <%= f.label :opponent_base_baloon, "本陣の風船：" %>
+    <%= f.select :opponent_base_baloon, baloon_numbers %>個
     <br />
-    ロボットの風船：<%= f.select :opponent_robot_baloon, baloon_numbers %>個
+    <%= f.label :opponent_robot_baloon, "ロボットの風船：" %>
+    <%= f.select :opponent_robot_baloon, baloon_numbers %>個
+    <%#======================================================================%>
     <br />
-    リペア：<%= f.select :opponent_repair, repair_numbers %>回
+    <%# リペアはリトライを流用する %>
+    <%= f.label :opponent_retry, "リペア：" %>
+    <%= f.select :opponent_retry, retry_numbers %>回
     <br />
-    反則：<%= f.select :opponent_foul, foul_numbers %>回
+    <%= f.label :opponent_foul, "反則：" %>
+    <%= f.select :opponent_foul, foul_numbers %>回
   </div>
 </div>
 <%###########################################################################%>
