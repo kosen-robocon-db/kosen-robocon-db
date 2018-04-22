@@ -7,7 +7,7 @@
 <%###########################################################################%>
 <%= label_tag "", "タイムとリトライなど：" %>
 <div class="indent">
-  <%= "#{@robot.name}：" %>
+  <%= label_tag "", "#{@robot.name}：", class: 'robot_name' %>
   <div class="indent">
     <%= f.label :my_play_first, "先攻：" %>
     <%= f.check_box :my_play_first,
@@ -28,7 +28,7 @@
     <%= f.select :my_retry, retry_numbers %>回
   </div>
   <%#------------------------------------------------------------------------%>
-  <%= "対戦相手：" %>
+  <%= label_tag "", "対戦相手：", class: 'robot_name' %>
   <div class="indent">
     <%= f.label :opponent_play_first, "先攻：" %>
     <%= f.check_box :opponent_play_first,

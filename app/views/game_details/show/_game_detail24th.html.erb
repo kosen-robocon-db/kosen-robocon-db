@@ -7,7 +7,7 @@
 <%###########################################################################%>
 <%= label_tag "", "タイムとリトライなど：" %>
 <div class="indent">
-  <%= "#{@game.left_robot.name}：" %>
+  <%= label_tag "", "#{@game.left_robot.name}：", class: 'robot_name' %>
   <div class="indent">
     <%= d.my_play_first.to_bool ? label_tag "", "先攻" : label_tag "", "後攻" %>
     <br />
@@ -26,7 +26,7 @@
     <%= "#{d.my_retry}".gsub(/_/, '-') %>回
   </div>
   <%#------------------------------------------------------------------------%>
-  <%= "#{@game.right_robot.name}：" %>
+  <%= label_tag "", "#{@game.right_robot.name}：", class: 'robot_name' %>
   <div class="indent">
     <%= d.opponent_play_first.to_bool ? label_tag "", "先攻" : label_tag "", "後攻" %>
     <br />

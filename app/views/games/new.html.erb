@@ -2,6 +2,6 @@
 
 <%= render "shared/title", title: (yield :title) %>
 
-<h4><%= @robot.name %></h4><br />
+<h4><%= label_tag "", @robot.name, class: "robot_name" %></h4><br />
 
 <%= render "form", action: :create, button_label: "作成" %>

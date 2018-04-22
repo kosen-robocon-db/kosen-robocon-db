@@ -7,7 +7,7 @@
 <%###########################################################################%>
 <%= label_tag "", "旗と反則など：" %>
 <div class="indent">
-  <%= "#{@game.left_robot.name}：" %>
+  <%= label_tag "", "#{@game.left_robot.name}：", class: 'robot_name' %>
   <div class="indent">
     <%= label_tag "", "旗：" %>
     <%= "#{d.my_flag}".gsub(/_/, '-') %>本
@@ -20,7 +20,7 @@
     <% concat d.my_union.to_bool ? "有り" : "無し" %>
   </div>
   <%#------------------------------------------------------------------------%>
-  <%= "#{@game.right_robot.name}：" %>
+  <%= label_tag "", "#{@game.right_robot.name}：", class: 'robot_name' %>
   <div class="indent">
     <%= label_tag "", "旗：" %>
     <%= "#{d.opponent_flag}".gsub(/_/, '-') %>本

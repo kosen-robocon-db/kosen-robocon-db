@@ -10,7 +10,7 @@
 <%###########################################################################%>
 <%= label_tag "", "得点とリトライなど：" %>
 <div class="indent">
-  <%= "#{@robot.name}：" %>
+  <%= label_tag "", "#{@robot.name}：", class: 'robot_name' %>
   <div class="indent">
     <%= f.label :my_gaining_point, "得点：" %>
     <%= f.select :my_gaining_point, gaining_point_numbers %>点
@@ -51,7 +51,7 @@
     <%= f.select :my_foul, foul_numbers %>回
   </div>
   <%#------------------------------------------------------------------------%>
-  <%= "対戦相手：" %>
+  <%= label_tag "", "対戦相手：", class: 'robot_name' %>
   <div class="indent">
     <%= f.label :opponent_gaining_point, "得点：" %>
     <%= f.select :opponent_gaining_point, gaining_point_numbers %>点

@@ -7,7 +7,7 @@
 <%###########################################################################%>
 <%= label_tag "", "タイムとリトライなど：" %>
 <div class="indent">
-  <%= "#{@game.left_robot.name}：" %>
+  <%= label_tag "", "#{@game.left_robot.name}：", class: 'robot_name' %>
   <div class="indent">
     <%= label_tag "", "完了課題：" %>
     <%= "#{GameDetail23rd.progresses_i18n[d.my_progress]}"%>
@@ -24,7 +24,7 @@
     <%= "#{d.my_foul}".gsub(/_/, '-') %>回
   </div>
   <%#------------------------------------------------------------------------%>
-  <%= "#{@game.right_robot.name}：" %>
+  <%= label_tag "", "#{@game.right_robot.name}：", class: 'robot_name' %>
   <div class="indent">
     <%= label_tag "", "完了課題：" %>
     <%= "#{GameDetail23rd.progresses_i18n[d.opponent_progress]}"%>

@@ -40,11 +40,11 @@
   concat label_tag "", left_title
   # concat '<div class="indent">'.html_safe
   concat '<div class="indent">'.html_safe
-  concat    left_robot_name
+  concat    label_tag "", left_robot_name, class: 'robot_name'
   concat "</div>".html_safe
   concat label_tag "", right_title if right_title.present?
   concat '<div class="indent">'.html_safe
-  concat    right_robot_name
+  concat    label_tag "", right_robot_name, class: 'robot_name'
   concat "</div>".html_safe
 %>
 

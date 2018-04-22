@@ -2,14 +2,14 @@
 <%###########################################################################%>
 <%= label_tag "", "タイム：" %>
 <div class="indent">
-  <%= "#{@robot.name}：" %>
+  <%= label_tag "", "#{@robot.name}：", class: 'robot_name' %>
   <div class="indent">
     <%# 対応するラベルを一つに纏められない %>
     <%= f.select :my_time_minute, time_numbers %>分
     <%= f.select :my_time_second, time_numbers %>秒
   </div>
   <%#------------------------------------------------------------------------%>
-  <%= "対戦相手：" %>
+  <%= label_tag "", "対戦相手：", class: 'robot_name' %>
   <div class="indent">
     <%# 対応するラベルを一つに纏められない %>
     <%= f.select :opponent_time_minute, time_numbers %>分

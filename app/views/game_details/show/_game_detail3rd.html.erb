@@ -7,13 +7,13 @@
 <%###########################################################################%>
 <%= label_tag "", "得点：" %>
 <div class="indent">
-  <%= "#{@game.left_robot.name}：" %>
+  <%= label_tag "", "#{@game.left_robot.name}：", class: 'robot_name' %>
   <div class="indent">
     <%= label_tag "", "得点：" %>
     <%= "#{d.my_gaining_point}".gsub(/_/, '-') %>点
   </div>
   <%#------------------------------------------------------------------------%>
-  <%= "#{@game.right_robot.name}：" %>
+  <%= label_tag "", "#{@game.right_robot.name}：", class: 'robot_name' %>
   <div class="indent">
     <%= label_tag "", "得点：" %>
     <%= "#{d.opponent_gaining_point}".gsub(/_/, '-') %>点

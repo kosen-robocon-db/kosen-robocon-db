@@ -7,7 +7,7 @@
 <%###########################################################################%>
 <%= label_tag "", "得点とリトライなど：" %>
 <div class="indent">
-  <%= "#{@game.left_robot.name}：" %>
+  <%= label_tag "", "#{@game.left_robot.name}：", class: 'robot_name' %>
   <div class="indent">
     <%= label_tag "", "完了課題：" %>
     <div class="indent">
@@ -33,7 +33,7 @@
     <%= "#{d.my_retry}".gsub(/_/, '-') %>回
   </div>
   <%#------------------------------------------------------------------------%>
-  <%= "#{@game.right_robot.name}：" %>
+  <%= label_tag "", "#{@game.right_robot.name}：", class: 'robot_name' %>
   <div class="indent">
     <%= label_tag "", "完了課題：" %>
     <div class="indent">
