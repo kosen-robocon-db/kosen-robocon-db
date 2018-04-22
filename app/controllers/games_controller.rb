@@ -50,7 +50,11 @@ class GamesController < ApplicationController
       # メッセージは表示せず、エラー箇所だけそれを示すタグを差し込みたいが、
       # 今のところはメッセージ表示をしておくことにした。
       # 方法が分かり次第改善する。
+      # takenかどうかまで判別したほうがよい？
       if @game.errors.include?(:code)
+        @game.errors[:code].map!{ |i|
+          i << "（#{view_context.link_to "該当試合", game_path(h["code"])}）"
+        }
         @game.errors.add(:region_code, "")
         @game.errors.add(:round, "")
         @game.errors.add(:game, "")
