@@ -44,8 +44,8 @@ class GameDetail30th < GameDetail
   validates :opponent_base_baloon,  format: { with: REX_BL }
   validates :my_robot_baloon,       format: { with: REX_BL }
   validates :opponent_robot_baloon, format: { with: REX_BL }
-  validates :my_repair,             format: { with: REX_RP }
-  validates :opponent_repair,       format: { with: REX_RP }
+  validates :my_retry,              format: { with: REX_RP }
+  validates :opponent_retry,        format: { with: REX_RP }
   validates :my_foul,               format: { with: REX_F }
   validates :opponent_foul,         format: { with: REX_F }
   validates :time_minute,           format: { with: REX_MS }
