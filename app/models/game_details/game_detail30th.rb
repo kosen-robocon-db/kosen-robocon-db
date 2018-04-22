@@ -22,7 +22,7 @@ class GameDetail30th < GameDetail
 
   # my_robot_code側から見ているので、
   # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
-  STEMS = %w( robot_code base_baloon robot_baloon repair foul jury_votes )
+  STEMS = %w( robot_code base_baloon robot_baloon retry foul jury_votes )
 
   UNKNOWN = GameDetail::Constant::UNKNOWN_VALUE
 
@@ -33,7 +33,7 @@ class GameDetail30th < GameDetail
 
   attr_accessor :my_robot_baloon, :opponent_robot_baloon
   attr_accessor :my_base_baloon,  :opponent_base_baloon
-  attr_accessor :my_repair,       :opponent_repair
+  attr_accessor :my_retry,        :opponent_retry
   attr_accessor :my_foul,         :opponent_foul
   attr_accessor :time_minute, :time_second
   attr_accessor :jury_votes
@@ -61,7 +61,7 @@ class GameDetail30th < GameDetail
     [
       :my_base_baloon,  :opponent_base_baloon,
       :my_robot_baloon, :opponent_robot_baloon,
-      :my_repair,       :opponent_repair,
+      :my_retry,        :opponent_retry,
       :my_foul,         :opponent_foul,
       :time_minute, :time_second,
       :jury_votes,
@@ -99,9 +99,9 @@ class GameDetail30th < GameDetail
         self.my_robot_baloon, self.opponent_robot_baloon =
           h["robot_baloon"].to_s.split(DELIMITER)
       end
-      if h["repair"].present?
-        self.my_repair, self.opponent_repair =
-          h["repair"].to_s.split(DELIMITER)
+      if h["retry"].present? # リペアとして扱う
+        self.my_retry, self.opponent_retry =
+          h["retry"].to_s.split(DELIMITER)
       end
       if h["foul"].present?
         self.my_foul, self.opponent_foul =
