@@ -1,11 +1,11 @@
 <%= f.hidden_field :id %>
 <%
   baloon_numbers  = option_numbers           end_number: 10
-  repair_numbers  = option_numbers digit: 1, end_number:  9
+  retry_numbers   = option_numbers digit: 1, end_number:  9
   foul_numbers    = option_numbers digit: 1, end_number:  9
 %>
 <%###########################################################################%>
-<%= label_tag "得点とリトライなど：" %>
+<%= label_tag "", "得点とリトライなど：" %>
 <div class="indent">
   <%= "#{@robot.name}：" %>
   <div class="indent">

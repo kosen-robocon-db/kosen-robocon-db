@@ -36,13 +36,13 @@
   else
   end
 
-  # label_tagを利用すると何故かアルファベットの大文字(A/B)が小文字になってしまう
-  concat label_tag left_title
+  # label_tag "",を利用すると何故かアルファベットの大文字(A/B)が小文字になってしまう
+  concat label_tag "", left_title
   # concat '<div class="indent">'.html_safe
   concat '<div class="indent">'.html_safe
   concat    left_robot_name
   concat "</div>".html_safe
-  concat label_tag right_title if right_title.present?
+  concat label_tag "", right_title if right_title.present?
   concat '<div class="indent">'.html_safe
   concat    right_robot_name
   concat "</div>".html_safe
@@ -51,7 +51,7 @@
 <%
   checked = @game.reasons_for_victory.presence || []
   if not checked.empty?
-    concat label_tag "勝敗事由："
+    concat label_tag "", "勝敗事由："
     concat "<div style=\"margin-left: 10px;\">".html_safe
     Game.reasons.each do |key, value|
       if checked.include?(value.to_s)
@@ -64,7 +64,7 @@
 %>
 
 <div class="enclosure">
-  <%= label_tag "試合詳細：" %><br />
+  <%= label_tag "", "試合詳細：" %><br />
   <%
     @game.send(@gd_sym).each do |detail|
       concat '<div class="enclosure">'.html_safe

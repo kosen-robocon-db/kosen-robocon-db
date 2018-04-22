@@ -5,25 +5,25 @@
   present? メソッドなどで確認することはしないものとする。（暫定）
 %>
 <%###########################################################################%>
-<%= label_tag "タイム：" %>
+<%= label_tag "", "タイム：" %>
 <div class="indent">
   <%= "#{@game.left_robot.name}：" %>
   <div class="indent">
-    <%= label_tag "タイム：" %>
+    <%= label_tag "", "タイム：" %>
     <%= "#{d.my_time_minute}".gsub(/_/, '-') %>分
     <%= "#{d.my_time_second}".gsub(/_/, '-') %>秒
   </div>
   <%#------------------------------------------------------------------------%>
   <%= "#{@game.right_robot.name}：" %>
   <div class="indent">
-    <%= label_tag "タイム：" %>
+    <%= label_tag "", "タイム：" %>
     <%= "#{d.opponent_time_minute}".gsub(/_/, '-') %>分
     <%= "#{d.opponent_time_second}".gsub(/_/, '-') %>秒
   </div>
 </div>
 <%###########################################################################%>
 <br />
-<%= label_tag "メモ：" %><br />
+<%= label_tag "", "メモ：" %><br />
 <div class="indent">
   <%= "#{d.memo}" %>
 </div>

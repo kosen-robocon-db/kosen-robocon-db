@@ -5,7 +5,7 @@
   retry_numbers      = option_numbers digit: 1, end_number: 9
 %>
 <%###########################################################################%>
-<%= label_tag "タイムとリトライなど：" %>
+<%= label_tag "", "タイムとリトライなど：" %>
 <div class="indent">
   <%= "#{@robot.name}：" %>
   <div class="indent">
@@ -13,7 +13,7 @@
     <%= f.check_box :my_play_first,
       { :checked => f.object.my_play_first }, true, false %>
     <br />
-    <%= label_tag "タッチダウン・タイム：" %>
+    <%= label_tag "", "タッチダウン・タイム：" %>
     <%= f.select :my_time_minute, time_numbers %>分
     <%= f.select :my_time_second, time_numbers %>秒
     <br />
@@ -34,7 +34,7 @@
     <%= f.check_box :opponent_play_first,
       { :checked => f.object.opponent_play_first }, true, false %>
     <br />
-    <%= label_tag "タッチダウン・タイム：" %>
+    <%= label_tag "", "タッチダウン・タイム：" %>
     <%= f.select :opponent_time_minute, time_numbers %>分
     <%= f.select :opponent_time_second, time_numbers %>秒
     <br />

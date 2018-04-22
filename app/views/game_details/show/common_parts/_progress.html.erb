@@ -1,6 +1,6 @@
-<%= labe_tag "完了課題：" %>
+<%= label_tag "", "完了課題：" %>
 <% concat d.progress.to_bool ? "記録有り" : "記録無し" %>
-<% if d.object.progress.to_bool %>
+<% if d.progress.to_bool %>
   <div class="indent">
     <%= "#{@game.left_robot.name}：" %>
     <div class="indent">

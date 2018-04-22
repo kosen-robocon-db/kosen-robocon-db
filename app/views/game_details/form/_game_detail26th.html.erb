@@ -10,7 +10,7 @@
   retry_numbers = option_numbers digit: 1, end_number: 9
 %>
 <%###########################################################################%>
-<%= label_tag "タイムとリトライなど：" %>
+<%= label_tag "", "タイムとリトライなど：" %>
 <div class="indent">
   <%= "#{@robot.name}：" %>
   <div class="indent">
@@ -18,7 +18,7 @@
     <%= f.select :my_progress, progress_options %>
     <br />
     <%# 対応するラベルを一つに纏められない %>
-    <%= label_tag "タイム：" %>
+    <%= label_tag "", "タイム：" %>
     <%= f.select :my_time_minute, time_numbers %>分
     <%= f.select :my_time_second, time_numbers %>秒
     <br />
@@ -39,7 +39,7 @@
     <%= f.select :opponent_progress, progress_options %>
     <br />
     <%# 対応するラベルを一つに纏められない %>
-    <%= label_tag "タイム：" %>
+    <%= label_tag "", "タイム：" %>
     <%= f.select :opponent_time_minute, time_numbers %>分
     <%= f.select :opponent_time_second, time_numbers %>秒
     <br />

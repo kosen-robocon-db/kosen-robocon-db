@@ -5,39 +5,39 @@
   present? メソッドなどで確認することはしないものとする。（暫定）
 %>
 <%###########################################################################%>
-<%= label_tag "得点：" %>
+<%= label_tag "", "得点：" %>
 <div class="indent">
   <%= "#{@game.left_robot.name}：" %>
   <div class="indent">
-    <%= label_tag "得点：" %>
+    <%= label_tag "", "得点：" %>
     <%= "#{d.my_gaining_point}".gsub(/_/, '-') %>点
     <br />
-    <%= label_tag "芸術点：" %>
+    <%= label_tag "", "芸術点：" %>
     <%= "#{d.my_art_point}".gsub(/_/, '-') %>点
     <br />
-    <%= label_tag "合計：" %>
+    <%= label_tag "", "合計：" %>
     <%= "#{d.my_total_point}".gsub(/_/, '-') %>点
   </div>
   <%#==========================================================================%>
   <%= "#{@game.right_robot.name}：" %>
   <div class="indent">
-    <%= label_tag "得点：" %>
+    <%= label_tag "", "得点：" %>
     <%= "#{d.opponent_gaining_point}".gsub(/_/, '-') %>点
     <br />
-    <%= label_tag "芸術点：" %>
+    <%= label_tag "", "芸術点：" %>
     <%= "#{d.opponent_art_point}".gsub(/_/, '-') %>点
     <br />
-    <%= label_tag "合計：" %>
+    <%= label_tag "", "合計：" %>
     <%= "#{d.opponent_total_point}".gsub(/_/, '-') %>点
   </div>
 </div>
 <%###########################################################################%>
 <br />
-<%= label_tag "延長(60秒)：" %>
+<%= label_tag "", "延長(60秒)：" %>
 <% concat d.extra_time.to_bool ? "有り" : "無し" %>
 <%###########################################################################%>
 <br />
-<%= label_tag "メモ：" %><br />
+<%= label_tag "", "メモ：" %><br />
 <div class="indent">
   <%= "#{d.memo}" %>
 </div>

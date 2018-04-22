@@ -5,11 +5,11 @@
   present? メソッドなどで確認することはしないものとする。（暫定）
 %>
 <%###########################################################################%>
-<%= label_tag "得点とリトライなど：" %>
+<%= label_tag "", "得点とリトライなど：" %>
 <div class="indent">
   <%= "#{@game.left_robot.name}：" %>
   <div class="indent">
-    <%= label_tag "完了課題：" %>
+    <%= label_tag "", "完了課題：" %>
     <div class="indent">
       <%
         checked = d.my_challenges.presence || []
@@ -25,17 +25,17 @@
         end
       %>
     </div>
-    <%= label_tag "合計：" %>
+    <%= label_tag "", "合計：" %>
     <%= "#{d.my_total_point}".gsub(/_/, '-') %>点
     <%#======================================================================%>
     <br />
-    <%= label_tag "リトライ：" %>
+    <%= label_tag "", "リトライ：" %>
     <%= "#{d.my_retry}".gsub(/_/, '-') %>回
   </div>
   <%#------------------------------------------------------------------------%>
   <%= "#{@game.right_robot.name}：" %>
   <div class="indent">
-    <%= label_tag "完了課題：" %>
+    <%= label_tag "", "完了課題：" %>
     <div class="indent">
       <%
         checked = d.opponent_challenges.presence || []
@@ -51,11 +51,11 @@
         end
       %>
     </div>
-    <%= label_tag "合計：" %>
+    <%= label_tag "", "合計：" %>
     <%= "#{d.opponent_total_point}".gsub(/_/, '-') %>点
     <%#======================================================================%>
     <br />
-    <%= label_tag "リトライ：" %>
+    <%= label_tag "", "リトライ：" %>
     <%= "#{d.opponent_retry}".gsub(/_/, '-') %>回
   </div>
 </div>
@@ -64,7 +64,7 @@
 <%= render "game_details/show/common_parts/jury_votes", d: d %><%# 審査員判定 %>
 <%###########################################################################%>
 <br />
-<%= label_tag "メモ：" %><br />
+<%= label_tag "", "メモ：" %><br />
 <div class="indent">
   <%= "#{d.memo}" %>
 </div>

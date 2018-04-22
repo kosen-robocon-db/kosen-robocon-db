@@ -5,23 +5,23 @@
   present? メソッドなどで確認することはしないものとする。（暫定）
 %>
 <%###########################################################################%>
-<%= label_tag "リトライなど：" %>
+<%= label_tag "", "リトライなど：" %>
 <div class="indent">
   <%= "#{@game.left_robot.name}：" %>
   <div class="indent">
-    <%= label_tag "リトライ：" %>
+    <%= label_tag "", "リトライ：" %>
     <%= "#{d.my_retry}".gsub(/_/, '-') %>回
     <br />
-    <%= label_tag "反則：" %>
+    <%= label_tag "", "反則：" %>
     <%= "#{d.my_foul}".gsub(/_/, '-') %>回
   </div>
   <%#------------------------------------------------------------------------%>
   <%= "#{@game.right_robot.name}：" %>
   <div class="indent">
-    <%= label_tag "リトライ：" %>
+    <%= label_tag "", "リトライ：" %>
     <%= "#{d.opponent_retry}".gsub(/_/, '-') %>回
     <br />
-    <%= label_tag "反則：" %>
+    <%= label_tag "", "反則：" %>
     <%= "#{d.opponent_foul}".gsub(/_/, '-') %>回
   </div>
 </div>
@@ -38,7 +38,7 @@
 <%= render "game_details/show/common_parts/jury_votes", d: d %><%# 審査員判定 %>
 <%###########################################################################%>
 <br />
-<%= label_tag "メモ：" %><br />
+<%= label_tag "", "メモ：" %><br />
 <div class="indent">
   <%= "#{d.memo}" %>
 </div>

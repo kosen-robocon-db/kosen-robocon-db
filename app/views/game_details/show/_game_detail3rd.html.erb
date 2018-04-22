@@ -5,30 +5,30 @@
   present? メソッドなどで確認することはしないものとする。（暫定）
 %>
 <%###########################################################################%>
-<%= label_tag "得点：" %>
+<%= label_tag "", "得点：" %>
 <div class="indent">
   <%= "#{@game.left_robot.name}：" %>
   <div class="indent">
-    <%= label_tag "得点：" %>
+    <%= label_tag "", "得点：" %>
     <%= "#{d.my_gaining_point}".gsub(/_/, '-') %>点
   </div>
   <%#------------------------------------------------------------------------%>
   <%= "#{@game.right_robot.name}：" %>
   <div class="indent">
-    <%= label_tag "得点：" %>
+    <%= label_tag "", "得点：" %>
     <%= "#{d.opponent_gaining_point}".gsub(/_/, '-') %>点
   </div>
 </div>
 <%###########################################################################%>
 <br />
-<%= label_tag "延長(30秒)：" %>
+<%= label_tag "", "延長(30秒)：" %>
 <% concat d.extra_time.to_bool ? "有り" : "無し" %>
 <%#==========================================================================%>
 <%
   case @game.contest_nth
   when 3, 4
     concat "<br />".html_safe
-    concat label_tag "勝敗判定："
+    concat label_tag "", "勝敗判定："
     klass = @gd_sym.to_s.singularize.classify.constantize # クラス化
     klass.criteria.each do |key, value| # GameDetail3rd/4thであると仮定
       concat klass.criteria_i18n[key] if d.judgement.to_i == value
@@ -38,7 +38,7 @@
 %>
 <%###########################################################################%>
 <br />
-<%= label_tag "メモ：" %><br />
+<%= label_tag "", "メモ：" %><br />
 <div class="indent">
   <%= "#{d.memo}" %>
 </div>

@@ -5,43 +5,43 @@
   present? メソッドなどで確認することはしないものとする。（暫定）
 %>
 <%###########################################################################%>
-<%= label_tag "タイムとリトライなど：" %>
+<%= label_tag "", "タイムとリトライなど：" %>
 <div class="indent">
   <%= "#{@game.left_robot.name}：" %>
   <div class="indent">
-    <%= d.my_play_first.to_bool ? label_tag "先攻" : label_tag "後攻" %>
+    <%= d.my_play_first.to_bool ? label_tag "", "先攻" : label_tag "", "後攻" %>
     <br />
-    <%= label_tag "タッチダウン・タイム：" %>
+    <%= label_tag "", "タッチダウン・タイム：" %>
     <%= "#{d.my_time_minute}".gsub(/_/, '-') %>分
     <%= "#{d.my_time_second}".gsub(/_/, '-') %>秒
     <br />
-    <%= label_tag "ボールタッチ：" %>
+    <%= label_tag "", "ボールタッチ：" %>
     <%= "#{d.my_ball_touch}".gsub(/_/, '-') %>回
     <%#======================================================================%>
     <br />
-    <%= label_tag "インターセプト：" %>
+    <%= label_tag "", "インターセプト：" %>
     <%= "#{d.my_intercept}".gsub(/_/, '-') %>回
     <br />
-    <%= label_tag "リトライ：" %>
+    <%= label_tag "", "リトライ：" %>
     <%= "#{d.my_retry}".gsub(/_/, '-') %>回
   </div>
   <%#------------------------------------------------------------------------%>
   <%= "#{@game.right_robot.name}：" %>
   <div class="indent">
-    <%= d.opponent_play_first.to_bool ? label_tag "先攻" : label_tag "後攻" %>
+    <%= d.opponent_play_first.to_bool ? label_tag "", "先攻" : label_tag "", "後攻" %>
     <br />
-    <%= label_tag "タッチダウン・タイム：" %>
+    <%= label_tag "", "タッチダウン・タイム：" %>
     <%= "#{d.opponent_time_minute}".gsub(/_/, '-') %>分
     <%= "#{d.opponent_time_second}".gsub(/_/, '-') %>秒
     <br />
-    <%= label_tag "ボールタッチ：" %>
+    <%= label_tag "", "ボールタッチ：" %>
     <%= "#{d.opponent_ball_touch}".gsub(/_/, '-') %>回
     <%#======================================================================%>
     <br />
-    <%= label_tag "インターセプト：" %>
+    <%= label_tag "", "インターセプト：" %>
     <%= "#{d.opponent_intercept}".gsub(/_/, '-') %>回
     <br />
-    <%= label_tag "リトライ：" %>
+    <%= label_tag "", "リトライ：" %>
     <%= "#{d.opponent_retry}".gsub(/_/, '-') %>回
   </div>
 </div>
@@ -50,7 +50,7 @@
 <%= render "game_details/show/common_parts/jury_votes", d: d %><%# 審査員判定 %>
 <%###########################################################################%>
 <br />
-<%= label_tag "メモ：" %><br />
+<%= label_tag "", "メモ：" %><br />
 <div class="indent">
   <%= "#{d.memo}" %>
 </div>
