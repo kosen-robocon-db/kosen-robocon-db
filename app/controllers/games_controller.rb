@@ -47,6 +47,15 @@ class GamesController < ApplicationController
       flash[:success] = "試合情報の新規作成成功"
       redirect_to robot_url(params[:robot_code])
     else
+      # メッセージは表示せず、エラー箇所だけそれを示すタグを差し込みたいが、
+      # 今のところはメッセージ表示をしておくことにした。
+      # 方法が分かり次第改善する。
+      if @game.errors.include?(:code)
+        @game.errors.add(:region_code, "")
+        @game.errors.add(:round, "")
+        @game.errors.add(:game, "")
+      end
+
       render :new
     end
   end
