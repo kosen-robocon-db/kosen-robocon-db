@@ -1,8 +1,10 @@
 <%
+  region_name = @game.region.code == 0 ?
+    "#{@game.region.name}大会" : "#{@game.region.name}地区大会"
   provide(:title,
     "#{@game.contest.year}年" +
     "第#{@game.contest.nth}回" +
-    "#{@game.region.name}大会" +
+    "#{region_name}大会" +
     "#{game_name(hash: @game)}"
   )
 %>
