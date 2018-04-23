@@ -9,14 +9,14 @@
   <%= label_tag "", "#{@robot.name}：", class: 'robot_name' %>
   <div class="indent">
     <%= f.label :my_gaining_point, "距離：" %>
-    <%= f.text_field :my_gaining_point, { size: 3, maxlength: 3 } %>cm
+    <%= f.text_field :my_gaining_point, { size: 5, maxlength: 5 } %>cm
     <br />
     <%= f.label :my_deducting_point, "反則：" %>
     <%= f.select :my_deducting_point,
       deducting_point_numbers %>回 x 50cm
     <br />
     <%= f.label :my_total_point, "合計：" %>
-    <%= f.text_field :my_total_point, { size: 3, maxlength: 3 } %>cm
+    <%= f.text_field :my_total_point, { size: 5, maxlength: 5 } %>cm
     <%#======================================================================%>
     <br />
     <%= f.label :my_retry, "リトライ：" %>
@@ -26,14 +26,14 @@
   <%= label_tag "", "対戦相手：", class: 'robot_name' %>
   <div class="indent">
     <%= f.label :opponent_gaining_point, "距離：" %>
-    <%= f.text_field :opponent_gaining_point, { size: 3, maxlength: 3 } %>cm
+    <%= f.text_field :opponent_gaining_point, { size: 5, maxlength: 5 } %>cm
     <br />
     <%= f.label :opponent_deducting_point, "反則：" %>
     <%= f.select :opponent_deducting_point,
       deducting_point_numbers %>回 x 50cm
     <br />
     <%= f.label :opponent_total_point, "合計：" %>
-    <%= f.text_field :opponent_total_point, { size: 3, maxlength: 3 } %>cm
+    <%= f.text_field :opponent_total_point, { size: 5, maxlength: 5 } %>cm
     <%#======================================================================%>
     <br />
     <%= f.label :opponent_retry, "リトライ：" %>
