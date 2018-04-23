@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  before_filter :set_request_from
+  before_action :set_request_from
   protect_from_forgery with: :exception
 
   # セッションのリクエスト元を保存しておく
