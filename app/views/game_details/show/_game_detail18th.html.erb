@@ -40,21 +40,22 @@
 <%= render "game_details/show/common_parts/progress", d: d,
 klass: GameDetail18th %><%# 完了課題 %>
 <%#==========================================================================%>
+<br />
 <%= label_tag "", "到達距離判定：" %>
 <% concat d.distance.to_bool ? "有り" : "無し" %>
-<% if d.object.distance.to_bool %>
+<% if d.distance.to_bool %>
   <div class="indent">
     <%= label_tag "", "#{@game.left_robot.name}：", class: 'robot_name' %>
     <div class="indent">
-      到達距離：<%= f.text_field :my_distance, { maxlength: 6 } %>m
+      到達距離：<%= "#{d.my_distance}".gsub(/_/, '-') %>m
     </div>
       <%#--------------------------------------------------------------------%>
     <%= label_tag "", "#{@game.right_robot.name}：", class: 'robot_name' %>
     <div class="indent">
-      到達距離：<%= f.text_field :opponent_distance, { maxlength: 6 } %>m
+      到達距離：<%= "#{d.opponent_distance}".gsub(/_/, '-') %>m
     </div>
   </div>
-</div>
+<% end %>
 <%#==========================================================================%>
 <br />
 <%= render "game_details/show/common_parts/jury_votes", d: d %><%# 審査員判定 %>
