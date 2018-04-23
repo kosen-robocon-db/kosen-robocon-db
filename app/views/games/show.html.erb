@@ -31,8 +31,10 @@
     left_title, right_title = "負け：", "勝ち："
   when Game.results[:solo].to_s
     left_title, right_title = "単独競技：", ""
+    right_robot_name = Game::Constant::NO_OPPONENT.name # 対戦相手なし
   when Game.results[:bye].to_s
     left_title, right_title = "不戦勝：", ""
+    right_robot_name = Game::Constant::NO_OPPONENT.name # 対戦相手なし
   when Game.results[:both_dsq].to_s
     left_title, right_title = "両者失格：", ""
   else
