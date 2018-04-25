@@ -10,7 +10,9 @@
   <%= label_tag "", "#{@game.left_robot.name}：", class: 'robot_name' %>
   <div class="indent">
     <%= label_tag "", "完了課題：" %>
-    <%= "#{GameDetail23rd.progresses_i18n[d.my_progress]}"%>
+    <%# この指定方法は値と順番が異なると意図しない文言が表示されてしまうので
+        改善されるべき %>
+    <%= "#{GameDetail23rd.progresses_i18n.to_a[d.my_progress.to_i][1]}" %>
     <br />
     <%= label_tag "", "タイム：" %>
     <%= "#{d.my_time_minute}".gsub(/_/, '-') %>分
@@ -19,15 +21,14 @@
     <br />
     <%= label_tag "", "リトライ：" %>
     <%= "#{d.my_retry}".gsub(/_/, '-') %>回
-    <br />
-    <%= label_tag "", "反則：" %>
-    <%= "#{d.my_foul}".gsub(/_/, '-') %>回
   </div>
   <%#------------------------------------------------------------------------%>
   <%= label_tag "", "#{@game.right_robot.name}：", class: 'robot_name' %>
   <div class="indent">
     <%= label_tag "", "完了課題：" %>
-    <%= "#{GameDetail23rd.progresses_i18n[d.opponent_progress]}"%>
+    <%# この指定方法は値と順番が異なると意図しない文言が表示されてしまうので
+        改善されるべき %>
+    <%= "#{GameDetail23rd.progresses_i18n.to_a[d.opponent_progress.to_i][1]}" %>
     <br />
     <%= label_tag "", "タイム：" %>
     <%= "#{d.opponent_time_minute}".gsub(/_/, '-') %>分
@@ -36,9 +37,6 @@
     <br />
     <%= label_tag "", "リトライ：" %>
     <%= "#{d.opponent_retry}".gsub(/_/, '-') %>回
-    <br />
-    <%= label_tag "", "反則：" %>
-    <%= "#{d.opponent_foul}".gsub(/_/, '-') %>回
   </div>
 </div>
 <%###########################################################################%>

@@ -23,16 +23,17 @@ class GameDetail21st < GameDetail
 
   REX_F  = /\A([0-5]|#{UNKNOWN})\z/
   REX_RT = /\A([0-9]|#{UNKNOWN})\z/
-  REX_P  = /\A([0-5]|#{UNKNOWN})\z/
+  REX_P  = /\A[0-6]\z/
   REX_VT = /\A([0-5]|#{UNKNOWN})\z/
 
   enum progress: {
-    start_zone:          0, # スタートゾーン
-    going_round:         1, # 大回転（パイロン）
-    crossing_a_mountain: 2, # 山越え（ハードル）
-    transforming:        3, # 変身（パフォーマンス）
-    bipedal_walking:     4, # ニ足歩行
-    goal:                5  # ゴール
+    unknown:           0, # 不明
+    start:             1, # スタートゾーン
+    going_round:       2, # 大回転（パイロン）
+    crossing_mountain: 3, # 山越え（ハードル）
+    transforming:      4, # 変身（パフォーマンス）
+    bipedal_walking:   5, # ニ足歩行
+    goal:              6  # ゴール
   }
 
   attr_accessor :my_time_minute, :opponent_time_minute
@@ -54,8 +55,8 @@ class GameDetail21st < GameDetail
   validates :my_retry,              format: { with: REX_RT }
   validates :opponent_retry,        format: { with: REX_RT }
   with_options if: :progress do
-    validates :my_progress,       presence: true # 後ほどselectに変更
-    validates :opponent_progress, presence: true
+    validates :my_progress,         format: { with: REX_P }
+    validates :opponent_progress,   format: { with: REX_P }
   end
   with_options if: :jury_votes do
     validates :my_jury_votes,       format: { with: REX_VT }

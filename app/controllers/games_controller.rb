@@ -47,19 +47,7 @@ class GamesController < ApplicationController
       flash[:success] = "試合情報の新規作成成功"
       redirect_to robot_url(params[:robot_code])
     else
-      # メッセージは表示せず、エラー箇所だけそれを示すタグを差し込みたいが、
-      # 今のところはメッセージ表示をしておくことにした。
-      # 方法が分かり次第改善する。
-      # takenかどうかまで判別したほうがよい？
-      if @game.errors.include?(:code)
-        @game.errors[:code].map!{ |i|
-          i << "（#{view_context.link_to "該当試合", game_path(h["code"])}）"
-        }
-        @game.errors.add(:region_code, "")
-        @game.errors.add(:round, "")
-        @game.errors.add(:game, "")
-      end
-
+      error_with_code?(code: h["code"])
       render :new
     end
   end
@@ -106,6 +94,7 @@ class GamesController < ApplicationController
         flash[:success] = "試合情報の編集成功"
         redirect_to robot_url(code: params[:robot_code])
       else
+        error_with_code?(code: h["code"])
         render :edit
       end
     else
@@ -114,6 +103,7 @@ class GamesController < ApplicationController
         flash[:success] = "試合情報の編集成功"
         redirect_to robot_url(code: params[:robot_code])
       else
+        error_with_code?(code: h["code"])
         render :edit
       end
     end
@@ -161,6 +151,21 @@ class GamesController < ApplicationController
 
   def game_details_sub_class_sym(contest_nth:)
     "game_detail#{contest_nth.ordinalize}s".to_sym
+  end
+
+  def error_with_code?(code: code)
+    # メッセージは表示せず、エラー箇所だけそれを示すタグを差し込みたいが、
+    # 今のところはメッセージ表示をしておくことにした。
+    # 方法が分かり次第改善する。
+    # takenかどうかまで判別したほうがよい？
+    if @game.errors.include?(:code)
+      @game.errors[:code].map!{ |i|
+        i << "（#{view_context.link_to "該当試合", game_path(code)}）"
+      }
+      @game.errors.add(:region_code, "")
+      @game.errors.add(:round, "")
+      @game.errors.add(:game, "")
+    end
   end
 
 end

@@ -1,5 +1,5 @@
 <%
-  progress_options = Array.new([["--", GameDetail::UNKNOWN]])
+  progress_options = []
   klass.progresses.each do |key, value|
     progress_options.concat(Array.new([[
       klass.progresses_i18n[key], value

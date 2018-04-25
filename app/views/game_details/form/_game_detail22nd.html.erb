@@ -8,12 +8,12 @@
 <div class="indent">
   <%= label_tag "", "#{@robot.name}：", class: 'robot_name' %>
   <div class="indent">
-    <%= f.label :my_challenges, "完了課題：" %>
+    <%= f.label :my_challenge, "完了課題：" %>
     <div class="indent">
       <%
-        checked = f.object.my_challenges.presence || []
+        checked = f.object.my_challenge.presence || []
         GameDetail22nd.challenges.each do |key, value|
-          concat f.check_box :my_challenges,
+          concat f.check_box :my_challenge,
             { multiple: true, checked: checked.include?(value.to_s) }, value
           concat GameDetail22nd.challenges_i18n[key]
           concat "<br />".html_safe
@@ -31,12 +31,12 @@
   <%#------------------------------------------------------------------------%>
   <%= label_tag "", "対戦相手：", class: 'robot_name' %>
   <div class="indent">
-    <%= f.label :opponent_challenges, "完了課題：" %>
+    <%= f.label :opponent_challenge, "完了課題：" %>
     <div class="indent">
       <%
-        checked = f.object.my_challenges.presence || []
+        checked = f.object.opponent_challenge.presence || []
         GameDetail22nd.challenges.each do |key, value|
-          concat f.check_box :opponent_challenges,
+          concat f.check_box :opponent_challenge,
             { multiple: true, checked: checked.include?(value.to_s) }, value
           concat GameDetail22nd.challenges_i18n[key]
           concat "<br />".html_safe

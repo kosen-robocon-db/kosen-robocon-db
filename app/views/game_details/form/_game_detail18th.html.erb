@@ -1,11 +1,5 @@
 <%= f.hidden_field :id %>
 <%
-  progress_options = Array.new([["--", GameDetail::UNKNOWN]])
-  GameDetail18th.progresses.each do |key, value|
-    progress_options.concat(Array.new([[
-      GameDetail18th.progresses_i18n[key], value
-    ]]))
-  end
   retry_numbers = option_numbers digit: 1, end_number: 1
   foul_numbers  = option_numbers digit: 1, end_number: 3
 %>
@@ -58,6 +52,7 @@
     <div class="indent">
       <%= label_tag "", "#{@robot.name}：", class: 'robot_name' %>
       <div class="indent">
+        <%= f.label :my_distance, "距離：" %>
         <%= f.text_field :my_distance, { maxlength: 6 } %>m
       </div>
     </div>
@@ -65,6 +60,7 @@
     <div class="indent">
       対戦相手：
       <div class="indent">
+        <%= f.label :opponent_distance, "距離：" %>
         <%= f.text_field :opponent_distance, { maxlength: 6 } %>m
       </div>
     </div>

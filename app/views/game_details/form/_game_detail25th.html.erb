@@ -22,9 +22,11 @@
       <div class="\
         my_special_win___nested_field_for_replace_with_index__ hidden">
     <% end %>
-        <%= label_tag "", "タイム：" %>
-        <%= f.select :opponent_time_minute, time_numbers %>分
-        <%= f.select :opponent_time_second, time_numbers %>秒
+        <div class="indent">
+          <%= label_tag "", "タイム：" %>
+          <%= f.select :my_time_minute, time_numbers %>分
+          <%= f.select :my_time_second, time_numbers %>秒
+        </div>
       </div>
     <%#======================================================================%>
     <br />
@@ -50,9 +52,11 @@
       <div class="\
         opponent_special_win___nested_field_for_replace_with_index__ hidden">
     <% end %>
-        <%= label_tag "", "タイム：" %>
-        <%= f.select :opponent_time_minute, time_numbers %>分
-        <%= f.select :opponent_time_second, time_numbers %>秒
+        <div class="indent">
+          <%= label_tag "", "タイム：" %>
+          <%= f.select :opponent_time_minute, time_numbers %>分
+          <%= f.select :opponent_time_second, time_numbers %>秒
+        </div>
       </div>
     <%#======================================================================%>
     <br />

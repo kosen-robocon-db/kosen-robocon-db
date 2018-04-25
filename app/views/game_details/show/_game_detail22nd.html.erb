@@ -12,7 +12,7 @@
     <%= label_tag "", "完了課題：" %>
     <div class="indent">
       <%
-        checked = d.my_challenges.presence || []
+        checked = d.my_challenge.presence || []
         GameDetail22nd.challenges.each do |key, value|
           concat check_box "", "",
             {
@@ -38,7 +38,7 @@
     <%= label_tag "", "完了課題：" %>
     <div class="indent">
       <%
-        checked = d.opponent_challenges.presence || []
+        checked = d.opponent_challenge.presence || []
         GameDetail22nd.challenges.each do |key, value|
           concat check_box "", "",
             {

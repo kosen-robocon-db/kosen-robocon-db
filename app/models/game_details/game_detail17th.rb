@@ -13,9 +13,10 @@ class GameDetail17th < GameDetail
   STEMS = %w( robot_code gaining_point deducting_point total_point retry
     jury_votes )
 
-  REX_GPT = /\A(([1-9]\d{,2}|0)(\.(0|5))?|)\z/ # 何も入力しないを許す。
-  REX_DPT = /\A([0-9]|#{UNKNOWN})\z/
-  REX_TPT = /\A(([1-9]\d{,2}|0)(\.(0|5))?|)\z/ # 何も入力しないを許す。無負と仮定。
+  # 得点と合計は無負と想定し、少数点以下なしと入力なしを許す。
+  REX_GPT = /\A(([1-9]\d{,2}|0)(\.(0|5))?)?\z/ # 得点
+  REX_DPT = /\A([0-9]|#{UNKNOWN})\z/           # 減点
+  REX_TPT = /\A(([1-9]\d{,2}|0)(\.(0|5))?)?\z/ # 合計
   REX_RT  = /\A([0-1]|#{UNKNOWN})\z/
   REX_VT  = /\A([0-5]|#{UNKNOWN})\z/
 
@@ -142,11 +143,8 @@ class GameDetail17th < GameDetail
     super(robot: robot) do |h|
       if h["gaining_point"].present?
         self.my_gaining_point, self.opponent_gaining_point =
-          h["gaining_point"].to_s.split(DELIMITER)
-        self.my_gaining_point =
-          "" if self.my_gaining_point == "#{UNKNOWN}"
-        self.opponent_gaining_point =
-          "" if self.opponent_gaining_point == "#{UNKNOWN}"
+          h["gaining_point"].to_s.split(DELIMITER).map{|x|
+            x.gsub(/#{UNKNOWN}/, '')}
       end
       if h["deducting_point"].present?
         self.my_deducting_point, self.opponent_deducting_point =
@@ -154,11 +152,8 @@ class GameDetail17th < GameDetail
       end
       if h["total_point"].present?
         self.my_total_point, self.opponent_total_point =
-          h["total_point"].to_s.split(DELIMITER)
-        self.my_total_point =
-          "" if self.my_total_point == "#{UNKNOWN}"
-        self.opponent_total_point =
-          "" if self.opponent_total_point == "#{UNKNOWN}"
+          h["total_point"].to_s.split(DELIMITER).map{|x|
+            x.gsub(/#{UNKNOWN}/, '')}
       end
       self.my_retry, self.opponent_retry =
         h["retry"].to_s.split(DELIMITER) if h["retry"].present?

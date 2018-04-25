@@ -10,9 +10,9 @@ class GameDetail3rd < GameDetail
   REX_GPT = /\A([0-9]|1[0-6]|#{UNKNOWN})\z/
 
   enum criterium: {
-    win:         0, # 勝利
-    recommended: 1, # 審査員推薦
-    janken:      2  # じゃんけん
+    win:         1, # 勝利
+    recommended: 2, # 審査員推薦
+    janken:      3  # じゃんけん
   }
 
   attr_accessor :my_gaining_point, :opponent_gaining_point

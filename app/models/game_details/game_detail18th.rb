@@ -18,20 +18,21 @@ class GameDetail18th < GameDetail
   STEMS = %w( robot_code time_minute time_second retry foul progress distance
     jury_votes )
 
-  REX_P  = /\A([0-6]|#{UNKNOWN})\z/
-  REX_D  = /\A(([1-9]\d{,1}|0)(\.\d{,2}(0|5){,1})?|)\z/ # 何も入力しないを許す。
+  REX_P  = /\A[0-7]\z/
+  REX_D  = /\A(([1-9]\d{,1}|0)(\.\d{,2}(0|5){,1})?)?\z/ # 何も入力しないを許す。
   REX_RT = /\A([0-1]|#{UNKNOWN})\z/
   REX_F  = /\A([0-9]|#{UNKNOWN})\z/
   REX_VT = /\A([0-5]|#{UNKNOWN})\z/
 
   enum progress: {
-    start_zone:          0, # スタートゾーン
-    ladder_dive_zone:    1, # 梯子潜り
-    balance_beam_zone:   2, # 平均台渡り
-    hardle_cross_zone:   3, # ハードル越え
-    button_passing_zone: 4, # バトン渡し
-    wall_clibming_zone:  5, # 壁登り
-    button_goal:         6 # バトンゴール
+    unknown:       0, # 不明 ビューでは"--"
+    start:         1, # スタート
+    ladder_wicket: 2, # 梯子潜り
+    balance_beam:  3, # 平均台渡り
+    hardle_cross:  4, # ハードル越え
+    baton_passing: 5, # バトン渡し
+    wall_clibming: 6, # 壁登り
+    baton_goal:    7  # バトンゴール
   }
 
   attr_accessor :my_time_minute, :opponent_time_minute
@@ -160,11 +161,7 @@ class GameDetail18th < GameDetail
       if h["distance"].present?
         self.distance = true
         self.my_distance, self.opponent_distance =
-          h["distance"].to_s.split(DELIMITER)
-        self.my_distance =
-          "" if self.my_distance == "#{UNKNOWN}"
-        self.opponent_distance =
-          "" if self.opponent_distance == "#{UNKNOWN}"
+          h["distance"].to_s.split(DELIMITER).map{|x| x.gsub(/#{UNKNOWN}/, '')}
       end
       if h["jury_votes"].present?
         self.jury_votes = true

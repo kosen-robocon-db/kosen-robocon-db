@@ -23,20 +23,21 @@ class GameDetail26th < GameDetail
   STEMS = %w( robot_code progress time_minute time_second gaining_point foul
      retry jury_votes )
 
-  REX_PR  = /\A([0-6]|#{UNKNOWN})\z/
-  REX_GPT = /\A(1[0-2][0-9]|[1-9][0-9]{,1}|0|#{UNKNOWN})\z/
+  REX_P   = /\A[0-7]\z/
+  REX_GPT = /\A(1[0-2][0-9]|[1-9][0-9]{,1}|0)?\z/ # 入力無しを許可
   REX_F   = /\A([0-9]|#{UNKNOWN})\z/
   REX_RT  = /\A([0-9]|#{UNKNOWN})\z/
   REX_VT  = /\A([0-5]|#{UNKNOWN})\z/
 
   enum progress: {
-    start:                 0, # スタート
-    first_jump_rope:       1, # 第1ロボット二回縄跳び
-    second_jump_rope:      2, # 第2ロボット二回縄跳び
-    third_jump_rope:       3, # 第3ロボット二回縄跳び
-    turn_around:           4, # 折り返し
-    human_robot_jump_rope: 5, # 人間・ロボットの縄跳び
-    consecutive_jump_rope: 6  # 連続縄跳びジャンプ
+    unknown:               0, # 不明
+    start:                 1, # スタート
+    first_jump_rope:       2, # 第1ロボット二回縄跳び
+    second_jump_rope:      3, # 第2ロボット二回縄跳び
+    third_jump_rope:       4, # 第3ロボット二回縄跳び
+    turn_around:           5, # 折り返し
+    human_robot_jump_rope: 6, # 人間・ロボットの縄跳び
+    consecutive_jump_rope: 7  # 連続縄跳びジャンプ
   }
 
   attr_accessor :my_progress,      :opponent_progress
@@ -49,8 +50,8 @@ class GameDetail26th < GameDetail
   attr_accessor :my_jury_votes,    :opponent_jury_votes
   attr_accessor :memo
 
-  validates :my_progress,            format: { with: REX_PR }
-  validates :opponent_progress,      format: { with: REX_PR }
+  validates :my_progress,            format: { with: REX_P }
+  validates :opponent_progress,      format: { with: REX_P }
   validates :my_time_minute,         format: { with: REX_MS }
   validates :my_time_second,         format: { with: REX_MS }
   validates :opponent_time_minute,   format: { with: REX_MS }
@@ -95,12 +96,38 @@ class GameDetail26th < GameDetail
     h = super(hash: hash) || {} # robot_code
     h.update(compose_pairs(hash: hash, stems: %w( progress )))
     h.update(compose_time(hash: hash))
-    hash[:my_gaining_point] =
-      "#{UNKNOWN}" if hash[:my_gaining_point].blank?
-    hash[:opponent_gaining_point] =
-      "#{UNKNOWN}" if hash[:opponent_gaining_point].blank?
+    if
+      hash[:my_gaining_point].present? and
+      hash[:opponent_gaining_point].present?
+    then
+      h["gaining_point"] = "\
+        #{hash[:my_gaining_point]}\
+        #{DELIMITER}\
+        #{hash[:opponent_gaining_point]}\
+      ".gsub(/(\s| )+/, '')
+    end
+    if
+      hash[:my_gaining_point].blank? and
+      hash[:opponent_gaining_point].present?
+    then
+      h["gaining_point"] = "\
+        #{UNKNOWN}\
+        #{DELIMITER}\
+        #{hash[:opponent_gaining_point]}\
+      ".gsub(/(\s| )+/, '')
+    end
+    if
+      hash[:my_gaining_point].present? and
+      hash[:opponent_gaining_point].blank?
+    then
+      h["gaining_point"] = "\
+        #{hash[:my_gaining_point]}\
+        #{DELIMITER}\
+        #{UNKNOWN}\
+      ".gsub(/(\s| )+/, '')
+    end
     h.update(compose_pairs(hash: hash,
-      stems: %w( gaining_point foul retry jury_votes )))
+      stems: %w( foul retry jury_votes )))
     h.delete("jury_votes") unless hash["jury_votes"].presence.to_bool
     h["memo"] = "#{hash[:memo]}" if hash[:memo].present?
     return h
@@ -119,7 +146,8 @@ class GameDetail26th < GameDetail
       end
       if h["gaining_point"].present?
         self.my_gaining_point, self.opponent_gaining_point =
-          h["gaining_point"].to_s.split(DELIMITER).map{|x| x.gsub(/_/, '')}
+          h["gaining_point"].to_s.split(DELIMITER).map{|x|
+            x.gsub(/#{UNKNOWN}/, '')}
       end
       if h["foul"].present?
         self.my_foul, self.opponent_foul =

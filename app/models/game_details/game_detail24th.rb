@@ -17,11 +17,6 @@ class GameDetail24th < GameDetail
   REX_RT = /\A([0-9]|#{UNKNOWN})\z/
   REX_VT = /\A([0-3]|#{UNKNOWN})\z/
 
-  # enum play_order: {
-  #   first:  1,
-  #   second: 2
-  # }
-
   attr_accessor :my_play_first,  :opponent_play_first
   attr_accessor :my_time_minute, :opponent_time_minute
   attr_accessor :my_time_second, :opponent_time_second
@@ -32,11 +27,8 @@ class GameDetail24th < GameDetail
   attr_accessor :my_jury_votes,  :opponent_jury_votes
   attr_accessor :memo
 
-
   validates :my_play_first,       inclusion: { in: [ "true", "false", nil ] }
-  #  inclusion: { in: GameDetail24th.play_orders.values.map{ |i| i.to_s } }
   validates :opponent_play_first, inclusion: { in: [ "true", "false", nil ] }
-  #  inclusion: { in: GameDetail24th.play_orders.values.map{ |i| i.to_s } }
   validates :my_time_minute,        format: { with: REX_MS }
   validates :my_time_second,        format: { with: REX_MS }
   validates :opponent_time_minute,  format: { with: REX_MS }
@@ -123,21 +115,6 @@ class GameDetail24th < GameDetail
       end
       self.memo = h["memo"].presence || ''
     end
-
-    # # 将来的には、AJAXで*_play_firstの状態を共用し、
-    # # 上記の属性のように一緒に処理できるようにしたいが、現状はこうして対処。
-    # if h["play_first"].present?
-    #   ord = h["play_first"].to_s.split(DELIMITER)
-    #   if    ord[0] == "1st" and not @swapped
-    #     self.play_first = play_order[:my].to_s
-    #   elsif ord[0] == "2nd" and not @swapped
-    #     self.play_first = play_order[:opponent].to_s
-    #   elsif ord[0] == "1st" and     @swapped
-    #     self.play_first = play_order[:opponent].to_s
-    #   elsif ord[0] == "2nd" and     @swapped
-    #     self.play_first = play_order[:my].to_s
-    #   end
-    # end
   end
 
 end

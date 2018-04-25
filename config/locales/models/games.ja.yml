@@ -41,8 +41,14 @@ ja:
       game_detail16ths:
         memo: メモ
       game_detail17ths:
+        my_gaining_point: 距離
+        my_total_point: 合計
+        opponent_gaining_point: 距離
+        opponent_total_point: 合計
         memo: メモ
       game_detail18ths:
+        my_distance: 距離
+        opponent_distance: 距離
         memo: メモ
       game_detail19ths:
         memo: メモ
