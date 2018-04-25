@@ -14,7 +14,7 @@
     <br />
     <%= label_tag "", "Vゴール：" %>
     <%= d.my_special_win.to_bool ? "有り" : "無し" %>
-    <% if d.object.my_special_win.to_bool %>
+    <% if d.my_special_win.to_bool %>
       <div class="indent">
         <%= label_tag "", "タイム：" %>
         <%= "#{d.my_time_minute}".gsub(/_/, '-') %>分
@@ -47,7 +47,7 @@
     <br />
     <%= label_tag "", "Vゴール：" %>
     <%= d.opponent_special_win.to_bool ? "有り" : "無し" %>
-    <% if d.object.opponent_special_win.to_bool %>
+    <% if d.opponent_special_win.to_bool %>
       <div class="indent">
         <%= label_tag "", "タイム：" %>
         <%= "#{d.opponent_time_minute}".gsub(/_/, '-') %>分
