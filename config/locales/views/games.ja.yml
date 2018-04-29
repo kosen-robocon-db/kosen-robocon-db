@@ -1,8 +1,14 @@
 ja:
   enums:
     game:
-      reasons:
-        draw: 引き分け（審査員判定・推薦で勝ち負け）
+      result:
+        win: 勝ち
+        lose: 負け
+        solo: 単独競技
+        bye: 不戦勝
+        both_dsq: 両者失格
+      reason:
+        draw: 引き分け（審査員判定・推薦）
         DNS: 試合開始前棄権
         DNF: 試合途中棄権
         DSQ: 失格
@@ -19,26 +25,29 @@ ja:
         janken: じゃんけん
     game_detail18th:
       progress:
-        start_zone: スタートゾーン
-        ladder_dive_zone: 梯子潜り
-        balance_beam_zone: 平均台渡り
-        hardle_cross_zone: ハードル越え
-        button_passing_zone: バトン渡し
-        wall_clibming_zone: 壁登り
-        button_goal: バトンゴール
+        unknown: --
+        start: スタート
+        ladder_wicket: 梯子潜り
+        balance_beam: 平均台渡り
+        hardle_cross: ハードル越え
+        baton_passing: バトン渡し
+        wall_clibming: 壁登り
+        baton_goal: バトンゴール
     game_detail19th:
       progress:
-        start_zone: スタートゾーン
-        moat_zone: お堀越え
-        seesaw_zone: シーソー
-        slalom_zone: スラローム
-        rope_zone: 縄跳び
-        goal_zone: ふるさとゴール
+        unknown: --
+        start: スタート
+        moat: お堀越え
+        seesaw: シーソー
+        slalom: スラローム
+        rope: 縄跳び
+        goal: ふるさとゴール
     game_detail21st:
       progress:
-        start_zone: スタートゾーン
+        unknown: --
+        start: スタート
         going_round: 大回転（パイロン）
-        crossing_a_mountain: 山越え（ハードル）
+        crossing_mountain: 山越え（ハードル）
         transforming: 変身（パフォーマンス）
         bipedal_walking: ニ足歩行
         goal: ゴール
@@ -56,14 +65,16 @@ ja:
         star_coupling: スターカップル（10点）
     game_detail23rd:
       progress:
-        start_zone: スタートゾーン
-        walking_zone: 二足歩行ゾーン
-        connecting_zone: 連結ゾーン
-        inserting_zone: 鍵穴ゾーン
-        goal_zone: ゴール
+        unknown: --
+        start: スタート
+        walking: 二足歩行
+        connecting: 連結
+        inserting: 鍵穴
+        goal: ゴール
     game_detail26th:
       progress:
-        start: スタートゾーン
+        unknown: --
+        start: スタート
         first_jump_rope: 第1ロボット二回縄跳び
         second_jump_rope: 第2ロボット二回縄跳び
         third_jump_rope: 第3ロボット二回縄跳び
@@ -71,7 +82,8 @@ ja:
         human_robot_jump_rope: 人間・ロボットの縄跳び
         consecutive_jump_rope: 連続縄跳びジャンプ
     game_detail29th:
-      progress:
+      challenge:
+        start: スタート
         lighthouse_building: 灯台建築
         departure: 出港
         island_landing: 島上陸

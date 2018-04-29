@@ -16,10 +16,10 @@ class GameDetail4th < GameDetail
   REX_GPT = /\A([0-9]|[1-3][0-9]|40|#{UNKNOWN})\z/
 
   enum criterium: {
-    number:   0, # 個数
-    hight:    1, # 高さ
-    distance: 2, # 距離
-    janken:   3  # じゃんけん
+    number:   1, # 個数
+    hight:    2, # 高さ
+    distance: 3, # 距離
+    janken:   4  # じゃんけん
   }
 
   attr_accessor :my_gaining_point, :opponent_gaining_point

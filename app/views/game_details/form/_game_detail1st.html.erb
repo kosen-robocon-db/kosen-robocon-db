@@ -1,32 +1,28 @@
 <%= f.hidden_field :id %>
-<table>
-  <tr>
-    <td><%= label_tag "#{@robot.name}：" %></td>
-  </tr>
-  <tr>
-    <td>
-      <%= ("&nbsp;"*4).html_safe %>
-      タイム：
-      <%= f.select :my_time_minute, time_numbers %>分
-      <%= f.select :my_time_second, time_numbers %>秒
-    </td>
-  </tr>
-  <%#########################################################################%>
-  <tr>
-    <td><%= label_tag :opponent_time, "対戦相手：" %></td>
-  </tr>
-  <tr>
-    <td>
-      <%= ("&nbsp;"*4).html_safe %>
-      タイム：
-      <%= f.select :opponent_time_minute, time_numbers %>分
-      <%= f.select :opponent_time_second, time_numbers %>秒
-    </td>
-  </tr>
-</table>
+<%###########################################################################%>
+<%= label_tag "", "タイム：" %>
+<div class="indent">
+  <%= label_tag "", "#{@robot.name}：", class: 'robot_name' %>
+  <div class="indent">
+    <%# 対応するラベルを一つに纏められない %>
+    <%= f.select :my_time_minute, time_numbers %>分
+    <%= f.select :my_time_second, time_numbers %>秒
+  </div>
+  <%#------------------------------------------------------------------------%>
+  <%= label_tag "", "対戦相手：", class: 'robot_name' %>
+  <div class="indent">
+    <%# 対応するラベルを一つに纏められない %>
+    <%= f.select :opponent_time_minute, time_numbers %>分
+    <%= f.select :opponent_time_second, time_numbers %>秒
+  </div>
+</div>
+<%###########################################################################%>
 <br />
 <%= f.label :memo, "メモ：" %>
-<%= f.text_field :memo %><br />
+<div class="indent">
+  <%= f.text_field :memo %>
+</div>
+<%#==========================================================================%>
 <br />
 <%= f.hidden_field :_destroy %>
 <%= f.remove_nested_fields_link '削除', class: 'btn btn-danger',

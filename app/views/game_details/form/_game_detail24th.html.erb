@@ -4,70 +4,62 @@
   intercept_numbers  = option_numbers digit: 1, end_number: 3
   retry_numbers      = option_numbers digit: 1, end_number: 9
 %>
-<%= label_tag "#{@robot.name}：" %>
-<table style="margin-left: 10px;">
-  <tr>
-    <td>先攻：</td>
-    <td>
-      <%= f.check_box :my_play_first,
-        { :checked => f.object.my_play_first }, true, false %>
-    </td>
-  </tr>
-  <tr>
-    <td>タッチダウン・タイム：</td>
-    <td>
-      <%= f.select :my_time_minute, time_numbers %>分
-      <%= f.select :my_time_second, time_numbers %>秒
-    </td>
-  </tr>
-  <tr>
-    <td>ボールタッチ：</td>
-    <td><%= f.select :my_ball_touch, ball_touch_numbers %>回</td>
-  </tr>
-  <tr>
-    <td>インターセプト：</td>
-    <td><%= f.select :my_intercept, intercept_numbers %>回</td>
-  </tr>
-  <tr>
-    <td>リトライ：</td>
-    <td><%= f.select :my_retry, retry_numbers %>回</td>
-  </tr>
-</table>
 <%###########################################################################%>
-<%= label_tag "対戦相手：" %>
-<table style="margin-left: 10px;">
-  <tr>
-    <td>先攻：</td>
-    <td>
-      <%= f.check_box :opponent_play_first,
+<%= label_tag "", "タイムとリトライなど：" %>
+<div class="indent">
+  <%= label_tag "", "#{@robot.name}：", class: 'robot_name' %>
+  <div class="indent">
+    <%= f.label :my_play_first, "先攻：" %>
+    <%= f.check_box :my_play_first,
+      { :checked => f.object.my_play_first }, true, false %>
+    <br />
+    <%= label_tag "", "タッチダウン・タイム：" %>
+    <%= f.select :my_time_minute, time_numbers %>分
+    <%= f.select :my_time_second, time_numbers %>秒
+    <br />
+    <%= f.label :my_ball_touch, "ボールタッチ：" %>
+    <%= f.select :my_ball_touch, ball_touch_numbers %>回
+    <%#======================================================================%>
+    <br />
+    <%= f.label :my_intercept, "インターセプト：" %>
+    <%= f.select :my_intercept, intercept_numbers %>回
+    <br />
+    <%= f.label :my_retry, "リトライ：" %>
+    <%= f.select :my_retry, retry_numbers %>回
+  </div>
+  <%#------------------------------------------------------------------------%>
+  <%= label_tag "", "対戦相手：", class: 'robot_name' %>
+  <div class="indent">
+    <%= f.label :opponent_play_first, "先攻：" %>
+    <%= f.check_box :opponent_play_first,
       { :checked => f.object.opponent_play_first }, true, false %>
-    </td>
-  </tr>
-  <tr>
-    <td>タッチダウン・タイム：</td>
-    <td>
-      <%= f.select :opponent_time_minute, time_numbers %>分
-      <%= f.select :opponent_time_second, time_numbers %>秒
-    </td>
-  </tr>
-  <tr>
-    <td>ボールタッチ：</td>
-    <td><%= f.select :opponent_ball_touch, ball_touch_numbers %>回</td>
-  </tr>
-  <tr>
-    <td>インターセプト：</td>
-    <td><%= f.select :opponent_intercept, intercept_numbers %>回</td>
-  </tr>
-  <tr>
-    <td>リトライ：</td>
-    <td><%= f.select :opponent_retry, retry_numbers %>回</td>
-  </tr>
-</table>
+    <br />
+    <%= label_tag "", "タッチダウン・タイム：" %>
+    <%= f.select :opponent_time_minute, time_numbers %>分
+    <%= f.select :opponent_time_second, time_numbers %>秒
+    <br />
+    <%= f.label :opponent_ball_touch, "ボールタッチ：" %>
+    <%= f.select :opponent_ball_touch, ball_touch_numbers %>回
+    <%#======================================================================%>
+    <br />
+    <%= f.label :opponent_intercept, "インターセプト：" %>
+    <%= f.select :opponent_intercept, intercept_numbers %>回
+    <br />
+    <%= f.label :opponent_retry, "リトライ：" %>
+    <%= f.select :opponent_retry, retry_numbers %>回
+  </div>
+</div>
+<%###########################################################################%>
+<br />
 <%= render "game_details/form/common_parts/jury_votes", f: f,
   juries_number: 3 %><%# 審査員判定 %>
+<%###########################################################################%>
 <br />
 <%= f.label :memo, "メモ：" %>
-<%= f.text_field :memo %><br />
+<div class="indent">
+  <%= f.text_field :memo %>
+</div>
+<%#==========================================================================%>
 <br />
 <%= f.hidden_field :_destroy %>
 <%= f.remove_nested_fields_link '削除', class: 'btn btn-danger',

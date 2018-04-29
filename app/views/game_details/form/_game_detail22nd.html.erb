@@ -3,60 +3,66 @@
   gaining_point_numbers = option_numbers digit: 3, end_number: 100, step: 5
   retry_numbers         = option_numbers digit: 1, end_number:   9
 %>
-<table>
-  <tr><td><%= label_tag "#{@robot.name}：" %></td></tr>
-  <tr><td>
-    <%= ("&nbsp;"*4).html_safe %>達成課題：<br />
-    <%
-      checked = f.object.my_challenges.presence || []
-      GameDetail22nd.challenges.each do |key, value|
-    %>
-    <%= ("&nbsp;"*8).html_safe %>
-    <%= f.check_box :my_challenges,
-          { multiple: true, checked: checked.include?(value.to_s) }, value %>
-    <%= GameDetail22nd.challenges_i18n[key] %><br />
-    <%
-      end
-    %>
-  </td></tr>
-  <tr><td>
-    <%= ("&nbsp;"*4).html_safe %>合計：
+<%###########################################################################%>
+<%= label_tag "", "得点とリトライなど：" %>
+<div class="indent">
+  <%= label_tag "", "#{@robot.name}：", class: 'robot_name' %>
+  <div class="indent">
+    <%= f.label :my_challenge, "完了課題：" %>
+    <div class="indent">
+      <%
+        checked = f.object.my_challenge.presence || []
+        GameDetail22nd.challenges.each do |key, value|
+          concat f.check_box :my_challenge,
+            { multiple: true, checked: checked.include?(value.to_s) }, value
+          concat GameDetail22nd.challenges_i18n[key]
+          concat "<br />".html_safe
+        end
+      %>
+    </div>
+    <%# total_pointにしないのは得点の項目がこれだけであるから %>
+    <%= f.label :my_gaining_point, "合計：" %>
     <%= f.select :my_gaining_point, gaining_point_numbers %>点
-  </td></tr>
-  <tr><td>
-    <%= ("&nbsp;"*4).html_safe %>リトライ：
+    <%#======================================================================%>
+    <br />
+    <%= f.label :my_retry, "リトライ：" %>
     <%= f.select :my_retry, retry_numbers %>回
-  </td></tr>
-  <%#########################################################################%>
-  <tr><td><%= label_tag "対戦相手：" %></td></tr>
-  <tr><td>
-    <%= ("&nbsp;"*4).html_safe %>達成課題：<br />
-    <%
-      checked = f.object.opponent_challenges.presence || []
-      GameDetail22nd.challenges.each do |key, value|
-    %>
-    <%= ("&nbsp;"*8).html_safe %>
-    <%= f.check_box :opponent_challenges,
-          { multiple: true, checked: checked.include?(value.to_s) }, value %>
-    <%= GameDetail22nd.challenges_i18n[key] %><br />
-    <%
-      end
-    %>
-  </td></tr>
-  <tr><td>
-    <%= ("&nbsp;"*4).html_safe %>合計：
+  </div>
+  <%#------------------------------------------------------------------------%>
+  <%= label_tag "", "対戦相手：", class: 'robot_name' %>
+  <div class="indent">
+    <%= f.label :opponent_challenge, "完了課題：" %>
+    <div class="indent">
+      <%
+        checked = f.object.opponent_challenge.presence || []
+        GameDetail22nd.challenges.each do |key, value|
+          concat f.check_box :opponent_challenge,
+            { multiple: true, checked: checked.include?(value.to_s) }, value
+          concat GameDetail22nd.challenges_i18n[key]
+          concat "<br />".html_safe
+        end
+      %>
+    </div>
+    <%# total_pointにしないのは得点の項目がこれだけであるから %>
+    <%= f.label :opponent_gaining_point, "合計：" %>
     <%= f.select :opponent_gaining_point, gaining_point_numbers %>点
-  </td></tr>
-  <tr><td>
-    <%= ("&nbsp;"*4).html_safe %>リトライ：
+    <%#======================================================================%>
+    <br />
+    <%= f.label :opponent_retry, "リトライ：" %>
     <%= f.select :opponent_retry, retry_numbers %>回
-  </td></tr>
-</table>
+  </div>
+</div>
+<%###########################################################################%>
+<br />
 <%= render "game_details/form/common_parts/jury_votes", f: f,
   juries_number: 5 %><%# 審査員判定 %>
+<%###########################################################################%>
 <br />
 <%= f.label :memo, "メモ：" %>
-<%= f.text_field :memo %><br />
+<div class="indent">
+  <%= f.text_field :memo %>
+</div>
+<%#==========================================================================%>
 <br />
 <%= f.hidden_field :_destroy %>
 <%= f.remove_nested_fields_link '削除', class: 'btn btn-danger',

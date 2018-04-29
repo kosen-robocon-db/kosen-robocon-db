@@ -26,6 +26,10 @@ class PrizeHistoriesController < ApplicationController
         params[:contest_nth]
       ).order("campus_code asc")
     end
+    @games = Game.where(
+      "contest_nth = ? and region_code = ?",
+      params[:contest_nth], params[:region_code]
+    ).order("round, game")
   end
 
   def new

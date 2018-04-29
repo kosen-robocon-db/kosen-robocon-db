@@ -1,0 +1,43 @@
+<%#
+  以下の my_time_minute などの properties に JSON 形式で格納される情報は、
+  このビューでは基本的に変数として存在しているものとし、
+  またオブジェクトとして nil だったとしても問題がないものとし、
+  present? メソッドなどで確認することはしないものとする。（暫定）
+%>
+<%###########################################################################%>
+<%= label_tag "", "得点：" %>
+<div class="indent">
+  <%= label_tag "", "#{@game.left_robot.name}：", class: 'robot_name' %>
+  <div class="indent">
+    <%= label_tag "", "得点：" %>
+    <%= "#{d.my_gaining_point}".gsub(/_/, '-') %>点
+    <br />
+    <%= label_tag "", "減点：" %>
+    <%= "#{d.my_deducting_point}".gsub(/_/, '-') %>点
+    <br />
+    <%= label_tag "", "合計：" %>
+    <%= "#{d.my_total_point}".gsub(/_/, '-') %>点
+  </div>
+  <%#==========================================================================%>
+  <%= label_tag "", "#{@game.right_robot.name}：", class: 'robot_name' %>
+  <div class="indent">
+    <%= label_tag "", "得点：" %>
+    <%= "#{d.opponent_gaining_point}".gsub(/_/, '-') %>点
+    <br />
+    <%= label_tag "", "減点：" %>
+    <%= "#{d.opponent_deducting_point}".gsub(/_/, '-') %>点
+    <br />
+    <%= label_tag "", "合計：" %>
+    <%= "#{d.opponent_total_point}".gsub(/_/, '-') %>点
+  </div>
+</div>
+<%###########################################################################%>
+<br />
+<%= label_tag "", "審査員判定（芸術点）：" %>
+<% concat d.recommended.to_bool ? "有り" : "無し" %>
+<%###########################################################################%>
+<br />
+<%= label_tag "", "メモ：" %><br />
+<div class="indent">
+  <%= "#{d.memo}" %>
+</div>

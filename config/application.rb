@@ -20,5 +20,23 @@ module RoboconDb
     config.autoload_paths << Rails.root.join("app/models/game_details")
 
     config.time_zone = 'Tokyo'
+
+    # デフォルトのエラー表示ではレイアウトが崩れてしまうため
+    # 次の独自のエラー時のプロシージャ―を設定する
+    config.action_view.field_error_proc = Proc.new do |html_tag, instance|
+       "<span class='field_with_errors'>#{html_tag}</span>".html_safe
+    end
+
+    config.generators do |g|
+      g.test_framework :rspec,
+                       fixtures: true, # モデル作成時にfixtureの作成を有効化
+                       view_specs: false,
+                       helper_specs: false,
+                       routing_specs: false,
+                      controller_specs: true, # コントローラー作成時
+                       request_specs: false
+      # fixture の代わりに factory_bot を利用する
+      g.fixture_replacement :factory_bot, dir: "spec/factories"
+    end
   end
 end

@@ -43,7 +43,7 @@ class GameDetail28th < GameDetail
   attr_accessor :my_time_minute,   :opponent_time_minute
   attr_accessor :my_time_second,   :opponent_time_second
   attr_accessor :my_loading,       :opponent_loading
-  attr_accessor :my_retry,         :opponent_retry
+  attr_accessor :my_retry,         :opponent_retry          # リペアとして扱う
   attr_accessor :my_foul,          :opponent_foul
   attr_accessor :jury_votes
   attr_accessor :my_jury_votes,    :opponent_jury_votes
@@ -154,7 +154,7 @@ class GameDetail28th < GameDetail
         self.my_loading, self.opponent_loading =
           h["loading"].to_s.split(DELIMITER)
       end
-      if h["retry"].present?
+      if h["retry"].present? # リペアとして扱う
         self.my_retry, self.opponent_retry =
           h["retry"].to_s.split(DELIMITER)
       end

@@ -23,17 +23,18 @@ class GameDetail19th < GameDetail
   STEMS = %w( robot_code retry foul progress jury_votes )
 
   REX_RT = /\A([0-1]|#{UNKNOWN})\z/
-  REX_P  = /\A([0-5]|#{UNKNOWN})\z/
+  REX_P  = /\A[0-6]\z/
   REX_F  = /\A([0-3]|#{UNKNOWN})\z/
   REX_VT = /\A([0-5]|#{UNKNOWN})\z/
 
   enum progress: {
-    start_zone:  0, # スタートゾーン
-    moat_zone:   1, # お堀越え（お堀の底に触れるとファウル）
-    seesaw_zone: 2, # シーソー（）
-    slalom_zone: 3, # スラローム（？）
-    rope_zone:   4, # 縄跳び（飛べなかったらやり直し？ゾーンからはみ出したら？）
-    goal_zone:   5  # ふるさとゴール
+    unknown: 0, # 不明 ビューでは"--"
+    start:   1, # スタート
+    moat:    2, # お堀越え（お堀の底に触れるとファウル）
+    seesaw:  3, # シーソー
+    slalom:  4, # スラローム）
+    rope:    5, # 縄跳び
+    goal:    6  # ふるさとゴール
   }
 
   # Vホールのように条件を満足すれば即勝利となったときの試合決着時間は

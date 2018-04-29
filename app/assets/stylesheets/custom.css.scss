@@ -74,3 +74,22 @@ footer {
   margin-right: auto;
   border-radius: 4px;
 }
+
+/*****************************************************************************/
+
+/* 共通インデント幅 */
+.indent {
+  margin-left: 20px;
+}
+
+/* フォーム入力のエラー時に背景色で枠を表現するための設定 */
+/* 他のCSSデザインが決まるまでの暫定設定 */
+input, select {
+  /* line-height: 80%; */
+}
+
+/* ロボット名表示 */
+.robot_name {
+  /* font-style: italic; */
+  background-color: whitesmoke;
+}

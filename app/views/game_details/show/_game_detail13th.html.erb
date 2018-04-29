@@ -1,0 +1,34 @@
+<%#
+  以下の my_time_minute などの properties に JSON 形式で格納される情報は、
+  このビューでは基本的に変数として存在しているものとし、
+  またオブジェクトとして nil だったとしても問題がないものとし、
+  present? メソッドなどで確認することはしないものとする。（暫定）
+%>
+<%###########################################################################%>
+<%= label_tag "", "得点：" %>
+<div class="indent">
+  <%= label_tag "", "#{@game.left_robot.name}：", class: 'robot_name' %>
+  <div class="indent">
+    <%= label_tag "", "得点：" %>
+    <%= "#{d.my_gaining_point}".gsub(/_/, '-') %>点
+  </div>
+  <%#------------------------------------------------------------------------%>
+  <%= label_tag "", "#{@game.right_robot.name}：", class: 'robot_name' %>
+  <div class="indent">
+    <%= label_tag "", "得点：" %>
+    <%= "#{d.opponent_gaining_point}".gsub(/_/, '-') %>点
+  </div>
+</div>
+<%###########################################################################%>
+<br />
+<%= render "game_details/show/common_parts/special_win", d: d,
+  special_win_name: "パーフェクト・パフォーマンス" %>
+<%#==========================================================================%>
+<br />
+<%= render "game_details/show/common_parts/jury_votes", d: d %><%# 審査員判定 %>
+<%###########################################################################%>
+<br />
+<%= label_tag "", "メモ：" %><br />
+<div class="indent">
+  <%= "#{d.memo}" %>
+</div>

@@ -1,0 +1,29 @@
+<%#
+  以下の my_time_minute などの properties に JSON 形式で格納される情報は、
+  このビューでは基本的に変数として存在しているものとし、
+  またオブジェクトとして nil だったとしても問題がないものとし、
+  present? メソッドなどで確認することはしないものとする。（暫定）
+%>
+<%###########################################################################%>
+<%= label_tag "", "タイム：" %>
+<div class="indent">
+  <%= label_tag "", "#{@game.left_robot.name}：", class: 'robot_name' %>
+  <div class="indent">
+    <%= label_tag "", "タイム：" %>
+    <%= "#{d.my_time_minute}".gsub(/_/, '-') %>分
+    <%= "#{d.my_time_second}".gsub(/_/, '-') %>秒
+  </div>
+  <%#------------------------------------------------------------------------%>
+  <%= label_tag "", "#{@game.right_robot.name}：", class: 'robot_name' %>
+  <div class="indent">
+    <%= label_tag "", "タイム：" %>
+    <%= "#{d.opponent_time_minute}".gsub(/_/, '-') %>分
+    <%= "#{d.opponent_time_second}".gsub(/_/, '-') %>秒
+  </div>
+</div>
+<%###########################################################################%>
+<br />
+<%= label_tag "", "メモ：" %><br />
+<div class="indent">
+  <%= "#{d.memo}" %>
+</div>

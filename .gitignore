@@ -36,5 +36,5 @@ squasher
 # Ignore PDF files
 *.pdf
 
-# Ignore font fiels
+# Ignore font files
 /vendor/fonts/*.*

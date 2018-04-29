@@ -1,0 +1,84 @@
+<%#
+  以下の opponent_time_minute などの properties に JSON 形式で格納される情報は、
+  このビューでは基本的に変数として存在しているものとし、
+  またオブジェクトとして nil だったとしても問題がないものとし、
+  present? メソッドなどで確認することはしないものとする。（暫定）
+%>
+<%###########################################################################%>
+<%= label_tag "", "得点とリトライなど：" %>
+<div class="indent">
+  <%= label_tag "", "#{@game.left_robot.name}：", class: 'robot_name' %>
+  <div class="indent">
+    <%= label_tag "", "得点：" %>
+    <%= "#{d.my_gaining_point}".gsub(/_/, '-') %>点
+    <br />
+    <%= label_tag "", "Vゴール：" %>
+    <%= d.my_special_win.to_bool ? "有り" : "無し" %>
+    <% if d.my_special_win.to_bool %>
+      <div class="indent">
+        <%= label_tag "", "タイム：" %>
+        <%= "#{d.my_time_minute}".gsub(/_/, '-') %>分
+        <%= "#{d.my_time_second}".gsub(/_/, '-') %>秒
+      </div>
+    <% end %>
+    <%#======================================================================%>
+    <br />
+    <%= label_tag "", "ダブル・ポール：" %>
+    <%= "#{d.my_double_pole}".gsub(/_/, '-') %>本
+    <br />
+    <%= label_tag "", "トリプル・ポール：" %>
+    <%= "#{d.my_triple_pole}".gsub(/_/, '-') %>本
+    <br />
+    <%= label_tag "", "装填：" %>
+    <%= "#{d.my_loading}".gsub(/_/, '-') %>回
+    <br />
+    <%# リペアはリトライを流用する %>
+    <%= label_tag "", "リペア：" %>
+    <%= "#{d.my_retry}".gsub(/_/, '-') %>回
+    <br />
+    <%= label_tag "", "反則：" %>
+    <%= "#{d.my_foul}".gsub(/_/, '-') %>回
+  </div>
+  <%#------------------------------------------------------------------------%>
+  <%= label_tag "", "#{@game.right_robot.name}：", class: 'robot_name' %>
+  <div class="indent">
+    <%= label_tag "", "得点：" %>
+    <%= "#{d.opponent_gaining_point}".gsub(/_/, '-') %>点
+    <br />
+    <%= label_tag "", "Vゴール：" %>
+    <%= d.opponent_special_win.to_bool ? "有り" : "無し" %>
+    <% if d.opponent_special_win.to_bool %>
+      <div class="indent">
+        <%= label_tag "", "タイム：" %>
+        <%= "#{d.opponent_time_minute}".gsub(/_/, '-') %>分
+        <%= "#{d.opponent_time_second}".gsub(/_/, '-') %>秒
+      </div>
+    <% end %>
+    <%#======================================================================%>
+    <br />
+    <%= label_tag "", "ダブル・ポール：" %>
+    <%= "#{d.opponent_double_pole}".gsub(/_/, '-') %>本
+    <br />
+    <%= label_tag "", "トリプル・ポール：" %>
+    <%= "#{d.opponent_triple_pole}".gsub(/_/, '-') %>本
+    <br />
+    <%= label_tag "", "装填：" %>
+    <%= "#{d.opponent_loading}".gsub(/_/, '-') %>回
+    <br />
+    <%# リペアはリトライを流用する %>
+    <%= label_tag "", "リペア：" %>
+    <%= "#{d.opponent_retry}".gsub(/_/, '-') %>回
+    <br />
+    <%= label_tag "", "反則：" %>
+    <%= "#{d.opponent_foul}".gsub(/_/, '-') %>回
+  </div>
+</div>
+<%###########################################################################%>
+<br />
+<%= render "game_details/show/common_parts/jury_votes", d: d %><%# 審査員判定 %>
+<%###########################################################################%>
+<br />
+<%= label_tag "", "メモ：" %><br />
+<div class="indent">
+  <%= "#{d.memo}" %>
+</div>

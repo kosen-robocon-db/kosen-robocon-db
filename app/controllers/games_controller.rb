@@ -5,7 +5,15 @@ class GamesController < ApplicationController
   before_action :admin_user, only: :index
 
   def show
-
+    # 試合コードは"1300901"のような1で始まり、2-3桁目が大会回数となっているが、
+    # 疑いもなく、エラー処理もRailsデフォルト任せにしておく。（暫定）
+    @gd_sym = game_details_sub_class_sym(contest_nth: params[:code][1, 2].to_i)
+    Game.confirm_or_associate(game_details_sub_class_sym: @gd_sym)
+    @game = Game.find_by(code: params[:code])
+    @game.subjective_view_by(robot_code: @game.left_robot_code)
+    @game.send(@gd_sym).each do |i|
+      i.decompose_properties(robot: @game.left_robot)
+    end
   end
 
   def new
@@ -39,6 +47,7 @@ class GamesController < ApplicationController
       flash[:success] = "試合情報の新規作成成功"
       redirect_to robot_url(params[:robot_code])
     else
+      error_with_code?(code: h["code"])
       render :new
     end
   end
@@ -85,6 +94,7 @@ class GamesController < ApplicationController
         flash[:success] = "試合情報の編集成功"
         redirect_to robot_url(code: params[:robot_code])
       else
+        error_with_code?(code: h["code"])
         render :edit
       end
     else
@@ -93,6 +103,7 @@ class GamesController < ApplicationController
         flash[:success] = "試合情報の編集成功"
         redirect_to robot_url(code: params[:robot_code])
       else
+        error_with_code?(code: h["code"])
         render :edit
       end
     end
@@ -140,6 +151,21 @@ class GamesController < ApplicationController
 
   def game_details_sub_class_sym(contest_nth:)
     "game_detail#{contest_nth.ordinalize}s".to_sym
+  end
+
+  def error_with_code?(code: code)
+    # メッセージは表示せず、エラー箇所だけそれを示すタグを差し込みたいが、
+    # 今のところはメッセージ表示をしておくことにした。
+    # 方法が分かり次第改善する。
+    # takenかどうかまで判別したほうがよい？
+    if @game.errors.include?(:code)
+      @game.errors[:code].map!{ |i|
+        i << "（#{view_context.link_to "該当試合", game_path(code)}）"
+      }
+      @game.errors.add(:region_code, "")
+      @game.errors.add(:round, "")
+      @game.errors.add(:game, "")
+    end
   end
 
 end

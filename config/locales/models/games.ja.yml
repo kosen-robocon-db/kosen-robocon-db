@@ -5,3 +5,106 @@ ja:
     attributes:
       game:
         code: 試合コード（地区、回戦、試合の組み合わせ）
+        region_code: 地区
+        round: 回戦
+        game: 試合
+      game_detail1sts:
+        memo: メモ
+      game_detail2nds:
+        memo: メモ
+      game_detail3rds:
+        memo: メモ
+      game_detail4ths:
+        memo: メモ
+      game_detail5ths:
+        memo: メモ
+      game_detail6ths:
+        memo: メモ
+      game_detail7ths:
+        memo: メモ
+      game_detail8ths:
+        memo: メモ
+      game_detail9ths:
+        memo: メモ
+      game_detail10ths:
+        memo: メモ
+      game_detail11ths:
+        memo: メモ
+      game_detail12ths:
+        memo: メモ
+      game_detail13ths:
+        memo: メモ
+      game_detail14ths:
+        memo: メモ
+      game_detail15ths:
+        memo: メモ
+      game_detail16ths:
+        memo: メモ
+      game_detail17ths:
+        my_gaining_point: 登録主体の距離
+        my_total_point: 登録主体の合計
+        opponent_gaining_point: 対戦相手の距離
+        opponent_total_point: 対戦相手の合計
+        memo: メモ
+      game_detail18ths:
+        my_distance: 登録主体の距離
+        opponent_distance: 対戦相手の距離
+        memo: メモ
+      game_detail19ths:
+        memo: メモ
+      game_detail20ths:
+        memo: メモ
+      game_detail21sts:
+        memo: メモ
+      game_detail22nds:
+        memo: メモ
+      game_detail23rds:
+        memo: メモ
+      game_detail24ths:
+        memo: メモ
+      game_detail25ths:
+        memo: メモ
+      game_detail26ths:
+        my_gaining_point: 登録主体の連続縄跳び
+        opponent_gaining_point: 対戦相手の連続縄跳び
+        memo: メモ
+      game_detail27ths:
+        memo: メモ
+      game_detail28ths:
+        memo: メモ
+      game_detail29ths:
+        my_gaining_point: 登録主体の積み上げた高さ
+        opponent_gaining_point: 対戦相手の積み上げた高さ
+        memo: メモ
+      game_detail30ths:
+        memo: メモ
+    errors:
+      models:
+        game_detail17th:
+          attributes:
+            my_gaining_point:
+              invalid: は0から999.5までの範囲で0.5刻みで入力してください。
+            opponent_gaining_point:
+              invalid: は0から999.5までの範囲で0.5刻みで入力してください。
+            my_total_point:
+              invalid: は0から999.5までの範囲で0.5刻みで入力してください。
+            opponent_total_point:
+              invalid: は0から999.5までの範囲で0.5刻みで入力してください。
+        game_detail18th:
+          attributes:
+            my_distance:
+              invalid: は0から99.995までの範囲で0.005刻みで入力してください。
+            opponent_distance:
+              invalid: は0から99.995までの範囲で0.005刻みで入力してください。
+        game_detail26th:
+          attributes:
+            my_gaining_point:
+              invalid: は0から129までの範囲で数字を入力してください。
+            opponent_gaining_point:
+              invalid: が0から129までの範囲で数字を入力してください。
+        game_detail29th:
+          attributes:
+            my_gaining_point:
+              invalid: が0から999までの範囲で数字を入力してください。
+            opponent_gaining_point:
+              invalid: が0から999までの範囲を数字を入力してください。

@@ -6,7 +6,7 @@ class GameDetail20th < GameDetail
 
   # my_robot_code側から見ているので、
   # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
-  STEMS = %w( robot_code flag foul union retry jury_votes )
+  STEMS = %w( robot_code flag foul union jury_votes )
 
   REX_FLG = /\A([0-5]|#{UNKNOWN})\z/ # 旗の数
   REX_F   = /\A([0-5]|#{UNKNOWN})\z/ # 反則の数
@@ -20,7 +20,6 @@ class GameDetail20th < GameDetail
   attr_accessor :my_flag,       :opponent_flag
   attr_accessor :my_foul,       :opponent_foul
   attr_accessor :my_union,      :opponent_union
-  attr_accessor :my_retry,      :opponent_retry
   attr_accessor :interrupt
   attr_accessor :special_win, :time_minute, :time_second
   attr_accessor :extra_time
@@ -34,8 +33,6 @@ class GameDetail20th < GameDetail
   validates :opponent_foul,         format: { with: REX_F }
   validates :my_union,       inclusion: { in: [ "true", "false", nil ] }
   validates :opponent_union, inclusion: { in: [ "true", "false", nil ] }
-  validates :my_retry,              format: { with: REX_RT }
-  validates :opponent_retry,        format: { with: REX_RT }
   validates :interrupt,             format: { with: REX_INT }
   with_options if: :special_win do
     validates :time_minute,         format: { with: REX_MS }
@@ -54,7 +51,6 @@ class GameDetail20th < GameDetail
       :my_flag,       :opponent_flag,
       :my_foul,       :opponent_foul,
       :my_union,      :opponent_union,
-      :my_retry,      :opponent_retry,
       :interrupt,
       :special_win, :time_minute, :time_second,
       :extra_time,
@@ -111,10 +107,6 @@ class GameDetail20th < GameDetail
       if h["union"].present?
         self.my_union, self.opponent_union =
           h["union"].to_s.split(DELIMITER).map{ |x| x.to_bool }
-      end
-      if h["retry"].present?
-        self.my_retry, self.opponent_retry =
-          h["retry"].to_s.split(DELIMITER)
       end
       self.interrupt = h["interrupt"].presence || "#{UNKNOWN}"
       if h["special_win"].present?

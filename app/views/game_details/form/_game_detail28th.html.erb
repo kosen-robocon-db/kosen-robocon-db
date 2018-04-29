@@ -7,102 +7,102 @@
   retry_numbers         = option_numbers digit: 1, end_number:  9
   foul_numbers          = option_numbers digit: 1, end_number:  9
 %>
-<%= label_tag "#{@robot.name}：" %>
-<table style="margin-left: 10px;">
-  <tr>
-    <td>得点：</td>
-    <td><%= f.select :my_gaining_point, gaining_point_numbers %>点</td>
-  </tr>
-  <tr>
-    <td>ダブル・ポール：</td>
-    <td><%= f.select :my_double_pole, double_pole_numbers %>本</td>
-  </tr>
-  <tr>
-    <td>トリプル・ポール：</td>
-    <td><%= f.select :my_triple_pole, triple_pole_numbers %>本</td>
-  </tr>
-  <tr>
-    <td>Vゴール：</td>
-    <td><%= f.check_box :my_special_win,
-      {:checked => f.object.my_special_win}, true, false %></td>
-  </tr>
-  <% if f.object.my_special_win %>
-  <tr class=
-    "my_special_win___nested_field_for_replace_with_index__">
-  <% else %>
-  <tr class=
-    "my_special_win___nested_field_for_replace_with_index__ hidden">
-  <% end %>
-    <td>タイム：</td>
-    <td>
-      <%= f.select :my_time_minute, time_numbers %>分
-      <%= f.select :my_time_second, time_numbers %>秒
-    </td>
-  </tr>
-  <tr>
-    <td>装填：</td>
-    <td><%= f.select :my_loading, loading_numbers %>回</td>
-  </tr>
-  <tr>
-    <td>リペア：</td>
-    <td><%= f.select :my_retry, retry_numbers %>回</td>
-  </tr>
-  <tr>
-    <td>反則：</td>
-    <td><%= f.select :my_foul, foul_numbers %>回</td>
-  </tr>
-<table>
 <%###########################################################################%>
-<%= label_tag "対戦相手：" %>
-<table style="margin-left: 10px;">
-  <tr>
-    <td>得点：</td>
-    <td><%= f.select :opponent_gaining_point, gaining_point_numbers %>点</td>
-  </tr>
-  <tr>
-    <td>ダブル・ポール：</td>
-    <td><%= f.select :opponent_double_pole, double_pole_numbers %>本</td>
-  </tr>
-  <tr>
-    <td>トリプル・ポール：</td>
-    <td><%= f.select :opponent_triple_pole, triple_pole_numbers %>本</td>
-  </tr>
-  <tr>
-    <td>Vゴール：</td>
-    <td><%= f.check_box :opponent_special_win,
-      {:checked => f.object.opponent_special_win}, true, false %></td>
-  </tr>
-  <% if f.object.opponent_special_win %>
-  <tr class=
-    "opponent_special_win___nested_field_for_replace_with_index__">
-  <% else %>
-  <tr class=
-    "opponent_special_win___nested_field_for_replace_with_index__ hidden">
-  <% end %>
-    <td>タイム：</td>
-    <td>
-      <%= f.select :opponent_time_minute, time_numbers %>分
-      <%= f.select :opponent_time_second, time_numbers %>秒
-    </td>
-  </tr>
-  <tr>
-    <td>装填：</td>
-    <td><%= f.select :opponent_loading, loading_numbers %>回</td>
-  </tr>
-  <tr>
-    <td>リペア：</td>
-    <td><%= f.select :opponent_retry, retry_numbers %>回</td>
-  </tr>
-  <tr>
-    <td>反則：</td>
-    <td><%= f.select :opponent_foul, foul_numbers %>回</td>
-  </tr>
-</table>
+<%= label_tag "", "得点とリトライなど：" %>
+<div class="indent">
+  <%= label_tag "", "#{@robot.name}：", class: 'robot_name' %>
+  <div class="indent">
+    <%= f.label :my_gaining_point, "得点：" %>
+    <%= f.select :my_gaining_point, gaining_point_numbers %>点
+    <br />
+    <%= f.label :my_special_win, "Vゴール：" %>
+    <%= f.check_box :my_special_win,
+      {:checked => f.object.my_special_win}, true, false %>
+    <% if f.object.my_special_win.to_bool %>
+      <div class=\
+        "my_special_win___nested_field_for_replace_with_index__">
+    <% else %>
+      <div class=\
+        "my_special_win___nested_field_for_replace_with_index__ hidden">
+    <% end %>
+        <div class="indent">
+          <%# 対応するラベルを一つに纏められない %>
+          <%= label_tag "", "タイム：" %>
+          <%= f.select :my_time_minute, time_numbers %>分
+          <%= f.select :my_time_second, time_numbers %>秒
+        </div>
+      </div>
+    <br />
+    <%= f.label :my_double_pole, "ダブル・ポール：" %>
+    <%= f.select :my_double_pole, double_pole_numbers %>本
+    <br />
+    <%= f.label :my_triple_pole, "トリプル・ポール：" %>
+    <%= f.select :my_triple_pole, triple_pole_numbers %>本
+    <%#======================================================================%>
+    <br />
+    <%= f.label :my_loading, "装填：" %>
+    <%= f.select :my_loading, loading_numbers %>回
+    <br />
+    <%# リペアはリトライを流用する %>
+    <%= f.label :my_retry, "リペア：" %>
+    <%= f.select :my_retry, retry_numbers %>回
+    <br />
+    <%= f.label :my_foul, "反則：" %>
+    <%= f.select :my_foul, foul_numbers %>回
+  </div>
+  <%#------------------------------------------------------------------------%>
+  <%= label_tag "", "対戦相手：", class: 'robot_name' %>
+  <div class="indent">
+    <%= f.label :opponent_gaining_point, "得点：" %>
+    <%= f.select :opponent_gaining_point, gaining_point_numbers %>点
+    <br />
+    <%= f.label :opponent_special_win, "Vゴール：" %>
+    <%= f.check_box :opponent_special_win,
+      {:checked => f.object.opponent_special_win}, true, false %>
+    <% if f.object.opponent_special_win.to_bool %>
+      <div class=\
+        "opponent_special_win___nested_field_for_replace_with_index__">
+    <% else %>
+      <div class=\
+        "opponent_special_win___nested_field_for_replace_with_index__ hidden">
+    <% end %>
+        <div class="indent">
+          <%# 対応するラベルを一つに纏められない %>
+          <%= label_tag "", "タイム：" %>
+          <%= f.select :opponent_time_minute, time_numbers %>分
+          <%= f.select :opponent_time_second, time_numbers %>秒
+        </div>
+      </div>
+    <br />
+    <%= f.label :opponent_double_pole, "ダブル・ポール：" %>
+    <%= f.select :opponent_double_pole, double_pole_numbers %>本
+    <br />
+    <%= f.label :opponent_triple_pole, "トリプル・ポール：" %>
+    <%= f.select :opponent_triple_pole, triple_pole_numbers %>本
+    <%#======================================================================%>
+    <br />
+    <%= f.label :opponent_loading, "装填：" %>
+    <%= f.select :opponent_loading, loading_numbers %>回
+    <br />
+    <%# リペアはリトライを流用する %>
+    <%= f.label :opponent_retry, "リペア：" %>
+    <%= f.select :opponent_retry, retry_numbers %>回
+    <br />
+    <%= f.label :opponent_foul, "反則：" %>
+    <%= f.select :opponent_foul, foul_numbers %>回
+  </div>
+</div>
+<%###########################################################################%>
+<br />
 <%= render "game_details/form/common_parts/jury_votes", f: f,
   juries_number: 5 %><%# 審査員判定 %>
+<%###########################################################################%>
 <br />
 <%= f.label :memo, "メモ：" %>
-<%= f.text_field :memo %><br />
+<div class="indent">
+  <%= f.text_field :memo %>
+</div>
+<%#==========================================================================%>
 <br />
 <%= f.hidden_field :_destroy %>
 <%= f.remove_nested_fields_link '削除', class: 'btn btn-danger',

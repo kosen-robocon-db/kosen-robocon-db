@@ -1,0 +1,78 @@
+<%#
+  以下の opponent_time_minute などの properties に JSON 形式で格納される情報は、
+  このビューでは基本的に変数として存在しているものとし、
+  またオブジェクトとして nil だったとしても問題がないものとし、
+  present? メソッドなどで確認することはしないものとする。（暫定）
+%>
+<%###########################################################################%>
+<%= label_tag "", "高さとリトライなど：" %>
+<div class="indent">
+  <%= label_tag "", "#{@game.left_robot.name}：", class: 'robot_name' %>
+  <div class="indent">
+    <%= label_tag "", "積み上げた高さ：" %>
+    <%= "#{d.my_gaining_point}".gsub(/_/, '-') %>cm
+    <%#======================================================================%>
+    <br />
+    <%= label_tag "", "完了課題：" %>
+    <div class="indent">
+      <%
+        checked = d.my_challenge.presence || []
+        GameDetail29th.challenges.each do |key, value|
+          concat check_box "", "",
+            {
+              multiple: true,
+              checked: checked.include?(value.to_s),
+              disabled: true,
+            }, true, false
+          concat GameDetail29th.challenges_i18n[key]
+          concat "<br />".html_safe
+        end
+      %>
+    </div>
+    <br />
+    <%= label_tag "", "リトライ：" %>
+    <%= "#{d.my_retry}".gsub(/_/, '-') %>回
+    <br />
+    <%= label_tag "", "反則：" %>
+    <%= "#{d.my_foul}".gsub(/_/, '-') %>回
+  </div>
+  <%#------------------------------------------------------------------------%>
+  <%= label_tag "", "#{@game.right_robot.name}：", class: 'robot_name' %>
+  <div class="indent">
+    <%= label_tag "", "積み上げた高さ：" %>
+    <%= "#{d.opponent_gaining_point}".gsub(/_/, '-') %>cm
+    <%#======================================================================%>
+    <br />
+    <%= label_tag "", "完了課題：" %>
+    <div class="indent">
+      <%
+        checked = d.opponent_challenge.presence || []
+        GameDetail29th.challenges.each do |key, value|
+          concat check_box "", "",
+            {
+              multiple: true,
+              checked: checked.include?(value.to_s),
+              disabled: true,
+            }, true, false
+          concat GameDetail29th.challenges_i18n[key]
+          concat "<br />".html_safe
+        end
+      %>
+    </div>
+    <br />
+    <%= label_tag "", "リトライ：" %>
+    <%= "#{d.opponent_retry}".gsub(/_/, '-') %>回
+    <br />
+    <%= label_tag "", "反則：" %>
+    <%= "#{d.opponent_foul}".gsub(/_/, '-') %>回
+  </div>
+</div>
+<%###########################################################################%>
+<br />
+<%= render "game_details/show/common_parts/jury_votes", d: d %><%# 審査員判定 %>
+<%###########################################################################%>
+<br />
+<%= label_tag "", "メモ：" %><br />
+<div class="indent">
+  <%= "#{d.memo}" %>
+</div>

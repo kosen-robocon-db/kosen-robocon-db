@@ -1,7 +1,103 @@
-<% provide(:title, @title_for_tab) %>
+<%
+  region_name = @game.region.code == 0 ?
+    "#{@game.region.name}" : "#{@game.region.name}地区"
+  provide(:title,
+    "#{@game.contest.year}年" +
+    "第#{@game.contest.nth}回" +
+    "#{region_name}大会" +
+    "#{game_name(hash: @game)}"
+  )
+%>
+<%= render "shared/title", title: (yield :title) %>
+<%
+  left_robot_name =
+    "#{@game.left_robot.campus.abbreviation} " +
+    "#{@game.left_robot.team} " +
+    "#{@game.left_robot.name}"
+  right_robot_name =
+    "#{@game.right_robot.campus.abbreviation} " +
+    "#{@game.right_robot.team} " +
+    "#{@game.right_robot.name}"
 
-<%= render "shared/title", title: @title %>
+  # 試合が新規登録／更新されるときは必ずleft_robot_codeが登録されるので
+  # left_robot_codeを調べるだけでよい。
+  # 新規登録で対戦したロボットのうち対戦相手だったロボット側から更新した場合、
+  # 新規登録時はright_robot_codeであったが、更新をかけるとleft_robot_codeで
+  # 登録され、その時対戦相手をなしにしてもこの処理に影響はない。
+  case @game.subjective_view_by(robot_code: @game.left_robot.code)
+  when Game.results[:win].to_s
+    left_title, right_title = "勝ち：", "負け："
+  when Game.results[:lose].to_s
+    left_title, right_title = "負け：", "勝ち："
+  when Game.results[:solo].to_s
+    left_title, right_title = "単独競技：", ""
+    right_robot_name = Game::Constant::NO_OPPONENT.name # 対戦相手なし
+  when Game.results[:bye].to_s
+    left_title, right_title = "不戦勝：", ""
+    right_robot_name = Game::Constant::NO_OPPONENT.name # 対戦相手なし
+  when Game.results[:both_dsq].to_s
+    left_title, right_title = "両者失格：", ""
+  else
+  end
 
-<%#= render "games/game_details/game_detail" + @game.contest.nth.ordinalize %>
+  # label_tag "",を利用すると何故かアルファベットの大文字(A/B)が小文字になってしまう
+  concat label_tag "", left_title
+  # concat '<div class="indent">'.html_safe
+  concat '<div class="indent">'.html_safe
+  concat    label_tag "", left_robot_name, class: 'robot_name'
+  concat "</div>".html_safe
+  concat label_tag "", right_title if right_title.present?
+  concat '<div class="indent">'.html_safe
+  concat    label_tag "", right_robot_name, class: 'robot_name'
+  concat "</div>".html_safe
+%>
 
-只今実装中
+<%
+  checked = @game.reasons_for_victory.presence || []
+  if not checked.empty?
+    concat label_tag "", "勝敗事由："
+    concat "<div style=\"margin-left: 10px;\">".html_safe
+    Game.reasons.each do |key, value|
+      if checked.include?(value.to_s)
+        concat Game.reasons_i18n[key]
+        concat "<br />".html_safe
+      end
+    end
+    concat "</div>".html_safe
+  end
+%>
+
+<div class="enclosure">
+  <%= label_tag "", "試合詳細：" %><br />
+  <%
+    @game.send(@gd_sym).each do |detail|
+      concat '<div class="enclosure">'.html_safe
+      concat '  <div class="replay"></div>'.html_safe
+      concat render \
+        "game_details/show/game_detail" + @game.contest_nth.ordinalize,
+        d: detail
+      concat '</div>'.html_safe
+    end
+  %>
+</div>
+
+<%
+  # 認証されたユーザーだけが編集または削除を可能とする
+  if current_user.approved?
+
+    # ページ遷移コンテキストを無視して
+    # game.left_robot_code 側を主体に編集画面へ遷移させる。（暫定）
+    concat link_to "編集",
+    edit_robot_game_path(robot_code: @game.left_robot_code, code: @game.code),
+    {class: 'btn btn-primary'}
+
+    # 削除後はページ遷移コンテキストを無視して
+    # game.left_robot_code 側を主体にそのコードが示すロボットのページへ遷移。（暫定）
+    concat link_to "削除",
+    robot_game_path(robot_code: @game.left_robot_code, code: @game.code),
+    method: :delete,
+    class: 'btn btn-danger',
+    data: {confirm: "削除しますか？"}
+
+  end
+%>

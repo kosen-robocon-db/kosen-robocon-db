@@ -1,7 +1,7 @@
 class GameDetail23rd < GameDetail
 
   # 先にゴールした方が勝ち（予選なし）
-  # 課題進捗(progress)
+  # 完了課題(progress)
   #  0: スタートゾーン
   #  1: 二足歩行ゾーン
   #  2: 連結ゾーン
@@ -13,16 +13,17 @@ class GameDetail23rd < GameDetail
   # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
   STEMS = %w( robot_code progress time_minute time_second retry jury_votes )
 
-  REX_PR = /\A([0-4]|#{UNKNOWN})\z/
+  REX_P  = /\A[0-5]\z/
   REX_RT = /\A([0-9]|#{UNKNOWN})\z/
   REX_VT = /\A([0-5]|#{UNKNOWN})\z/
 
   enum progress: {
-    start_zone:      0, # スタートゾーン
-    walking_zone:    1, # 二足歩行ゾーン
-    connecting_zone: 2, # 連結ゾーン
-    inserting_zone:  3, # 鍵穴ゾーン
-    goal_zone:       4  # ゴールゾーン
+    unknown:    0, # 不明
+    start:      1, # スタート
+    walking:    2, # 二足歩行
+    connecting: 3, # 連結
+    inserting:  4, # 鍵穴
+    goal:       5  # ゴール
   }
 
   attr_accessor :my_progress,    :opponent_progress
@@ -33,8 +34,8 @@ class GameDetail23rd < GameDetail
   attr_accessor :my_jury_votes,  :opponent_jury_votes
   attr_accessor :memo
 
-  validates :my_progress,           format: { with: REX_PR }
-  validates :opponent_progress,     format: { with: REX_PR }
+  validates :my_progress,           format: { with: REX_P  }
+  validates :opponent_progress,     format: { with: REX_P  }
   validates :my_time_minute,        format: { with: REX_MS }
   validates :opponent_time_minute,  format: { with: REX_MS }
   validates :my_time_second,        format: { with: REX_MS }
@@ -81,7 +82,6 @@ class GameDetail23rd < GameDetail
   def decompose_properties(robot:)
     super(robot: robot) do |h|
       if h["progress"].present?
-        self.progress = true
         self.my_progress, self.opponent_progress =
           h["progress"].to_s.split(DELIMITER)
       end

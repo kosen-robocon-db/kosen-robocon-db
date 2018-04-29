@@ -1,5 +1,5 @@
 class GameDetail27th < GameDetail
-  # 完了（すべき）課題／課題進捗(progress)
+  # 完了課題(progress)
   #   0: スタートゾーン
   #   1: スラロームゾーン
   #   2: 角材ゾーン
