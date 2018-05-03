@@ -68,6 +68,7 @@ class Game < ApplicationRecord
 
   scope :order_csv, -> { order(id: :asc) }
 
+  # 動的にやらなくてもいいんじゃないのかな？
   def self.confirm_or_associate(game_details_sub_class_sym:)
     sym = game_details_sub_class_sym # 変数名が長すぎるのでコピー
     if self.reflect_on_all_associations(:has_many).none? { |i| i.name == sym }
@@ -99,26 +100,6 @@ class Game < ApplicationRecord
       self.right_robot_code : self.left_robot_code
     # compose_attributesにある処理と逆処理なのでハッシュ関数化して
     # 両方とも簡単にできないだろうか？
-    # case self.winner_robot_code
-    # when Constant::NO_WINNER.code then
-    #   case self.opponent_robot_code
-    #   when Constant::NO_OPPONENT.code then
-    #     self.victory = Constant::SOLO
-    #   else
-    #     self.victory = Constant::BOTH_DSQ
-    #   end
-    # else
-    #   case self.opponent_robot_code
-    #   when Constant::NO_OPPONENT.code then
-    #     self.victory = Constant::BYE
-    #   else
-    #     if self.robot_code == self.winner_robot_code then
-    #       self.victory = Constant::WIN
-    #     else
-    #       self.victory = Constant::LOSE
-    #     end
-    #   end
-    # end
     case self.winner_robot_code
     when Constant::NO_WINNER.code then
       case self.opponent_robot_code
@@ -180,8 +161,6 @@ class Game < ApplicationRecord
 
   # reasons_for_victoryのセッターをオーバーライド
   def reasons_for_victory=(array=[])
-    # a = 0 # ゼロは事由なし
-    # array.each { |v| a += 2 ** ( v.to_i - 1 ) if v =~ /\A[1-9][0-9]*\z/ }
     write_attribute(:reasons_for_victory, Game.convert(array))
   end
 
@@ -220,18 +199,6 @@ class Game < ApplicationRecord
     self.left_robot_code = self.robot_code
     self.right_robot_code = self.opponent_robot_code
     case self.victory
-    # when Constant::WIN then
-    #   self.winner_robot_code = self.robot_code
-    # when Constant::LOSE then
-    #   self.winner_robot_code = self.opponent_robot_code
-    # when Constant::SOLO then
-    #   self.right_robot_code  = Constant::NO_OPPONENT.code
-    #   self.winner_robot_code = Constant::NO_WINNER.code
-    # when Constant::BYE then
-    #   self.right_robot_code = Constant::NO_OPPONENT.code
-    #   self.winner_robot_code = self.robot_code
-    # when Constant::BOTH_DSQ then
-    #   self.winner_robot_code = Constant::NO_WINNER.code
     when Game.results[:win].to_s then
       self.winner_robot_code = self.robot_code
     when Game.results[:lose].to_s then
