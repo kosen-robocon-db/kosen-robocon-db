@@ -110,7 +110,10 @@
           <tr>
             <td><%= game.region.name %></td>
             <td>
-              <%= link_to game_name(hash: game), game_path(code: game.code) %>
+              <%=
+                link_to game_name(hash: game),
+                robot_game_path(robot_code: left_robot.code, code: game.code) 
+              %>
             </td>
             <% if opponent.campus.code != Campus::Constant::NO_CAMPUS.code %>
             <td>
