@@ -4,6 +4,13 @@ class GamesController < ApplicationController
     only: [ :new, :create, :edit, :update, :destroy ]
   before_action :admin_user, only: :index
 
+  def index
+    @robot = Robot.find_by(code:
+      Rails.application.routes.recognize_path(request.path_info)[:robot_code])
+    @games = Game.where(left_robot_code: @robot.code).\
+      or(Game.where(right_robot_code: @robot.code))
+  end
+
   def show
     # 試合コードは"1300901"のような1で始まり、2-3桁目が大会回数となっているが、
     # 疑いもなく、エラー処理もRailsデフォルト任せにしておく。（暫定）

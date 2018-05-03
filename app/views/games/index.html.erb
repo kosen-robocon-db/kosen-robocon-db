@@ -1,0 +1,7 @@
+<% provide(:title, "対戦情報") %>
+
+<%= render "shared/title", title: (yield :title) %>
+
+<h4><%= label_tag "", @robot.name, class: "robot_name" %></h4><br />
+
+<%= render "game_list", games: @games %>
