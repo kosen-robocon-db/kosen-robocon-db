@@ -83,26 +83,48 @@ class GamesController < ApplicationController
     @round_names = RoundName.where(contest_nth: @robot.contest_nth,
       region_code: @game.region_code)
     h = regularize(attrs_hash: game_params)
-    # 下記のコードはもっと洗練されるべき
-    if @game.region_code.to_i != h['region_code'].to_i or
+    # 下記のifから下のupdateの終わりまでのコードはもっと洗練されるべき
+    if
+      @game.region_code.to_i != h['region_code'].to_i or
       @game.round.to_i != h['round'].to_i or
-      @game.game.to_i != h['game'].to_i then
+      @game.game.to_i != h['game'].to_i
+    then
       # game_code の変更がある場合
       h["robot_code"] = @robot.code.to_s
       h["code"] = Game.get_code(hash: h).to_s
-      old_game_code = @game.code
       gdas = "#{@gd_sym.to_s}_attributes".to_sym
       h[gdas].each{ |i| # id を nil にしないと新しいレコードが登録されない
         h[gdas][i][:id] = nil
       }
-      @game = Game.new(h)
-      if @game.save then
-        Game.find_by(code: old_game_code).destroy
-        flash[:success] = "試合情報の編集成功"
-        redirect_to robot_url(code: params[:robot_code])
+      # Game オブジェクトを作成前に既存レコードが DB に存在しているか調べておく
+      if Game.exists?(code: h["code"]) then
+        # game_code を変更したいが、既に同じコードのレコードがあったので、
+        # game_code のエラーだけを表示させて、:edit をレンダリングさせる。
+        # フォームに入力した値は変更前に戻すことにした（暫定）
+        # 将来もっと良い方法があればそちらに切り替える。
+        @game = Game.find_by(code: params[:code])
+        @game.subjective_view_by(robot_code: @robot.code)
+        @game.send(@gd_sym).each { |i| i.decompose_properties(robot: @robot) }
+        @game.errors.add(:code, code_error_message(code: h[:code]))
+        render :edit and return
       else
-        error_with_code?(code: h["code"])
-        render :edit
+        # DB に変更したい game_code のレコードが存在しなかったので新規作成
+        old_game_code = @game.code
+        @game = Game.new(h)
+        if @game.save then
+          Game.find_by(code: old_game_code).destroy
+          flash[:success] = "試合情報の編集成功"
+          redirect_to robot_url(code: params[:robot_code])
+        else
+          # (game)コード以外でエラーになった場合
+          # new で新しい Game オブジェクトを作成したので、
+          # つまり new_record? / persisted? のフラグ状態が新規作成なので
+          # 更新と扱われないため、リクエストメソッドを強制的に PATCH にする。
+          # 因みに、ブラウザが GET と POST しか扱わないため、Rails では
+          # hidden 指定されている _method にリクエストメソッドを指定している。
+          @next_request_method = "PATCH"
+          render :edit and return
+        end
       end
     else
       # game_code の変更がない場合
@@ -110,8 +132,7 @@ class GamesController < ApplicationController
         flash[:success] = "試合情報の編集成功"
         redirect_to robot_url(code: params[:robot_code])
       else
-        error_with_code?(code: h["code"])
-        render :edit
+        render :edit and return
       end
     end
 
@@ -126,13 +147,11 @@ class GamesController < ApplicationController
   private
 
   def game_params
+    a = %i( contest_nth region_code round game opponent_robot_code victory )
+    r = { :reasons_for_victory => [] }
     h = { "#{@gd_sym.to_s}_attributes" =>
       @gd_sym.to_s.classify.constantize.attr_syms_for_params }
-    a = [
-      :contest_nth, :region_code, :round, :game, :opponent_robot_code, :victory,
-      { :reasons_for_victory => [] }
-    ].push(h)
-    params.require(:game).permit(a)
+    params.require(:game).permit(a.push(r).push(h))
   end
 
   def regularize(attrs_hash:)
@@ -160,19 +179,20 @@ class GamesController < ApplicationController
     "game_detail#{contest_nth.ordinalize}s".to_sym
   end
 
-  def error_with_code?(code: code)
-    # メッセージは表示せず、エラー箇所だけそれを示すタグを差し込みたいが、
-    # 今のところはメッセージ表示をしておくことにした。
-    # 方法が分かり次第改善する。
-    # takenかどうかまで判別したほうがよい？
-    if @game.errors.include?(:code)
-      @game.errors[:code].map!{ |i|
-        i << "（#{view_context.link_to "該当試合", game_path(code)}）"
-      }
-      @game.errors.add(:region_code, "")
-      @game.errors.add(:round, "")
-      @game.errors.add(:game, "")
-    end
+  # エラーメッセージはこのコントローラーに埋め込むことなくconfig/*/*.ymlなどに
+  # 記したメッセージを使うようにしたい。
+  def code_error_message(code:)
+    m =  "は既に登録されています。"
+    m << "（#{
+      view_context.link_to "該当試合",
+        robot_game_path(
+          robot_code: @game.left_robot_code,
+          code: code
+        )
+    }）"
+    m << "<p>フォームの値は変更前に戻されています。<br />"
+    m << "試合コードと試合詳細を変更したいときは"
+    m << "先に試合コードの衝突を解決してください。<p>"
   end
 
 end
