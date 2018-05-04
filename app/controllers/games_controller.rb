@@ -29,10 +29,7 @@ class GamesController < ApplicationController
     @gd_sym = game_details_sub_class_sym(contest_nth: @robot.contest_nth)
     Game.confirm_or_associate(game_details_sub_class_sym: @gd_sym)
     @game = Game.new(robot_code: @robot.code, contest_nth: @robot.contest_nth)
-    # case @robot.contest_nth
-    # when 1..20,29,30 then
-      @game.send(@gd_sym).new # GameDetail サブクラスのインスタンス生成
-    # end
+    @game.send(@gd_sym).new # GameDetail サブクラスのインスタンス生成（表示される）
     gon.contest_nth = @robot.contest_nth
     @regions = Region.where(code: [ 0, @robot.campus.region_code ])
     @round_names = RoundName.where(contest_nth: @robot.contest_nth,
@@ -46,16 +43,37 @@ class GamesController < ApplicationController
     h = regularize(attrs_hash: game_params)
     h["robot_code"] = @robot.code.to_s
     h["code"] = Game.get_code(hash: h).to_s
-    @game = Game.new(h)
-    @regions = Region.where(code: [ 0, @robot.campus.region_code ])
-    @round_names = RoundName.where(contest_nth: @robot.contest_nth,
-      region_code: @game.region_code)
-    if @game.save then
-      flash[:success] = "試合情報の新規作成成功"
-      redirect_to robot_url(params[:robot_code])
+    # Game オブジェクトを作成前に既存レコードが DB に存在しているか調べておく
+    if Game.exists?(code: h["code"]) then
+      # game_code を新規作成したいが、既に同じコードのレコードがあったので、
+      # game_code のエラーだけを表示させて、:new をレンダリングさせる。
+      # フォームに入力した値は変更前に戻すことにした（暫定）
+      # 将来もっと良い方法があればそちらに切り替える。
+      code = h["code"] # 退避
+      h.delete("code")
+      @game = Game.new(h)
+      @regions = Region.where(code: [ 0, @robot.campus.region_code ])
+      @round_names = RoundName.where(contest_nth: @robot.contest_nth,
+        region_code: @game.region_code)
+      @game.errors.add(
+        :code,
+        code_error_message(
+          left_robot_code: Game.find_by(code: code).left_robot_code,
+          code: code
+        )
+      )
+      render :new and return
     else
-      error_with_code?(code: h["code"])
-      render :new
+      @game = Game.new(h)
+      @regions = Region.where(code: [ 0, @robot.campus.region_code ])
+      @round_names = RoundName.where(contest_nth: @robot.contest_nth,
+        region_code: @game.region_code)
+      if @game.save then
+        flash[:success] = "試合情報の新規作成成功"
+        redirect_to robot_url(params[:robot_code])
+      else
+        render :new and return
+      end
     end
   end
 
@@ -105,7 +123,13 @@ class GamesController < ApplicationController
         @game = Game.find_by(code: params[:code])
         @game.subjective_view_by(robot_code: @robot.code)
         @game.send(@gd_sym).each { |i| i.decompose_properties(robot: @robot) }
-        @game.errors.add(:code, code_error_message(code: h[:code]))
+        @game.errors.add(
+          :code,
+          code_error_message(
+            left_robot_code: @game.left_robot_code,
+            code: h[:code]
+          )
+        )
         render :edit and return
       else
         # DB に変更したい game_code のレコードが存在しなかったので新規作成
@@ -181,12 +205,12 @@ class GamesController < ApplicationController
 
   # エラーメッセージはこのコントローラーに埋め込むことなくconfig/*/*.ymlなどに
   # 記したメッセージを使うようにしたい。
-  def code_error_message(code:)
+  def code_error_message(left_robot_code:, code:)
     m =  "は既に登録されています。"
     m << "（#{
       view_context.link_to "該当試合",
         robot_game_path(
-          robot_code: @game.left_robot_code,
+          robot_code: left_robot_code,
           code: code
         )
     }）"
