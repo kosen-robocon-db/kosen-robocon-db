@@ -150,6 +150,8 @@ class GamesController < ApplicationController
     "game_detail#{contest_nth.ordinalize}s".to_sym
   end
 
+  # フォーム項目の並び順にエラーを出力したいが、後日改良する。
+  # コメントアウトされているのは後日改良のためのコード。
   def prepare_game_object_on_code_error(hash:, code:)
     @game = Game.new(hash)
     @game.valid?
@@ -159,7 +161,8 @@ class GamesController < ApplicationController
     robot_code = Game.find_by(code: code).left_robot_code
     path = robot_game_path(robot_code: robot_code, code: code)
     m = I18n.t("errors.messages.taken")
-    m << "（#{view_context.link_to "該当試合", path}）"
+    n = I18n.t("activerecord.errors.models.game.attributes.code.duplicated")
+    m << "（#{view_context.link_to n, path}）"
     @game.errors.add(:code, m)
     %i( region_code round game ).each { |sym| @game.errors.add(sym, "")}
     # @game.errors.merge!(errors)

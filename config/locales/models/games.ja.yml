@@ -1,7 +1,7 @@
 ja:
   activerecord:
     models:
-      game: 対戦情報
+      game: 試合
     attributes:
       game:
         code: 試合コード（地区、回戦、試合の組み合わせ）
@@ -80,6 +80,10 @@ ja:
         memo: メモ
     errors:
       models:
+        game:
+          attributes:
+            code:
+              duplicated: 重複試合
         game_detail17th:
           attributes:
             my_gaining_point:
