@@ -1,3 +1,9 @@
+<%
+  @regions = Region.where(code: [ 0, @robot.campus.region_code ])
+  region_code = action == :create ? 0 : @game.region_code
+  @round_names = RoundName.where(contest_nth: @robot.contest_nth,
+    region_code: region_code)
+%>
 <div class="row">
   <div class="col-lg-12">
   <%= form_for @game, :url=>{:action => action} do |f| %>

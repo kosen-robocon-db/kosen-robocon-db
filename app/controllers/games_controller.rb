@@ -31,9 +31,6 @@ class GamesController < ApplicationController
     @game = Game.new(robot_code: @robot.code, contest_nth: @robot.contest_nth)
     @game.send(@gd_sym).new # GameDetail サブクラスのインスタンス生成（表示される）
     gon.contest_nth = @robot.contest_nth
-    @regions = Region.where(code: [ 0, @robot.campus.region_code ])
-    @round_names = RoundName.where(contest_nth: @robot.contest_nth,
-      region_code: 0)
   end
 
   def create
@@ -43,37 +40,18 @@ class GamesController < ApplicationController
     h = regularize(attrs_hash: game_params)
     h["robot_code"] = @robot.code.to_s
     h["code"] = Game.get_code(hash: h).to_s
-    # Game オブジェクトを作成前に既存レコードが DB に存在しているか調べておく
-    if Game.exists?(code: h["code"]) then
-      # game_code を新規作成したいが、既に同じコードのレコードがあったので、
-      # game_code のエラーだけを表示させて、:new をレンダリングさせる。
-      # フォームに入力した値は変更前に戻すことにした（暫定）
-      # 将来もっと良い方法があればそちらに切り替える。
-      code = h["code"] # 退避
-      h.delete("code")
-      @game = Game.new(h)
-      @regions = Region.where(code: [ 0, @robot.campus.region_code ])
-      @round_names = RoundName.where(contest_nth: @robot.contest_nth,
-        region_code: @game.region_code)
-      @game.errors.add(
-        :code,
-        code_error_message(
-          left_robot_code: Game.find_by(code: code).left_robot_code,
-          code: code
-        )
-      )
-      render :new and return
+    @game = Game.new(h)
+    if @game.save then
+      flash[:success] = "試合情報の新規作成成功"
+      redirect_to robot_url(params[:robot_code])
     else
-      @game = Game.new(h)
-      @regions = Region.where(code: [ 0, @robot.campus.region_code ])
-      @round_names = RoundName.where(contest_nth: @robot.contest_nth,
-        region_code: @game.region_code)
-      if @game.save then
-        flash[:success] = "試合情報の新規作成成功"
-        redirect_to robot_url(params[:robot_code])
-      else
-        render :new and return
+      @game.errors.details[:code].each do |code|
+        if code[:error] == :taken then
+          h.delete("code") # コードの指定を無くすことでDBから読み込まなくなる
+          prepare_game_object_on_code_error(hash: h, code: code[:value])
+        end
       end
+      render :new and return
     end
   end
 
@@ -86,9 +64,6 @@ class GamesController < ApplicationController
     @game.subjective_view_by(robot_code: @robot.code)
     @game.send(@gd_sym).each { |i| i.decompose_properties(robot: @robot) }
     gon.contest_nth = @robot.contest_nth
-    @regions = Region.where(code: [ 0, @robot.campus.region_code ])
-    @round_names = RoundName.where(contest_nth: @robot.contest_nth,
-      region_code: @game.region_code)
   end
 
   def update
@@ -97,61 +72,34 @@ class GamesController < ApplicationController
     Game.confirm_or_associate(game_details_sub_class_sym: @gd_sym)
     @game = Game.find_by(code: params[:code])
     @game.robot_code = @robot.code
-    @regions = Region.where(code: [ 0, @robot.campus.region_code ])
-    @round_names = RoundName.where(contest_nth: @robot.contest_nth,
-      region_code: @game.region_code)
     h = regularize(attrs_hash: game_params)
-    # 下記のifから下のupdateの終わりまでのコードはもっと洗練されるべき
+    h["robot_code"] = @robot.code.to_s # これ必要？
     if
       @game.region_code.to_i != h['region_code'].to_i or
       @game.round.to_i != h['round'].to_i or
       @game.game.to_i != h['game'].to_i
-    then
-      # game_code の変更がある場合
-      h["robot_code"] = @robot.code.to_s
-      h["code"] = Game.get_code(hash: h).to_s
-      gdas = "#{@gd_sym.to_s}_attributes".to_sym
-      h[gdas].each{ |i| # id を nil にしないと新しいレコードが登録されない
-        h[gdas][i][:id] = nil
-      }
-      # Game オブジェクトを作成前に既存レコードが DB に存在しているか調べておく
+    then # game_code の変更がある場合
+      code = h["code"] = Game.get_code(hash: h).to_s
       if Game.exists?(code: h["code"]) then
-        # game_code を変更したいが、既に同じコードのレコードがあったので、
-        # game_code のエラーだけを表示させて、:edit をレンダリングさせる。
-        # フォームに入力した値は変更前に戻すことにした（暫定）
-        # 将来もっと良い方法があればそちらに切り替える。
-        @game = Game.find_by(code: params[:code])
-        @game.subjective_view_by(robot_code: @robot.code)
-        @game.send(@gd_sym).each { |i| i.decompose_properties(robot: @robot) }
-        @game.errors.add(
-          :code,
-          code_error_message(
-            left_robot_code: @game.left_robot_code,
-            code: h[:code]
-          )
-        )
+        h["code"] = params[:code] # コードを戻す
+        prepare_game_object_on_code_error(hash: h, code: code)
+        @next_request_method = "PATCH"
         render :edit and return
-      else
-        # DB に変更したい game_code のレコードが存在しなかったので新規作成
+      else # DB に変更したい game_code を持つレコードが存在しなかったので新規作成
+        gdas = "#{@gd_sym.to_s}_attributes".to_sym
+        h[gdas].each{ |i| h[gdas][i][:id] = nil } # 新レコード登録を強制
         old_game_code = @game.code
         @game = Game.new(h)
         if @game.save then
           Game.find_by(code: old_game_code).destroy
           flash[:success] = "試合情報の編集成功"
           redirect_to robot_url(code: params[:robot_code])
-        else
-          # (game)コード以外でエラーになった場合
-          # new で新しい Game オブジェクトを作成したので、
-          # つまり new_record? / persisted? のフラグ状態が新規作成なので
-          # 更新と扱われないため、リクエストメソッドを強制的に PATCH にする。
-          # 因みに、ブラウザが GET と POST しか扱わないため、Rails では
-          # hidden 指定されている _method にリクエストメソッドを指定している。
+        else # 試合コードが既存であること以外でエラー
           @next_request_method = "PATCH"
           render :edit and return
         end
       end
-    else
-      # game_code の変更がない場合
+    else # game_code の変更がない場合
       if @game.update(h) then
         flash[:success] = "試合情報の編集成功"
         redirect_to robot_url(code: params[:robot_code])
@@ -159,7 +107,6 @@ class GamesController < ApplicationController
         render :edit and return
       end
     end
-
   end
 
   def destroy
@@ -180,7 +127,7 @@ class GamesController < ApplicationController
 
   def regularize(attrs_hash:)
     gdas = "#{@gd_sym.to_s}_attributes".to_sym
-    klass = @gd_sym.to_s.singularize.classify.constantize # クラス化
+    klass = @gd_sym.to_s.singularize.classify.constantize # シムからクラス化
     j = 1
     if not attrs_hash[gdas].blank?
       attrs_hash[gdas].each { |i|
@@ -203,20 +150,19 @@ class GamesController < ApplicationController
     "game_detail#{contest_nth.ordinalize}s".to_sym
   end
 
-  # エラーメッセージはこのコントローラーに埋め込むことなくconfig/*/*.ymlなどに
-  # 記したメッセージを使うようにしたい。
-  def code_error_message(left_robot_code:, code:)
-    m =  "は既に登録されています。"
-    m << "（#{
-      view_context.link_to "該当試合",
-        robot_game_path(
-          robot_code: left_robot_code,
-          code: code
-        )
-    }）"
-    m << "<p>フォームの値は変更前に戻されています。<br />"
-    m << "試合コードと試合詳細を変更したいときは"
-    m << "先に試合コードの衝突を解決してください。<p>"
+  def prepare_game_object_on_code_error(hash:, code:)
+    @game = Game.new(hash)
+    @game.valid?
+    # errors = @game.errors.dup
+    # @game.errors.clear
+    @game.errors.delete(:code)
+    robot_code = Game.find_by(code: code).left_robot_code
+    path = robot_game_path(robot_code: robot_code, code: code)
+    m = I18n.t("errors.messages.taken")
+    m << "（#{view_context.link_to "該当試合", path}）"
+    @game.errors.add(:code, m)
+    %i( region_code round game ).each { |sym| @game.errors.add(sym, "")}
+    # @game.errors.merge!(errors)
   end
 
 end
