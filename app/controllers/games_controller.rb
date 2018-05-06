@@ -4,6 +4,13 @@ class GamesController < ApplicationController
     only: [ :new, :create, :edit, :update, :destroy ]
   before_action :admin_user, only: :index
 
+  def index
+    @robot = Robot.find_by(code:
+      Rails.application.routes.recognize_path(request.path_info)[:robot_code])
+    @games = Game.where(left_robot_code: @robot.code).\
+      or(Game.where(right_robot_code: @robot.code))
+  end
+
   def show
     # 試合コードは"1300901"のような1で始まり、2-3桁目が大会回数となっているが、
     # 疑いもなく、エラー処理もRailsデフォルト任せにしておく。（暫定）
@@ -22,14 +29,8 @@ class GamesController < ApplicationController
     @gd_sym = game_details_sub_class_sym(contest_nth: @robot.contest_nth)
     Game.confirm_or_associate(game_details_sub_class_sym: @gd_sym)
     @game = Game.new(robot_code: @robot.code, contest_nth: @robot.contest_nth)
-    # case @robot.contest_nth
-    # when 1..20,29,30 then
-      @game.send(@gd_sym).new # GameDetail サブクラスのインスタンス生成
-    # end
+    @game.send(@gd_sym).new # GameDetail サブクラスのインスタンス生成（表示される）
     gon.contest_nth = @robot.contest_nth
-    @regions = Region.where(code: [ 0, @robot.campus.region_code ])
-    @round_names = RoundName.where(contest_nth: @robot.contest_nth,
-      region_code: 0)
   end
 
   def create
@@ -40,15 +41,17 @@ class GamesController < ApplicationController
     h["robot_code"] = @robot.code.to_s
     h["code"] = Game.get_code(hash: h).to_s
     @game = Game.new(h)
-    @regions = Region.where(code: [ 0, @robot.campus.region_code ])
-    @round_names = RoundName.where(contest_nth: @robot.contest_nth,
-      region_code: @game.region_code)
     if @game.save then
       flash[:success] = "試合情報の新規作成成功"
       redirect_to robot_url(params[:robot_code])
     else
-      error_with_code?(code: h["code"])
-      render :new
+      @game.errors.details[:code].each do |code|
+        if code[:error] == :taken then
+          h.delete("code") # コードの指定を無くすことでDBから読み込まなくなる
+          prepare_game_object_on_code_error(hash: h, code: code[:value])
+        end
+      end
+      render :new and return
     end
   end
 
@@ -61,9 +64,6 @@ class GamesController < ApplicationController
     @game.subjective_view_by(robot_code: @robot.code)
     @game.send(@gd_sym).each { |i| i.decompose_properties(robot: @robot) }
     gon.contest_nth = @robot.contest_nth
-    @regions = Region.where(code: [ 0, @robot.campus.region_code ])
-    @round_names = RoundName.where(contest_nth: @robot.contest_nth,
-      region_code: @game.region_code)
   end
 
   def update
@@ -72,42 +72,41 @@ class GamesController < ApplicationController
     Game.confirm_or_associate(game_details_sub_class_sym: @gd_sym)
     @game = Game.find_by(code: params[:code])
     @game.robot_code = @robot.code
-    @regions = Region.where(code: [ 0, @robot.campus.region_code ])
-    @round_names = RoundName.where(contest_nth: @robot.contest_nth,
-      region_code: @game.region_code)
     h = regularize(attrs_hash: game_params)
-    # 下記のコードはもっと洗練されるべき
-    if @game.region_code.to_i != h['region_code'].to_i or
+    h["robot_code"] = @robot.code.to_s # これ必要？
+    if
+      @game.region_code.to_i != h['region_code'].to_i or
       @game.round.to_i != h['round'].to_i or
-      @game.game.to_i != h['game'].to_i then
-      # game_code の変更がある場合
-      h["robot_code"] = @robot.code.to_s
-      h["code"] = Game.get_code(hash: h).to_s
-      old_game_code = @game.code
-      gdas = "#{@gd_sym.to_s}_attributes".to_sym
-      h[gdas].each{ |i| # id を nil にしないと新しいレコードが登録されない
-        h[gdas][i][:id] = nil
-      }
-      @game = Game.new(h)
-      if @game.save then
-        Game.find_by(code: old_game_code).destroy
-        flash[:success] = "試合情報の編集成功"
-        redirect_to robot_url(code: params[:robot_code])
-      else
-        error_with_code?(code: h["code"])
-        render :edit
+      @game.game.to_i != h['game'].to_i
+    then # game_code の変更がある場合
+      code = h["code"] = Game.get_code(hash: h).to_s
+      if Game.exists?(code: h["code"]) then
+        h["code"] = params[:code] # コードを戻す
+        prepare_game_object_on_code_error(hash: h, code: code)
+        @next_request_method = "PATCH"
+        render :edit and return
+      else # DB に変更したい game_code を持つレコードが存在しなかったので新規作成
+        gdas = "#{@gd_sym.to_s}_attributes".to_sym
+        h[gdas].each{ |i| h[gdas][i][:id] = nil } # 新レコード登録を強制
+        old_game_code = @game.code
+        @game = Game.new(h)
+        if @game.save then
+          Game.find_by(code: old_game_code).destroy
+          flash[:success] = "試合情報の編集成功"
+          redirect_to robot_url(code: params[:robot_code])
+        else # 試合コードが既存であること以外でエラー
+          @next_request_method = "PATCH"
+          render :edit and return
+        end
       end
-    else
-      # game_code の変更がない場合
+    else # game_code の変更がない場合
       if @game.update(h) then
         flash[:success] = "試合情報の編集成功"
         redirect_to robot_url(code: params[:robot_code])
       else
-        error_with_code?(code: h["code"])
-        render :edit
+        render :edit and return
       end
     end
-
   end
 
   def destroy
@@ -119,18 +118,16 @@ class GamesController < ApplicationController
   private
 
   def game_params
+    a = %i( contest_nth region_code round game opponent_robot_code victory )
+    r = { :reasons_for_victory => [] }
     h = { "#{@gd_sym.to_s}_attributes" =>
       @gd_sym.to_s.classify.constantize.attr_syms_for_params }
-    a = [
-      :contest_nth, :region_code, :round, :game, :opponent_robot_code, :victory,
-      { :reasons_for_victory => [] }
-    ].push(h)
-    params.require(:game).permit(a)
+    params.require(:game).permit(a.push(r).push(h))
   end
 
   def regularize(attrs_hash:)
     gdas = "#{@gd_sym.to_s}_attributes".to_sym
-    klass = @gd_sym.to_s.singularize.classify.constantize # クラス化
+    klass = @gd_sym.to_s.singularize.classify.constantize # シムからクラス化
     j = 1
     if not attrs_hash[gdas].blank?
       attrs_hash[gdas].each { |i|
@@ -153,19 +150,22 @@ class GamesController < ApplicationController
     "game_detail#{contest_nth.ordinalize}s".to_sym
   end
 
-  def error_with_code?(code: code)
-    # メッセージは表示せず、エラー箇所だけそれを示すタグを差し込みたいが、
-    # 今のところはメッセージ表示をしておくことにした。
-    # 方法が分かり次第改善する。
-    # takenかどうかまで判別したほうがよい？
-    if @game.errors.include?(:code)
-      @game.errors[:code].map!{ |i|
-        i << "（#{view_context.link_to "該当試合", game_path(code)}）"
-      }
-      @game.errors.add(:region_code, "")
-      @game.errors.add(:round, "")
-      @game.errors.add(:game, "")
-    end
+  # フォーム項目の並び順にエラーを出力したいが、後日改良する。
+  # コメントアウトされているのは後日改良のためのコード。
+  def prepare_game_object_on_code_error(hash:, code:)
+    @game = Game.new(hash)
+    @game.valid?
+    # errors = @game.errors.dup
+    # @game.errors.clear
+    @game.errors.delete(:code)
+    robot_code = Game.find_by(code: code).left_robot_code
+    path = robot_game_path(robot_code: robot_code, code: code)
+    m = I18n.t("errors.messages.taken")
+    n = I18n.t("activerecord.errors.models.game.attributes.code.duplicated")
+    m << "（#{view_context.link_to n, path}）"
+    @game.errors.add(:code, m)
+    %i( region_code round game ).each { |sym| @game.errors.add(sym, "")}
+    # @game.errors.merge!(errors)
   end
 
 end

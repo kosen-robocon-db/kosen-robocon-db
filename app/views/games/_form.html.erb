@@ -1,6 +1,19 @@
+<%
+  @regions = Region.where(code: [ 0, @robot.campus.region_code ])
+  region_code = action == :create ? 0 : @game.region_code
+  @round_names = RoundName.where(contest_nth: @robot.contest_nth,
+    region_code: region_code)
+%>
 <div class="row">
   <div class="col-lg-12">
   <%= form_for @game, :url=>{:action => action} do |f| %>
+    <%
+      @next_request_method ||= ''
+      if @next_request_method == "PATCH" then
+        patch = "<input type=\"hidden\" name=\"_method\" value=\"patch\">"
+        concat patch.html_safe
+      end
+    %>
     <%= render 'shared/error_messages', obj: @game %>
     <%= f.label :contest_nth, "大会回:第#{@game.contest_nth}回" %><br />
     <%= f.hidden_field :contest_nth %>
