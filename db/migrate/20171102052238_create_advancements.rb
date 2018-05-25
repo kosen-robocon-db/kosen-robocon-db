@@ -1,4 +1,4 @@
-class CreateAdvancements < ActiveRecord::Migration[5.0]
+class CreateAdvancements < ActiveRecord::Migration[5.2]
   def change
     create_table :advancements do |t|
       t.integer :case,        null: false

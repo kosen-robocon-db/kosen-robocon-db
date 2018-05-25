@@ -15,7 +15,7 @@ Rails.application.configure do
   # Configure public file server for tests with Cache-Control for performance.
   config.public_file_server.enabled = true
   config.public_file_server.headers = {
-    'Cache-Control' => 'public, max-age=3600'
+    'Cache-Control' => "public, max-age=#{1.hour.to_i}"
   }
 
   # Show full error reports and disable caching.
@@ -27,6 +27,10 @@ Rails.application.configure do
 
   # Disable request forgery protection in test environment.
   config.action_controller.allow_forgery_protection = false
+
+  # Store uploaded files on the local file system in a temporary directory
+  config.active_storage.service = :test
+
   config.action_mailer.perform_caching = false
 
   # Tell Action Mailer not to deliver emails to the real world.
@@ -40,8 +44,14 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
+  # Devise.setup do |config|
+  #   config.omniauth :twitter, 'k4FcdCGDOX3feXXm7F7QbESnc', 'TArUyPOanxfprD5tiC0TdZ0y5mQ2HdFrYuSvztyrkT45JMvkzm', :display => 'popup'
+  # end
   Devise.setup do |config|
-    config.omniauth :twitter, 'k4FcdCGDOX3feXXm7F7QbESnc', 'TArUyPOanxfprD5tiC0TdZ0y5mQ2HdFrYuSvztyrkT45JMvkzm', :display => 'popup'
+    config.omniauth :twitter,
+      Rails.application.credentials.config[:test][:twitter_api_key],
+      Rails.application.credentials.config[:test][:twitter_api_secret]
   end
-  
+  # puts ">>>> twitter_api_key:#{Rails.application.credentials.config[:test][:twitter_api_key]}"
+  # puts ">>>> twitter_api_secret:#{Rails.application.credentials.config[:test][:twitter_api_secret]}"
 end
