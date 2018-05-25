@@ -59,15 +59,15 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
-  # Devise.setup do |config|
-  #   config.omniauth :twitter, 'k4FcdCGDOX3feXXm7F7QbESnc', 'TArUyPOanxfprD5tiC0TdZ0y5mQ2HdFrYuSvztyrkT45JMvkzm', :display => 'popup'
-  # end
   Devise.setup do |config|
-    config.omniauth :twitter,
-      Rails.application.credentials.config[:development][:twitter_api_key],
-      Rails.application.credentials.config[:development][:twitter_api_secret],
-      :display => 'popup'
+    config.omniauth :twitter, 'k4FcdCGDOX3feXXm7F7QbESnc', 'TArUyPOanxfprD5tiC0TdZ0y5mQ2HdFrYuSvztyrkT45JMvkzm', :display => 'popup'
   end
+  # Devise.setup do |config|
+  #   config.omniauth :twitter,
+  #     Rails.application.credentials.config[:development][:twitter_api_key],
+  #     Rails.application.credentials.config[:development][:twitter_api_secret],
+  #     :display => 'popup'
+  # end
   # puts ">>>> twitter_api_key:#{Rails.application.credentials.config[:development][:twitter_api_key]}"
   # puts ">>>> twitter_api_secret:#{Rails.application.credentials.config[:development][:twitter_api_secret]}"
 

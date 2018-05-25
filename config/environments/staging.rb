@@ -92,14 +92,14 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  # Devise.setup do |config|
-  #   config.omniauth :twitter, 'awoD7k5nmGywyAJjg6Qrrs4Xa', 'psrqbse1xVNeHNIaMJgFU2itaVjnr9AaoKpPRNpTWGYb5YQeLX', :display => 'popup'
-  # end
   Devise.setup do |config|
-    config.omniauth :twitter,
-      Rails.application.credentials.config[:staging][:twitter_api_key],
-      Rails.application.credentials.config[:staging][:twitter_api_secret]
+    config.omniauth :twitter, 'awoD7k5nmGywyAJjg6Qrrs4Xa', 'psrqbse1xVNeHNIaMJgFU2itaVjnr9AaoKpPRNpTWGYb5YQeLX', :display => 'popup'
   end
+  # Devise.setup do |config|
+  #   config.omniauth :twitter,
+  #     Rails.application.credentials.config[:staging][:twitter_api_key],
+  #     Rails.application.credentials.config[:staging][:twitter_api_secret]
+  # end
   # puts ">>>> twitter_api_key:#{Rails.application.credentials.config[:staging][:twitter_api_key]}"
   # puts ">>>> twitter_api_secret:#{Rails.application.credentials.config[:staging][:twitter_api_secret]}"
 end

@@ -44,14 +44,14 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
-  # Devise.setup do |config|
-  #   config.omniauth :twitter, 'k4FcdCGDOX3feXXm7F7QbESnc', 'TArUyPOanxfprD5tiC0TdZ0y5mQ2HdFrYuSvztyrkT45JMvkzm', :display => 'popup'
-  # end
   Devise.setup do |config|
-    config.omniauth :twitter,
-      Rails.application.credentials.config[:test][:twitter_api_key],
-      Rails.application.credentials.config[:test][:twitter_api_secret]
+    config.omniauth :twitter, 'k4FcdCGDOX3feXXm7F7QbESnc', 'TArUyPOanxfprD5tiC0TdZ0y5mQ2HdFrYuSvztyrkT45JMvkzm', :display => 'popup'
   end
+  # Devise.setup do |config|
+  #   config.omniauth :twitter,
+  #     Rails.application.credentials.config[:test][:twitter_api_key],
+  #     Rails.application.credentials.config[:test][:twitter_api_secret]
+  # end
   # puts ">>>> twitter_api_key:#{Rails.application.credentials.config[:test][:twitter_api_key]}"
   # puts ">>>> twitter_api_secret:#{Rails.application.credentials.config[:test][:twitter_api_secret]}"
 end
