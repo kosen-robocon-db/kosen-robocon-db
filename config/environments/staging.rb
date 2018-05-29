@@ -14,6 +14,10 @@ Rails.application.configure do
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
 
+  # Ensures that a master key has been made available in either ENV["RAILS_MASTER_KEY"]
+  # or in config/master.key. This key is used to decrypt credentials (and other encrypted files).
+  # config.require_master_key = true
+
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
@@ -33,6 +37,9 @@ Rails.application.configure do
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for Apache
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
+
+  # Store uploaded files on the local file system (see config/storage.yml for options)
+  config.active_storage.service = :local
 
   # Mount Action Cable outside main process or domain
   # config.action_cable.mount_path = nil
@@ -54,7 +61,8 @@ Rails.application.configure do
 
   # Use a real queuing backend for Active Job (and separate queues per environment)
   # config.active_job.queue_adapter     = :resque
-  # config.active_job.queue_name_prefix = "robocon_db_#{Rails.env}"
+  # config.active_job.queue_name_prefix = "rails_5_2_sample_#{Rails.env}"
+
   config.action_mailer.perform_caching = false
 
   # Ignore bad email addresses and do not raise email delivery errors.
@@ -78,7 +86,7 @@ Rails.application.configure do
   if ENV["RAILS_LOG_TO_STDOUT"].present?
     logger           = ActiveSupport::Logger.new(STDOUT)
     logger.formatter = config.log_formatter
-    config.logger = ActiveSupport::TaggedLogging.new(logger)
+    config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end
 
   # Do not dump schema after migrations.
@@ -87,5 +95,11 @@ Rails.application.configure do
   Devise.setup do |config|
     config.omniauth :twitter, 'awoD7k5nmGywyAJjg6Qrrs4Xa', 'psrqbse1xVNeHNIaMJgFU2itaVjnr9AaoKpPRNpTWGYb5YQeLX', :display => 'popup'
   end
-
+  # Devise.setup do |config|
+  #   config.omniauth :twitter,
+  #     Rails.application.credentials.config[:staging][:twitter_api_key],
+  #     Rails.application.credentials.config[:staging][:twitter_api_secret]
+  # end
+  # puts ">>>> twitter_api_key:#{Rails.application.credentials.config[:staging][:twitter_api_key]}"
+  # puts ">>>> twitter_api_secret:#{Rails.application.credentials.config[:staging][:twitter_api_secret]}"
 end

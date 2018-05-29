@@ -1,4 +1,4 @@
-class CreateRoundNames < ActiveRecord::Migration[5.0]
+class CreateRoundNames < ActiveRecord::Migration[5.2]
   def change
     create_table :round_names do |t|
       t.integer :contest_nth, null: false

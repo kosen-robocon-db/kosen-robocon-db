@@ -38,3 +38,6 @@ squasher
 
 # Ignore font files
 /vendor/fonts/*.*
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key

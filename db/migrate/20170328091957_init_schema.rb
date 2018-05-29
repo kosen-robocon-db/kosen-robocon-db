@@ -1,4 +1,4 @@
-class InitSchema < ActiveRecord::Migration
+class InitSchema < ActiveRecord::Migration[5.2]
   def up
     create_table "campus_histories", force: :cascade do |t|
       t.integer  "campus_code",  null: false
