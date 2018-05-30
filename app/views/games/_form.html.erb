@@ -22,7 +22,7 @@
     <%= f.label :round, "回戦" %>:
     <%= f.collection_select :round, @round_names, :round, :name %><br />
     <%= f.label :game, "試合" %>:
-    <% game_array = Array.new(16){ |i| ["第"+(i+1).to_s+"試合", i+1] } %>
+    <% game_array = Array.new(31){ |i| ["第"+(i+1).to_s+"試合", i+1] } %>
     <%= f.select :game, game_array %><br />
     <%= f.label :opponent_robot_code, "対戦相手" %>:
     <%

@@ -87,7 +87,8 @@ class GamesController < ApplicationController
         render :edit and return
       else # DB に変更したい game_code を持つレコードが存在しなかったので新規作成
         gdas = "#{@gd_sym.to_s}_attributes".to_sym
-        h[gdas].each{ |i| h[gdas][i][:id] = nil } # 新レコード登録を強制
+        h[gdas].each{ |i| h[gdas][i][:id] = nil } \
+          if h[gdas].respond_to?(:each) # 新レコード登録を強制
         old_game_code = @game.code
         @game = Game.new(h)
         if @game.save then
