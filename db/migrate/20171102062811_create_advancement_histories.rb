@@ -1,4 +1,4 @@
-class CreateAdvancementHistories < ActiveRecord::Migration[5.0]
+class CreateAdvancementHistories < ActiveRecord::Migration[5.2]
   def change
     create_table :advancement_histories do |t|
       t.integer :contest_nth,             null: false
