@@ -132,15 +132,14 @@ class GamesController < ApplicationController
     j = 1
     if not attrs_hash[gdas].blank?
       attrs_hash[gdas].each { |i|
-        attrs_hash[gdas][i][:my_robot_code]  = @robot.code.to_s
-        attrs_hash[gdas][i][:opponent_robot_code] =
-          attrs_hash[:opponent_robot_code]
-        attrs_hash[gdas][i][:victory] = attrs_hash[:victory]
-        attrs_hash[gdas][i][:properties] =
-          klass.compose_properties(hash: attrs_hash[gdas][i]).to_json
+        logger.debug(">>>> i:#{i}")
+        i[1][:my_robot_code] = @robot.code.to_s
+        i[1][:opponent_robot_code] = attrs_hash[:opponent_robot_code]
+        i[1][:victory] = attrs_hash[:victory]
+        i[1][:properties] = klass.compose_properties(hash: i[1]).to_json
             # フォームパラメーターから GameDetail サブクラスの properties を合成
             # before...でできないのかな？
-        attrs_hash[gdas][i][:number] = j
+        i[1][:number] = j
         j += 1
       }
     end

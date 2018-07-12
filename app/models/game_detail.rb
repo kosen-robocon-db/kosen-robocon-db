@@ -65,6 +65,7 @@ class GameDetail < ApplicationRecord
   end
 
   def decompose_properties(robot:)
+    return if self.properties.nil?
     h = JSON.parse(self.properties)
     if h["robot_code"].present? then # 必ずrobotのコードがある前提だが・・・
       self.my_robot_code, self.opponent_robot_code =
