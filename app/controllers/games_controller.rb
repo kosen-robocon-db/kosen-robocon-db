@@ -132,7 +132,6 @@ class GamesController < ApplicationController
     j = 1
     if not attrs_hash[gdas].blank?
       attrs_hash[gdas].each { |i|
-        logger.debug(">>>> i:#{i}")
         i[1][:my_robot_code] = @robot.code.to_s
         i[1][:opponent_robot_code] = attrs_hash[:opponent_robot_code]
         i[1][:victory] = attrs_hash[:victory]
