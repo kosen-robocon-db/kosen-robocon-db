@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   resources :campuses, only: [:index, :show], param: :code
   resources :contests, only: [:index, :show], param: :nth do
     resources :prize_histories, only: [:show], param: :region_code
+    resources :brackets, only: [:show], param: :region_code
   end
   # resources :contest_entries, only: [:index]
   resource :statistics, except: [:index, :show, :new, :create, :edit, :update, :destroy] do
@@ -30,7 +31,7 @@ Rails.application.routes.draw do
   end
   resources :download, only: :index
 
-  get 'draw_bracket', to: 'games#draw_bracket'
+  # get 'draw_bracket', to: 'games#draw_bracket'
 
   resources :round_names, except: [:index, :show, :new, :create, :edit, :update, :destroy] do
     collection do

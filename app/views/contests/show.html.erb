@@ -21,12 +21,18 @@
       if @contest.nth < 4 then
         concat link_to "全国大会", contest_prize_history_path(
           contest_nth: @contest.nth, region_code: 0)
+        concat ("&nbsp;"*2).html_safe
+        concat link_to "トーナメント表", contest_bracket_path(
+          contest_nth: @contest.nth, region_code: 0)
       else
         @regions.each do |region|
           sfx = region.code == 0 ? "大会" : "地区大会"
           concat link_to "#{region.name}#{sfx}",
             contest_prize_history_path(contest_nth: @contest.nth,
               region_code: region.code)
+          concat ("&nbsp;"*2).html_safe
+          concat link_to "トーナメント表", contest_bracket_path(
+            contest_nth: @contest.nth, region_code: region.code)
           concat "<br />".html_safe
         end
       end

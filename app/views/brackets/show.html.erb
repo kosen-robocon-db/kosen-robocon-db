@@ -1,0 +1,12 @@
+<% provide(:title, @contest.name) %>
+
+<%= render "shared/title", title: (yield :title) %>
+
+<div>
+  <%= @region.name %><%= @region.code == 0 ? "大会" : "地区大会" %>トーナメント表
+</div>
+
+<div>
+<canvas id="bracket" width="1000" height="750" style="background-color: white">
+</canvas>
+</div>
