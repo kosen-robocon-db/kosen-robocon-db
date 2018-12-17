@@ -93,7 +93,7 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   Devise.setup do |config|
-    config.omniauth :twitter, 'awoD7k5nmGywyAJjg6Qrrs4Xa', 'psrqbse1xVNeHNIaMJgFU2itaVjnr9AaoKpPRNpTWGYb5YQeLX', :display => 'popup'
+    config.omniauth :twitter, 'awoD7k5nmGywyAJjg6Qrrs4Xa', 'psrqbse1xVNeHNIaMJgFU2itaVjnr9AaoKpPRNpTWGYb5YQeLX', :display => 'popup', callback_url: "http://kosen-robocon-db-staging.herokuapp.com/auth/twitter/callback"
   end
   # Devise.setup do |config|
   #   config.omniauth :twitter,
