@@ -59,17 +59,20 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
-  Devise.setup do |config|
-    config.omniauth :twitter, 'k4FcdCGDOX3feXXm7F7QbESnc', 'TArUyPOanxfprD5tiC0TdZ0y5mQ2HdFrYuSvztyrkT45JMvkzm', :display => 'popup'
-  end
+  # Set the same callback URL as the callback URL set in Twitter Apps.
   # Devise.setup do |config|
-  #   config.omniauth :twitter,
-  #     Rails.application.credentials.config[:development][:twitter_api_key],
-  #     Rails.application.credentials.config[:development][:twitter_api_secret],
-  #     :display => 'popup'
+  #   config.omniauth :twitter, 'hQtjCJsH53r70LHX9YA8FYa4u', 'fay4u8KvGPQwwl5AbouLh26byEQMLSRw54jVA87iFrQv0wklOL', :display => 'popup', callback_url: "http://localhost:3000/users/auth/twitter/callback"
   # end
-  # puts ">>>> twitter_api_key:#{Rails.application.credentials.config[:development][:twitter_api_key]}"
-  # puts ">>>> twitter_api_secret:#{Rails.application.credentials.config[:development][:twitter_api_secret]}"
+  Devise.setup do |config|
+    config.omniauth :twitter,
+      Rails.application.credentials.config[:development][:twitter_api_key],
+      Rails.application.credentials.config[:development][:twitter_api_secret],
+      :display => 'popup',
+      callback_url: "http://localhost:3000/users/auth/twitter/callback"
+  end
+  # puts ">>>> twitter_api_key(credentials):#{Rails.application.credentials.config[:development][:twitter_api_key]}"
+  # puts ">>>> twitter_api_secret(credentials):#{Rails.application.credentials.config[:development][:twitter_api_secret]}"
+  # puts ">>>> Devise.omniauth_configs:#{Devise.omniauth_configs}"
 
   # Added below the configuration in order not to cause error like this:
   # Cannot render console from 10.0.2.2! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
