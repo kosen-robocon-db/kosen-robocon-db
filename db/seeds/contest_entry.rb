@@ -28,4 +28,6 @@ bulk_insert_data << ContestEntry.new(contest_nth: 26, school: 57, campus: 62, te
 bulk_insert_data << ContestEntry.new(contest_nth: 27, school: 57, campus: 62, team: 124)
 bulk_insert_data << ContestEntry.new(contest_nth: 28, school: 57, campus: 62, team: 124)
 bulk_insert_data << ContestEntry.new(contest_nth: 29, school: 57, campus: 62, team: 124)
+bulk_insert_data << ContestEntry.new(contest_nth: 30, school: 57, campus: 62, team: 124)
+bulk_insert_data << ContestEntry.new(contest_nth: 31, school: 57, campus: 62, team: 124)
 ContestEntry.import bulk_insert_data

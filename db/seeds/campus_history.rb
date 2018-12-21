@@ -7,6 +7,7 @@ bulk_insert_data << CampusHistory.new(campus_code: Campus.find_by(abbreviation: 
 bulk_insert_data << CampusHistory.new(campus_code: Campus.find_by(abbreviation: "サレジオ").code, begin: 3, end: 17, name: "育英工業高等専門学校", abbreviation: "育英", region_code: Region.find_by(name: "関東甲信越").code)
 bulk_insert_data << CampusHistory.new(campus_code: Campus.find_by(abbreviation: "富山射水").code, begin: 3, end: 21, name: "富山商船高等専門学校", abbreviation: "富山商船", region_code: Region.find_by(name: "東海北陸").code)
 bulk_insert_data << CampusHistory.new(campus_code: Campus.find_by(abbreviation: "富山本郷").code, begin: 1, end: 21, name: "富山工業高等専門学校", abbreviation: "富山", region_code: Region.find_by(name: "東海北陸").code)
+bulk_insert_data << CampusHistory.new(campus_code: Campus.find_by(abbreviation: "国際").code, begin: 1, end: 30, name: "金沢工業高等専門学校", abbreviation: "金沢", region_code: Region.find_by(name: "東海北陸").code)
 bulk_insert_data << CampusHistory.new(campus_code: Campus.find_by(abbreviation: "大阪府大").code, begin: 3, end: 23, name: "大阪府立工業高等専門学校", abbreviation: "大阪府立", region_code: Region.find_by(name: "近畿").code)
 bulk_insert_data << CampusHistory.new(campus_code: Campus.find_by(abbreviation: "近大").code, begin: 3, end:  7, name: "熊野工業高等専門学校", abbreviation: "熊野", region_code: Region.find_by(name: "東海北陸").code)
 bulk_insert_data << CampusHistory.new(campus_code: Campus.find_by(abbreviation: "近大").code, begin: 8, end: 12, name: "熊野工業高等専門学校", abbreviation: "熊野", region_code: Region.find_by(name: "近畿").code)
