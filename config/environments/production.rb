@@ -16,7 +16,7 @@ Rails.application.configure do
 
   # Ensures that a master key has been made available in either ENV["RAILS_MASTER_KEY"]
   # or in config/master.key. This key is used to decrypt credentials (and other encrypted files).
-  # config.require_master_key = true
+  config.require_master_key = true
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
@@ -92,14 +92,19 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  Devise.setup do |config|
-    config.omniauth :twitter, 'byyWb71tt3FLrj2uoBStlCoIa', 'aSFumRp8V5JMWl1c1tDyK1T1BYOasME5qN0vKiqoSixDD5sVa7', :display => 'popup', callback_url: "http://kosen-robocon-db.herokuapp.com/auth/twitter/callback"
-  end
+  # Set the same callback URL as the callback URL set in Twitter Apps.
   # Devise.setup do |config|
-  #   config.omniauth :twitter,
-  #     Rails.application.credentials.config[:production][:twitter_api_key],
-  #     Rails.application.credentials.config[:production][:twitter_api_secret]
+  #   config.omniauth :twitter, 'KldPTUDFr9QscgZ454i8BcBTd', 'd5A44mLhfq6EWbU1ghGJWWvxHCBUMaVffoUJncJFdIl2wKdL54', :display => 'popup', callback_url: "https://kosen-robocon-db.herokuapp.com/users/auth/twitter/callback"
   # end
+  Devise.setup do |config|
+    config.omniauth :twitter,
+      Rails.application.credentials.config[:production][:twitter_api_key],
+      Rails.application.credentials.config[:production][:twitter_api_secret],
+      :display => 'popup',
+      callback_url: "https://kosen-robocon-db.herokuapp.com/users/auth/twitter/callback"
+  end
   # puts ">>>> twitter_api_key:#{Rails.application.credentials.config[:production][:twitter_api_key]}"
   # puts ">>>> twitter_api_secret:#{Rails.application.credentials.config[:production][:twitter_api_secret]}"
+  # puts ">>>> Devise.omniauth_configs:#{Devise.omniauth_configs}"
+  
 end
