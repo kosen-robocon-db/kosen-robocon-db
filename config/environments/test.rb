@@ -57,8 +57,12 @@ Rails.application.configure do
       :display => 'popup', 
       callback_url: "http://localhost:3000/users/auth/twitter/callback"
   end
-  # puts ">>>> twitter_api_key:#{Rails.application.credentials.config[:test][:twitter_api_key]}"
-  # puts ">>>> twitter_api_secret:#{Rails.application.credentials.config[:test][:twitter_api_secret]}"
-  # puts ">>>> Devise.omniauth_configs:#{Devise.omniauth_configs}"
+  puts ">>>> twitter_api_key:#{Rails.application.credentials.config[:test][:twitter_api_key]}"
+  puts ">>>> twitter_api_secret:#{Rails.application.credentials.config[:test][:twitter_api_secret]}"
+  puts ">>>> Devise.omniauth_configs:#{Devise.omniauth_configs}"
+  puts ">>>> credentials.secret_key_base:#{Rails.application.credentials.secret_key_base}"
+  puts ">>>> secrets.secret_key_base:#{Rails.application.secrets.secret_key_base}"
+  puts ">>>> config.secret_key_base:#{Rails.application.config.secret_key_base}"
+  puts ">>>> secret_key_base:#{Rails.application.secret_key_base}"
   
 end
