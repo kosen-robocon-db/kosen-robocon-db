@@ -103,9 +103,7 @@ Rails.application.configure do
       Rails.application.credentials.config[:staging][:twitter_api_secret],
       :display => 'popup', 
       callback_url: "https://kosen-robocon-db-staging.herokuapp.com/users/auth/twitter/callback"
-
-    config.secret_key_base = Rails.application.credentials.secret_key_base
-  end
+    end
   puts ">>>> twitter_api_key:#{Rails.application.credentials.config[:staging][:twitter_api_key]}"
   puts ">>>> twitter_api_secret:#{Rails.application.credentials.config[:staging][:twitter_api_secret]}"
   puts ">>>> Devise.omniauth_configs:#{Devise.omniauth_configs}"
