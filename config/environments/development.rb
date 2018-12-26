@@ -70,14 +70,6 @@ Rails.application.configure do
       :display => 'popup',
       callback_url: "http://localhost:3000/users/auth/twitter/callback"
   end
-  puts ">>>> twitter_api_key(credentials):#{Rails.application.credentials.config[:development][:twitter_api_key]}"
-  puts ">>>> twitter_api_secret(credentials):#{Rails.application.credentials.config[:development][:twitter_api_secret]}"
-  puts ">>>> Devise.omniauth_configs:#{Devise.omniauth_configs}"
-  puts ">>>> credentials.secret_key_base:#{Rails.application.credentials.secret_key_base}"
-  puts ">>>> secrets.secret_key_base:#{Rails.application.secrets.secret_key_base}"
-  puts ">>>> config.secret_key_base:#{Rails.application.config.secret_key_base}"
-  puts ">>>> secret_key_base:#{Rails.application.secret_key_base}"
-  
 
   # Added below the configuration in order not to cause error like this:
   # Cannot render console from 10.0.2.2! Allowed networks: 127.0.0.1, ::1, 127.0.0.0/127.255.255.255
