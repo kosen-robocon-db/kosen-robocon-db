@@ -57,6 +57,7 @@ class Game < ApplicationRecord
   validates :contest_nth,       presence: true
   validates :region_code,       presence: true
   validates :round,             presence: true
+  validates :league,            presence: true
   validates :game,              presence: true
   validates :left_robot_code,   presence: true
   validates :right_robot_code,  presence: true
@@ -87,8 +88,14 @@ class Game < ApplicationRecord
       not hash[:round].blank? and
       not hash[:game].blank?
     then
-      "1" + ("%02d" % hash[:contest_nth]) + hash[:region_code].to_s +
-      hash[:round].to_s + ("%02d" % hash[:game])
+      if hash[:league].blank?
+        "1" + ("%02d" % hash[:contest_nth]) + hash[:region_code].to_s +
+        hash[:round].to_s + "0" + ("%02d" % hash[:game])
+      else
+        "1" + ("%02d" % hash[:contest_nth]) + hash[:region_code].to_s +
+        hash[:round].to_s + hash[:league].to_s +
+        ("%02d" % hash[:game])
+      end
     else
       nil
     end
@@ -137,7 +144,7 @@ class Game < ApplicationRecord
     # |__________"失格"
     # 二進数化する必要はあるのか？
     [
-      "試合コード", "大会回", "地区コード", "回戦", "試合",
+      "試合コード", "大会回", "地区コード", "回戦", "リーグ", "試合",
       "ロボットコード（左）", "ロボットコード（右）", "勝利ロボットコード",
       "勝敗事由コード"
     ]
@@ -145,7 +152,7 @@ class Game < ApplicationRecord
 
   def self.csv_column_syms
     [
-      :code, :contest_nth, :region_code, :round, :game,
+      :code, :contest_nth, :region_code, :round, :league, :game,
       :left_robot_code, :right_robot_code, :winner_robot_code,
       :reasons_for_victory
     ]

@@ -94,7 +94,7 @@ group :tools do
   gem 'rails-erd'
 
   # マイグレーションファイルをinit_schemaに纏めるツール
-  gem 'squasher', '>= 0.6.0'
+  gem 'squasher', '>= 0.6.2'
 end
 
 # 運用向けツール

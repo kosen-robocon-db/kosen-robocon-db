@@ -11,12 +11,12 @@ if FileTest.exist?(csv_file_path) then
     )
   end
 else
-  bulk_insert_data << GameDetail.new(game_code: 1291101, number: 1, properties: '{
+  bulk_insert_data << GameDetail.new(game_code: 12911001, number: 1, properties: '{
     "height":"0-0",
     "jury_votes":"3-0",
     "progress":"灯台-なし"
   }'.gsub(/\n| /, ""))
-  bulk_insert_data << GameDetail.new(game_code: 1291102, number: 1, properties: '{
+  bulk_insert_data << GameDetail.new(game_code: 12911002, number: 1, properties: '{
     "height":"0-0",
     "jury_votes":"2-1",
     "progress":"灯台-灯台",

@@ -119,7 +119,7 @@ class GamesController < ApplicationController
   private
 
   def game_params
-    a = %i( contest_nth region_code round game opponent_robot_code victory )
+    a = %i( contest_nth region_code round league game opponent_robot_code victory )
     r = { :reasons_for_victory => [] }
     h = { "#{@gd_sym.to_s}_attributes" =>
       @gd_sym.to_s.classify.constantize.attr_syms_for_params }
