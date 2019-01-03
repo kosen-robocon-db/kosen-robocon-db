@@ -396,7 +396,7 @@ for nth in 1..3 do
   bulk_insert_data << RoundName.new(contest_nth: nth, region_code: 0,
     round: 9, name: "エキシビジョン")
 end
-for nth in 4..30 do
+for nth in 4..31 do
   for region in 0..8 do
     bulk_insert_data << RoundName.new(contest_nth: nth, region_code: region,
       round: 9, name: "エキシビジョン")
