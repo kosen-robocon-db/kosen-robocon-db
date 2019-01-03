@@ -1,3 +1,7 @@
+# init_schemaを作り直した場合、DBをリセットしてからデプロイすること。
+# そうしなければ、DBをリセットした後に手動でデプロイし直すか、
+# GitHub上のmasterの変更／更新がなければ、デプロイできない。
+# Herokuには手動でデプロイする機能はあるが、現状の設定では出来ない。
 class InitSchema < ActiveRecord::Migration[5.0]
   def up
     create_table "advancement_histories" do |t|
