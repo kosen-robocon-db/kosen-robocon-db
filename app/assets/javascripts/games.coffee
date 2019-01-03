@@ -76,6 +76,7 @@ $ ->
     28: [ 'my_special_win', 'opponent_special_win', 'jury_votes' ]
     29: [ 'progress', 'jury_votes' ]
     30: [ 'jury_votes' ]
+    31: [ 'special_win', 'jury_votes' ]
   }
 
   ##############################################################################
@@ -167,3 +168,26 @@ $ ->
   $('form').on 'change', (event) ->
     if gda
       gda.switch(event)
+
+    # 第31回大会で得点を自動計算
+  $(document).on 'change', (event, param) ->
+    header = "game_game_detail31sts_attributes"
+    regex = ///^#{header}_\d_(my|opponent)_///
+    if regex.test(event.target.id)
+      number = event.target.id.match(/_\d+_/)[0].replace(/_/g, '')
+      distinction = 
+        event.target.id.match(/_(my|opponent)_/)[0].replace(/_/g, '')
+      # 四つのフィールド個別にイテーレーションで処理してもよいが、
+      # 恐らくこのままの方が速いだろう。
+      target_fields = event.target.id.match(
+        /(fixed_table|double_table_upper|double_table_lower|movable_table)$/)
+      prefix = '#'+header+"_"+number+"_"+distinction + "_"
+      if target_fields
+        count = []
+        count.push(Number($(prefix + "fixed_table").val()) || 0)
+        count.push(Number($(prefix + "double_table_upper").val()) || 0)
+        count.push(Number($(prefix + "double_table_lower").val()) || 0)
+        count.push(Number($(prefix + "movable_table").val()) || 0)
+        point = count[0] + count[1] * 5 + count[2] + count[3]
+        $(prefix + "point").val(point)
+      

@@ -1,0 +1,99 @@
+<%= f.hidden_field :id %>
+<%
+  fixed_table_numbers = option_numbers end_number: 3
+  double_table_upper_numbers = option_numbers end_number: 20
+  double_table_lower_numbers = option_numbers end_number: 20
+  movable_table_numbers = option_numbers end_number: 20
+  retry_numbers   = option_numbers digit: 1, end_number:  9
+  foul_numbers    = option_numbers digit: 1, end_number:  9
+%>
+<%###########################################################################%>
+<%= label_tag "", "得点とリトライなど：" %>
+<div class="indent">
+  <%= label_tag "", "#{@robot.name}：", class: 'robot_name' %>
+  <div class="indent">
+    <%= f.label :my_fixed_table, "固定テーブル：" %>
+    <%= f.select :my_fixed_table, fixed_table_numbers %>本
+    <br />
+    <%= f.label :my_double_table_upper, "２段テーブル上段：" %>
+    <%= f.select :my_double_table_upper, double_table_upper_numbers %>本
+    <br />
+    <%= f.label :my_double_table_lower, "２段テーブル下段：" %>
+    <%= f.select :my_double_table_lower, double_table_lower_numbers %>本
+    <br />
+    <%= f.label :my_movable_table, "移動テーブル：" %>
+    <%= f.select :my_movable_table, movable_table_numbers %>本
+    <br />
+    <%= f.label :my_point, "得点：" %>
+    <%#= "#{d.my_point}".gsub(/_/, '-') %>
+    <%#= f.select :my_point, point_numbers %>
+    <%= f.text_field :my_point, { readonly: true, size: 2, maxlength: 2 } %>
+    <%#======================================================================%>
+    <br />
+    <br />
+    <%# リペアはリトライを流用する %>
+    <%= f.label :my_retry, "リトライ：" %>
+    <%= f.select :my_retry, retry_numbers %>回
+    <br />
+    <%= f.label :my_foul, "反則：" %>
+    <%= f.select :my_foul, foul_numbers %>回
+  </div>
+  <%#------------------------------------------------------------------------%>
+  <br />
+  <%= label_tag "", "対戦相手：", class: 'robot_name' %>
+  <div class="indent">
+    <%= f.label :opponent_fixed_table, "固定テーブル：" %>
+    <%= f.select :opponent_fixed_table, fixed_table_numbers %>本
+    <br />
+    <%= f.label :opponent_double_table_upper, "２段テーブル上段：" %>
+    <%= f.select :opponent_double_table_upper, double_table_upper_numbers %>本
+    <br />
+    <%= f.label :opponent_double_table_lower, "２段テーブル下段：" %>
+    <%= f.select :opponent_double_table_lower, double_table_lower_numbers %>本
+    <br />
+    <%= f.label :opponent_movable_table, "移動テーブル：" %>
+    <%= f.select :opponent_movable_table, movable_table_numbers %>本
+    <br />
+    <%= f.label :opponent_point, "得点：" %>
+    <%#= "#{d.opponent_point}".gsub(/_/, '-') %>
+    <%#= f.select :opponent_point, point_numbers %>
+    <%= f.text_field :opponent_point, { readonly: true, size: 2, maxlength: 2 } %>
+    <%#======================================================================%>
+    <br />
+    <br />
+    <%# リペアはリトライを流用する %>
+    <%= f.label :opponent_retry, "リトライ：" %>
+    <%= f.select :opponent_retry, retry_numbers %>回
+    <br />
+    <%= f.label :opponent_foul, "反則：" %>
+    <%= f.select :opponent_foul, foul_numbers %>回
+  </div>
+</div>
+<%###########################################################################%>
+<%# 全ののペットボトルを打ち尽くすと試合終了となる。%>
+<%# その時の時間を記録すべきであるが、いまのところその試合を確認していないので、%>
+<%# コメントアウトしておく。%>
+<%# コメントインさせて復活させるときは、ペットボトル打ち尽くしフラグを設けるべき。%>
+<%# <br /> %>
+<%# = f.label :time_minute, "試合時間：" %>
+<%# = f.select :time_minute, time_numbers %><%# 分 %>
+<%# = f.select :time_second, time_numbers %><%# 秒 %>
+<%#==========================================================================%>
+<br />
+<%= render "game_details/form/common_parts/special_win", f: f,
+  special_win_name: "Ｖゴール" %>
+<%#==========================================================================%>
+<br />
+<%= render "game_details/form/common_parts/jury_votes", f: f,
+  juries_number: 5 %><%# 審査員判定 %>
+<%###########################################################################%>
+<br />
+<%= f.label :memo, "メモ：" %>
+<div class="indent">
+  <%= f.text_field :memo %>
+</div>
+<%#==========================================================================%>
+<br />
+<%= f.hidden_field :_destroy %>
+<%= f.remove_nested_fields_link '削除', class: 'btn btn-danger',
+  role: 'button' %><br />
