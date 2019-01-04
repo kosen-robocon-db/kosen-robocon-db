@@ -134,10 +134,14 @@ class GameDetail31st < GameDetail
   # save/update直前のvalidationによって吟味されるので、有るか無しか(nil)かを吟味する
   # だけにしている。他の数字や文字列が入力される属性も同様である。
   def self.compose_properties(hash:)
+ 
     h = compose_pairs(hash: hash, stems: STEMS)
-    # hash[:time_minute] = "#{UNKNOWN}" if hash[:time_minute].blank? # 要らないかも
-    # hash[:time_second] = "#{UNKNOWN}" if hash[:time_second].blank? # 要らないかも
-    # h.update(compose_time(hash: hash))
+    # pointが最後にになってしまうが、応急処置
+    h["point"] = "\
+      #{hash[:my_point]}\
+      #{DELIMITER}\
+      #{hash[:opponent_point]}\
+    ".gsub(/(\s| )+/, '')
     if hash[:special_win].presence.to_bool
       h["special_win"] = "true"
       h.update(compose_time(hash: hash)) # h["time"]
