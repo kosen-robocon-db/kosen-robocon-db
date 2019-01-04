@@ -1,12 +1,8 @@
 <%= f.hidden_field :id %>
 <%
-  # fixed_table_numbers        = option_numbers end_number: 20
-  # double_table_upper_numbers = option_numbers end_number: 20
-  # double_table_lower_numbers = option_numbers end_number: 20
-  # movable_table_numbers      = option_numbers end_number: 20
   bottle_numbers = option_numbers end_number: 20
-  retry_numbers   = option_numbers digit: 1, end_number:  9
-  foul_numbers    = option_numbers digit: 1, end_number:  9
+  retry_numbers  = option_numbers digit: 1, end_number:  9
+  foul_numbers   = option_numbers digit: 1, end_number:  9
 %>
 <%###########################################################################%>
 <%= label_tag "", "得点とリトライなど：" %>
