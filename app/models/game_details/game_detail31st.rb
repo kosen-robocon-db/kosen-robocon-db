@@ -34,15 +34,18 @@ class GameDetail31st < GameDetail
 
   # my_robot_code側から見ているので、
   # ロボットコード異なる場合は交換したい左右の値の語幹を書いておく
-  STEMS = %w( robot_code fixed_table double_table_upper double_table_lower
-    movable_table point retry foul jury_votes )
+  STEMS = %w( robot_code 
+    fixed_table1 fixed_table2 fixed_table3 
+    double_table_upper double_table_lower 
+    movable_table1 movable_table2 movable_table3 
+    point retry foul jury_votes )
 
   UNKNOWN = GameDetail::Constant::UNKNOWN_VALUE
 
   REX_BL = /\A([0-9]|10|#{UNKNOWN})\z/
   REX_GPT = /\A([1-2]{,1}[0-9]|#{UNKNOWN})\z/
   
-  REX_FT  = /\A([0-3]|#{UNKNOWN})\z/
+  REX_FT  = /\A([1]{,1}[0-9]|20|#{UNKNOWN})\z/
   REX_DTU = /\A([1]{,1}[0-9]|20|#{UNKNOWN})\z/
   REX_DTL = /\A([1]{,1}[0-9]|20|#{UNKNOWN})\z/
   REX_MT  = /\A([1]{,1}[0-9]|20|#{UNKNOWN})\z/
@@ -50,11 +53,14 @@ class GameDetail31st < GameDetail
   REX_F   = /\A([0-9]|#{UNKNOWN})\z/ 
   REX_VT  = /\A([0-5]|#{UNKNOWN})\z/
 
-
-  attr_accessor :my_fixed_table,             :opponent_fixed_table
+  attr_accessor :my_fixed_table1,            :opponent_fixed_table1
+  attr_accessor :my_fixed_table2,            :opponent_fixed_table2
+  attr_accessor :my_fixed_table3,            :opponent_fixed_table3
   attr_accessor :my_double_table_upper,      :opponent_double_table_upper
   attr_accessor :my_double_table_lower,      :opponent_double_table_lower
-  attr_accessor :my_movable_table,           :opponent_movable_table
+  attr_accessor :my_movable_table1,          :opponent_movable_table1
+  attr_accessor :my_movable_table2,          :opponent_movable_table2
+  attr_accessor :my_movable_table3,          :opponent_movable_table3
   attr_accessor :my_point,                   :opponent_point
   attr_accessor :my_retry,                   :opponent_retry
   attr_accessor :my_foul,                    :opponent_foul
@@ -62,14 +68,22 @@ class GameDetail31st < GameDetail
   attr_accessor :jury_votes, :my_jury_votes, :opponent_jury_votes
   attr_accessor :memo
 
-  validates :my_fixed_table,              format: { with: REX_FT }
-  validates :opponent_fixed_table,        format: { with: REX_FT }
+  validates :my_fixed_table1,             format: { with: REX_FT }
+  validates :opponent_fixed_table1,       format: { with: REX_FT }
+  validates :my_fixed_table2,             format: { with: REX_FT }
+  validates :opponent_fixed_table2,       format: { with: REX_FT }
+  validates :my_fixed_table3,             format: { with: REX_FT }
+  validates :opponent_fixed_table3,       format: { with: REX_FT }
   validates :my_double_table_upper,       format: { with: REX_DTU }
   validates :opponent_double_table_upper, format: { with: REX_DTU }
   validates :my_double_table_lower,       format: { with: REX_DTL }
   validates :opponent_double_table_lower, format: { with: REX_DTL }
-  validates :my_movable_table,            format: { with: REX_MT }
-  validates :opponent_movable_table,      format: { with: REX_MT }
+  validates :my_movable_table1,           format: { with: REX_MT }
+  validates :opponent_movable_table1,     format: { with: REX_MT }
+  validates :my_movable_table2,           format: { with: REX_MT }
+  validates :opponent_movable_table2,     format: { with: REX_MT }
+  validates :my_movable_table3,           format: { with: REX_MT }
+  validates :opponent_movable_table3,     format: { with: REX_MT }
   validates :my_retry,                    format: { with: REX_RP }
   validates :opponent_retry,              format: { with: REX_RP }
   validates :my_foul,                     format: { with: REX_F }
@@ -91,10 +105,14 @@ class GameDetail31st < GameDetail
   # DBにはないがpropertyに納めたいフォーム上の属性
   def self.additional_attr_symbols
     [
-      :my_fixed_table,        :opponent_fixed_table,
+      :my_fixed_table1,       :opponent_fixed_table1,
+      :my_fixed_table2,       :opponent_fixed_table2,
+      :my_fixed_table3,       :opponent_fixed_table3,
       :my_double_table_upper, :opponent_double_table_upper,
       :my_double_table_lower, :opponent_double_table_lower,
-      :my_movable_table,      :opponent_movable_table,
+      :my_movable_table1,     :opponent_movable_table1,
+      :my_movable_table2,     :opponent_movable_table2,
+      :my_movable_table3,     :opponent_movable_table3,
       :my_point,              :opponent_point,
       :my_retry,              :opponent_retry,
       :my_foul,               :opponent_foul,
@@ -131,9 +149,18 @@ class GameDetail31st < GameDetail
 
   def decompose_properties(robot:)
     super(robot: robot) do |h|
-      if h["fixed_table"].present?
-        self.my_fixed_table, self.opponent_fixed_table =
-          h["fixed_table"].to_s.split(DELIMITER)
+      # fixed_table{1-3}に対してはもっとよい処ほ方があるはずだ。
+      if h["fixed_table1"].present?
+        self.my_fixed_table1, self.opponent_fixed_table1 =
+          h["fixed_table1"].to_s.split(DELIMITER)
+      end
+      if h["fixed_table2"].present?
+        self.my_fixed_table2, self.opponent_fixed_table2 =
+          h["fixed_table2"].to_s.split(DELIMITER)
+      end
+      if h["fixed_table3"].present?
+        self.my_fixed_table3, self.opponent_fixed_table3 =
+          h["fixed_table3"].to_s.split(DELIMITER)
       end
       if h["double_table_upper"].present?
         self.my_double_table_upper, self.opponent_double_table_upper =
@@ -143,9 +170,18 @@ class GameDetail31st < GameDetail
         self.my_double_table_lower, self.opponent_double_table_lower =
           h["double_table_lower"].to_s.split(DELIMITER)
       end
-      if h["movable_table"].present?
-        self.my_movable_table, self.opponent_movable_table =
-          h["movable_table"].to_s.split(DELIMITER)
+      # movable_table{1-3}に対してはもっとよい処理方法があるはずだ。
+      if h["movable_table1"].present?
+        self.my_movable_table1, self.opponent_movable_table1 =
+          h["movable_table1"].to_s.split(DELIMITER)
+      end
+      if h["movable_table2"].present?
+        self.my_movable_table2, self.opponent_movable_table2 =
+          h["movable_table2"].to_s.split(DELIMITER)
+      end
+      if h["movable_table3"].present?
+        self.my_movable_table3, self.opponent_movable_table3 =
+          h["movable_table3"].to_s.split(DELIMITER)
       end
       if h["point"].present?
         self.my_point, self.opponent_point =

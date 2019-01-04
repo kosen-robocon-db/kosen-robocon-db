@@ -7,3 +7,15 @@
 .hidden {
   display: none;
 }
+
+
+/* 第31回大会用 */
+.dtable {
+  display: table;
+  table-layout: fixed;
+  width: 250px;
+}
+.dtable_cell {
+  display: table-cell;
+  border: 0px;
+}

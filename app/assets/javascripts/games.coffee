@@ -180,14 +180,22 @@ $ ->
       # 四つのフィールド個別にイテーレーションで処理してもよいが、
       # 恐らくこのままの方が速いだろう。
       target_fields = event.target.id.match(
-        /(fixed_table|double_table_upper|double_table_lower|movable_table)$/)
+        /(fixed_table[1-3]|double_table_upper|double_table_lower|movable_table[1-3])$/)
       prefix = '#'+header+"_"+number+"_"+distinction + "_"
       if target_fields
         count = []
-        count.push(Number($(prefix + "fixed_table").val()) || 0)
+        for i in [1..3]
+          if Number($(prefix + "fixed_table" + String(i)).val()) 
+            count.push(1)
+          else 
+            count.push(0)
         count.push(Number($(prefix + "double_table_upper").val()) || 0)
         count.push(Number($(prefix + "double_table_lower").val()) || 0)
-        count.push(Number($(prefix + "movable_table").val()) || 0)
-        point = count[0] + count[1] * 5 + count[2] + count[3]
+        count.push(Number($(prefix + "movable_table1").val()) || 0)
+        count.push(Number($(prefix + "movable_table2").val()) || 0)
+        count.push(Number($(prefix + "movable_table3").val()) || 0)
+        point  = count[0] + count[1] + count[2]
+        point += count[3] * 5 + count[4]
+        point += count[5] + count[6] + count[7]
         $(prefix + "point").val(point)
       
