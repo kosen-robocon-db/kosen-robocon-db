@@ -99,6 +99,19 @@ $ ->
 
   ##############################################################################
 
+  # 第31回大会専用関数
+
+  # リーグセレクターの切り替え表示　リーグ戦は地区大会のみ実施
+  league_toggle_by = (region_code) -> 
+    switch Number(region_code)
+      when 0                      # 全国
+        $('#game_league').hide();
+      when 1, 2, 3, 4, 5, 6, 7, 8 # 地区
+        $('#game_league').show();
+      else
+
+  ##############################################################################
+
   # 試合詳細の「再試合」ラベル表示
   c = 0
   $('div.replay').each ->
@@ -113,6 +126,14 @@ $ ->
       attributes: switching_attributes[gon.contest_nth]
     })
 
+  # 第31回大会の場合
+  contest_nth = $('[id=game_contest_nth]').val();
+  switch Number(contest_nth)
+    when 31
+      region_code = $('[id=game_region_code]').val();
+      league_toggle_by(region_code)
+    else
+
   # 試合(game)で地区を変更すると回戦も変化させる
   $(document).on 'change', '#game_region_code', ->
     contest_nth = $('[id=game_contest_nth]').val();
@@ -124,6 +145,12 @@ $ ->
         contest_nth: contest_nth,
         region_code: $(this).val()
       }
+    # 第31大会の予選リーグ項目の表示切替
+    switch Number(contest_nth)
+      when 31
+        region_code = $('[id=game_region_code]').val();
+        league_toggle_by(region_code)
+      else
     ).done (results) ->
       i = 0
         # each with indexを使うと意図したとおりに動かなかったので
@@ -184,6 +211,7 @@ $ ->
       prefix = '#'+header+"_"+number+"_"+distinction + "_"
       if target_fields
         count = []
+        # 固定テーブルに何本立てても1テーブルにつき1点
         for i in [1..3]
           if Number($(prefix + "fixed_table" + String(i)).val()) 
             count.push(1)

@@ -90,7 +90,8 @@ class Game < ApplicationRecord
     then
       if hash[:league].blank?
         "1" + ("%02d" % hash[:contest_nth]) + hash[:region_code].to_s +
-        hash[:round].to_s + "0" + ("%02d" % hash[:game])
+        hash[:round].to_s + "0" + 
+        ("%02d" % hash[:game])
       else
         "1" + ("%02d" % hash[:contest_nth]) + hash[:region_code].to_s +
         hash[:round].to_s + hash[:league].to_s +
