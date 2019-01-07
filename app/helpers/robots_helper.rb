@@ -18,14 +18,17 @@ module RobotsHelper
     case hash["contest_nth"].to_i
     when 31
       case hash["region_code"].to_i
-      when 1..8
-        case hash["league"].to_i
-        when 0
-          a += "リーグ不明"
-        when 1..5
-          a += "リーグ" + ("A".ord + hash["league"].to_i - 1).chr
-        else
-          a += "リーグ異常値"
+      when 1..8 # 第31回は地区のみリーグ戦実施
+        case round_name.name
+        when "予選"
+          case hash["league"].to_i
+          when 0
+            a += "リーグ不明"
+          when 1..5
+            a += "リーグ" + ("A".ord + hash["league"].to_i - 1).chr
+          else
+            a += "リーグ異常値"
+          end
         end
       end
     end
