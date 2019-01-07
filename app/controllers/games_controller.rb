@@ -77,6 +77,7 @@ class GamesController < ApplicationController
     if
       @game.region_code.to_i != h['region_code'].to_i or
       @game.round.to_i != h['round'].to_i or
+      @game.league.to_i != h['league'].to_i or
       @game.game.to_i != h['game'].to_i
     then # game_code の変更がある場合
       code = h["code"] = Game.get_code(hash: h).to_s

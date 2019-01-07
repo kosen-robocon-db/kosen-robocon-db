@@ -3,7 +3,8 @@
   region_code = action == :create ? 0 : @game.region_code
   @round_names = RoundName.where(contest_nth: @robot.contest_nth,
     region_code: region_code)
-  @league_array = Array.new(5){ |i| [ ( "A".ord + i ).chr, i ] }
+  @league_array = Array.new(5){ |i| [ ( "A".ord + i ).chr, i + 1 ] }
+  @league_array.unshift(["--", 0])
   @game_array = Array.new(31){ |i| ["第"+(i+1).to_s+"試合", i+1] }
   @robots_array = Robot.where(contest_nth: @game.contest_nth).
     where.not(code: [@robot.code]).
