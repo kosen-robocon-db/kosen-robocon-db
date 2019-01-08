@@ -70,5 +70,7 @@ else
   bulk_insert_data << Robot.new(code: 128110102, contest_nth: 28, campus_code: Campus.find_by(abbreviation: "旭川").code, name: "―Umbrella―", kana: "アンブレラ")
   bulk_insert_data << Robot.new(code: 129110101, contest_nth: 29, campus_code: Campus.find_by(abbreviation: "旭川").code, name: "HYDRA", kana: "ヒュドラ", team: "A")
   bulk_insert_data << Robot.new(code: 129110102, contest_nth: 29, campus_code: Campus.find_by(abbreviation: "旭川").code, name: "sucfaro、sucforte", kana: "サクファロ　サクフォート", team: "B")
+  bulk_insert_data << Robot.new(code: 130110101, contest_nth: 30, campus_code: Campus.find_by(abbreviation: "旭川").code, name: "バスターチャンⅡ", kana: "バスターチャンツー", team: "A")
+  bulk_insert_data << Robot.new(code: 130110102, contest_nth: 30, campus_code: Campus.find_by(abbreviation: "旭川").code, name: "	erisko", kana: "エリスコ", team: "B")
 end
 Robot.import bulk_insert_data
