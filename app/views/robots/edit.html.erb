@@ -14,6 +14,12 @@
       <%= f.label :kana, "ヨミガナ" %>
       <%= f.text_field :kana, class: 'form-control' %><br>
 
+      <%= f.label :name_alias, "ロボット名別名" %>
+      <%= f.text_field :name_alias, class: 'form-control' %><br>
+
+      <%= f.label :kana, "別名ヨミガナ" %>
+      <%= f.text_field :kana_alias, class: 'form-control' %><br>
+
       <%= f.label :team, "チーム" %><br>
       <%= select :robot, :team, Robot.team_choices, class: 'form-control' %><br><br>
 
