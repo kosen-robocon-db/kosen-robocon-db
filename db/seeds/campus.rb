@@ -28,7 +28,7 @@ bulk_insert_data << Campus.new(region_code: 3, code: 3230, name: "木更津工�
 bulk_insert_data << Campus.new(region_code: 4, code: 4240, name: "富山高等専門学校射水キャンパス", abbreviation: "富山射水", latitude: 36.758859, longitude: 137.158814)
 bulk_insert_data << Campus.new(region_code: 4, code: 4250, name: "石川工業高等専門学校", abbreviation: "石川", latitude: 36.662102, longitude: 136.73834)
 bulk_insert_data << Campus.new(region_code: 4, code: 4260, name: "富山高等専門学校本郷キャンパス", abbreviation: "富山本郷", latitude: 36.650966, longitude: 137.24397)
-bulk_insert_data << Campus.new(region_code: 4, code: 4270, name: "金沢工業高等専門学校", abbreviation: "金沢", latitude: 36.532542, longitude: 136.62939)
+bulk_insert_data << Campus.new(region_code: 4, code: 4270, name: "国際高等専門学校", abbreviation: "国際", latitude: 36.532542, longitude: 136.62939)
 bulk_insert_data << Campus.new(region_code: 4, code: 4280, name: "福井工業高等専門学校", abbreviation: "福井", latitude: 35.936801, longitude: 136.171006)
 bulk_insert_data << Campus.new(region_code: 4, code: 4290, name: "岐阜工業高等専門学校", abbreviation: "岐阜", latitude: 35.44707, longitude: 136.672609)
 bulk_insert_data << Campus.new(region_code: 4, code: 4300, name: "沼津工業高等専門学校", abbreviation: "沼津", latitude: 35.135838, longitude: 138.883871)

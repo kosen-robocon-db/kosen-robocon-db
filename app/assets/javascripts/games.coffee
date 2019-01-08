@@ -76,6 +76,7 @@ $ ->
     28: [ 'my_special_win', 'opponent_special_win', 'jury_votes' ]
     29: [ 'progress', 'jury_votes' ]
     30: [ 'jury_votes' ]
+    31: [ 'special_win', 'jury_votes' ]
   }
 
   ##############################################################################
@@ -98,6 +99,19 @@ $ ->
 
   ##############################################################################
 
+  # 第31回大会専用関数
+
+  # リーグセレクターの切り替え表示　リーグ戦は地区大会のみ実施
+  league_toggle_by = (region_code) -> 
+    switch Number(region_code)
+      when 0                      # 全国
+        $('#game_league').hide();
+      when 1, 2, 3, 4, 5, 6, 7, 8 # 地区
+        $('#game_league').show();
+      else
+
+  ##############################################################################
+
   # 試合詳細の「再試合」ラベル表示
   c = 0
   $('div.replay').each ->
@@ -112,6 +126,14 @@ $ ->
       attributes: switching_attributes[gon.contest_nth]
     })
 
+  # 第31回大会の場合
+  contest_nth = $('[id=game_contest_nth]').val();
+  switch Number(contest_nth)
+    when 31
+      region_code = $('[id=game_region_code]').val();
+      league_toggle_by(region_code)
+    else
+
   # 試合(game)で地区を変更すると回戦も変化させる
   $(document).on 'change', '#game_region_code', ->
     contest_nth = $('[id=game_contest_nth]').val();
@@ -123,6 +145,12 @@ $ ->
         contest_nth: contest_nth,
         region_code: $(this).val()
       }
+    # 第31大会の予選リーグ項目の表示切替
+    switch Number(contest_nth)
+      when 31
+        region_code = $('[id=game_region_code]').val();
+        league_toggle_by(region_code)
+      else
     ).done (results) ->
       i = 0
         # each with indexを使うと意図したとおりに動かなかったので
@@ -167,3 +195,35 @@ $ ->
   $('form').on 'change', (event) ->
     if gda
       gda.switch(event)
+
+    # 第31回大会で得点を自動計算
+  $(document).on 'change', (event, param) ->
+    header = "game_game_detail31sts_attributes"
+    regex = ///^#{header}_\d_(my|opponent)_///
+    if regex.test(event.target.id)
+      number = event.target.id.match(/_\d+_/)[0].replace(/_/g, '')
+      distinction = 
+        event.target.id.match(/_(my|opponent)_/)[0].replace(/_/g, '')
+      # 四つのフィールド個別にイテーレーションで処理してもよいが、
+      # 恐らくこのままの方が速いだろう。
+      target_fields = event.target.id.match(
+        /(fixed_table[1-3]|double_table_upper|double_table_lower|movable_table[1-3])$/)
+      prefix = '#'+header+"_"+number+"_"+distinction + "_"
+      if target_fields
+        count = []
+        # 固定テーブルに何本立てても1テーブルにつき1点
+        for i in [1..3]
+          if Number($(prefix + "fixed_table" + String(i)).val()) 
+            count.push(1)
+          else 
+            count.push(0)
+        count.push(Number($(prefix + "double_table_upper").val()) || 0)
+        count.push(Number($(prefix + "double_table_lower").val()) || 0)
+        count.push(Number($(prefix + "movable_table1").val()) || 0)
+        count.push(Number($(prefix + "movable_table2").val()) || 0)
+        count.push(Number($(prefix + "movable_table3").val()) || 0)
+        point  = count[0] + count[1] + count[2]
+        point += count[3] * 5 + count[4]
+        point += count[5] + count[6] + count[7]
+        $(prefix + "point").val(point)
+      

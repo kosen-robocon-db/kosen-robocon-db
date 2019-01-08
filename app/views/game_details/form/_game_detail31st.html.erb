@@ -1,0 +1,154 @@
+<%= f.hidden_field :id %>
+<%
+  bottle_numbers = option_numbers end_number: 20
+  retry_numbers  = option_numbers digit: 1, end_number:  9
+  foul_numbers   = option_numbers digit: 1, end_number:  9
+%>
+<%###########################################################################%>
+<%= label_tag "", "得点とリトライなど：" %>
+<div class="indent">
+  <%= label_tag "", "#{@robot.name}：", class: 'robot_name' %>
+  <div class="indent">
+    <div style="float: left;">
+      <%= label_tag "", "固定テーブル（本）：" %>
+    </div>
+    <div class="dtable">
+      <div class="dtable_cell">
+        <%= f.select :my_fixed_table1, bottle_numbers %>
+      </div>
+      <div class="dtable_cell"></div>
+      <div class="dtable_cell">
+        <%= f.select :my_fixed_table2, bottle_numbers %>
+      </div>
+      <div class="dtable_cell"></div>
+      <div class="dtable_cell">
+        <%= f.select :my_fixed_table3, bottle_numbers %>
+      </div>
+    </div>
+    <br />
+    <%= label_tag "", "２段テーブル（本）："%>
+    <%= f.label :my_double_table_upper, "上段：" %>
+    <%= f.select :my_double_table_upper, bottle_numbers %>
+    <%= f.label :my_double_table_lower, "下段：" %>
+    <%= f.select :my_double_table_lower, bottle_numbers %>
+    <br />
+    <br />
+    <div style="float: left;">
+      <%= label_tag "", "移動テーブル（本）：" %>
+    </div>
+    <div class="dtable">
+      <div class="dtable_cell"></div>
+      <div class="dtable_cell"></div>
+      <div class="dtable_cell">
+        <%= f.select :my_movable_table1, bottle_numbers %>
+        <br />
+        <br />
+        <%= f.select :my_movable_table2, bottle_numbers %>
+        <br />
+        <br />
+        <%= f.select :my_movable_table3, bottle_numbers %>
+      </div>
+      <div class="dtable_cell"></div>
+      <div class="dtable_cell"></div>
+    </div>
+    <br />
+    <%= f.label :my_point, "得点：" %>
+    <%= f.text_field :my_point, { readonly: true, size: 2, maxlength: 2 } %>
+    <%#======================================================================%>
+    <br />
+    <br />
+    <%# リペアはリトライを流用する %>
+    <%= f.label :my_retry, "リトライ：" %>
+    <%= f.select :my_retry, retry_numbers %>回
+    <br />
+    <%= f.label :my_foul, "反則：" %>
+    <%= f.select :my_foul, foul_numbers %>回
+  </div>
+  <%#------------------------------------------------------------------------%>
+  <br />
+  <%= label_tag "", "対戦相手：", class: 'robot_name' %>
+  <div class="indent">
+    <div style="float: left;">
+      <%= label_tag "", "固定テーブル（本）：" %>
+    </div>
+    <div class="dtable">
+      <div class="dtable_cell">
+        <%= f.select :opponent_fixed_table1, bottle_numbers %>
+      </div>
+      <div class="dtable_cell"></div>
+      <div class="dtable_cell">
+        <%= f.select :opponent_fixed_table2, bottle_numbers %>
+      </div>
+      <div class="dtable_cell"></div>
+      <div class="dtable_cell">
+        <%= f.select :opponent_fixed_table3, bottle_numbers %>
+      </div>
+    </div>
+    <br />
+    <%= label_tag "", "２段テーブル（本）："%>
+    <%= f.label :opponent_double_table_upper, "上段：" %>
+    <%= f.select :opponent_double_table_upper, bottle_numbers %>
+    <%= f.label :opponent_double_table_lower, "下段：" %>
+    <%= f.select :opponent_double_table_lower, bottle_numbers %>
+    <br />
+    <br />
+    <div style="float: left;">
+      <%= label_tag "", "移動テーブル（本）：" %>
+    </div>
+    <div class="dtable">
+      <div class="dtable_cell"></div>
+      <div class="dtable_cell"></div>
+      <div class="dtable_cell">
+        <%= f.select :opponent_movable_table1, bottle_numbers %>
+        <br />
+        <br />
+        <%= f.select :opponent_movable_table2, bottle_numbers %>
+        <br />
+        <br />
+        <%= f.select :opponent_movable_table3, bottle_numbers %>
+      </div>
+      <div class="dtable_cell"></div>
+      <div class="dtable_cell"></div>
+    </div>
+    <br />
+    <%= f.label :opponent_point, "得点：" %>
+    <%= f.text_field :opponent_point, { readonly: true, size: 2, maxlength: 2 } %>
+    <%#======================================================================%>
+    <br />
+    <br />
+    <%# リペアはリトライを流用する %>
+    <%= f.label :opponent_retry, "リトライ：" %>
+    <%= f.select :opponent_retry, retry_numbers %>回
+    <br />
+    <%= f.label :opponent_foul, "反則：" %>
+    <%= f.select :opponent_foul, foul_numbers %>回
+  </div>
+</div>
+<%###########################################################################%>
+<%# 全ののペットボトルを打ち尽くすと試合終了となる。%>
+<%# その時の時間を記録すべきであるが、いまのところその試合を確認していないので、%>
+<%# コメントアウトしておく。%>
+<%# コメントインさせて復活させるときは、ペットボトル打ち尽くしフラグを設けるべき。%>
+<%# <br /> %>
+<%# = f.label :time_minute, "試合時間：" %>
+<%# = f.select :time_minute, time_numbers %><%# 分 %>
+<%# = f.select :time_second, time_numbers %><%# 秒 %>
+<%#==========================================================================%>
+<br />
+<%= render "game_details/form/common_parts/special_win", f: f,
+  special_win_name: "Ｖゴール" %>
+<%#==========================================================================%>
+<br />
+<%= render "game_details/form/common_parts/jury_votes", f: f,
+  juries_number: 5 %><%# 審査員判定 %>
+<%###########################################################################%>
+<br />
+<%= f.label :memo, "メモ：" %>
+<div class="indent">
+  <%= f.text_field :memo %>
+</div>
+<%#==========================================================================%>
+<br />
+<%= f.hidden_field :_destroy %>
+<%= f.remove_nested_fields_link '削除', class: 'btn btn-danger',
+  role: 'button' %><br />

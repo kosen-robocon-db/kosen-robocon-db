@@ -1,0 +1,142 @@
+<%#
+  以下の opponent_time_minute などの properties に JSON 形式で格納される情報は、
+  このビューでは基本的に変数として存在しているものとし、
+  またオブジェクトとして nil だったとしても問題がないものとし、
+  present? メソッドなどで確認することはしないものとする。（暫定）
+%>
+<%###########################################################################%>
+<%= label_tag "", "得点とリトライなど：" %>
+<div class="indent">
+  <%= label_tag "", "#{@game.left_robot.name}：", class: 'robot_name' %>
+  <div class="indent">
+    <div style="float: left;">
+      <%= label_tag "", "固定テーブル（本）：" %>
+    </div>
+    <div class="dtable">
+      <div class="dtable_cell">
+        <%= "#{d.my_fixed_table1}".gsub(/_/, '-') %>
+      </div>
+      <div class="dtable_cell"></div>
+      <div class="dtable_cell">
+        <%= "#{d.my_fixed_table2}".gsub(/_/, '-') %>
+      </div>
+      <div class="dtable_cell"></div>
+      <div class="dtable_cell">
+        <%= "#{d.my_fixed_table3}".gsub(/_/, '-') %>
+      </div>
+    </div>
+    <br />
+    <%= label_tag "", "２段テーブル（本）："%>
+    <%= label_tag "", "上段：" %>
+    <%= "#{d.my_double_table_upper}".gsub(/_/, '-') %>
+    <%= label_tag "", "下段：" %>
+    <%= "#{d.my_double_table_lower}".gsub(/_/, '-') %>
+    <br />
+    <br />
+    <div style="float: left;">
+      <%= label_tag "", "移動テーブル（本）：" %>
+    </div>
+    <div class="dtable">
+      <div class="dtable_cell"></div>
+      <div class="dtable_cell"></div>
+      <div class="dtable_cell">
+        <%= "#{d.my_movable_table1}".gsub(/_/, '-') %>
+        <br />
+        <br />
+        <%= "#{d.my_movable_table2}".gsub(/_/, '-') %>
+        <br />
+        <br />
+        <%= "#{d.my_movable_table3}".gsub(/_/, '-') %>
+      </div>
+      <div class="dtable_cell"></div>
+      <div class="dtable_cell"></div>
+    </div>
+    <%= label_tag "", "得点：" %>
+    <%= "#{d.my_point}".gsub(/_/, '-') %>
+    <%#======================================================================%>
+    <br />
+    <%= label_tag "", "リトライ：" %>
+    <%= "#{d.my_retry}".gsub(/_/, '-') %>回
+    <br />
+    <%= label_tag "", "反則：" %>
+    <%= "#{d.my_foul}".gsub(/_/, '-') %>回
+  </div>
+  <%#------------------------------------------------------------------------%>
+  <%= label_tag "", "#{@game.right_robot.name}：", class: 'robot_name' %>
+  <div class="indent">
+    <div style="float: left;">
+      <%= label_tag "", "固定テーブル（本）：" %>
+    </div>
+    <div class="dtable">
+      <div class="dtable_cell">
+        <%= "#{d.opponent_fixed_table1}".gsub(/_/, '-') %>
+      </div>
+      <div class="dtable_cell"></div>
+      <div class="dtable_cell">
+        <%= "#{d.opponent_fixed_table2}".gsub(/_/, '-') %>
+      </div>
+      <div class="dtable_cell"></div>
+      <div class="dtable_cell">
+        <%= "#{d.opponent_fixed_table3}".gsub(/_/, '-') %>
+      </div>
+    </div>
+    <br />
+    <%= label_tag "", "２段テーブル（本）："%>
+    <%= label_tag "", "上段：" %>
+    <%= "#{d.opponent_double_table_upper}".gsub(/_/, '-') %>
+    <%= label_tag "", "下段：" %>
+    <%= "#{d.opponent_double_table_lower}".gsub(/_/, '-') %>
+    <br />
+    <br />
+    <div style="float: left;">
+      <%= label_tag "", "移動テーブル（本）：" %>
+    </div>
+    <div class="dtable">
+      <div class="dtable_cell"></div>
+      <div class="dtable_cell"></div>
+      <div class="dtable_cell">
+        <%= "#{d.opponent_movable_table1}".gsub(/_/, '-') %>
+        <br />
+        <br />
+        <%= "#{d.opponent_movable_table2}".gsub(/_/, '-') %>
+        <br />
+        <br />
+        <%= "#{d.opponent_movable_table3}".gsub(/_/, '-') %>
+      </div>
+      <div class="dtable_cell"></div>
+      <div class="dtable_cell"></div>
+    </div>
+    <br />
+    <%= label_tag "", "得点：" %>
+    <%= "#{d.opponent_point}".gsub(/_/, '-') %>
+    <%#======================================================================%>
+    <br />
+    <%= label_tag "", "リトライ：" %>
+    <%= "#{d.opponent_retry}".gsub(/_/, '-') %>回
+    <br />
+    <%= label_tag "", "反則：" %>
+    <%= "#{d.opponent_foul}".gsub(/_/, '-') %>回
+  </div>
+</div>
+<%###########################################################################%>
+<%# 全ののペットボトルを打ち尽くすと試合終了となる。%>
+<%# その時の時間を記録すべきであるが、いまのところその試合を確認していないので、%>
+<%# コメントアウトしておく。%>
+<%# コメントインさせて復活させるときは、ペットボトル打ち尽くしフラグを設けるべき。%>
+<%# <br /> %>
+<%# = label_tag "", "試合時間：" %>
+<%# = "#{d.time_minute}".gsub(/_/, '-') %><%# 分 %>
+<%# = "#{d.time_second}".gsub(/_/, '-') %><%# 秒 %>
+<%#==========================================================================%>
+<br />
+<%= render "game_details/show/common_parts/special_win", d: d,
+  special_win_name: "Vゴール" %>
+<%#==========================================================================%>
+<br />
+<%= render "game_details/show/common_parts/jury_votes", d: d %><%# 審査員判定 %>
+<%###########################################################################%>
+<br />
+<%= label_tag "", "メモ：" %><br />
+<div class="indent">
+  <%= "#{d.memo}" %>
+</div>

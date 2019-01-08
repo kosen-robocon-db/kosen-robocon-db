@@ -44,14 +44,18 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
-  Devise.setup do |config|
-    config.omniauth :twitter, 'k4FcdCGDOX3feXXm7F7QbESnc', 'TArUyPOanxfprD5tiC0TdZ0y5mQ2HdFrYuSvztyrkT45JMvkzm', :display => 'popup'
-  end
+  # Set the same callback URL as the callback URL set in Twitter Apps.
+  # We assume that testing will be done locally.
+  # So, the parameters are the same as the development ones. 
   # Devise.setup do |config|
-  #   config.omniauth :twitter,
-  #     Rails.application.credentials.config[:test][:twitter_api_key],
-  #     Rails.application.credentials.config[:test][:twitter_api_secret]
+  #   config.omniauth :twitter, 'hQtjCJsH53r70LHX9YA8FYa4u', 'fay4u8KvGPQwwl5AbouLh26byEQMLSRw54jVA87iFrQv0wklOL', :display => 'popup', callback_url: "http://localhost:3000/users/auth/twitter/callback"
   # end
-  # puts ">>>> twitter_api_key:#{Rails.application.credentials.config[:test][:twitter_api_key]}"
-  # puts ">>>> twitter_api_secret:#{Rails.application.credentials.config[:test][:twitter_api_secret]}"
+  Devise.setup do |config|
+    config.omniauth :twitter,
+      Rails.application.credentials.config[:test][:twitter_api_key],
+      Rails.application.credentials.config[:test][:twitter_api_secret],
+      :display => 'popup', 
+      callback_url: "http://localhost:3000/users/auth/twitter/callback"
+  end
+
 end

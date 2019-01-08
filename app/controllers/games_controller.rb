@@ -77,6 +77,7 @@ class GamesController < ApplicationController
     if
       @game.region_code.to_i != h['region_code'].to_i or
       @game.round.to_i != h['round'].to_i or
+      @game.league.to_i != h['league'].to_i or
       @game.game.to_i != h['game'].to_i
     then # game_code の変更がある場合
       code = h["code"] = Game.get_code(hash: h).to_s
@@ -87,7 +88,7 @@ class GamesController < ApplicationController
         render :edit and return
       else # DB に変更したい game_code を持つレコードが存在しなかったので新規作成
         gdas = "#{@gd_sym.to_s}_attributes".to_sym
-        h[gdas].each{ |i| h[gdas][i][:id] = nil } \
+        h[gdas].each{ |i| i[1][:id] = nil } \
           if h[gdas].respond_to?(:each) # 新レコード登録を強制
         old_game_code = @game.code
         @game = Game.new(h)
@@ -119,7 +120,7 @@ class GamesController < ApplicationController
   private
 
   def game_params
-    a = %i( contest_nth region_code round game opponent_robot_code victory )
+    a = %i( contest_nth region_code round league game opponent_robot_code victory )
     r = { :reasons_for_victory => [] }
     h = { "#{@gd_sym.to_s}_attributes" =>
       @gd_sym.to_s.classify.constantize.attr_syms_for_params }

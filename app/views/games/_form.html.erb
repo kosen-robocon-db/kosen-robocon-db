@@ -3,6 +3,21 @@
   region_code = action == :create ? 0 : @game.region_code
   @round_names = RoundName.where(contest_nth: @robot.contest_nth,
     region_code: region_code)
+  @league_array = Array.new(5){ |i| [ ( "A".ord + i ).chr, i + 1 ] }
+  @league_array.unshift(["--", 0])
+  @game_array = Array.new(31){ |i| ["第"+(i+1).to_s+"試合", i+1] }
+  @robots_array = Robot.where(contest_nth: @game.contest_nth).
+    where.not(code: [@robot.code]).
+      includes(:campus).order("robots.code").map{ |i| [
+        i.campus.abbreviation.to_s.ljust(5, "　") +
+          i.name.truncate(SHORTENING_LEN),
+        i.code
+      ] }
+    # 下記はGameモデルで自動的に追加されるべき
+  @robots_array.push([
+    "　"*5 + Game::Constant::NO_OPPONENT.name,
+    Game::Constant::NO_OPPONENT.code
+  ])
 %>
 <div class="row">
   <div class="col-lg-12">
@@ -21,25 +36,18 @@
     <%= f.collection_select :region_code, @regions, :code, :name %><br />
     <%= f.label :round, "回戦" %>:
     <%= f.collection_select :round, @round_names, :round, :name %><br />
+    <% if @game.contest_nth == 31 %>
+      <%# 第31回大会だけ表示させる。 %>
+      <%# リクエストパラメータとして第31回大会以外でも存在する。 %>
+      <%# 余計なデータをいれたくなければ第31回大会以外ではパラメータから除く処理 %>
+      <%# を加えるべきだが、現状はこのままにしておく。 %>
+      <%= f.label :league, "予選リーグ" %>:
+      <%= f.select :league, @league_array %><br />
+    <% end %>
     <%= f.label :game, "試合" %>:
-    <% game_array = Array.new(31){ |i| ["第"+(i+1).to_s+"試合", i+1] } %>
-    <%= f.select :game, game_array %><br />
+    <%= f.select :game, @game_array %><br />
     <%= f.label :opponent_robot_code, "対戦相手" %>:
-    <%
-      robots_array = Robot.where(contest_nth: @game.contest_nth).
-        where.not(code: [@robot.code]).
-          includes(:campus).order("robots.code").map{ |i| [
-            i.campus.abbreviation.to_s.ljust(5, "　") +
-              i.name.truncate(SHORTENING_LEN),
-            i.code
-          ] }
-        # 下記はGameモデルで自動的に追加されるべき
-      robots_array.push([
-        "　"*5 + Game::Constant::NO_OPPONENT.name,
-        Game::Constant::NO_OPPONENT.code
-      ])
-    %>
-    <%= f.select :opponent_robot_code, robots_array %>
+    <%= f.select :opponent_robot_code, @robots_array %>
     <br />
 
     <%= f.label :victory, "勝敗" %>:

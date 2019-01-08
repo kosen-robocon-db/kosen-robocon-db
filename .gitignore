@@ -27,11 +27,7 @@
 squasher
 
 # Ignore CSV files for seed
-<<<<<<< HEAD
-/db/*.csv
-=======
 # /db/*.csv
->>>>>>> refs/remotes/origin/master
 
 # Ignore PDF files
 *.pdf
@@ -41,3 +37,9 @@ squasher
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+# Ignore .envrc(direnv)
+.envrc
+
+# Ignore .vscode
+.vscode

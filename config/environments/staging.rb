@@ -16,7 +16,7 @@ Rails.application.configure do
 
   # Ensures that a master key has been made available in either ENV["RAILS_MASTER_KEY"]
   # or in config/master.key. This key is used to decrypt credentials (and other encrypted files).
-  # config.require_master_key = true
+  config.require_master_key = true
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
@@ -87,19 +87,22 @@ Rails.application.configure do
     logger           = ActiveSupport::Logger.new(STDOUT)
     logger.formatter = config.log_formatter
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
+    # config.logger.level = Logger::DEBUG
   end
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  Devise.setup do |config|
-    config.omniauth :twitter, 'awoD7k5nmGywyAJjg6Qrrs4Xa', 'psrqbse1xVNeHNIaMJgFU2itaVjnr9AaoKpPRNpTWGYb5YQeLX', :display => 'popup'
-  end
+  # Set the same callback URL as the callback URL set in Twitter Apps.
   # Devise.setup do |config|
-  #   config.omniauth :twitter,
-  #     Rails.application.credentials.config[:staging][:twitter_api_key],
-  #     Rails.application.credentials.config[:staging][:twitter_api_secret]
+  #   config.omniauth :twitter, 'tgpUgStAGq5qmgzuSrrKTnBBs', '9NMbcN83vj4GimN7X5TDBjli9WOU8ZNETpEhrrBNS9YrpiEHtd', :display => 'popup', callback_url: "https://kosen-robocon-db-staging.herokuapp.com/users/auth/twitter/callback"
   # end
-  # puts ">>>> twitter_api_key:#{Rails.application.credentials.config[:staging][:twitter_api_key]}"
-  # puts ">>>> twitter_api_secret:#{Rails.application.credentials.config[:staging][:twitter_api_secret]}"
+  Devise.setup do |config|
+    config.omniauth :twitter,
+      Rails.application.credentials.config[:staging][:twitter_api_key],
+      Rails.application.credentials.config[:staging][:twitter_api_secret],
+      :display => 'popup', 
+      callback_url: "https://kosen-robocon-db-staging.herokuapp.com/users/auth/twitter/callback"
+    end
+
 end
