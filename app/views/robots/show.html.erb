@@ -10,9 +10,19 @@
     <table class="table table-striped table-condensed">
       <tbody>
         <tr>
-          <td>読み方：</td>
+          <td>ヨミガナ：</td>
           <td><%= @robot.kana %></td>
         </tr>
+        <% if not @robot.name_alias.blank? %>
+        <tr>
+          <td>別名：</td>
+          <td><%= @robot.name_alias %></td>
+        </tr>
+        <tr>
+          <td>別名ヨミガナ：</td>
+          <td><%= @robot.kana_alias %></td>
+        </tr>
+        <% end %>
         <tr>
           <td>チーム：</td>
           <td><%= @robot.team %></td>
