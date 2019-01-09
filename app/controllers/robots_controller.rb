@@ -29,7 +29,9 @@ class RobotsController < ApplicationController
   private
 
   def robot_params
-    params.require(:robot).permit(:name, :kana, :name_alias, :kana_alias, :team)
+    params.require(:robot).permit(
+      :name, :kana, :name_alias, :kana_alias, :team, :memo
+    )
   end
 
 end

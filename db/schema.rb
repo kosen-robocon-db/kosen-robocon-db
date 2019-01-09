@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_08_023819) do
+ActiveRecord::Schema.define(version: 2019_01_08_234849) do
 
   create_table "advancement_histories", force: :cascade do |t|
     t.integer "contest_nth", null: false
@@ -152,6 +152,7 @@ ActiveRecord::Schema.define(version: 2019_01_08_023819) do
     t.string "kana"
     t.string "name_alias"
     t.string "kana_alias"
+    t.string "memo"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["campus_code"], name: "index_robots_on_campus_code"

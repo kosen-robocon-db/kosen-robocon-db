@@ -2,7 +2,7 @@ class Robot < ApplicationRecord
   module Constant
     NO_ROBOT = Robot.new( # このまま使われなかったらリファクタリング時に削除すべき
       code: 100000000, contest_nth: 0, campus_code: 0,
-      name: "", kana: "", name_alias: "", kana_alias: ""
+      name: "", kana: "", name_alias: "", kana_alias: "", memo: ""
     )
   end
 
@@ -24,6 +24,7 @@ class Robot < ApplicationRecord
   validates :kana,       allow_blank: true, length:{ maximum:255 }
   validates :name_alias, allow_blank: true, length:{ maximum:255 }
   validates :kana_alias, allow_blank: true, length:{ maximum:255 }
+  validates :memo,       allow_blank: true, length:{ maximum:255 }
 
   #== scopes
 
@@ -45,11 +46,11 @@ class Robot < ApplicationRecord
 
   def self.csv_headers
     # UTF-8出力される
-    [ "ロボットコード", "回", "キャンパスコード", "A/B", "ロボット名", "ヨミガナ", "別名", "別名ヨミガナ" ]
+    [ "ロボットコード", "回", "キャンパスコード", "A/B", "ロボット名", "ヨミガナ", "別名", "別名ヨミガナ", "メモ" ]
   end
 
   def self.csv_column_syms
-    [ :code, :contest_nth, :campus_code, :team, :name, :kana, :name_alias, :kana_alias ]
+    [ :code, :contest_nth, :campus_code, :team, :name, :kana, :name_alias, :kana_alias, :memo ]
   end
 
   # 特別な#to_csvをオーバーライド
