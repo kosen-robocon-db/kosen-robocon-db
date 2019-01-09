@@ -13,7 +13,7 @@
           <td>ヨミガナ：</td>
           <td><%= @robot.kana %></td>
         </tr>
-        <% if not @robot.name_alias.blank? %>
+        <% if @robot.name_alias.present? %>
         <tr>
           <td>別名：</td>
           <td><%= @robot.name_alias %></td>
@@ -27,6 +27,12 @@
           <td>チーム：</td>
           <td><%= @robot.team %></td>
         </tr>
+        <% if @robot.memo.present? %>
+        <tr>
+          <td>特記事項：</td>
+          <td><%= @robot.memo %></td>
+        </tr>
+        <% end %>
       </tbody>
     </table>
   </div>
