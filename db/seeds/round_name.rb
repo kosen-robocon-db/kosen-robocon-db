@@ -12,7 +12,7 @@
 #     RoundName.import bulk_insert_data
 #   end
 #   private
-#   def エキシジジョン追加
+#   def エキシビジョン追加
 #   end
 #   def ソート
 #   end
