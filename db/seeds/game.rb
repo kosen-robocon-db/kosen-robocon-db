@@ -5,14 +5,16 @@ if FileTest.exist?(csv_file_path) then
   csv = CSV.read(csv_file_path, headers: true)
   csv.each do |row|
     bulk_insert_data << Game.new(
-      code:              row[0],
-      contest_nth:       row[1],
-      region_code:       row[2],
-      round:             row[3],
-      game:              row[4],
-      left_robot_code:   row[5],
-      right_robot_code:  row[6],
-      winner_robot_code: row[7]
+      code:                row[0],
+      contest_nth:         row[1],
+      region_code:         row[2],
+      round:               row[3],
+      league:              row[4],
+      game:                row[5],
+      left_robot_code:     row[6],
+      right_robot_code:    row[7],
+      winner_robot_code:   row[8],
+      reasons_for_victory: row[9]
     )
   end
 else
