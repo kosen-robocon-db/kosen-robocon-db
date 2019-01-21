@@ -12,7 +12,10 @@ if FileTest.exist?(csv_file_path) then
       campus_code: row[2],
       team:        row[3],
       name:        row[4],
-      kana:        row[5]
+      kana:        row[5],
+      name_alias:  row[6],
+      kana_alias:  row[7],
+      memo:        row[8]
     )
   end
 else
