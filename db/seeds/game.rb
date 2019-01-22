@@ -14,7 +14,7 @@ if FileTest.exist?(csv_file_path) then
       left_robot_code:     row[6],
       right_robot_code:    row[7],
       winner_robot_code:   row[8],
-      reasons_for_victory: row[9]
+      reasons_for_victory: [row[9]]
     )
   end
 else
